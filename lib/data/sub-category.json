@@ -1,0 +1,752 @@
+[
+    {
+        "name": "Banks",
+        "id": "2",
+        "pricing": "0"
+    },
+    {
+        "name": "Govt Dispensary",
+        "id": "1",
+        "pricing": "0"
+    },
+    {
+        "name": "BESCOM",
+        "id": "3",
+        "pricing": "0"
+    },
+    {
+        "name": "Post Office",
+        "id": "4",
+        "pricing": "0"
+    },
+    {
+        "name": "Petrol Bunk",
+        "id": "5",
+        "pricing": "0"
+    },
+    {
+        "name": "Old Age Home",
+        "id": "6",
+        "pricing": "0"
+    },
+    {
+        "name": "Chandapura Municipality Corporation",
+        "id": "8",
+        "pricing": "0"
+    },
+    {
+        "name": "Panchayat Office",
+        "id": "7",
+        "pricing": "0"
+    },
+    {
+        "name": "Chandapura Federation",
+        "id": "9",
+        "pricing": "0"
+    },
+    {
+        "name": "Veterinary Hospital",
+        "id": "10",
+        "pricing": "0"
+    },
+    {
+        "name": "Orphanage",
+        "id": "11",
+        "pricing": "0"
+    },
+    {
+        "name": "Fire Station",
+        "id": "13",
+        "pricing": "0"
+    },
+    {
+        "name": "Temple",
+        "id": "12",
+        "pricing": "0"
+    },
+    {
+        "name": "Cooking Gas Agency",
+        "id": "14",
+        "pricing": "0"
+    },
+    {
+        "name": "Gents Tailor",
+        "id": "15",
+        "pricing": "0"
+    },
+    {
+        "name": "Ladies & Kids Boutique",
+        "id": "16",
+        "pricing": "0"
+    },
+    {
+        "name": "Builder & Developer",
+        "id": "17",
+        "pricing": "299"
+    },
+    {
+        "name": "Real Estate Agent",
+        "id": "18",
+        "pricing": "299"
+    },
+    {
+        "name": "Flats For Rent",
+        "id": "19",
+        "pricing": "299"
+    },
+    {
+        "name": "Flats For Sale",
+        "id": "20",
+        "pricing": "299"
+    },
+    {
+        "name": "Individual House Rent",
+        "id": "22",
+        "pricing": "299"
+    },
+    {
+        "name": "Individual House Sale",
+        "id": "21",
+        "pricing": "299"
+    },
+    {
+        "name": "Used Car Sale",
+        "id": "23",
+        "pricing": "299"
+    },
+    {
+        "name": "Used Bike Sale",
+        "id": "24",
+        "pricing": "99"
+    },
+    {
+        "name": "Used Electronics Sale",
+        "id": "25",
+        "pricing": "99"
+    },
+    {
+        "name": "Used House Hold Materials Sale",
+        "id": "26",
+        "pricing": "99"
+    },
+    {
+        "name": "Individual Plot Sale",
+        "id": "27",
+        "pricing": "499"
+    },
+    {
+        "name": "Commercial Property Sale",
+        "id": "28",
+        "pricing": "499"
+    },
+    {
+        "name": "Used Furniture Sale",
+        "id": "29",
+        "pricing": "99"
+    },
+    {
+        "name": "Car Repair",
+        "id": "30",
+        "pricing": "99"
+    },
+    {
+        "name": "Bike & Motor Cycle Repair",
+        "id": "32",
+        "pricing": "0"
+    },
+    {
+        "name": "Cycle Shop & Repair",
+        "id": "31",
+        "pricing": "99"
+    },
+    {
+        "name": "Tyre Shop",
+        "id": "33",
+        "pricing": "99"
+    },
+    {
+        "name": "Puncture Shop",
+        "id": "34",
+        "pricing": "0"
+    },
+    {
+        "name": "Car Body Painting Shop",
+        "id": "35",
+        "pricing": "99"
+    },
+    {
+        "name": "Driving School",
+        "id": "36",
+        "pricing": "99"
+    },
+    {
+        "name": "Bike Showroom",
+        "id": "37",
+        "pricing": "99"
+    },
+    {
+        "name": "Car Showroom",
+        "id": "38",
+        "pricing": "99"
+    },
+    {
+        "name": "Car & Bike Water Washing",
+        "id": "39",
+        "pricing": "99"
+    },
+    {
+        "name": "Primary School",
+        "id": "40",
+        "pricing": "299"
+    },
+    {
+        "name": "Higher Secondary School",
+        "id": "41",
+        "pricing": "499"
+    },
+    {
+        "name": "PU & Degree College",
+        "id": "42",
+        "pricing": "499"
+    },
+    {
+        "name": "Kindergarten",
+        "id": "43",
+        "pricing": "299"
+    },
+    {
+        "name": "Play School",
+        "id": "45",
+        "pricing": "299"
+    },
+    {
+        "name": "Day Care",
+        "id": "44",
+        "pricing": "299"
+    },
+    {
+        "name": "Coaching Institute",
+        "id": "46",
+        "pricing": "99"
+    },
+    {
+        "name": "Veg Hotel",
+        "id": "47",
+        "pricing": "99"
+    },
+    {
+        "name": "Veg Restaurant",
+        "id": "48",
+        "pricing": "99"
+    },
+    {
+        "name": "Non-Veg & Veg Restaurant",
+        "id": "49",
+        "pricing": "99"
+    },
+    {
+        "name": "Coffee Shop",
+        "id": "50",
+        "pricing": "99"
+    },
+    {
+        "name": "Juice & Snacks Bar",
+        "id": "51",
+        "pricing": "99"
+    },
+    {
+        "name": "Food On Wheels",
+        "id": "52",
+        "pricing": "0"
+    },
+    {
+        "name": "Chat Centre",
+        "id": "54",
+        "pricing": "99"
+    },
+    {
+        "name": "Bakery",
+        "id": "55",
+        "pricing": "99"
+    },
+    {
+        "name": "Sweet Shop",
+        "id": "53",
+        "pricing": "99"
+    },
+    {
+        "name": "Bar & Restaurant",
+        "id": "56",
+        "pricing": "99"
+    },
+    {
+        "name": "Food Catering",
+        "id": "57",
+        "pricing": "99"
+    },
+    {
+        "name": "Pan Shop",
+        "id": "58",
+        "pricing": "0"
+    },
+    {
+        "name": "Cake Shop",
+        "id": "59",
+        "pricing": "0"
+    },
+    {
+        "name": "Chicken Centre",
+        "id": "60",
+        "pricing": "99"
+    },
+    {
+        "name": "Mutton Centre",
+        "id": "61",
+        "pricing": "99"
+    },
+    {
+        "name": "Chicken & Mutton Centre",
+        "id": "62",
+        "pricing": "99"
+    },
+    {
+        "name": "Fish Centre",
+        "id": "63",
+        "pricing": "99"
+    },
+    {
+        "name": "Chicken Mutton & Fish Centre",
+        "id": "64",
+        "pricing": "99"
+    },
+    {
+        "name": "Pork Centre",
+        "id": "65",
+        "pricing": "0"
+    },
+    {
+        "name": "Departmental Store",
+        "id": "66",
+        "pricing": "99"
+    },
+    {
+        "name": "Fruit Shop",
+        "id": "67",
+        "pricing": "0"
+    },
+    {
+        "name": "Grocery Store",
+        "id": "68",
+        "pricing": "99"
+    },
+    {
+        "name": "Milk Supplier",
+        "id": "69",
+        "pricing": "99"
+    },
+    {
+        "name": "Pooja Items",
+        "id": "70",
+        "pricing": "0"
+    },
+    {
+        "name": "Drinking Water Supplier",
+        "id": "71",
+        "pricing": "0"
+    },
+    {
+        "name": "News Paper Agency",
+        "id": "72",
+        "pricing": "0"
+    },
+    {
+        "name": "Vegetable Shop",
+        "id": "73",
+        "pricing": "0"
+    },
+    {
+        "name": "Furniture Store",
+        "id": "74",
+        "pricing": "99"
+    },
+    {
+        "name": "Hardware Store",
+        "id": "75",
+        "pricing": "99"
+    },
+    {
+        "name": "Tiles & Sanitary Store",
+        "id": "76",
+        "pricing": "0"
+    },
+    {
+        "name": "Modular Kitchen",
+        "id": "77",
+        "pricing": "0"
+    },
+    {
+        "name": "Architects & Interior Designer",
+        "id": "78",
+        "pricing": "0"
+    },
+    {
+        "name": "Flower Nursery",
+        "id": "80",
+        "pricing": "0"
+    },
+    {
+        "name": "Welding & Aluminium Fabricator",
+        "id": "79",
+        "pricing": "0"
+    },
+    {
+        "name": "Building Material (Cement & Iron)",
+        "id": "81",
+        "pricing": "0"
+    },
+    {
+        "name": "Photo Frame Shop",
+        "id": "82",
+        "pricing": "0"
+    },
+    {
+        "name": "Courier Service",
+        "id": "83",
+        "pricing": "0"
+    },
+    {
+        "name": "Dry Cleaning & Laundry",
+        "id": "84",
+        "pricing": "0"
+    },
+    {
+        "name": "Cable Tv & Internet Service Provider",
+        "id": "86",
+        "pricing": "0"
+    },
+    {
+        "name": "Water Tanker",
+        "id": "85",
+        "pricing": "0"
+    },
+    {
+        "name": "Art Work",
+        "id": "87",
+        "pricing": "0"
+    },
+    {
+        "name": "Duplicate Key Makers",
+        "id": "88",
+        "pricing": "0"
+    },
+    {
+        "name": "Insurance Agent",
+        "id": "89",
+        "pricing": "0"
+    },
+    {
+        "name": "Web Designer",
+        "id": "90",
+        "pricing": "0"
+    },
+    {
+        "name": "Auto Rikshaw Services",
+        "id": "91",
+        "pricing": "0"
+    },
+    {
+        "name": "Lawyer",
+        "id": "92",
+        "pricing": "0"
+    },
+    {
+        "name": "Security Manpower Agencies",
+        "id": "93",
+        "pricing": "0"
+    },
+    {
+        "name": "Music Class",
+        "id": "94",
+        "pricing": "0"
+    },
+    {
+        "name": "Carpenter",
+        "id": "95",
+        "pricing": "0"
+    },
+    {
+        "name": "Event Management",
+        "id": "98",
+        "pricing": "0"
+    },
+    {
+        "name": "Painter",
+        "id": "96",
+        "pricing": "0"
+    },
+    {
+        "name": "Plumber",
+        "id": "97",
+        "pricing": "0"
+    },
+    {
+        "name": "Electrician",
+        "id": "100",
+        "pricing": "0"
+    },
+    {
+        "name": "Stp Operator",
+        "id": "99",
+        "pricing": "0"
+    },
+    {
+        "name": "Gardener",
+        "id": "101",
+        "pricing": "0"
+    },
+    {
+        "name": "Swimming Pool Operator",
+        "id": "103",
+        "pricing": "0"
+    },
+    {
+        "name": "Driver",
+        "id": "102",
+        "pricing": "0"
+    },
+    {
+        "name": "House Keeping Service",
+        "id": "104",
+        "pricing": "0"
+    },
+    {
+        "name": "Packers & Movers",
+        "id": "107",
+        "pricing": "0"
+    },
+    {
+        "name": "Flower Decorators",
+        "id": "106",
+        "pricing": "0"
+    },
+    {
+        "name": "Masions",
+        "id": "105",
+        "pricing": "0"
+    },
+    {
+        "name": "Photo Studio",
+        "id": "108",
+        "pricing": "0"
+    },
+    {
+        "name": "Watch Sales & Repair",
+        "id": "109",
+        "pricing": "0"
+    },
+    {
+        "name": "Pest Control",
+        "id": "110",
+        "pricing": "0"
+    },
+    {
+        "name": "Borewell Motor Repair",
+        "id": "113",
+        "pricing": "0"
+    },
+    {
+        "name": "Civil Contractor",
+        "id": "111",
+        "pricing": "0"
+    },
+    {
+        "name": "Dance Class",
+        "id": "112",
+        "pricing": "0"
+    },
+    {
+        "name": "Children Hospital",
+        "id": "114",
+        "pricing": "0"
+    },
+    {
+        "name": "Multi Speciality Hospital",
+        "id": "115",
+        "pricing": "0"
+    },
+    {
+        "name": "Eye Clinic",
+        "id": "116",
+        "pricing": "0"
+    },
+    {
+        "name": "Gym & Fitness Centre",
+        "id": "117",
+        "pricing": "0"
+    },
+    {
+        "name": "Diagnostics Centre",
+        "id": "118",
+        "pricing": "0"
+    },
+    {
+        "name": "Homeopathy Clinic",
+        "id": "120",
+        "pricing": "0"
+    },
+    {
+        "name": "Ayurvedic Clinic",
+        "id": "119",
+        "pricing": "0"
+    },
+    {
+        "name": "Dental Clinic",
+        "id": "121",
+        "pricing": "0"
+    },
+    {
+        "name": "Pharmacy",
+        "id": "122",
+        "pricing": "0"
+    },
+    {
+        "name": "Sports Club",
+        "id": "123",
+        "pricing": "0"
+    },
+    {
+        "name": "Optical Store",
+        "id": "124",
+        "pricing": "0"
+    },
+    {
+        "name": "Beauty Parlour-Women & Kids",
+        "id": "125",
+        "pricing": "0"
+    },
+    {
+        "name": "Salon-Men",
+        "id": "126",
+        "pricing": "0"
+    },
+    {
+        "name": "Salon-Unisex",
+        "id": "127",
+        "pricing": "0"
+    },
+    {
+        "name": "Beauty Parlour At Home",
+        "id": "129",
+        "pricing": "0"
+    },
+    {
+        "name": "Spa",
+        "id": "128",
+        "pricing": "0"
+    },
+    {
+        "name": "Bridal Makeup",
+        "id": "130",
+        "pricing": "0"
+    },
+    {
+        "name": "Wedding & Convention Centre",
+        "id": "132",
+        "pricing": "0"
+    },
+    {
+        "name": "Tent House",
+        "id": "131",
+        "pricing": "0"
+    },
+    {
+        "name": "Jewellery Store",
+        "id": "133",
+        "pricing": "0"
+    },
+    {
+        "name": "Mobile Sales & Repair Centre",
+        "id": "134",
+        "pricing": "0"
+    },
+    {
+        "name": "Electrical Sales & Repair",
+        "id": "135",
+        "pricing": "0"
+    },
+    {
+        "name": "Electronics Sales & Repair",
+        "id": "136",
+        "pricing": "0"
+    },
+    {
+        "name": "Taxi For Hire",
+        "id": "137",
+        "pricing": "0"
+    },
+    {
+        "name": "Travel Agent",
+        "id": "138",
+        "pricing": "0"
+    },
+    {
+        "name": "Ticket (Flight Train Bus)",
+        "id": "139",
+        "pricing": "0"
+    },
+    {
+        "name": "Lodging & Boarding",
+        "id": "140",
+        "pricing": "0"
+    },
+    {
+        "name": "Pet Shop",
+        "id": "141",
+        "pricing": "0"
+    },
+    {
+        "name": "Printing & Stickering",
+        "id": "142",
+        "pricing": "0"
+    },
+    {
+        "name": "Agriculture Product Supplier",
+        "id": "144",
+        "pricing": "0"
+    },
+    {
+        "name": "Clothing & Apparel Store",
+        "id": "143",
+        "pricing": "99"
+    },
+    {
+        "name": "Toys & Gifts Store",
+        "id": "145",
+        "pricing": "99"
+    },
+    {
+        "name": "E-Stamp Paper Sales",
+        "id": "147",
+        "pricing": "0"
+    },
+    {
+        "name": "Fancy Store",
+        "id": "146",
+        "pricing": "0"
+    },
+    {
+        "name": "PG Accommodation",
+        "id": "148",
+        "pricing": "0"
+    },
+    {
+        "name": "Pujari",
+        "id": "149",
+        "pricing": "0"
+    },
+    {
+        "name": "Recruitment",
+        "id": "150",
+        "pricing": "99"
+    }
+]

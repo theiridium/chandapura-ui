@@ -1,0 +1,21 @@
+import { Products } from "@/public/shared/app.config";
+import BusinessCard from "./business-card"
+import { getPublicApiResponse } from "@/lib/interceptor";
+import ListArrow from "./list-arrow";
+
+const BusinessList = async () => {
+  const attr = Products.business.api;
+  const businessList = await getPublicApiResponse(`${attr.base}?${attr.populate}`);
+  return (
+    <>
+      <div className="business-card-list-row">
+        {businessList.data.map((bus: any, i: any) => (
+          <BusinessCard key={i} list={bus} id={bus.id} />
+        ))}
+      </div>
+      <ListArrow size={400} row="business-card-list-row" infinite={true} />
+    </>
+  )
+}
+
+export default BusinessList

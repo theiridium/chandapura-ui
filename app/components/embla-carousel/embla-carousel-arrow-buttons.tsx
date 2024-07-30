@@ -61,7 +61,7 @@ export const PrevButton = (props: any) => {
 
     return (
         <button
-            className="embla__button embla__button--prev"
+            className="embla__button embla__button--prev !justify-start md:!justify-center"
             type="button"
             {...restProps}
         >
@@ -80,7 +80,7 @@ export const NextButton = (props: any) => {
 
     return (
         <button
-            className="embla__button embla__button--next"
+            className="embla__button embla__button--next !justify-end md:!justify-center"
             type="button"
             {...restProps}
         >

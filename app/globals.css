@@ -27,6 +27,17 @@ footer {
   color: white !important;
 }
 
+.time-table tr > th:first-child,
+.time-table tr > td:first-child {
+  position: sticky;
+  left: 0;
+  background-color: #ffff;
+}
+
+.modal-close-btn button{
+  z-index: 20 !important;
+}
+
 @layer components {
   html {
     @apply scroll-smooth;

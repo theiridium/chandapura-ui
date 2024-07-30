@@ -1,3 +1,4 @@
+'use client'
 import ImageGallery from '@/app/components/modals/image-gallery';
 import Map from '@/app/sub-components/map';
 import { Button, useDisclosure } from '@nextui-org/react';
@@ -5,18 +6,11 @@ import { Phone } from 'lucide-react';
 import { useEffect } from 'react';
 
 const BusinessDetail = ({ data }: any) => {
-  const contactName = `${data.user.first_name} ${data.user.last_name}`;
   console.log(data)
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  // useEffect(() => {
-  //   getBusinessList();
-  // }, [])
   return (
     <div>
-      {/* <Button radius="sm" onPress={onOpen} className='justify-between' fullWidth={true} size='lg'>
-        yo
-      </Button > */}
-      {/* <ImageGallery isOpen={isOpen} onOpenChange={onOpenChange} title={"Select Business"} list={data.gallery_images} /> */}
+      <ImageGallery isOpen={isOpen} onOpenChange={onOpenChange} list={data.gallery_images} />
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-5 lg:gap-10 text-gray-700">
         <div className="lg:col-span-3">
           <div className="border border-gray-300 rounded-xl bg-white p-5 lg:p-7 gap-x-5 lg:gap-x-7">
@@ -33,12 +27,26 @@ const BusinessDetail = ({ data }: any) => {
                   <img src="/images/placeholder.png" className="w-full h-full rounded-xl" />
                 }
               </div>
-              <div className="col-span-2">
+              {/* <div className="col-span-2">
                 {data.gallery_images[1] ?
                   <img src={data.gallery_images[1].url} className="w-full h-full rounded-xl" /> :
                   <img src="/images/placeholder.png" className="w-full h-full rounded-xl" />
                 }
-              </div>
+              </div> */}
+              {data.gallery_images.length > 2 ?
+                <div className="col-span-2 cursor-pointer relative" onClick={onOpen}>
+                  <img src={data.gallery_images[1].url} className="w-full h-full rounded-xl" />
+                  <div className="w-full h-full rounded-xl bg-black/50 hover:bg-black/40 absolute top-0 left-0 flex">
+                    <span className='text-white text-[3.25rem] m-auto font-light'>+{data.gallery_images.length - 2}</span>
+                  </div>
+                </div> :
+                <div className="col-span-2">
+                  {data.gallery_images[1] ?
+                    <img src={data.gallery_images[1].url} className="w-full h-full rounded-xl" /> :
+                    <img src="/images/placeholder.png" className="w-full h-full rounded-xl" />
+                  }
+                </div>
+              }
             </div>
             <div className='re-header flex-none lg:flex justify-between mb-12'>
               <div>
@@ -66,32 +74,34 @@ const BusinessDetail = ({ data }: any) => {
               {/* <p className='text-lg font-medium'>Mon-Sun 10:30 am - 5:00 pm</p> */}
               {/* <div className='grid grid-cols-3'>
               </div> */}
-              <table className='table-auto text-center divide-y w-full'>
-                <thead>
-                  <tr className='*:py-3'>
-                    <th></th>
-                    <th></th>
-                    <th>Opening Time</th>
-                    <th></th>
-                    <th>Closing Time</th>
-                  </tr>
-                </thead>
-                <tbody className='text-lg font-medium divide-y'>
-                  {data.bus_hours.map((x: any, i: any) =>
-                    <tr className='*:py-3' key={i}>
-                      <td className='text-left'>{x.day}</td>
-                      <td><span className={`${x.isOpen ? 'bg-green-400' : 'bg-red-400'} text-white px-3 py-1 rounded-full`}>{x.isOpen ? "Open" : "Closed"}</span></td>
-                      {x.isOpen &&
-                        <>
-                          <td>{x.open_time[0].toString()}</td>
-                          <td>TO</td>
-                          <td>{x.close_time[0].toString()}</td>
-                        </>
-                      }
+              <div className='time-table overflow-x-auto'>
+                <table className='table-fixed md:table-auto text-center divide-y w-full whitespace-nowrap'>
+                  <thead>
+                    <tr className='*:py-3'>
+                      <th className='w-32 md:w-auto'></th>
+                      <th className='w-32 md:w-auto'></th>
+                      <th className='w-32 md:w-auto'>Opening Time</th>
+                      <th className='w-24 md:w-auto'></th>
+                      <th className='w-32 md:w-auto'>Closing Time</th>
                     </tr>
-                  )}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className='text-lg font-medium divide-y'>
+                    {data.bus_hours.map((x: any, i: any) =>
+                      <tr className='*:py-3' key={i}>
+                        <td className='text-left'>{x.day}</td>
+                        <td><span className={`${x.isOpen ? 'bg-green-400' : 'bg-red-400'} text-white px-3 py-1 rounded-full`}>{x.isOpen ? "Open" : "Closed"}</span></td>
+                        {x.isOpen &&
+                          <>
+                            <td>{x.open_time[0].toString()}</td>
+                            <td>TO</td>
+                            <td>{x.close_time[0].toString()}</td>
+                          </>
+                        }
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
             <hr className='mb-12' />
             <div className='mb-12'>

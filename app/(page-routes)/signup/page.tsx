@@ -7,8 +7,8 @@ const Page = (props: any) => {
             <div className='grid grid-cols-1 place-content-center my-8'>
                 <div className='px-3 md:px-0 w-full md:w-4/5 mx-auto text-center'>
                     <div className='login-form'>
-                        <h1 className='text-4xl font-extrabold mb-8'>Sign up</h1>
-                        <p className='text-xl font-bold color text-gray-400 mb-16'>Some description for user before login</p>
+                        <h1 className='text-4xl font-bold mb-8'>Sign up</h1>
+                        <p className='text-xl font-semibold color text-gray-400 mb-16'>Some description for user before login</p>
                         <input className='text-login-form mb-5' placeholder='Enter your Name' />
                         <input className='text-login-form mb-5' placeholder='Enter your Email ID' />
                         <input className='text-login-form mb-5' placeholder='Enter your Mobile' />

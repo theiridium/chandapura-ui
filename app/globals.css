@@ -132,7 +132,7 @@ footer {
   }
   .re-card-link:hover {
     box-shadow: 0 0 48px -33px rgb(34, 34, 34);
-    @apply transition translate-y-1 duration-300 ease-in-out;
+    /* @apply transition translate-y-1 duration-300 ease-in-out; */
   }
   .re-card,
   .business-card {

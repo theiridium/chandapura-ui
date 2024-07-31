@@ -37,7 +37,7 @@ const Menubar = (props: any) => {
                 {status === "authenticated" &&
                     <>
                         <div className='text-2xl mb-2'>Welcome back</div>
-                        <div className='text-3xl font-semibold'>{data?.user?.first_name} !</div>
+                        <div className='text-3xl font-semibold'>{data?.user?.firstname} !</div>
                     </>
                 }
                 <button className='absolute right-7 top-5' onClick={() => props.btnToggle(!props.isOpen)}>

@@ -48,7 +48,7 @@ const Page = () => {
                         <div className='-mt-3 text-lg'><span className='bg-white px-3 text-gray-500'>OR</span></div>
                     </div>
                     <div className='soc-login mb-8'>
-                        <button className='btn-soclogin-form'>Continue with Google</button>
+                        <button className='btn-soclogin-form' onClick={() => signIn('google')}>Continue with Google</button>
                     </div>
                     <div className='text-tnc'>
                         <p>By creating an account or logging in, you agree with Chandapura.com&apos;s Terms and Conditions and Privacy Policy.</p>

@@ -7,7 +7,7 @@ import { IndianRupee } from 'lucide-react';
 import React from 'react'
 
 const ProductDetail = ({ data }: any) => {
-    const contactName = `${data.user.first_name} ${data.user.last_name}`;
+    const contactName = `${data.user.firstname} ${data.user.lastname}`;
     return (
         <div>
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-5 lg:gap-10 text-gray-700">

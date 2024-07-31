@@ -1,9 +1,13 @@
 import { Resource } from '@/public/shared/app.config';
 import { useSession } from 'next-auth/react';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react'
 
 const ContactButton = (props: any) => {
-    const [url, setUrl] = useState(Resource.Login.link);
+    const pathname = usePathname()
+    const searchParams = useSearchParams();
+    const pageUrl = `${pathname}?${searchParams}`;
+    const [url, setUrl] = useState(Resource.Login.link + "?redirect=" + pageUrl);
     const [text, setText] = useState(`Conatct ${props.maskedText}`);
     const session = useSession();
     useEffect(() => {
@@ -12,10 +16,11 @@ const ContactButton = (props: any) => {
             setText(`+91 ${props.phone}`);
         }
         else {
-            setUrl(Resource.Login.link);
+            setUrl(Resource.Login.link + "?redirect=" + pageUrl);
             setText(`Conatct ${props.maskedText}`);
         }
     }, [])
+    useEffect(()=>{console.log(pageUrl)},[url])
 
     return (
         <>

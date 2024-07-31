@@ -1,10 +1,14 @@
+"use client"
 import { Resource } from "@/public/shared/app.config";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const ContactCard = ({ heading, name, contact }: any) => {
     const session = useSession();
     const router = useRouter();
+    const pathname = usePathname()
+    const searchParams = useSearchParams();
+    const pageUrl = `${pathname}?${searchParams}`;
     return (
         <div className="border border-gray-300 rounded-xl bg-white p-5 lg:p-7 gap-x-5 lg:gap-x-7 lg:sticky lg:top-[6.5rem]">
             <div className='realEstate-contact'>
@@ -20,7 +24,7 @@ const ContactCard = ({ heading, name, contact }: any) => {
                             <div className='text-lg font-semibold'>+91 {contact}</div>
                         </div>
                     </div> :
-                    <button className="btn-primary" onClick={() => router.push(Resource.Login.link)}>{Resource.Login.label}</button>
+                    <button className="btn-primary" onClick={() => router.push(Resource.Login.link + "?redirect=" + pageUrl)}>{Resource.Login.label}</button>
                 }
 
             </div>

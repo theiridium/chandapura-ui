@@ -7,7 +7,7 @@ const SaleCard = (p: any) => {
     const item = p.list;
     const id = p.id;
     return (
-        <a href={`${Products.sale.url}/${item.slug}&id=${id}`} className="re-card-link">
+        <a href={`${Products.sale.url}/${item.slug}?source=${id}`} className="re-card-link">
             <div className="re-card">
                 <div className="re-card-img">
                     {item.property_images === null ?

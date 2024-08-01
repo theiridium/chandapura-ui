@@ -4,11 +4,11 @@ import sub_cat from "@/lib/data/sub-category.json";
 import slugify from 'react-slugify';
 
 export function IsProductUrl(val: string) {
-  return Object.values(Products).some(product => product.slug === val);
+  return Object.values(Products).some((product: any) => product.slug === val);
 }
 
 export function GetProductFromParam(val: string) {
-  return Object.values(Products).find(x => x.slug === val);
+  return Object.values(Products).find((x: any) => x.slug === val);
 }
 
 export function GetProductFromProductType(val: string) {

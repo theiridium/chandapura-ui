@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 const ContactButton = (props: any) => {
     const pathname = usePathname()
     const searchParams = useSearchParams();
-    const pageUrl = `${pathname}?${searchParams}`;
+    const pageUrl = searchParams?`${pathname}?${searchParams}`: `${pathname}`;
     const [url, setUrl] = useState(Resource.Login.link + "?redirect=" + pageUrl);
     const [text, setText] = useState(`Conatct ${props.maskedText}`);
     const session = useSession();
@@ -20,7 +20,6 @@ const ContactButton = (props: any) => {
             setText(`Conatct ${props.maskedText}`);
         }
     }, [])
-    useEffect(()=>{console.log(pageUrl)},[url])
 
     return (
         <>

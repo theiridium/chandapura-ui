@@ -1,7 +1,7 @@
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from "next-auth/providers/google";
-import { getPublicApiResponse, userAuthentication } from "./interceptor";
+import { userAuthentication } from "./interceptor";
 export const authOptions = {
     pages: {
         signIn: '/login'

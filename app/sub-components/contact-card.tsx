@@ -8,7 +8,7 @@ const ContactCard = ({ heading, name, contact }: any) => {
     const router = useRouter();
     const pathname = usePathname()
     const searchParams = useSearchParams();
-    const pageUrl = `${pathname}?${searchParams}`;
+    const pageUrl = searchParams?`${pathname}?${searchParams}`: `${pathname}`;
     return (
         <div className="border border-gray-300 rounded-xl bg-white p-5 lg:p-7 gap-x-5 lg:gap-x-7 lg:sticky lg:top-[6.5rem]">
             <div className='realEstate-contact'>

@@ -20,7 +20,7 @@ const Header = () => {
           <div className="flex items-center">
             <ul className="hidden md:flex font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:mt-0 md:border-0 md:bg-white">
               <li>
-                <a href={Resource.BusinessListing.dashboardLink} className="link-pill">{Resource.BusinessListing.label}</a>
+                <a href={Resource.BusinessListing.link} className="link-pill">{Resource.BusinessListing.label}</a>
               </li>
               <li>
                 <a href={Resource.Advertisement.link} className="link-pill">{Resource.Advertisement.label}</a>

@@ -30,6 +30,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
         let apiUrl = `${attr.base}?filters[id][$eq]=${source}&populate=gallery_images,featured_image`;
         const response = await getPublicApiResponse(apiUrl).then(res => res.data);
         const data = response[0];
+        console.log(data)
         if (data) {
             setImageParamsFeatured({ ...imageParamsFeatured, imgData: data.featured_image });
             setImageParamsGallery({ ...imageParamsGallery, imgData: data.gallery_images });
@@ -58,7 +59,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
                         {isImageDataLoaded && <MultiImage imageParams={imageParamsGallery} />}
                     </div>
                     <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>
-                        <button className='btn-primary text-base' onClick={() => router.push(`/business-listing/add-details/${source}`)}>Back</button>
+                        <button className='btn-primary text-base' onClick={() => router.push(`/business-listing/add-details?type=edit&source=${source}`)}>Back</button>
                         <button className='btn-primary text-base' onClick={() => router.push('/business-listing/payment')}>Save and Continue</button>
                     </div>
                 </div>

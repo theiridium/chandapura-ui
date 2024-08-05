@@ -24,10 +24,8 @@ export interface RealEstate
 }
 export interface ContactList {
     full_name: string,
-    phone: string,
-    phone_alt: string,
+    phone: string | any,
     email_id: string,
-    user: any
 }
 export interface BusinessHours {
     day: string,
@@ -40,7 +38,9 @@ export interface BusinessListing {
     name: string | undefined,
     full_address: string | undefined,
     description: string | undefined,
-    bus_contact: number | undefined,
+    bus_email_id: string | any,
+    bus_contact_name: string | any,
+    bus_conatct_number: string | any,
     user: {},
     slug: string | undefined,
     tags: string | undefined,

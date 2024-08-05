@@ -30,14 +30,23 @@ export const authOptions = {
                         strapiUserId: res.user.id,
                         blocked: res.user.blocked,
                         strapiToken: res.jwt,
-                      };
+                    };
                 }
                 return null
             }
         }),
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID as string,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+            // async profile(profile, tokens) {
+            //     const { sub: id, name, email, picture: image } = profile;
+            //     const baseData = { id, name, email, image };
+            //     try {
+            //         return { ...baseData, error: undefined };
+            //     } catch (error) {
+            //         return { ...baseData, error: "MY_ERROR" }
+            //     }
+            // }
         })
     ],
     callbacks: {
@@ -56,6 +65,7 @@ export const authOptions = {
             }
             if (account) {
                 if (account.provider === 'google') {
+                    var errorMessage = "";
                     // we now know we are doing a sign in using GoogleProvider
                     try {
                         const strapiResponse = await fetch(
@@ -64,8 +74,8 @@ export const authOptions = {
                         );
                         if (!strapiResponse.ok) {
                             const strapiError: any = await strapiResponse.json();
-                            // console.log('strapiError', strapiError);
-                            throw new Error(strapiError.error.message);
+                            console.log('strapiError', strapiError);
+                            errorMessage = strapiError.error.message;
                         }
                         const strapiLoginResponse: any =
                             await strapiResponse.json();
@@ -76,6 +86,7 @@ export const authOptions = {
                         token.strapiUserId = strapiLoginResponse.user.id;
                         token.provider = account.provider;
                         token.blocked = strapiLoginResponse.user.blocked;
+                        token.errorMessage = errorMessage;
                     } catch (error) {
                         throw error;
                     }
@@ -99,8 +110,28 @@ export const authOptions = {
                 session.provider = token.provider;
                 session.user.strapiUserId = token.strapiUserId;
                 session.user.blocked = token.blocked;
+                session.user.errorMessage = token.errorMessage;
             }
             return session
+        },
+        async signIn({ user, account, profile, email, credentials }: any) {
+            if (account.provider === 'google') {
+                try {
+                    const strapiResponse = await fetch(
+                        `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/auth/${account.provider}/callback?access_token=${account.access_token}`,
+                        { cache: 'no-cache' }
+                    );
+                    if (!strapiResponse.ok) {
+                        const strapiError = await strapiResponse.json();
+                        // Redirect to login with error message
+                        throw new Error(strapiError.error.message);
+                    }
+                } catch (error: any) {
+                    // Redirect to login with error message
+                    return `/login?error=${encodeURIComponent(error.message)}`;
+                }
+            }
+            return true;
         },
     },
 }

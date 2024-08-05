@@ -14,7 +14,7 @@ const ProductItemsCard = ({ data, id, product }: any) => {
                     <div className="w-full flex flex-col">
                         <h2 className="text-lg font-medium mb-2">{data.rooms} {data.type} for {data.listing_type} in {data.area}</h2>
                         <h3 className="font-semibold mb-5 text-gray-500">{data.name}</h3>
-                        <div className="flex flex-wrap gap-x-5 text-sm mb-3 text-gray-400 font-bold">
+                        <div className="flex flex-wrap gap-x-5 text-sm mb-3 text-gray-400 font-semibold">
                             <div className="mb-2">
                                 {data.carpet_area} Sqft
                             </div>
@@ -34,8 +34,8 @@ const ProductItemsCard = ({ data, id, product }: any) => {
                             )}
                         </div>
                         <div className="w-full flex justify-between lg:justify-normal gap-x-6">
-                            <div className="text-xl font-bold text-gray-600 flex items-center"><IndianRupee size={20} />{data.listing_type === "Sale" ? ConvertCurrencyToWords(data.selling_amount) : ConvertCurrencyToWords(data.rental_amount)}</div>
-                            <button className="border-2 border-color1d bg-color1d text-white px-5 py-1 rounded-full font-bold h-fit text-center">Contact Owner</button>
+                            <div className="text-xl font-semibold text-gray-600 flex items-center"><IndianRupee size={20} />{data.listing_type === "Sale" ? ConvertCurrencyToWords(data.selling_amount) : ConvertCurrencyToWords(data.rental_amount)}</div>
+                            <button className="border-2 border-color1d bg-color1d text-white px-5 py-1 rounded-full h-fit text-center">Contact Owner</button>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Nunito, Poppins } from "next/font/google";
+import 'react-toastify/dist/ReactToastify.css';
 import "./globals.css";
 import "./embla.css";
 import Wrapper from "./wrapper";

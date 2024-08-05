@@ -5,7 +5,7 @@ import ListArrow from "./list-arrow";
 
 const BusinessList = async () => {
   const attr = Products.business.api;
-  const businessList = await getPublicApiResponse(`${attr.base}?${attr.populate}`);
+  const businessList = await getPublicApiResponse(`${attr.base}?${attr.isPublishedFilter}&${attr.populate}`);
   return (
     <>
       <div className="business-card-list-row">

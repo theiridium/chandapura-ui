@@ -3,12 +3,14 @@ import { getPublicApiResponse } from '@/lib/interceptor';
 import { DropdownList, Resource } from '@/public/shared/app.config';
 import { Button, Link } from '@nextui-org/react';
 import { useSession } from 'next-auth/react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
 const Page = () => {
   // const searchParams = useSearchParams();
   // const source = searchParams.get('source');
+  const addNewUrl = "/business-listing/add-details?type=new";
+  const router = useRouter();
   const attr = DropdownList.BusinessList.api;
   const { data }: any = useSession();
   const user = data?.user;
@@ -17,6 +19,7 @@ const Page = () => {
   const [isLoading, setIsLoading] = useState(true);
   const getBusinessList = async () => {
     let apiUrlContact = `${attr.base}?sort=${attr.sort}&${attr.filter}=${user?.email}&populate=featured_image`
+    console.log(apiUrlContact)
     const response = await getPublicApiResponse(apiUrlContact);
     // const filteredData = response.data.filter((x: any) => x.id.toString() === source)[0];
     setList(response.data);
@@ -31,40 +34,47 @@ const Page = () => {
   }, [isLoading])
 
   return (
-    <div className='max-w-screen-xl mx-auto px-3 my-8 md:mt-8 md:mb-10'>
-      <h1 className="text-3xl font-bold text-gray-600 mb-8 md:mb-12">My Business</h1>
+    <div className='max-w-screen-xl min-h-screen mx-auto px-3 my-8 md:mt-8 md:mb-10'>
+      <div className='flex gap-8 justify-between md:justify-normal'>
+        <h1 className="text-3xl font-bold text-gray-600 mb-8 md:mb-12">My Business</h1>
+        <Button color="primary" variant="ghost" radius="sm" className='hover:color-white' onClick={() => router.push(addNewUrl)}>
+          Add New
+        </Button>
+      </div>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 md:gap-y-5'>
-        {!isLoading && list.map((x: any, i: any) =>
-          // <a href={Resource.BusinessListing.userLink + '?source=' + x.id} key={i}>{x.name}</a>
-          <div key={i} className='border rounded-lg'>
-            <div className='p-5 md:p-8'>
-              <div className="flex gap-5 md:gap-10">
-                <div className='aspect-square h-[120px]'>
-                  {x.featured_image === null ?
-                    <img src="/images/placeholder.png" className="w-full h-full rounded-lg" /> :
-                    <img src={x.featured_image.url} className="w-full h-full rounded-lg" />}
-                </div>
-                <div className='w-full grow'>
-                  <div className='grid grid-cols-1 h-full content-between'>
-                    <div>
-                      <div className='font-semibold text-xl md:text-2xl mb-1'>{x.name}</div>
-                      <div className='text-sm'>{x.area}</div>
-                    </div>
-                    <div className='hidden md:flex gap-5 '>
-                      <Button size="md" radius='sm' as={Link} href={Resource.BusinessListing.userLink + '?type=edit&source=' + x.id}>Edit Business Profile</Button>
-                      <Button size="md" radius='sm' as={Link} href={Resource.BusinessListing.userLink + '?type=edit&source=' + x.id}>Edit Images</Button>
+        {list.length > 0 ?
+          !isLoading && list.map((x: any, i: any) =>
+            // <a href={Resource.BusinessListing.userLink + '?source=' + x.id} key={i}>{x.name}</a>
+            <div key={i} className='border rounded-lg'>
+              <div className='p-5 md:p-8'>
+                <div className="flex gap-5 md:gap-10">
+                  <div className='aspect-square h-[120px]'>
+                    {x.featured_image === null ?
+                      <img src="/images/placeholder.png" className="w-full h-full rounded-lg" /> :
+                      <img src={x.featured_image.url} className="w-full h-full rounded-lg" />}
+                  </div>
+                  <div className='w-full grow'>
+                    <div className='grid grid-cols-1 h-full content-between'>
+                      <div>
+                        <div className='font-semibold text-xl md:text-2xl mb-1'>{x.name}</div>
+                        <div className='text-sm'>{x.area}</div>
+                      </div>
+                      <div className='hidden md:flex gap-5 '>
+                        <Button size="md" radius='sm' as={Link} href={Resource.BusinessListing.addDetailsLink + '?type=edit&source=' + x.id}>Edit Business Profile</Button>
+                        <Button size="md" radius='sm' as={Link} href={Resource.BusinessListing.uploadImagesLink + '?type=edit&source=' + x.id}>Edit Images</Button>
+                      </div>
                     </div>
                   </div>
                 </div>
+                <div className='flex gap-5 md:hidden mt-5'>
+                  <Button size="md" radius='sm' as={Link} href={Resource.BusinessListing.addDetailsLink + '?type=edit&source=' + x.id}>Edit Business Profile</Button>
+                  <Button size="md" radius='sm' as={Link} href={Resource.BusinessListing.uploadImagesLink + '?type=edit&source=' + x.id}>Edit Images</Button>
+                </div>
               </div>
-              <div className='flex gap-5 md:hidden mt-5'>
-                <Button size="md" radius='sm' as={Link} href={Resource.BusinessListing.userLink + '?type=edit&source=' + x.id}>Edit Business Profile</Button>
-                <Button size="md" radius='sm' as={Link} href={Resource.BusinessListing.userLink + '?type=edit&source=' + x.id}>Edit Images</Button>
-              </div>
+              <a href='#' className='bg-color1d/90 hover:bg-color1d text-white block px-5 py-2 text-center border rounded-b-lg'>Advertise Now</a>
             </div>
-            <a href='#' className='bg-color1d/90 hover:bg-color1d text-white block px-5 py-2 text-center border rounded-b-lg'>Advertise Now</a>
-          </div>
-        )}
+          ) :
+          <p className='text-lg'>Your list is empty, click on <a className='link-text' href={addNewUrl}>Add New</a> to start listing your Business today.</p>}
       </div>
     </div>
   )

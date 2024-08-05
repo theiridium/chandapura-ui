@@ -1,9 +1,9 @@
 "use client"
 import { Autocomplete, AutocompleteItem, Button, Input, Select, SelectItem, Switch, Textarea, TimeInput, useDisclosure } from '@nextui-org/react'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { InView } from 'react-intersection-observer';
 import { useSession } from 'next-auth/react';
-import ContactListForm from '@/app/components/forms/contact-list-form';
+import ContactForm from '@/app/components/forms/contact-form';
 import { BusinessListing } from '@/lib/typings/dto';
 import { useAtomValue } from 'jotai';
 import { categories, locations } from '@/lib/atom';
@@ -16,6 +16,9 @@ import { X } from 'lucide-react';
 import FormSubmitLoading from '@/app/loading-components/form-submit-loading';
 
 const Page = () => {
+    const { data }: any = useSession();
+    const userData = data?.user;
+    console.log(data)
     const router = useRouter();
     const searchParams = useSearchParams();
     const type = searchParams.get('type');
@@ -23,10 +26,9 @@ const Page = () => {
     const [disabled, setDisabled] = useState(true);
     const categoryList = useAtomValue<any>(categories).data;
     const locationList = useAtomValue<any>(locations).data;
-    const { data }: any = useSession();
-    const userData = data?.user;
     const [subCategoryList, setSubCategoryList] = useState([]);
-    const [contact, setContact] = useState();
+    // const [contact, setContact] = useState<any>({ full_name: userData.name, phone: userData.phone, email_id: userData.email });
+    const [contact, setContact] = useState<any>({});
     const [isSumbitLoading, setIsSubmitLoading] = useState(false);
     const [businessHours, setBusinessHours] = useState([
         {
@@ -77,8 +79,10 @@ const Page = () => {
         name: "",
         full_address: "",
         description: "",
-        bus_contact: 0,
-        user: userData,
+        bus_contact_name: contact.full_name,
+        bus_conatct_number: contact.phone,
+        bus_email_id: contact.email_id,
+        user: userData.strapiUserId,
         slug: "",
         tags: "",
         sub_category: "",
@@ -107,6 +111,7 @@ const Page = () => {
             const list = [...businessList.services, txtService];
             setBusinessList({ ...businessList, services: list })
             setTxtService("");
+            handleDivClick();
         }
     }
     const onRemoveServices = (e: any, service: string) => {
@@ -148,12 +153,19 @@ const Page = () => {
     useEffect(() => {
         if (apiRes) {
             onCategoryChange(apiRes?.category.id);
+            setContact({
+                full_name: apiRes.bus_contact_name,
+                bus_conatct_number: apiRes.bus_conatct_number,
+                bus_email_id: apiRes.bus_email_id
+            })
             setBusinessList(prevBusinessList => ({
                 ...prevBusinessList,
                 category: apiRes.category.id.toString(),
                 sub_category: apiRes.sub_category.id.toString(),
                 area: locationList.filter((x: any) => x.name == apiRes.area)[0].id.toString(),
-                bus_contact: apiRes.bus_contact.id,
+                bus_contact_name: apiRes.bus_contact_name,
+                bus_conatct_number: apiRes.bus_conatct_number,
+                bus_email_id: apiRes.bus_email_id,
                 services: apiRes.services,
                 bus_hours: businessHours
             }));
@@ -163,7 +175,7 @@ const Page = () => {
     const populateBusinessDetails = useCallback(async () => {
         if (source) {
             const attr = Products.business.api;
-            let apiUrl = `${attr.base}?${attr.filter}=${userData?.email}&filters[id][$eq]=${source}&populate=*`;
+            let apiUrl = `${attr.base}?${attr.emailFilter}=${userData?.email}&filters[id][$eq]=${source}&populate=*`;
             const response = await getPublicApiResponse(apiUrl).then(res => res.data);
             const data = response[0];
             if (data) {
@@ -198,6 +210,8 @@ const Page = () => {
         });
     };
 
+    const handleContactDetails = (data: any) => setContact(data)
+
     const onSubmit: SubmitHandler<any> = (data) => {
         setIsSubmitLoading(true);
         let formdata = { ...data, businessList }
@@ -206,8 +220,10 @@ const Page = () => {
             name: formdata.name,
             full_address: formdata.full_address,
             description: formdata.description,
-            bus_contact: contact,
-            user: userData,
+            bus_contact_name: contact.full_name,
+            bus_conatct_number: contact.phone,
+            bus_email_id: contact.email_id,
+            user: userData.strapiUserId,
             slug: formdata.slug,
             tags: formdata.tags,
             sub_category: businessList.sub_category,
@@ -219,25 +235,34 @@ const Page = () => {
             featured_image: {}
         }
         // console.log(payload)
-        // postBusinessListing(payload);
+        postBusinessListing(payload);
     }
 
     const postBusinessListing = async (payload: any) => {
-        // console.log(payload)
-        const endpoint = Products.business.api.base;
-        const response = await postRequestApi(endpoint, payload);
-        console.log(response);
-        if (response.data) {
-            setIsSubmitLoading(false);
-            router.push(`/business-listing/upload-images?type=new&source=${response.data.id}`);
-        }
-        // router.push(`/business-listing/upload-images/4`);
+        console.log(payload)
+        // const endpoint = Products.business.api.base;
+        // const response = await postRequestApi(endpoint, payload);
+        // console.log(response);
+        // if (response.data) {
+        //     setIsSubmitLoading(false);
+        //     router.push(`/business-listing/upload-images?type=${type}&source=${response.data.id}`);
+        // }
     }
-
     useEffect(() => {
-        setBusinessList({...businessList, bus_hours: businessHours})
+        setBusinessList({ ...businessList, bus_hours: businessHours })
     }, [businessHours])
 
+    const inputServiceRef: any = useRef(null);
+    const handleDivClick = () => {
+        if (inputServiceRef.current) {
+            inputServiceRef.current.focus();
+        }
+    };
+    const onKeyPress = (e: React.KeyboardEvent<HTMLFormElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+        }
+    };
 
     return (
         <>
@@ -246,7 +271,7 @@ const Page = () => {
                 <div className='listing-header mb-8'>
                     <div className='text-xl lg:text-4xl font-semibold text-gray-700 px-7'>{source ? "Modify Business Details" : "Add New Business"}</div>
                 </div>
-                <form className='grid grid-cols-1 gap-10 mx-2' onSubmit={handleSubmit(onSubmit)}>
+                <form onKeyPress={onKeyPress} className='grid grid-cols-1 gap-10 mx-2' onSubmit={handleSubmit(onSubmit)}>
                     <InView threshold={1} as="div" onChange={onViewScroll} id='general' className='listing-card border rounded-lg px-4 lg:px-7 py-6 scroll-mt-36'>
                         <div className='card-header text-xl font-semibold mb-5'>General</div>
                         <div className="w-full flex flex-col gap-4">
@@ -348,24 +373,26 @@ const Page = () => {
                     </InView>
                     <InView as="div" threshold={1} onChange={onViewScroll} id='contact' className='listing-card border rounded-lg px-4 lg:px-7 py-6 scroll-mt-36'>
                         <div className='card-header text-xl font-semibold mb-5'>Business Contact Details</div>
-                        <ContactListForm user={userData} contactId={setContact} selectedKey={businessList.bus_contact} />
+                        <ContactForm txtContactDisabled={disabled} contactDetails={handleContactDetails} />
                     </InView>
                     <InView as="div" threshold={1} onChange={onViewScroll} id='services' className='listing-card border rounded-lg px-4 lg:px-7 py-6 scroll-mt-36'>
                         <div className='card-header text-xl font-semibold mb-5'>Services</div>
                         <div className='w-full flex flex-col gap-4'>
                             <div className='flex gap-4 mb-6'>
-                                <Input isDisabled={disabled} className='' type="text" variant="flat" label="Add a Service" onChange={(e) => handleServiceChange(e)} value={txtService} />
-                                <button disabled={disabled} className='btn-primary w-auto rounded-lg py-2' type='button' onClick={() => onAddServices()}>Add</button>
-                            </div>
-                            <div className='flex flex-wrap gap-4'>
-                                {businessList.services.map((service, i) =>
-                                    <div className='yellow-pill flex gap-2 items-center' key={i}>{service}
-                                        <button>
-                                            <X className='bg-red-700/40 hover:bg-red-700/60 p-1 rounded-full'
-                                                strokeWidth={3} color='#450a0a' size={20} onClick={(e) => onRemoveServices(e, service)} />
-                                        </button>
+                                <div onClick={handleDivClick} className='relative w-full inline-flex shadow-sm px-3 bg-default-100 group-data-[focus=true]:bg-default-100 min-h-10 rounded-medium flex-col items-start justify-center gap-0 transition-background motion-reduce:transition-none !duration-150 outline-none group-data-[focus-visible=true]:z-10 group-data-[focus-visible=true]:ring-2 group-data-[focus-visible=true]:ring-focus group-data-[focus-visible=true]:ring-offset-2 group-data-[focus-visible=true]:ring-offset-background py-2 is-filled'>
+                                    <div className='flex flex-wrap gap-3'>
+                                        {businessList.services.map((service, i) =>
+                                            <div className='default-pill-btn flex gap-2 items-center' key={i}>{service}
+                                                <button>
+                                                    <X className='bg-default-100 p-1 rounded-full'
+                                                        strokeWidth={3} color='#636363' size={20} onClick={(e) => onRemoveServices(e, service)} />
+                                                </button>
+                                            </div>
+                                        )}
+                                        <input ref={inputServiceRef} className='font-normal bg-transparent !outline-none placeholder:text-foreground-500 focus-visible:outline-none data-[has-start-content=true]:ps-1.5 data-[has-end-content=true]:pe-1.5 text-small group-data-[has-value=true]:text-default-foreground is-filled' disabled={disabled} onChange={(e) => handleServiceChange(e)} value={txtService} />
                                     </div>
-                                )}
+                                </div>
+                                <button disabled={disabled} className='btn-primary w-auto rounded-lg py-2 h-[44px]' type='button' onClick={() => onAddServices()}>Add</button>
                             </div>
                         </div>
                     </InView>
@@ -421,7 +448,6 @@ const Page = () => {
                         </div>
                     </InView>
                     <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>
-                        {/* <button className='btn-primary text-base' type='submit'>Save and Continue</button> */}
                         <Button className='btn-primary text-base' color='primary' type='submit' isLoading={isSumbitLoading}>{!isSumbitLoading && "Save and Continue"}</Button>
                     </div>
                 </form>

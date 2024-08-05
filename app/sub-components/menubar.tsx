@@ -46,28 +46,28 @@ const Menubar = (props: any) => {
                 <ul className="text-3xl my-14 gap-10">
                     {status === "unauthenticated" &&
                         <li className='mb-10'>
-                            <a href={Resource.Login.link}>{Resource.Login.label}</a>
+                            <a className='hover-underline' href={Resource.Login.link}>{Resource.Login.label}</a>
                         </li>
                     }
                     {status === "authenticated" &&
                         <>
                             <li className='mb-10'>
-                                <a href={Resource.MyProfile.link}>{Resource.MyProfile.label}</a>
+                                <a className='hover-underline' href={Resource.MyProfile.link}>{Resource.MyProfile.label}</a>
                             </li>
                             <li className='mb-10'>
-                                <a href={Resource.Dashboard.link}>{Resource.Dashboard.label}</a>
+                                <a className='hover-underline' href={Resource.Dashboard.link}>{Resource.Dashboard.label}</a>
                             </li>
                         </>
                     }
                     <li className='mb-10'>
-                        <a href={Resource.BusinessListing.link}>{Resource.BusinessListing.label}</a>
+                        <a className='hover-underline' href={Resource.BusinessListing.dashboardLink}>{Resource.BusinessListing.label}</a>
                     </li>
                     <li className='mb-10'>
-                        <a href={Resource.Advertisement.link}>{Resource.Advertisement.label}</a>
+                        <a className='hover-underline' href={Resource.Advertisement.link}>{Resource.Advertisement.label}</a>
                     </li>
                     {status === "authenticated" &&
                         <li className='mb-10'>
-                            <button onClick={() => signOut({ callbackUrl: '/' })}>{Resource.Logout.label}</button>
+                            <button className='hover-underline' onClick={() => signOut({ callbackUrl: '/' })}>{Resource.Logout.label}</button>
                         </li>
                     }
                 </ul>

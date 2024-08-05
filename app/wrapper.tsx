@@ -7,6 +7,7 @@ import Header from "./components/header";
 import Footer from "./components/footer";
 import { myStore } from "@/lib/store";
 import { SessionProvider } from "next-auth/react";
+import { ToastContainer } from "react-toastify";
 
 const Wrapper = ({
   children, session
@@ -19,6 +20,18 @@ const Wrapper = ({
     <SessionProvider session={session}>
       <NextUIProvider>
         <Provider store={myStore}>
+          <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
           <Header />
           <div>{children}</div>
           <Footer />

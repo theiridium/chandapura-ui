@@ -7,9 +7,10 @@ module.exports = {
   Resource: {
     BusinessListing: {
       label: "Business Listing",
-      link: "/dashboard/business-listing",
+      dashboardLink: "/dashboard/business-listing",
       userLabel: "My Listing",
-      userLink: "/business-listing/add-details",
+      addDetailsLink: "/business-listing/add-details",
+      uploadImagesLink: "/business-listing/upload-images",
     },
     Advertisement: {
       label: "Advertise",
@@ -85,7 +86,8 @@ module.exports = {
         sort: "desc",
         populate: "populate[0]=sub_category&populate[1]=category&populate[2]=user&populate[3]=featured_image&populate[4]=bus_contact&populate[5]=gallery_images",
         limit: 4,
-        filter: "filters[user][email][$eq]",
+        emailFilter: "filters[user][email][$eq]",
+        isPublishedFilter: "filters[isReadyToList][$eq]=true",
       },
     },
     job: {

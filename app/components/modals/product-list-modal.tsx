@@ -37,8 +37,3 @@ const ProductListModal = (props: any) => {
 }
 
 export default ProductListModal
-
-// < Button isDisabled = { isLoading } radius = "sm" onPress = { onOpen } className = 'justify-between' fullWidth = { true} size = 'lg' endContent = {< ChevronDown />}>
-//     { name }
-// </Button >
-// <ProductListModal isOpen={isOpen} onOpenChange={onOpenChange} title={"Select Business"} list={list.data} />

@@ -97,6 +97,38 @@ export const userAuthentication = async (payload: User.Login) => {
     return response.data;
 }
 
+export const userRegistration = async (payload: User.Register) => {
+    const endpoint = "auth/local/register";
+    const reqOptions = {
+        url: apiHost + '/' + endpoint,
+        method: 'POST',
+        headers: {
+            Accept: "application/json",
+            Authorization: "Bearer " + process.env.NEXT_PUBLIC_STRAPI_API_TOKEN
+        },
+        data: payload
+    }
+    let response = await axios.request(reqOptions).catch(err => err.response);
+    return response.data;
+}
+
+export const userEmailConfirmation = async (email: string) => {
+    const endpoint = "auth/send-email-confirmation";
+    const reqOptions = {
+        url: apiHost + '/' + endpoint,
+        method: 'POST',
+        headers: {
+            Accept: "application/json",
+            Authorization: "Bearer " + process.env.NEXT_PUBLIC_STRAPI_API_TOKEN
+        },
+        data: {
+            "email": email
+        }
+    }
+    let response = await axios.request(reqOptions).catch(err => err.response);
+    return response.data;
+}
+
 const searchHost: any = process.env.NEXT_PUBLIC_MEILISEARCH_URL
 export const getPublicSingleSearchResponse = async (payload: SearchPayload | undefined) => {
     // await new Promise(resolve => setTimeout(resolve, 3000))

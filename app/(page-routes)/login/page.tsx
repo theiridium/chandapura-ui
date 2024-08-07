@@ -11,6 +11,7 @@ const Page = () => {
     const searchParams = useSearchParams();
     const callbackUrl: any = searchParams.get('redirect');
     const error: any = searchParams.get('error');
+    const isRegistered: any = searchParams.get('registered');
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isRegisteredUser, setIsRegisteredUser] = useState(false);
@@ -35,6 +36,9 @@ const Page = () => {
             else router.push(`/signup?type=NewRegistration&email=${email}${callBackUrlStr}`)
         }
     };
+    useEffect(()=>{
+        isRegistered && toast.success("Your account registered successfully! Please continue login with Email ID and Password.")
+    },[])
     useEffect(() => {
         error && toast.error("This email is already registered. Please try login using credentials");
     }, [error])

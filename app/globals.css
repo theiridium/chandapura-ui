@@ -164,7 +164,10 @@ header {
     @apply border border-gray-300 border-t-0 rounded-b-md px-4 lg:px-6 h-52 md:h-44 grid content-center;
   }
   .text-login-form {
-    @apply !border !border-gray-400 !w-full md:!w-3/4 !rounded-md !font-semibold !text-gray-500 !mx-auto;
+    @apply !w-full md:!w-3/4 !font-semibold !text-gray-500 !mx-auto;
+  }
+  .text-login-form>div:first-child {
+    @apply !border !border-gray-400 !rounded-md;
   }
   .btn-login-form {
     @apply !py-8 !px-8 !w-full md:!w-3/4 !rounded-md !text-lg;

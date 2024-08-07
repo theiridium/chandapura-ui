@@ -37,16 +37,7 @@ export const authOptions = {
         }),
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID as string,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-            // async profile(profile, tokens) {
-            //     const { sub: id, name, email, picture: image } = profile;
-            //     const baseData = { id, name, email, image };
-            //     try {
-            //         return { ...baseData, error: undefined };
-            //     } catch (error) {
-            //         return { ...baseData, error: "MY_ERROR" }
-            //     }
-            // }
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
         })
     ],
     callbacks: {

@@ -3,7 +3,7 @@ import EmblaCarousel from "../components/embla-carousel/embla-carousel"
 import { EmblaOptionsType } from 'embla-carousel'
 import Autoplay from "embla-carousel-autoplay"
 import { useRef } from "react"
-import { getPublicApiResponse } from "@/lib/interceptor"
+import { getPublicApiResponse } from "@/lib/apiLibrary"
 
 const OPTIONS: EmblaOptionsType = { loop: true }
 

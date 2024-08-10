@@ -6,7 +6,6 @@ import { usePathname, useSearchParams } from 'next/navigation';
 const ProductListModal = (props: any) => {
     const pathname = usePathname()
     const searchParams = useSearchParams()
-    const type = searchParams.get('type')
     const onClickAddNew = (onClose: any) => {
         confirm('Are you sure you want to leave this page?')
         window.location.replace(pathname)
@@ -25,7 +24,7 @@ const ProductListModal = (props: any) => {
                         </ModalHeader>
                         <ModalBody className='px-8 gap-0 p-0 pb-5 divide-y'>
                             {props.list.length > 0 ? props.list.map((x: any, i: any) =>
-                                <a className='py-5 px-8 hover:bg-slate-100' href={`${pathname}?type=${type}&source=${x.id}`} key={i}>{x.name}</a>
+                                <a className='py-5 px-8 hover:bg-slate-100' href={`${pathname}?type=edit&source=${x.id}`} key={i}>{x.name}</a>
                             ) :
                                 <p className='py-5 px-8'>No items in list</p>}
                         </ModalBody>

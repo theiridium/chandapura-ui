@@ -61,7 +61,7 @@ const BusinessDetail = ({ data }: any) => {
             </div>
             <div className='mb-12'>
               <div className='text-sm text-gray-500 font-semibold mb-2'>Business Contact Name: <span className='text-black font-semibold'>{data.bus_contact.full_name}</span></div>
-              <button className="border-2 border-color1d bg-color1d text-white px-5 py-1 rounded-full font-semibold h-fit text-center flex items-center gap-x-2"><Phone size={18} fill='#fff' stroke='none' />+91 {data.bus_contact.phone}</button>
+              <button className="border-2 border-color1d bg-color1d text-white px-5 py-1 rounded-full font-semibold h-fit text-center flex items-center gap-x-2"><Phone size={18} fill='#fff' stroke='none' />+91 </button>
             </div>
             <hr className='mb-12' />
             <div className='mb-12'>

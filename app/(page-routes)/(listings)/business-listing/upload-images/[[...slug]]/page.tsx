@@ -4,7 +4,7 @@ import SingleImage from '@/app/components/media-upload-input/single-image';
 import MultiImage from '@/app/components/media-upload-input/multi-image';
 import { useCallback, useEffect, useState } from 'react';
 import { Products } from '@/public/shared/app.config';
-import { getPublicApiResponse } from '@/lib/interceptor';
+import { getPublicApiResponse } from '@/lib/apiLibrary';
 import { ImageParams } from '@/lib/typings/dto';
 
 const Page = ({ params }: { params: { slug: string } }) => {

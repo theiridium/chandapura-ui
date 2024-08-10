@@ -1,7 +1,7 @@
 import { Products } from "@/public/shared/app.config";
-import BusinessCard from "./business-card"
-import { getPublicApiResponse } from "@/lib/interceptor";
+import BusinessCard from "./business-card";
 import ListArrow from "./list-arrow";
+import { getPublicApiResponse } from "@/lib/apiLibrary";
 
 const BusinessList = async () => {
   const attr = Products.business.api;

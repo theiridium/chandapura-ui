@@ -9,16 +9,18 @@ import { useAtomValue } from 'jotai';
 import { categories, locations } from '@/lib/atom';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { getPublicApiResponse, postRequestApi } from '@/lib/interceptor';
+import { getPublicApiResponse, postRequestApi, putRequestApi } from '@/lib/apiLibrary';
 import { Products } from '@/public/shared/app.config';
 import timeList from "@/lib/data/time-list.json";
 import { X } from 'lucide-react';
 import FormSubmitLoading from '@/app/loading-components/form-submit-loading';
+import MainMenuBtn from '@/app/sub-components/main-menu-btn';
+import { toast } from 'react-toastify';
 
 const Page = () => {
     const { data }: any = useSession();
     const userData = data?.user;
-    console.log(data)
+    // console.log(data)
     const router = useRouter();
     const searchParams = useSearchParams();
     const type = searchParams.get('type');
@@ -27,8 +29,8 @@ const Page = () => {
     const categoryList = useAtomValue<any>(categories).data;
     const locationList = useAtomValue<any>(locations).data;
     const [subCategoryList, setSubCategoryList] = useState([]);
-    // const [contact, setContact] = useState<any>({ full_name: userData.name, phone: userData.phone, email_id: userData.email });
-    const [contact, setContact] = useState<any>({});
+    // const [contact, setContact] = useState<any>({ contact_name: userData.name, contact_number: userData.contact_number, contact_email_id: userData.contact_email_id });
+    const [contact, setContact] = useState<any>({ contact_name: userData.name, contact_number: userData.phone, contact_email_id: userData.email });
     const [isSumbitLoading, setIsSubmitLoading] = useState(false);
     const [businessHours, setBusinessHours] = useState([
         {
@@ -79,9 +81,9 @@ const Page = () => {
         name: "",
         full_address: "",
         description: "",
-        bus_contact_name: contact.full_name,
-        bus_conatct_number: contact.phone,
-        bus_email_id: contact.email_id,
+        contact_name: contact.contact_name,
+        contact_number: contact.contact_number,
+        contact_email_id: contact.contact_email_id,
         user: userData.strapiUserId,
         slug: "",
         tags: "",
@@ -152,20 +154,21 @@ const Page = () => {
 
     useEffect(() => {
         if (apiRes) {
+            console.log(apiRes)
             onCategoryChange(apiRes?.category.id);
             setContact({
-                full_name: apiRes.bus_contact_name,
-                bus_conatct_number: apiRes.bus_conatct_number,
-                bus_email_id: apiRes.bus_email_id
+                contact_name: apiRes.contact_name,
+                contact_number: apiRes.contact_number,
+                contact_email_id: apiRes.contact_email_id
             })
             setBusinessList(prevBusinessList => ({
                 ...prevBusinessList,
                 category: apiRes.category.id.toString(),
                 sub_category: apiRes.sub_category.id.toString(),
                 area: locationList.filter((x: any) => x.name == apiRes.area)[0].id.toString(),
-                bus_contact_name: apiRes.bus_contact_name,
-                bus_conatct_number: apiRes.bus_conatct_number,
-                bus_email_id: apiRes.bus_email_id,
+                contact_name: apiRes.contact_name,
+                contact_number: apiRes.contact_number,
+                contact_email_id: apiRes.contact_email_id,
                 services: apiRes.services,
                 bus_hours: businessHours
             }));
@@ -175,7 +178,7 @@ const Page = () => {
     const populateBusinessDetails = useCallback(async () => {
         if (source) {
             const attr = Products.business.api;
-            let apiUrl = `${attr.base}?${attr.emailFilter}=${userData?.email}&filters[id][$eq]=${source}&populate=*`;
+            let apiUrl = `${attr.base}?${attr.userFilter}=${userData?.email}&filters[id][$eq]=${source}&populate=*`;
             const response = await getPublicApiResponse(apiUrl).then(res => res.data);
             const data = response[0];
             if (data) {
@@ -210,7 +213,7 @@ const Page = () => {
         });
     };
 
-    const handleContactDetails = (data: any) => setContact(data)
+    const handleContactDetails = (data: any) => setContact(data);
 
     const onSubmit: SubmitHandler<any> = (data) => {
         setIsSubmitLoading(true);
@@ -220,33 +223,42 @@ const Page = () => {
             name: formdata.name,
             full_address: formdata.full_address,
             description: formdata.description,
-            bus_contact_name: contact.full_name,
-            bus_conatct_number: contact.phone,
-            bus_email_id: contact.email_id,
+            contact_name: contact.contact_name,
+            contact_number: contact.contact_number,
+            contact_email_id: contact.contact_email_id,
             user: userData.strapiUserId,
             slug: formdata.slug,
             tags: formdata.tags,
             sub_category: businessList.sub_category,
-            gallery_images: [],
             category: businessList.category,
             website: formdata.website,
             services: businessList.services,
-            bus_hours: stringifyBusHours(businessList.bus_hours),
-            featured_image: {}
+            bus_hours: stringifyBusHours(businessList.bus_hours)
         }
-        // console.log(payload)
         postBusinessListing(payload);
     }
 
     const postBusinessListing = async (payload: any) => {
         console.log(payload)
-        // const endpoint = Products.business.api.base;
-        // const response = await postRequestApi(endpoint, payload);
-        // console.log(response);
-        // if (response.data) {
-        //     setIsSubmitLoading(false);
-        //     router.push(`/business-listing/upload-images?type=${type}&source=${response.data.id}`);
-        // }
+        const endpoint = Products.business.api.base;
+        if (type === "edit") {
+            const response = await putRequestApi(endpoint, payload, source);
+            console.log(response);
+            if (response.data) {
+                toast.success("Business profile saved successfully!");
+                toast.info("Redirecting to listing menu...")
+                await new Promise(resolve => setTimeout(resolve, 3000));
+                router.push(`/dashboard/business-listing`)
+            }
+        }
+        else {
+            const response = await postRequestApi(endpoint, payload);
+            console.log(response);
+            if (response.data) {
+                toast.success("Business profile saved successfully!");
+                router.push(`/business-listing/upload-images?type=${type}&source=${response.data.id}`);
+            }
+        }
     }
     useEffect(() => {
         setBusinessList({ ...businessList, bus_hours: businessHours })
@@ -373,7 +385,7 @@ const Page = () => {
                     </InView>
                     <InView as="div" threshold={1} onChange={onViewScroll} id='contact' className='listing-card border rounded-lg px-4 lg:px-7 py-6 scroll-mt-36'>
                         <div className='card-header text-xl font-semibold mb-5'>Business Contact Details</div>
-                        <ContactForm txtContactDisabled={disabled} contactDetails={handleContactDetails} />
+                        <ContactForm txtContactDisabled={disabled} defaultContact={contact} contactDetails={handleContactDetails} />
                     </InView>
                     <InView as="div" threshold={1} onChange={onViewScroll} id='services' className='listing-card border rounded-lg px-4 lg:px-7 py-6 scroll-mt-36'>
                         <div className='card-header text-xl font-semibold mb-5'>Services</div>
@@ -448,7 +460,9 @@ const Page = () => {
                         </div>
                     </InView>
                     <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>
-                        <Button className='btn-primary text-base' color='primary' type='submit' isLoading={isSumbitLoading}>{!isSumbitLoading && "Save and Continue"}</Button>
+                        <Button className='btn-primary text-base' color='primary' type='submit' isLoading={isSumbitLoading}>
+                            {!isSumbitLoading && (type === "edit" ? "Save" : "Save and Continue")}
+                        </Button>
                     </div>
                 </form>
             </div>

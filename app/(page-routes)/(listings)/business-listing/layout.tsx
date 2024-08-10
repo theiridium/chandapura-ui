@@ -1,5 +1,5 @@
 import GlobalSearchListLoading from "@/app/loading-components/global-search-list-loading"
-import { getPublicApiResponse } from "@/lib/interceptor";
+import { getPublicApiResponse } from "@/lib/apiLibrary";
 import { DropdownList } from "@/public/shared/app.config";
 import { Suspense } from "react"
 import BusinessListingForm from "./business-listing-form";

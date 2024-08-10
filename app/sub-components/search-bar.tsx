@@ -1,7 +1,7 @@
 "use client"
 import { searchResult, searchText } from "@/lib/atom"
 import { SearchPayload } from "@/lib/typings/dto"
-import { getPublicSingleSearchResponse } from "@/lib/interceptor"
+import { getPublicSingleSearchResponse } from "@/lib/apiLibrary"
 import { useAtomValue, useSetAtom } from "jotai"
 import { Search } from "lucide-react"
 import { useState } from "react"

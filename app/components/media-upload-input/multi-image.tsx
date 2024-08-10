@@ -1,4 +1,4 @@
-import { deleteMediaFiles, uploadMediaFiles } from "@/lib/interceptor";
+import { deleteMediaFiles, uploadMediaFiles } from "@/lib/apiLibrary";
 import { CircularProgress } from "@nextui-org/react";
 import { Plus, Trash2, X } from "lucide-react";
 import { useEffect, useState } from "react";

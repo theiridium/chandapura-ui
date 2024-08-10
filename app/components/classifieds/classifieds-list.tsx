@@ -1,5 +1,5 @@
 import ClassifiedsCard from "./classifieds-card"
-import { getPublicApiResponse } from "@/lib/interceptor";
+import { getPublicApiResponse } from "@/lib/apiLibrary";
 
 type data = {
   data?: [];

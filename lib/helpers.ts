@@ -1,5 +1,5 @@
 import { Products } from "@/public/shared/app.config";
-import { postRequestApi, putRequestApi } from "./interceptor";
+import { postRequestApi, putRequestApi } from "./apiLibrary";
 import sub_cat from "@/lib/data/sub-category.json";
 import slugify from 'react-slugify';
 

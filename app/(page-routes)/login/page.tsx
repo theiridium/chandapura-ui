@@ -1,5 +1,5 @@
 "use client"
-import { getPublicApiResponse } from '@/lib/interceptor';
+import { getPublicApiResponse } from '@/lib/apiLibrary';
 import { Button, Input } from '@nextui-org/react';
 import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -9,14 +9,14 @@ import { toast } from 'react-toastify';
 const Page = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const callbackUrl: any = searchParams.get('redirect');
+    const callbackUrl: any = searchParams.get('callbackUrl');
     const error: any = searchParams.get('error');
     const isRegistered: any = searchParams.get('registered');
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isRegisteredUser, setIsRegisteredUser] = useState(false);
     const ValidateLogin = async (e: any) => {
-        const callBackUrlStr = callbackUrl? `&redirect=${callbackUrl}`: "";
+        const callBackUrlStr = callbackUrl ? `&callbackUrl=${callbackUrl}` : "";
         e.preventDefault()
         if (isRegisteredUser) {
             signIn("credentials", {
@@ -36,11 +36,11 @@ const Page = () => {
             else router.push(`/signup?type=NewRegistration&email=${email}${callBackUrlStr}`)
         }
     };
-    useEffect(()=>{
-        isRegistered && toast.success("Your account registered successfully! Please continue login with Email ID and Password.")
-    },[])
     useEffect(() => {
-        error && toast.error("This email is already registered. Please try login using credentials");
+        isRegistered && toast.success("Your account registered successfully! Please continue login with Email ID and Password.", { autoClose: false, theme: "colored" });
+    }, [])
+    useEffect(() => {
+        error && toast.error("This email is already registered. Please try login using credentials.", { autoClose: false, theme: "colored" });
     }, [error])
 
     return (

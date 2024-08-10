@@ -1,4 +1,4 @@
-import { getPublicApiResponse } from "@/lib/interceptor";
+import { getPublicApiResponse } from "@/lib/apiLibrary";
 import { Products } from "@/public/shared/app.config";
 import Image from "next/image"
 import { it } from "node:test";

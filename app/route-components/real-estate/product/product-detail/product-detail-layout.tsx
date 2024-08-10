@@ -1,4 +1,4 @@
-import { getPublicApiResponse } from "@/lib/interceptor";
+import { getPublicApiResponse } from "@/lib/apiLibrary";
 import ProductDetail from "./product-detail";
 
 const ProductDetailLayout = async ({ id }: any) => {

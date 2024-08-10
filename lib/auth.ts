@@ -1,8 +1,9 @@
-import NextAuth from "next-auth"
+import NextAuth, { getServerSession } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from "next-auth/providers/google";
-import { userAuthentication } from "./interceptor";
-export const authOptions = {
+import { userAuthentication } from "./apiLibrary";
+import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from "next";
+const authOptions = {
     pages: {
         signIn: '/login'
     },
@@ -26,8 +27,9 @@ export const authOptions = {
                         firstname: res.user.firstname,
                         name: res.user.firstname + res.user.lastname,
                         email: res.user.email,
+                        phone: res.user.phone,
                         id: res.user.id.toString(),
-                        strapiUserId: res.user.id,
+                        strapiUserId: res.user.id.toString(),
                         blocked: res.user.blocked,
                         strapiToken: res.jwt,
                     };
@@ -73,6 +75,7 @@ export const authOptions = {
                         // customize token
                         // name and email will already be on here
                         token.firstname = strapiLoginResponse.user.firstname;
+                        token.phone = strapiLoginResponse.user.phone;
                         token.strapiToken = strapiLoginResponse.jwt;
                         token.strapiUserId = strapiLoginResponse.user.id;
                         token.provider = account.provider;
@@ -86,6 +89,7 @@ export const authOptions = {
                     // for credentials, not google provider
                     // name and email are taken care of by next-auth or authorize
                     token.firstname = user.firstname
+                    token.phone = user.phone
                     token.strapiToken = user.strapiToken;
                     token.strapiUserId = user.strapiUserId;
                     token.provider = account.provider;
@@ -97,6 +101,7 @@ export const authOptions = {
         async session({ session, token }: any) {
             if (token?.user) { // Note that this if condition is needed
                 session.user.firstname = token.firstname;
+                session.user.phone = token.phone;
                 session.strapiToken = token.strapiToken;
                 session.provider = token.provider;
                 session.user.strapiUserId = token.strapiUserId;
@@ -126,4 +131,14 @@ export const authOptions = {
         },
     },
 }
-export default NextAuth(authOptions)
+
+function auth(  // <-- use this function to access the jwt from React components
+    ...args:
+        | [GetServerSidePropsContext['req'], GetServerSidePropsContext['res']]
+        | [NextApiRequest, NextApiResponse]
+        | []
+) {
+    return getServerSession(...args, authOptions)
+}
+
+export { authOptions, auth }

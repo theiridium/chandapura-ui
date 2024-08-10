@@ -1,4 +1,4 @@
-import { getPublicApiResponse } from "@/lib/interceptor";
+import { getPublicApiResponse } from "@/lib/apiLibrary";
 import AdBanner from "../sub-components/ad-banner"
 import SideCategorySection from "./side-category-section"
 import { Products } from "@/public/shared/app.config";

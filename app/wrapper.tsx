@@ -24,7 +24,7 @@ const Wrapper = ({
             position="top-center"
             autoClose={5000}
             hideProgressBar={false}
-            newestOnTop={false}
+            newestOnTop
             closeOnClick
             rtl={false}
             pauseOnFocusLoss

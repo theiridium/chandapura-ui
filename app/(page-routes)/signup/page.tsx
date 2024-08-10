@@ -2,14 +2,13 @@
 import { Button, Input, useDisclosure } from '@nextui-org/react'
 import { useEffect, useMemo, useState } from 'react'
 import { signIn } from 'next-auth/react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { userEmailConfirmation, userRegistration } from '@/lib/interceptor';
+import { userEmailConfirmation, userRegistration } from '@/lib/apiLibrary';
 import { toast } from 'react-toastify';
 import AlertModal from '@/app/components/modals/alert-modal';
 
 const Page = () => {
-    const router = useRouter();
     const searchParams = useSearchParams();
     const callbackUrl: any = searchParams.get('redirect');
     const paramType: any = searchParams.get('type');
@@ -25,7 +24,6 @@ const Page = () => {
         register,
         handleSubmit,
         reset,
-        control,
         watch
     } = useForm<any>({
         defaultValues: {
@@ -44,6 +42,7 @@ const Page = () => {
         if (response) {
             const confirmRes = await userEmailConfirmation(payload.email);
             confirmRes && confirmRes.sent && onOpen();
+            reset();
         }
         else toast.error("Something went wrong! Please try again later or contact support.")
     }
@@ -75,6 +74,7 @@ const Page = () => {
                             <Input isRequired {...register("password")} className='text-login-form mb-5' radius='sm' type="password" variant="flat" label="Enter Password" />
                             <Input isRequired isInvalid={!isPasswordMatch} className='text-login-form mb-5' radius='sm' type="password" variant="flat" label="Re-enter Password" errorMessage="Password does not match" value={rePasswordTxt} onChange={(e: any) => setRePasswordTxt(e.target.value)} />
                             <Button className='btn-login-form' color='primary' type='submit'>CONTINUE</Button>
+                            <p className='my-5'>Already have an account? <a className='text-color1d hover:underline cursor-pointer' href='/login'>Sign In</a></p>
                         </form>
                         <div className='text-tnc'>
                             <p>By creating an account or logging in, you agree with Chandapura.com&apos;s Terms and Conditions and Privacy Policy.</p>

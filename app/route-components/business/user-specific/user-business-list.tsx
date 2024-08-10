@@ -1,6 +1,6 @@
 "use client"
 import ProductListModal from '@/app/components/modals/product-list-modal';
-import { getPublicApiResponse } from '@/lib/interceptor';
+import { getPublicApiResponse } from '@/lib/apiLibrary';
 import { DropdownList } from '@/public/shared/app.config';
 import { Button, useDisclosure } from '@nextui-org/react';
 import { ChevronDown } from 'lucide-react';
@@ -18,7 +18,7 @@ const UserBusinessList = () => {
     const [name, setName] = useState<any>("Add New");
     const [isLoading, setIsLoading] = useState(true);
     const getBusinessList = async () => {
-        let apiUrlContact = `${attr.base}?sort=${attr.sort}&${attr.filter}=${user?.email}`
+        let apiUrlContact = `${attr.base}?sort=${attr.sort}`
         const response = await getPublicApiResponse(apiUrlContact);
         const filteredData = response.data.filter((x: any) => x.id.toString() === source)[0];
         setList(response);

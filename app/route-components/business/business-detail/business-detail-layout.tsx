@@ -1,4 +1,4 @@
-import { getPublicApiResponse } from "@/lib/interceptor";
+import { getPublicApiResponse } from "@/lib/apiLibrary";
 import BusinessDetail from "./business-detail";
 import { Products } from "@/public/shared/app.config";
 

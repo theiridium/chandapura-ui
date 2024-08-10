@@ -1,4 +1,4 @@
-import { getPublicApiResponse } from "@/lib/interceptor";
+import { getPublicApiResponse } from "@/lib/apiLibrary";
 import BusinessItemsList from "./business-items-list";
 
 const BusinessItems = async (props: any) => {

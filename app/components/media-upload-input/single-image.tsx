@@ -1,4 +1,4 @@
-import { deleteMediaFiles, postRequestApi, uploadMediaFiles } from "@/lib/interceptor";
+import { deleteMediaFiles, postRequestApi, uploadMediaFiles } from "@/lib/apiLibrary";
 import { CircularProgress } from "@nextui-org/react";
 import { Pencil, Trash, Trash2, X } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -33,9 +33,20 @@ const SingleImage = ({ imageParams }: any) => {
     }
 
     const deleteImage = async (id: any) => {
-        setLoading(true);
-        const response = await deleteMediaFiles(id);
-        console.log(response)
+        const isConfirmed = confirm('Are you sure you want to delete this image?');
+        if (isConfirmed) {
+            setLoading(true);
+            try {
+                const response = await deleteMediaFiles(id);
+                console.log(response);
+            } catch (error) {
+                console.error('Failed to delete image:', error);
+            } finally {
+                setLoading(false);
+            }
+        } else {
+            console.log('Image deletion was cancelled by the user.');
+        }
     }
 
     const newImage = files.map((file: any) => (

@@ -20,7 +20,7 @@ const UserProfileButton = () => {
 
     return (
         <>
-            {userData ?
+            {userData && userData.image ?
                 <button className='mx-2 md:mx-4 border-2 border-color1d hover:border-color2d rounded-full' onClick={() => setBtnToggle(!btnToggle)} type="button" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
                     <span className="sr-only">Open user menu</span>
                     <img src={userData.image} className='h-[48px] w-[48px] rounded-full' />

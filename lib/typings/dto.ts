@@ -38,19 +38,19 @@ export interface BusinessListing {
     name: string | undefined,
     full_address: string | undefined,
     description: string | undefined,
-    bus_email_id: string | any,
-    bus_contact_name: string | any,
-    bus_conatct_number: string | any,
+    contact_email_id: string | any,
+    contact_name: string | any,
+    contact_number: string | any,
     user: {},
     slug: string | undefined,
     tags: string | undefined,
     sub_category: string | undefined,
-    gallery_images: any[],
+    gallery_images?: any[],
     category: string | undefined,
     website: string | undefined,
     services: any[],
     bus_hours: BusinessHours[] | any,
-    featured_image: {}
+    featured_image?: {}
 }
 export interface ImageParams {
     refId: string | any,

@@ -1,4 +1,4 @@
-import { getPublicApiResponse } from "@/lib/interceptor";
+import { getPublicApiResponse } from "@/lib/apiLibrary";
 import { Products } from "@/public/shared/app.config";
 
 const Categories = async ({ slug }: any) => {

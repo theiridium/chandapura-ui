@@ -20,7 +20,7 @@ const BusinessItemsCard = ({ data, id, product }: any) => {
                             )}
                         </div>}
                         <div className="w-full flex justify-between lg:justify-normal gap-x-6">
-                            <button className="border-2 border-color1d bg-color1d text-white px-5 py-1 rounded-full h-fit text-center flex items-center gap-x-2 text-sm"><Phone size={16} fill='#fff' stroke='none' />+91 {data.bus_contact.phone}</button>
+                            <button className="border-2 border-color1d bg-color1d text-white px-5 py-1 rounded-full h-fit text-center flex items-center gap-x-2 text-sm"><Phone size={16} fill='#fff' stroke='none' />+91 </button>
                         </div>
                     </div>
                 </div>

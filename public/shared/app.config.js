@@ -87,7 +87,7 @@ module.exports = {
         populate: "populate[0]=sub_category&populate[1]=category&populate[2]=user&populate[3]=featured_image&populate[4]=bus_contact&populate[5]=gallery_images",
         limit: 4,
         userFilter: "filters[author][email][$eq]",
-        isPublishedFilter: "filters[isReadyToList][$eq]=true",
+        isPublishedFilter: "filters[publish_status][$eq]=true",
       },
     },
     job: {

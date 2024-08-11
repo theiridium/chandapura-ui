@@ -1,5 +1,6 @@
 'use client'
 import ImageGallery from '@/app/components/modals/image-gallery';
+import ContactCard from '@/app/sub-components/contact-card';
 import Map from '@/app/sub-components/map';
 import { Button, useDisclosure } from '@nextui-org/react';
 import { Phone } from 'lucide-react';
@@ -119,9 +120,9 @@ const BusinessDetail = ({ data }: any) => {
             </div>
           </div>
         </div>
-        {/* <div className='lg:col-span-1 relative'>
-          <ContactCard heading="Owner Contact Details" name={contactName} contact={data.user.phone} />
-        </div> */}
+        <div className='lg:col-span-1 relative'>
+          <ContactCard heading="Owner Contact Details" name={data.contact_name} contact={data.contact_number} />
+        </div>
       </div>
     </div>
   )

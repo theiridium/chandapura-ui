@@ -23,9 +23,9 @@ const UserProfileButton = () => {
             {userData && userData.image ?
                 <button className='mx-2 md:mx-4 border-2 border-color1d hover:border-color2d rounded-full' onClick={() => setBtnToggle(!btnToggle)} type="button" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
                     <span className="sr-only">Open user menu</span>
-                    <img src={userData.image} className='h-[48px] w-[48px] rounded-full' />
+                    <img src={userData.image} className='h-[44px] w-[44px] md:h-[48px] md:w-[48px] rounded-full' />
                 </button> :
-                <button className='mx-2 md:mx-4 p-3 bg-color2d rounded-full text-color1d border-2 border-color2d' onClick={() => setBtnToggle(!btnToggle)} type="button" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+                <button className='mx-2 md:mx-4 p-2 bg-color2d rounded-full text-color1d border-2 border-color2d' onClick={() => setBtnToggle(!btnToggle)} type="button" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
                     <span className="sr-only">Open user menu</span>
                     <User strokeWidth={2.2} fill='#ffc901' className='h-[24px] w-[24px]' />
                 </button>

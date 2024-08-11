@@ -19,7 +19,7 @@ const BusinessCard = (p: any) => {
                     <div className="mb-2 truncate">{item.sub_category.name} / {item.category.name}</div>
                     <div className="text-lg font-semibold mb-2 lg:mb-5">{item.name}</div>
                     <div className="flex flex-col lg:flex-row items-center justify-between gap-x-10 gap-y-1">
-                        <a href='tel:8123420507' className="btn-contact grow flex justify-center items-center gap-x-2 mb-2 lg:mb-0 w-full lg:w-auto"><Phone size={16} fill='#fff' stroke='none' />+91 </a>
+                        <a href='tel:8123420507' className="btn-contact grow flex justify-center items-center gap-x-2 mb-2 lg:mb-0 w-full lg:w-auto"><Phone size={16} fill='#fff' stroke='none' />+91 {item.contact_number}</a>
                         <a href={`${Products.business.slug}/${item.category.slug}/${item.sub_category.slug}/${item.slug}?source=${id}`} className="btn-view_details text-center w-full lg:w-auto">View Details</a>
                     </div>
                 </div>

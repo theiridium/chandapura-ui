@@ -6,13 +6,18 @@ import { useCallback, useEffect, useState } from 'react';
 import { Products } from '@/public/shared/app.config';
 import { getPublicApiResponse } from '@/lib/apiLibrary';
 import { ImageParams } from '@/lib/typings/dto';
+import ImgSingleUploadLoading from '@/app/loading-components/img-single-upload-loading';
+import ImgMultiUploadLoading from '@/app/loading-components/img-multi-upload-loading';
 
 const Page = ({ params }: { params: { slug: string } }) => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const type = searchParams.get('type');
     const source = searchParams.get('source');
-    const [isImageDataLoaded, setImageDataLoaded] = useState(false);
+    const [isFeaturedImageLoaded, setIsFeaturedImageLoaded] = useState(false);
+    const [isGalleryImagesLoaded, setIsGalleryImagesLoaded] = useState(false);
+    const [keyFt, setKeyFt] = useState(0);
+    const [keyGa, setKeyGa] = useState(0);
     const [imageParamsFeatured, setImageParamsFeatured] = useState<ImageParams>({
         refId: source,
         ref: "api::business-listing.business-listing",
@@ -25,23 +30,38 @@ const Page = ({ params }: { params: { slug: string } }) => {
         field: "gallery_images",
         imgData: null,
     });
-    const populateBusinessDetails = useCallback(async () => {
-        const attr = Products.business.api;
-        let apiUrl = `${attr.base}?filters[id][$eq]=${source}&populate=gallery_images,featured_image`;
+    const attr = Products.business.api;
+    const populateFeaturedImage = useCallback(async () => {
+        let apiUrl = `${attr.base}?filters[id][$eq]=${source}&populate=featured_image`;
         const response = await getPublicApiResponse(apiUrl).then(res => res.data);
         const data = response[0];
-        console.log(data)
         if (data) {
             setImageParamsFeatured({ ...imageParamsFeatured, imgData: data.featured_image });
+        }
+        setIsFeaturedImageLoaded(true);
+        return data;
+    }, [])
+    const populateGalleryImages = useCallback(async () => {
+        let apiUrl = `${attr.base}?filters[id][$eq]=${source}&populate=gallery_images`;
+        const response = await getPublicApiResponse(apiUrl).then(res => res.data);
+        const data = response[0];
+        if (data) {
             setImageParamsGallery({ ...imageParamsGallery, imgData: data.gallery_images });
         }
-        setImageDataLoaded(true);
+        setIsGalleryImagesLoaded(true);
         return data;
     }, [])
 
     useEffect(() => {
-        populateBusinessDetails();
-    }, [])
+        populateFeaturedImage();
+    }, [keyFt])
+
+    useEffect(() => {
+        populateGalleryImages();
+    }, [keyGa])
+
+    const reloadFeaturedComp = () => setKeyFt(prevKey => prevKey + 1);;
+    const reloadGalleryComp = () => setKeyGa(prevKey => prevKey + 1);;
 
     return (
         <>
@@ -52,11 +72,13 @@ const Page = ({ params }: { params: { slug: string } }) => {
                 <div className='grid grid-cols-1 gap-10 mx-2'>
                     <div className='listing-card border rounded-lg px-7 py-6 scroll-mt-36'>
                         <div className='card-header text-xl font-semibold mb-5'>Featured Image</div>
-                        {isImageDataLoaded && <SingleImage imageParams={imageParamsFeatured} />}
+                        {isFeaturedImageLoaded ? <SingleImage key={keyFt} imageParams={imageParamsFeatured} uploadSuccess={reloadFeaturedComp} /> :
+                            <ImgSingleUploadLoading />}
                     </div>
                     <div className='listing-card border rounded-lg px-7 py-6 scroll-mt-36'>
                         <div className='card-header text-xl font-semibold mb-5'>Gallery Images</div>
-                        {isImageDataLoaded && <MultiImage imageParams={imageParamsGallery} />}
+                        {isGalleryImagesLoaded ? <MultiImage key={keyGa} imageParams={imageParamsGallery} uploadSuccess={reloadGalleryComp} /> :
+                            <ImgMultiUploadLoading />}
                     </div>
                     <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>
                         <button className='btn-primary text-base' onClick={() => router.push(`/business-listing/add-details?type=edit&source=${source}`)}>Back</button>

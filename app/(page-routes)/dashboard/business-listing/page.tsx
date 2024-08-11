@@ -35,8 +35,8 @@ const Page = () => {
 
   const EditButtons = ({ item }: any) => {
     return <>
-      <Button size="md" radius='sm' as={Link} href={Resource.BusinessListing.addDetailsLink + '?type=edit&source=' + item.id}>Edit Business Profile</Button>
-      <Button size="md" radius='sm' as={Link} href={Resource.BusinessListing.uploadImagesLink + '?type=edit&source=' + item.id}>Edit Images</Button>
+      <Button size="md" color='secondary' radius='sm' as={Link} href={Resource.BusinessListing.addDetailsLink + '?type=edit&source=' + item.id}>Edit Business Profile</Button>
+      <Button size="md" color='secondary' radius='sm' as={Link} href={Resource.BusinessListing.uploadImagesLink + '?type=edit&source=' + item.id}>Edit Images</Button>
     </>
   }
 
@@ -76,7 +76,7 @@ const Page = () => {
                           <EditButtons item={x} />
                         </div>
                         <div className='flex md:hidden gap-5 '>
-                          <Button size="md" radius='sm' onPress={() => onClickEditListing(x)}>Edit Listing</Button>
+                          <Button color='secondary' size="md" radius='sm' onPress={() => onClickEditListing(x)}>Edit Listing</Button>
                         </div>
                       </div>
                     </div>

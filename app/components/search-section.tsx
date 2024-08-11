@@ -23,7 +23,7 @@ const SearchSection = () => {
           classNames={{
             base: "mb-5 flex justify-center",
             tabList: "bg-color2d/30 p-2 gap-0",
-            tab: "text-xs md:text-sm md:text-base px-2 md:px-3"
+            tab: "border border-transparent text-xs md:text-sm md:text-base px-2 md:px-3 data-[hover-unselected=true]:opacity-100 data-[hover-unselected=true]:border-color2d"
           }}
           selectedKey={productType}
           onSelectionChange={setProductType}>

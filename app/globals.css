@@ -248,6 +248,10 @@ header {
   .search-cat-sec::-webkit-scrollbar {
     @apply hidden;
   }
+  .dark-background .bg-content3 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(228 228 231 / 53%) !important;
+}
 }
 
 @layer utilities {

@@ -14,13 +14,11 @@ import { Products } from '@/public/shared/app.config';
 import timeList from "@/lib/data/time-list.json";
 import { X } from 'lucide-react';
 import FormSubmitLoading from '@/app/loading-components/form-submit-loading';
-import MainMenuBtn from '@/app/sub-components/main-menu-btn';
 import { toast } from 'react-toastify';
 
 const Page = () => {
     const { data }: any = useSession();
     const userData = data?.user;
-    // console.log(data)
     const router = useRouter();
     const searchParams = useSearchParams();
     const type = searchParams.get('type');
@@ -29,53 +27,23 @@ const Page = () => {
     const categoryList = useAtomValue<any>(categories).data;
     const locationList = useAtomValue<any>(locations).data;
     const [subCategoryList, setSubCategoryList] = useState([]);
-    // const [contact, setContact] = useState<any>({ contact_name: userData.name, contact_number: userData.contact_number, contact_email_id: userData.contact_email_id });
     const [contact, setContact] = useState<any>({ contact_name: userData.name, contact_number: userData.phone, contact_email_id: userData.email });
-    const [isSumbitLoading, setIsSubmitLoading] = useState(false);
-    const [businessHours, setBusinessHours] = useState([
-        {
-            day: "Monday",
-            open_time: new Set(["09:00 AM"]),
-            close_time: new Set(["09:00 PM"]),
-            isOpen: false
-        },
-        {
-            day: "Tuesday",
-            open_time: new Set(["09:00 AM"]),
-            close_time: new Set(["09:00 PM"]),
-            isOpen: false
-        },
-        {
-            day: "Wednesday",
-            open_time: new Set(["09:00 AM"]),
-            close_time: new Set(["09:00 PM"]),
-            isOpen: false
-        },
-        {
-            day: "Thursday",
-            open_time: new Set(["09:00 AM"]),
-            close_time: new Set(["09:00 PM"]),
-            isOpen: false
-        },
-        {
-            day: "Friday",
-            open_time: new Set(["09:00 AM"]),
-            close_time: new Set(["09:00 PM"]),
-            isOpen: false
-        },
-        {
-            day: "Saturday",
-            open_time: new Set(["09:00 AM"]),
-            close_time: new Set(["09:00 PM"]),
-            isOpen: false
-        },
-        {
-            day: "Sunday",
-            open_time: new Set(["09:00 AM"]),
-            close_time: new Set(["09:00 PM"]),
-            isOpen: false
-        },
-    ]);
+    const [isSubmitLoading, setIsSubmitLoading] = useState(false);
+    const defaultBusinessHours = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+    ].map((day) => ({
+        day,
+        open_time: new Set(["09:00 AM"]),
+        close_time: new Set(["09:00 PM"]),
+        isOpen: false,
+    }));
+    const [businessHours, setBusinessHours] = useState(defaultBusinessHours);
     const [businessList, setBusinessList] = useState<BusinessListing>({
         area: "",
         name: "",
@@ -93,7 +61,8 @@ const Page = () => {
         website: "",
         services: [],
         bus_hours: businessHours,
-        featured_image: {}
+        featured_image: {},
+        step_number: 1
     });
     const [apiRes, setApiRes] = useState<any>();
     const onCategoryChange = (id: any) => {
@@ -233,7 +202,8 @@ const Page = () => {
             category: businessList.category,
             website: formdata.website,
             services: businessList.services,
-            bus_hours: stringifyBusHours(businessList.bus_hours)
+            bus_hours: stringifyBusHours(businessList.bus_hours),
+            step_number: 2
         }
         postBusinessListing(payload);
     }
@@ -241,14 +211,17 @@ const Page = () => {
     const postBusinessListing = async (payload: any) => {
         console.log(payload)
         const endpoint = Products.business.api.base;
-        if (type === "edit") {
+        if (type === "edit" || type === "edit_back") {
             const response = await putRequestApi(endpoint, payload, source);
             console.log(response);
             if (response.data) {
                 toast.success("Business profile saved successfully!");
-                toast.info("Redirecting to listing menu...")
-                await new Promise(resolve => setTimeout(resolve, 3000));
-                router.push(`/dashboard/business-listing`)
+                if (type === "edit_back") router.push(`/business-listing/upload-images?type=new&source=${response.data.id}`);
+                else {
+                    toast.info("Redirecting to listing menu...")
+                    await new Promise(resolve => setTimeout(resolve, 3000));
+                    router.push(`/dashboard/business-listing`)
+                }
             }
         }
         else {
@@ -278,7 +251,7 @@ const Page = () => {
 
     return (
         <>
-            {isSumbitLoading && <FormSubmitLoading text={"Uploading your Business..."} />}
+            {isSubmitLoading && <FormSubmitLoading text={"Uploading your Business..."} />}
             <div className='col-span-full lg:col-span-6 mt-3 lg:my-8'>
                 <div className='listing-header mb-8'>
                     <div className='text-xl lg:text-4xl font-semibold text-gray-700 px-7'>{source ? "Modify Business Details" : "Add New Business"}</div>
@@ -460,8 +433,8 @@ const Page = () => {
                         </div>
                     </InView>
                     <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>
-                        <Button className='btn-primary text-base' color='primary' type='submit' isLoading={isSumbitLoading}>
-                            {!isSumbitLoading && (type === "edit" ? "Save" : "Save and Continue")}
+                        <Button className='btn-primary text-base' color='primary' type='submit' isLoading={isSubmitLoading}>
+                            {!isSubmitLoading && ((type === "edit") ? "Save" : "Save and Continue")}
                         </Button>
                     </div>
                 </form>

@@ -155,7 +155,8 @@ export const getPublicSingleSearchResponse = async (payload: SearchPayload | und
         "queries": [
             {
                 "indexUid": payload?.indexUid,
-                "q": payload?.q
+                "q": payload?.q,
+                "filter": ["publish_status = true"]
             }
         ]
     });

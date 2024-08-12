@@ -9,6 +9,7 @@ module.exports = {
       label: "Business Listing",
       dashboardLink: "/dashboard/business-listing",
       userLabel: "My Listing",
+      baseLink: "/business-listing",
       addDetailsLink: "/business-listing/add-details",
       uploadImagesLink: "/business-listing/upload-images",
     },

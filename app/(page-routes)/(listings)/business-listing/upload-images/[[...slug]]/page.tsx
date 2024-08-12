@@ -46,14 +46,17 @@ const Page = ({ params }: { params: { slug: string } }) => {
         return response;
     }, [])
     const populateGalleryImages = useCallback(async () => {
-        let apiUrl = `${attr.base}?filters[id][$eq]=${source}&populate=gallery_images`;
-        const response = await getPublicApiResponse(apiUrl).then(res => res.data);
-        if (response) {
-            const data = response[0];
-            setImageParamsGallery({ ...imageParamsGallery, imgData: data.gallery_images });
+        if (source) {
+            let apiUrl = `${attr.base}?filters[id][$eq]=${source}&populate=gallery_images`;
+            const response = await getPublicApiResponse(apiUrl).then(res => res.data);
+            if (response) {
+                const data = response[0];
+                setImageParamsGallery({ ...imageParamsGallery, imgData: data.gallery_images });
+            }
+            setIsGalleryImagesLoaded(true);
+            return response;
         }
-        setIsGalleryImagesLoaded(true);
-        return response;
+        else window.location.replace('/');
     }, [])
 
     useEffect(() => {

@@ -38,22 +38,22 @@ const Page = ({ params }: { params: { slug: string } }) => {
     const populateFeaturedImage = useCallback(async () => {
         let apiUrl = `${attr.base}?filters[id][$eq]=${source}&populate=featured_image`;
         const response = await getPublicApiResponse(apiUrl).then(res => res.data);
-        const data = response[0];
-        if (data) {
+        if (response) {
+            const data = response[0];
             setImageParamsFeatured({ ...imageParamsFeatured, imgData: data.featured_image });
         }
         setIsFeaturedImageLoaded(true);
-        return data;
+        return response;
     }, [])
     const populateGalleryImages = useCallback(async () => {
         let apiUrl = `${attr.base}?filters[id][$eq]=${source}&populate=gallery_images`;
         const response = await getPublicApiResponse(apiUrl).then(res => res.data);
-        const data = response[0];
-        if (data) {
+        if (response) {
+            const data = response[0];
             setImageParamsGallery({ ...imageParamsGallery, imgData: data.gallery_images });
         }
         setIsGalleryImagesLoaded(true);
-        return data;
+        return response;
     }, [])
 
     useEffect(() => {

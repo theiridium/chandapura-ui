@@ -74,7 +74,7 @@ const MultiImage = ({ imageParams, uploadSuccess }: any) => {
     }, [delFilesList, files, imageParams, uploadSuccess]);
 
     const newImgPreview = useMemo(() => (
-        files.map((file: any) => (
+        files.length > 0 && files.map((file: any) => (
             <div className="relative transition-all duration-300 hover:brightness-90" key={file.name}>
                 <img className="border object-cover w-80 aspect-square rounded-md" src={file.preview}
                     onLoad={() => { URL.revokeObjectURL(file.preview) }}
@@ -87,7 +87,7 @@ const MultiImage = ({ imageParams, uploadSuccess }: any) => {
     ), [files, removeFile]);
 
     const existingImageBlock = useMemo(() => (
-        existingFiles.map((file: any) => (
+        existingFiles && existingFiles.map((file: any) => (
             <div className="relative transition-all duration-300 hover:brightness-90" key={file.name}>
                 <img className="border object-cover w-80 aspect-square rounded-md" src={file.url} />
                 <button disabled={loading} className="absolute top-3 right-3 cursor-pointer bg-slate-900/90 hover:bg-red-700 rounded-full p-1" onClick={() => removeExtFile(file.id, file)}>
@@ -108,8 +108,8 @@ const MultiImage = ({ imageParams, uploadSuccess }: any) => {
     return (
         <>
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                {existingFiles.length > 0 && existingImageBlock}
-                {files.length > 0 && newImgPreview}
+                {existingImageBlock}
+                {newImgPreview}
                 <div {...getRootProps({ className: 'w-full' })}>
                     <div className="flex flex-col items-center justify-center w-full aspect-square border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                         <div className="flex flex-col items-center justify-center pt-5 pb-6">

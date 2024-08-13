@@ -185,9 +185,9 @@ const Page = () => {
                         <div className='listing-card border rounded-lg px-7 py-6'>
                             <div className='card-header text-xl font-semibold mb-5'>Gallery Images</div>
                             <div className='grid grid-cols-1 lg:grid-cols-3 gap-3'>
-                                {apiRes.featured_image ?
+                                {apiRes.gallery_images.length > 0 ?
                                     apiRes.gallery_images.map((img: any, i: any) => <img key={i} src={img.url} />) :
-                                    "No featured image uploaded"}
+                                    "No gallery image uploaded"}
                             </div>
                         </div>
                         <div className='listing-card border rounded-lg px-7 py-6'>

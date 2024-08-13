@@ -152,7 +152,7 @@ header {
     @apply w-full h-full rounded-t-md;
   }
   .business-card-img {
-    @apply h-40 lg:h-56 w-64 md:w-72 lg:w-auto;
+    @apply h-40 lg:h-64 w-64 md:w-72 lg:w-auto;
   }
   .business-card-img > img {
     @apply w-full h-full rounded-t-md;
@@ -161,7 +161,7 @@ header {
     @apply border border-gray-300 border-t-0 rounded-b-md px-4 lg:px-6 h-40 md:h-40 grid content-center;
   }
   .business-card-body {
-    @apply border border-gray-300 border-t-0 rounded-b-md px-4 lg:px-6 h-52 md:h-44 grid content-center;
+    @apply border border-gray-300 border-t-0 rounded-b-md px-4 lg:px-6 h-52 md:h-48 grid content-center;
   }
   .text-login-form {
     @apply !w-full md:!w-3/4 !font-semibold !text-gray-500 !mx-auto;

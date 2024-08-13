@@ -22,7 +22,7 @@ const steps = [
     },
     {
         number: 4,
-        title: "Preview & Publish",
+        title: "Review & Publish",
         currentPath: "publish",
         nextPath: "completed"
     }

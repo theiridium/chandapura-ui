@@ -21,7 +21,7 @@ const BusinessDetail = ({ data }: any) => {
                 }
               </div>
               <div className="col-span-2">
-                {data.gallery_images[0] ?
+                {data.gallery_images ?
                   <img src={data.gallery_images[0].url} className="w-full h-full rounded-xl" /> :
                   <img src="/images/placeholder.png" className="w-full h-full rounded-xl" />
                 }
@@ -32,7 +32,7 @@ const BusinessDetail = ({ data }: any) => {
                   <img src="/images/placeholder.png" className="w-full h-full rounded-xl" />
                 }
               </div> */}
-              {data.gallery_images.length > 2 ?
+              {data.gallery_images && data.gallery_images.length > 2 ?
                 <div className="col-span-2 cursor-pointer relative" onClick={onOpen}>
                   <img src={data.gallery_images[1].url} className="w-full h-full rounded-xl" />
                   <div className="w-full h-full rounded-xl bg-black/50 hover:bg-black/40 absolute top-0 left-0 flex">
@@ -40,7 +40,7 @@ const BusinessDetail = ({ data }: any) => {
                   </div>
                 </div> :
                 <div className="col-span-2">
-                  {data.gallery_images[1] ?
+                  {data.gallery_images && data.gallery_images[1] ?
                     <img src={data.gallery_images[1].url} className="w-full h-full rounded-xl" /> :
                     <img src="/images/placeholder.png" className="w-full h-full rounded-xl" />
                   }

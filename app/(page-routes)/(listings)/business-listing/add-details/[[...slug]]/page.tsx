@@ -123,7 +123,6 @@ const Page = () => {
 
     useEffect(() => {
         if (apiRes) {
-            console.log(apiRes)
             onCategoryChange(apiRes?.category.id);
             setContact({
                 contact_name: apiRes.contact_name,

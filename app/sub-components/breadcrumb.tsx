@@ -24,9 +24,10 @@ const Breadcrumb = () => {
 
                     // Check if it's the last breadcrumb part (current page)
                     const isLast = index === pathArray.length - 1;
+                    const isSecondLast = index === pathArray.length - 2;
 
                     return (
-                        <li key={index} className={`breadcrumb-item ${index > 1 && 'hidden lg:block'} ${isLast ? 'active' : ''}`}>
+                        !isSecondLast && <li key={index} className={`breadcrumb-item ${index > 1 && 'hidden lg:block'} ${isLast ? 'active' : ''}`}>
                             {isLast ? (
                                 <span className='flex gap-1 items-center'><ChevronRight size={14} />{text}</span>
                             ) : (

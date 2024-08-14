@@ -28,7 +28,6 @@ const Page = () => {
                 const response = await getPublicApiResponse(apiUrl).then(res => res.data);
                 const data = response[0];
                 if (data) {
-                    console.log(data)
                     setApiRes(data);
                     setIsLoading(false);
                     return data;

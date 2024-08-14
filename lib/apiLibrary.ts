@@ -4,6 +4,7 @@ import { SearchPayload } from "./typings/dto";
 import axiosInstance from "./axiosInstance";
 
 export const getPublicApiResponse = async (endpoint: any) => {
+    // await new Promise(resolve => setTimeout(resolve, 5000))
     try {
         const response = await axiosInstance.get(endpoint, {
             headers: {

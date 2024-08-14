@@ -4,7 +4,7 @@ import SearchBar from '@/app/sub-components/search-bar'
 import { Products } from '@/public/shared/app.config'
 import React, { Suspense } from 'react'
 
-const Page = () => {
+const Page = ({ searchParams }: any) => {
   return (
     <div className="max-w-screen-xl mx-auto px-3 mt-3 lg:my-6">
       <div className="grid lg:grid-cols-4 lg:gap-10 mb-4">
@@ -13,7 +13,7 @@ const Page = () => {
         </div>
       </div>
       <Suspense fallback={<GlobalSearchListLoading />}>
-        <BusinessItems product={Products.business} sub_category={null} />
+        <BusinessItems product={Products.business} sub_category={null} searchParams={searchParams}  />
       </Suspense>
     </div>
   )

@@ -5,7 +5,7 @@ import GlobalSearchListLoading from "@/app/loading-components/global-search-list
 import SearchBar from "@/app/sub-components/search-bar";
 import ProductItems from "@/app/route-components/real-estate/product/product-list/product-items";
 
-const Page = ({ params }: { params: { product: string } }) => {
+const Page = ({ params, searchParams }: { params: { product: string }, searchParams: any }) => {
     if (!IsProductUrl(params.product)) notFound();
     const product = GetProductFromParam(params.product);
     return (
@@ -16,7 +16,7 @@ const Page = ({ params }: { params: { product: string } }) => {
                 </div>
             </div>
             <Suspense fallback={<GlobalSearchListLoading />}>
-                <ProductItems product={product} />
+                <ProductItems product={product} searchParams={searchParams} />
             </Suspense>
         </div>
     )

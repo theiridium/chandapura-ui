@@ -93,11 +93,10 @@ header {
   .btn-contact {
     /* color: #fff;
     background-color: rgb(0 175 64); */
-    @apply bg-color1d/90 hover:bg-color1d text-white p-2 text-sm rounded-md font-medium tracking-wider;
+    @apply bg-color1d/80 hover:bg-color1d text-white p-2 text-sm font-medium tracking-wider;
   }
   .btn-explore_more {
-    color: #333;
-    @apply bg-color1d lg:bg-color1d hover:bg-color1d text-white py-2 px-4 text-sm rounded-full font-semibold;
+    @apply !h-auto !py-1 text-sm font-semibold;
   }
   .search-container {
     @apply flex bg-white w-full rounded-full h-14 md:h-16;
@@ -116,8 +115,11 @@ header {
     @apply lg:text-lg text-white font-semibold !important;
   }
   .search-container-btn {
-    @apply hidden lg:block bg-color1d text-white m-2 py-2 px-8 rounded-full font-semibold text-xl;
+    @apply bg-color1d text-white m-1 md:m-2 py-2 px-3 md:px-8 rounded-full font-semibold text-xl;
   }
+  /* .search-container-btn {
+    @apply hidden lg:block bg-color1d text-white m-2 py-2 px-8 rounded-full font-semibold text-xl;
+  } */
   .search-container-icon {
     @apply block lg:hidden bg-color1d text-white m-1 md:m-2 px-3 py-2 rounded-full font-bold text-xl;
   }
@@ -161,12 +163,12 @@ header {
     @apply border border-gray-300 border-t-0 rounded-b-md px-4 lg:px-6 h-40 md:h-40 grid content-center;
   }
   .business-card-body {
-    @apply border border-gray-300 border-t-0 rounded-b-md px-4 lg:px-6 h-52 md:h-48 grid content-center;
+    @apply border border-gray-300 border-t-0 rounded-b-md px-4 lg:px-6 h-40 md:h-48 grid content-center;
   }
   .text-login-form {
     @apply !w-full md:!w-3/4 !font-semibold !text-gray-500 !mx-auto;
   }
-  .text-login-form>div:first-child {
+  .text-login-form > div:first-child {
     @apply !border !border-gray-400 !rounded-md;
   }
   .btn-login-form {
@@ -214,6 +216,9 @@ header {
   .default-pill-btn {
     @apply pl-4 pr-1 py-1 bg-default font-medium rounded-full text-sm text-nowrap text-gray-800;
   }
+  .breadcrumb-item:not(.active){
+    @apply hover:text-color1d
+  }
   .link-text {
     @apply text-color1d hover:underline cursor-pointer;
   }
@@ -251,7 +256,7 @@ header {
   .dark-background .bg-content3 {
     --tw-bg-opacity: 1;
     background-color: rgb(228 228 231 / 53%) !important;
-}
+  }
 }
 
 @layer utilities {

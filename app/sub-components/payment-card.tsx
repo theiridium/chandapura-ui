@@ -32,7 +32,7 @@ const PaymentCard = ({ adPrice, listingPrice, setAdPrice }: any) => {
     useEffect(() => {
         const tax = calculateTax();
         setTaxAmount(tax);
-        setTotalAmount(listingAmount + adPrice.amount + tax);
+        setTotalAmount((listingAmount + adPrice.amount + tax).toFixed(2));
     }, [listingPrice, adPrice, listingAmount])
 
     const removeAdAmount = () => setAdPrice({ ...adPrice, amount: 0 });

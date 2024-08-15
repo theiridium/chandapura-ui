@@ -2,7 +2,7 @@ import { Phone } from "lucide-react"
 
 const BusinessItemsCard = ({ data, id, product }: any) => {
     return (
-        <a className="card_link" href={`/${product.slug}/${data.category.slug}/${data.sub_category.slug}/${data.slug}&id=${id}`}>
+        <a className="card_link" href={`/${product.slug}/${data.category.slug}/${data.sub_category.slug}/${data.slug}?source=${id}`}>
             <div className="border border-gray-300 rounded-xl bg-white">
                 <div className="flex-none md:flex p-5 lg:p-7 gap-x-5 lg:gap-x-7">
                     <div className="flex-none w-full h-[230px] lg:w-[300px] lg:h-[200px] mb-5 md:mb-0">

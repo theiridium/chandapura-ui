@@ -81,64 +81,64 @@ const Page = () => {
                 </div>
                 {isLoading ? "Loading..." :
                     <div className='grid grid-cols-1 gap-10 mx-2'>
-                        <div className='listing-card border rounded-lg px-7 py-6'>
+                        <div className='listing-card border rounded-lg p-5 md:px-7 md:py-6'>
                             <div className='card-header text-xl font-semibold mb-5'>General</div>
                             <div className='flex flex-col md:flex-row *:basis-full *:md:basis-1/2'>
                                 <div className='mb-5'>
                                     <div className='text-sm mb-1 font-semibold'>Category</div>
-                                    <div className='text-lg'>{apiRes.category.name}</div>
+                                    <div className='md:text-lg'>{apiRes.category.name}</div>
                                 </div>
                                 <div className='mb-5'>
                                     <div className='text-sm mb-1 font-semibold'>Sub-Category</div>
-                                    <div className='text-lg'>{apiRes.sub_category.name}</div>
+                                    <div className='md:text-lg'>{apiRes.sub_category.name}</div>
                                 </div>
                             </div>
                             <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Business Name</div>
-                                <div className='text-lg'>{apiRes.name}</div>
+                                <div className='md:text-lg'>{apiRes.name}</div>
                             </div>
                             <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Description</div>
-                                <div className='text-lg'>{apiRes.description}</div>
+                                <div className='md:text-lg'>{apiRes.description}</div>
                             </div>
                             <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Business Website</div>
-                                <div className='text-lg'>{apiRes.website}</div>
+                                <div className='md:text-lg'>{apiRes.website}</div>
                             </div>
                         </div>
-                        <div className='listing-card border rounded-lg px-7 py-6'>
+                        <div className='listing-card border rounded-lg p-5 md:px-7 md:py-6'>
                             <div className='card-header text-xl font-semibold mb-5'>Location</div>
                             <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Area</div>
-                                <div className='text-lg'>{apiRes.area}</div>
+                                <div className='md:text-lg'>{apiRes.area}</div>
                             </div>
                             <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Full Address</div>
-                                <div className='text-lg'>{apiRes.full_address}</div>
+                                <div className='md:text-lg'>{apiRes.full_address}</div>
                             </div>
                             <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Map Location</div>
-                                <div className='text-lg'>{apiRes.area}</div>
+                                <div className='md:text-lg'>{apiRes.area}</div>
                             </div>
                         </div>
-                        <div className='listing-card border rounded-lg px-7 py-6'>
+                        <div className='listing-card border rounded-lg p-5 md:px-7 md:py-6'>
                             <div className='card-header text-xl font-semibold mb-5'>Business Contact Details</div>
                             <div className='flex flex-col md:flex-row *:basis-full *:md:basis-1/3'>
                                 <div className='mb-5'>
                                     <div className='text-sm mb-1 font-semibold'>Contact Name</div>
-                                    <div className='text-lg'>{apiRes.contact_name}</div>
+                                    <div className='md:text-lg'>{apiRes.contact_name}</div>
                                 </div>
                                 <div className='mb-5'>
                                     <div className='text-sm mb-1 font-semibold'>Conatct Number</div>
-                                    <div className='text-lg'>{apiRes.contact_number}</div>
+                                    <div className='md:text-lg'>{apiRes.contact_number}</div>
                                 </div>
                                 <div className='mb-5'>
                                     <div className='text-sm mb-1 font-semibold'>Business Email ID</div>
-                                    <div className='text-lg'>{apiRes.conatct_email_id}</div>
+                                    <div className='md:text-lg'>{apiRes.conatct_email_id}</div>
                                 </div>
                             </div>
                         </div>
-                        <div className='listing-card border rounded-lg px-7 py-6'>
+                        <div className='listing-card border rounded-lg p-5 md:px-7 md:py-6'>
                             <div className='card-header text-xl font-semibold mb-5'>Services</div>
                             {apiRes.services && <div className="tags">
                                 {apiRes.services.map((x: any, i: any) =>
@@ -146,7 +146,7 @@ const Page = () => {
                                 )}
                             </div>}
                         </div>
-                        <div className='listing-card border rounded-lg px-7 py-6'>
+                        <div className='listing-card border rounded-lg p-5 md:px-7 md:py-6'>
                             <div className='card-header text-xl font-semibold mb-5'>Business Hours</div>
                             <div className='time-table overflow-x-auto'>
                                 <table className='table-fixed md:table-auto text-center divide-y w-full whitespace-nowrap'>
@@ -159,7 +159,7 @@ const Page = () => {
                                             <th className='w-32 md:w-auto'>Closing Time</th>
                                         </tr>
                                     </thead>
-                                    <tbody className='text-lg font-medium divide-y'>
+                                    <tbody className='md:text-lg font-medium divide-y'>
                                         {apiRes.bus_hours.map((x: any, i: any) =>
                                             <tr className='*:py-3' key={i}>
                                                 <td className='text-left'>{x.day}</td>
@@ -177,11 +177,11 @@ const Page = () => {
                                 </table>
                             </div>
                         </div>
-                        <div className='listing-card border rounded-lg px-7 py-6'>
+                        <div className='listing-card border rounded-lg p-5 md:px-7 md:py-6'>
                             <div className='card-header text-xl font-semibold mb-5'>Featured Image</div>
                             {apiRes.featured_image ? <img src={apiRes.featured_image.url} /> : "No featured image uploaded"}
                         </div>
-                        <div className='listing-card border rounded-lg px-7 py-6'>
+                        <div className='listing-card border rounded-lg p-5 md:px-7 md:py-6'>
                             <div className='card-header text-xl font-semibold mb-5'>Gallery Images</div>
                             <div className='grid grid-cols-1 lg:grid-cols-3 gap-3'>
                                 {apiRes.gallery_images ?
@@ -189,11 +189,11 @@ const Page = () => {
                                     "No gallery image uploaded"}
                             </div>
                         </div>
-                        <div className='listing-card border rounded-lg px-7 py-6'>
+                        <div className='listing-card border rounded-lg p-5 md:px-7 md:py-6'>
                             <div className='card-header text-xl font-semibold mb-5'>Advertisement</div>
                             <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Is this business opted for advertisement?</div>
-                                <div className='text-lg'>{apiRes.advertisement ? 'Yes' : 'No'}</div>
+                                <div className='md:text-lg'>{apiRes.advertisement ? 'Yes' : 'No'}</div>
                             </div>
                             {apiRes.advertisement && <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Ad Banner Image</div>

@@ -1,9 +1,8 @@
 "use client"
-import ButtonListModal from '@/app/components/modals/button-list-modal';
 import { getPublicApiResponse } from '@/lib/apiLibrary';
 import { DropdownList, Resource } from '@/public/shared/app.config';
-import { Button, Link, useDisclosure } from '@nextui-org/react';
-import { MoveRight, Plus } from 'lucide-react';
+import { Button } from '@nextui-org/react';
+import { MoveRight, Pencil, Plus } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
@@ -35,42 +34,22 @@ const steps = [
   }
 ]
 const Page = () => {
-  // const searchParams = useSearchParams();
-  // const source = searchParams.get('source');
   const addNewUrl = "/business-listing/add-details?type=new";
   const router = useRouter();
   const attr = DropdownList.BusinessList.api;
   const { data }: any = useSession();
   const user = data?.user;
   const [list, setList] = useState<any>([]);
-  const [btnForModal, setBtnForModal] = useState<any>();
-  // const [name, setName] = useState<any>("Add New");
   const [isLoading, setIsLoading] = useState(true);
   const getBusinessList = async () => {
     let apiUrlContact = `${attr.base}?sort=${attr.sort}&${attr.filter}=${user?.email}&populate=featured_image`
     const response = await getPublicApiResponse(apiUrlContact);
-    // const filteredData = response.data.filter((x: any) => x.id.toString() === source)[0];
     setList(response.data);
-    // console.log(response)
-    // (filteredData && source) && setName(filteredData.name)
     setIsLoading(false);
   }
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   useEffect(() => {
     getBusinessList();
   }, [isLoading])
-
-  const EditButtons = ({ item }: any) => {
-    return <>
-      <Button size="md" color='secondary' radius='sm' as={Link} href={Resource.BusinessListing.addDetailsLink + '?type=edit&source=' + item.id}>Edit Business Profile</Button>
-      <Button size="md" color='secondary' radius='sm' as={Link} href={Resource.BusinessListing.uploadImagesLink + '?type=edit&source=' + item.id}>Edit Images</Button>
-    </>
-  }
-
-  const onClickEditListing = (item: any) => {
-    setBtnForModal(<EditButtons item={item} />);
-    onOpen();
-  }
 
   return (
     <div className='max-w-screen-xl min-h-screen mx-auto px-3 my-8 md:mt-8 md:mb-10'>
@@ -82,7 +61,7 @@ const Page = () => {
           Add New
         </Button>
       </div>
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 md:gap-y-5'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-x-10'>
         {isLoading ? <>Loading..</> :
           list.length > 0 ?
             !isLoading && list.map((x: any, i: any) => {
@@ -92,51 +71,42 @@ const Page = () => {
                 continueUrl = `${Resource.BusinessListing.baseLink}/${baseUrl}?type=new&source=${x.id}`
               }
               return (
-                // <a href={Resource.BusinessListing.userLink + '?source=' + x.id} key={i}>{x.name}</a>
-                <div key={i} className='border rounded-lg'>
-                  <div className='p-5 pt-7 md:p-8'>
-                    <div className="flex gap-5 md:gap-10 relative">
-                      <div className='absolute -top-5 md:-top-5 -right-3 md:-right-5'>
-                        {x.publish_status ? <div className='border rounded-full text-xs md:text-sm px-3 border-emerald-500 text-emerald-500 font-medium'>Published</div> :
-                          <div className='border rounded-full text-xs md:text-sm px-3 border-sky-500 text-sky-500 font-medium'>Draft</div>}
-                      </div>
-                      <div className='aspect-square h-[120px]'>
-                        {x.featured_image === null ?
-                          <img src="/images/placeholder.png" className="w-full h-full rounded-lg" /> :
-                          <img src={x.featured_image.url} className="w-full h-full rounded-lg" />}
-                      </div>
-                      <div className='w-full grow'>
-                        <div className='grid grid-cols-1 h-full content-between'>
-                          <div>
-                            <div className='font-semibold text-xl md:text-2xl mb-1'>{x.name}</div>
-                            <div className='text-sm'>{x.area}</div>
-                          </div>
-                          {x.publish_status ?
-                            <>
-                              <div className='hidden md:flex gap-5 '>
-                                <EditButtons item={x} />
-                              </div>
-                              <div className='flex md:hidden gap-5 '>
-                                <Button color='secondary' size="md" radius='sm' onPress={() => onClickEditListing(x)}>Edit Listing</Button>
-                              </div>
-                            </> :
-                            <div className='flex'>
-                              <Button endContent={<MoveRight />} size="md" color='secondary' radius='sm' as={Link}
-                                href={continueUrl}>
-                                Continue<span className='hidden md:block -ml-1'>to complete listing</span>
-                              </Button>
-                            </div>
-                          }
+                <div key={i} className={`py-10 md:px-5 border-b-1 md:border md:rounded-lg ${i === 0 && 'border-t-1'}`}>
+                  <div className="flex gap-5 md:gap-10 relative">
+                    <div className='absolute -top-6 right-0'>
+                      {x.publish_status ? <div className='border rounded-full text-xs md:text-sm px-3 border-emerald-500 text-emerald-500 font-medium'>Published</div> :
+                        <div className='border rounded-full text-xs md:text-sm px-3 border-sky-500 text-sky-500 font-medium'>Draft</div>}
+                    </div>
+                    <div className='flex *:basis-24 *:w-[145px] *:h-[150px] *:object-cover *:rounded-lg'>
+                      {x.featured_image === null ?
+                        <img src="/images/placeholder.png" /> :
+                        <img src={x.featured_image.url} />}
+                    </div>
+                    <div className='w-full grow'>
+                      <div className='grid grid-cols-1 h-full content-between'>
+                        <div>
+                          <div className='font-semibold md:text-2xl mb-1'>{x.name}</div>
+                          <div className='text-sm font-light'>{x.area}</div>
                         </div>
+                        {!x.advertise && <div className='flex'>
+                          <Button className='w-full md:w-auto' color='primary' variant='flat' size='sm'>Advertise Now</Button>
+                        </div>}
+                        <>
+                          <div className='flex text-sm border-y-1 divide-x *:px-2 *:py-1 *:flex *:items-center *:grow *:justify-center *:gap-x-1 text-color1d'>
+                            {x.publish_status ? <>
+                              <a className='hover:bg-color2d/20' href={Resource.BusinessListing.addDetailsLink + '?type=edit&source=' + x.id}>Business Profile<Pencil size={15} /></a>
+                              <a className='hover:bg-color2d/20' href={Resource.BusinessListing.uploadImagesLink + '?type=edit&source=' + x.id}>Images<Pencil size={15} /></a>
+                            </> :
+                              <a className='hover:bg-color2d/20' href={continueUrl}>Continue to complete listing<MoveRight size={15} /></a>}
+                          </div>
+                        </>
                       </div>
                     </div>
                   </div>
-                  <a href='#' className='bg-color1d/90 hover:bg-color1d text-white block px-5 py-2 text-center border rounded-b-lg'>Advertise Now</a>
                 </div>)
             }) :
             <p className='text-lg'>Your list is empty, click on <a className='link-text' href={addNewUrl}>Add New</a> to start listing your Business today.</p>}
       </div>
-      <ButtonListModal isOpen={isOpen} onOpenChange={onOpenChange} btnComp={btnForModal} />
     </div>
   )
 }

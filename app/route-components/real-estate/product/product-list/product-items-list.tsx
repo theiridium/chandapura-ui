@@ -4,7 +4,6 @@ import ProductItemsCard from './product-items-card'
 import Breadcrumb from '@/app/sub-components/breadcrumb'
 
 const ProductItemsList = (props: any) => {
-    console.log(props)
     const propertyData = props.isSearchHit ? props.result.results[0].hits : props.result.data;
     const searchedData = props.isSearchHit ? props.result.results[0] : null;
 

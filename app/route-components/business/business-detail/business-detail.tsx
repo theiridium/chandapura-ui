@@ -5,7 +5,6 @@ import { useDisclosure } from '@nextui-org/react';
 import { Phone } from 'lucide-react';
 
 const BusinessDetail = ({ data }: any) => {
-  console.log(data)
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
     <div>

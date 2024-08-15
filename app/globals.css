@@ -28,6 +28,7 @@ footer {
 
 header {
   border-bottom: solid 1px #eee;
+  transition: transform 0.3s ease, top 0.3s ease;
 }
 
 .time-table tr > th:first-child,

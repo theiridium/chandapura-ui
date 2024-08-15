@@ -5,7 +5,7 @@ const BusinessItems = async (props: any) => {
   const attr = props.product.api;
   let isSearchHit = false;
   let res = null;
-  if (props.searchParams.q) {
+  if (props.searchParams && props.searchParams.q) {
     res = await getPublicSingleSearchResponse({
       indexUid: props.searchParams.index,
       q: props.searchParams.q

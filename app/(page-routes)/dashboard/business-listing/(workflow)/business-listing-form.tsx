@@ -23,7 +23,7 @@ const BusinessListingForm = ({ children, resCat, resLocation }: { children: Reac
         <div className='grid grid-cols-10 gap-5 relative'>
             <div className='col-span-full lg:col-span-2 my-8'>
                 <div className="sticky top-28 px-5 lg:px-7">
-                    <div className='mb-5'><MainMenuBtn url='/dashboard/business-listing' /></div>
+                    <div className='mb-5'><MainMenuBtn url='/dashboard/business-listing/view-all' /></div>
                     <UserBusinessList />
                     {(type !== "edit") && <FormStep />}
                 </div>

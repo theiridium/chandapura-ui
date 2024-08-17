@@ -7,11 +7,11 @@ module.exports = {
   Resource: {
     BusinessListing: {
       label: "Business Listing",
-      dashboardLink: "/dashboard/business-listing",
+      dashboardLink: "/dashboard/business-listing/view-all",
       userLabel: "My Listing",
-      baseLink: "/business-listing",
-      addDetailsLink: "/business-listing/add-details",
-      uploadImagesLink: "/business-listing/upload-images",
+      baseLink: "/dashboard/business-listing",
+      addDetailsLink: "/dashboard/business-listing/add-details",
+      uploadImagesLink: "/dashboard/business-listing/upload-images",
     },
     Advertisement: {
       label: "Advertise",

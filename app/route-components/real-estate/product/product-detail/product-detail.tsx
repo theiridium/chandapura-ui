@@ -1,7 +1,7 @@
 "use client"
 import ContactButton from '@/app/sub-components/contact-btn';
 import ContactCard from '@/app/sub-components/contact-card'
-import Map from '@/app/sub-components/map';
+import LocationMap from '@/app/sub-components/location-map';
 import { ConvertCurrencyToWords } from '@/lib/helpers';
 import { IndianRupee } from 'lucide-react';
 import React from 'react'
@@ -14,22 +14,22 @@ const ProductDetail = ({ data }: any) => {
                 <div className="lg:col-span-3">
                     <div className="border border-gray-300 rounded-xl bg-white p-5 lg:p-7 gap-x-5 lg:gap-x-7">
                         <div className='grid lg:grid-rows-2 lg:grid-cols-7 gap-5 lg:gap-7 mb-12'>
-                            <div className="row-span-2 col-span-4 lg:col-span-5">
+                            <div className="row-span-2 col-span-4 lg:col-span-5 *:w-full *:h-[250px] *:lg:h-[380px] *:rounded-xl">
                                 {data.property_images === null ?
-                                    <img src="/images/placeholder.png" className="w-full h-[250px] lg:h-[380px] rounded-xl" /> :
-                                    <img src={data.property_images[0].url} className="w-full h-[250px] lg:h-[380px] rounded-xl" />
+                                    <img src="/images/placeholder.png" /> :
+                                    <img src={data.property_images[0].url} />
                                 }
                             </div>
-                            <div className="col-span-2">
+                            <div className="col-span-2 *:w-full *:h-full *:rounded-xl">
                                 {data.property_images === null ?
-                                    <img src="/images/placeholder.png" className="w-full h-full rounded-xl" /> :
-                                    <img src={data.property_images[0].url} className="w-full h-full rounded-xl" />
+                                    <img src="/images/placeholder.png" /> :
+                                    <img src={data.property_images[0].url} />
                                 }
                             </div>
-                            <div className="col-span-2">
+                            <div className="col-span-2 *:w-full *:h-full *:rounded-xl">
                                 {data.property_images === null ?
-                                    <img src="/images/placeholder.png" className="w-full h-full rounded-xl" /> :
-                                    <img src={data.property_images[0].url} className="w-full h-full rounded-xl" />
+                                    <img src="/images/placeholder.png" /> :
+                                    <img src={data.property_images[0].url} />
                                 }
                             </div>
                         </div>
@@ -112,7 +112,8 @@ const ProductDetail = ({ data }: any) => {
                         <hr className='mb-12' />
                         <div className='mb-12'>
                             <h5 className='text-sm text-gray-500 font-semibold mb-5'>Map Location</h5>
-                            <Map />
+                            {/* <Map /> */}
+                            <LocationMap />
                         </div>
                     </div>
                 </div>

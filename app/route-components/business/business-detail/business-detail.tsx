@@ -1,6 +1,6 @@
 'use client'
 import ImageGallery from '@/app/components/modals/image-gallery';
-import Map from '@/app/sub-components/map';
+import LocationMap from '@/app/sub-components/location-map';
 import { useDisclosure } from '@nextui-org/react';
 import { Phone } from 'lucide-react';
 
@@ -43,17 +43,17 @@ const BusinessDetail = ({ data }: any) => {
               </div>
               <div className='re-header flex-none lg:flex justify-between mb-12'>
                 <div>
-                  <h1 className="text-lg lg:text-xl font-medium text-gray-500 mb-5"><span className='text-highlight'>{data.sub_category.name}</span> in {data.area}</h1>
-                  <h2 className="font-bold md:font-extrabold text-2xl lg:text-3xl">{data.name}</h2>
+                  <h1 className="md:text-xl font-medium text-gray-500 mb-5"><span className='text-highlight'>{data.sub_category.name}</span> in {data.area}</h1>
+                  <h2 className="font-semibold text-xl lg:text-3xl">{data.name}</h2>
                 </div>
               </div>
               <div className='mb-12'>
                 <div className='text-sm text-gray-500 font-semibold'>Address</div>
-                <p className='text-lg font-medium'>{data.full_address}</p>
+                <p className='md:text-lg font-medium'>{data.full_address}</p>
               </div>
               <div className='mb-12'>
                 <div className='text-sm text-gray-500 font-semibold mb-2'>Business Contact Name: <span className='text-black font-semibold'>{data.contact_name}</span></div>
-                <button className="border-2 border-color1d bg-color1d text-white px-5 py-1 rounded-full font-semibold h-fit text-center flex items-center gap-x-2"><Phone size={18} fill='#fff' stroke='none' />+91 {data.contact_number}</button>
+                <button className="border-2 border-color1d bg-color1d text-white px-5 py-1 rounded-full font-semibold h-fit text-center flex items-center gap-x-2 text-sm md:text-medium"><Phone size={18} fill='#fff' stroke='none' />+91 {data.contact_number}</button>
               </div>
             </div>
             {data.description && <div className='py-12'>
@@ -73,7 +73,7 @@ const BusinessDetail = ({ data }: any) => {
                       <th className='w-32 md:w-auto'>Closing Time</th>
                     </tr>
                   </thead>
-                  <tbody className='text-lg font-medium divide-y'>
+                  <tbody className='text-sm md:text-lg font-medium divide-y'>
                     {data.bus_hours.map((x: any, i: any) =>
                       <tr className='*:py-3' key={i}>
                         <td className='text-left'>{x.day}</td>
@@ -101,7 +101,8 @@ const BusinessDetail = ({ data }: any) => {
             </div>}
             <div className='py-12'>
               <h5 className='text-sm text-gray-500 font-semibold mb-5'>Map Location</h5>
-              <Map />
+              {/* <Map /> */}
+              <LocationMap />
             </div>
           </div>
         </div>

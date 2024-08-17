@@ -62,7 +62,7 @@ const Page = () => {
             if (type === "edit") {
                 toast.info("Redirecting to listing menu...")
                 await new Promise(resolve => setTimeout(resolve, 3000));
-                router.push(`/dashboard/business-listing`)
+                router.push(`/dashboard/business-listing/view-all`)
             }
             else if (type === "new" || type === "edit_back") {
                 let payload = {
@@ -72,7 +72,7 @@ const Page = () => {
                 const response = await putRequestApi(endpoint, payload, source);
                 if (response.data) {
                     toast.success("Payment details saved successfully!");
-                    router.push(`/business-listing/publish?type=${type}&source=${response.data.id}`)
+                    router.push(`/dashboard/business-listing/publish?type=${type}&source=${response.data.id}`)
                 }
             }
         } catch (error) {
@@ -177,7 +177,7 @@ const Page = () => {
             </div>
             <div className='col-span-full lg:col-start-3 lg:col-span-5 mt-3 lg:mt-0 mb-8 mx-2 lg:mx-0'>
                 <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>
-                    <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading} onClick={() => router.push(`/business-listing/upload-images?type=edit_back&source=${source}`)}>
+                    <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading} onClick={() => router.push(`/dashboard/business-listing/upload-images?type=edit_back&source=${source}`)}>
                         Back
                     </Button>
                     <Button className='btn-primary text-base' color='primary' isLoading={isSubmitLoading} onClick={onClickSave}>

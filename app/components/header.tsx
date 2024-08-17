@@ -34,7 +34,7 @@ const Header = () => {
   }, [lastScrollY]);
 
   return (
-    <header className={`main-header relative z-20 -translate-y-full ${isVisible ? 'sticky translate-y-0' : 'static md:sticky'} top-0`}>
+    <header className={`main-header relative z-20 -translate-y-full sticky ${isVisible ? 'sticky translate-y-0' : 'static'} top-0`}>
       <nav className="max-w-screen-xl mx-auto px-3">
         <div className="flex flex-wrap items-center justify-between mx-auto py-3">
           <a href="/" className="mx-0 flex items-center space-x-3 h-[50px] md:h-[60px]">

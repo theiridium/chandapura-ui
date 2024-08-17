@@ -50,7 +50,7 @@ const Page = () => {
             if (type === "edit") {
                 toast.info("Redirecting to listing menu...")
                 await new Promise(resolve => setTimeout(resolve, 3000));
-                router.push(`/dashboard/business-listing`)
+                router.push(`/dashboard/business-listing/view-all`)
             }
             else if (type === "new" || type === "edit_back") {
                 let payload = {
@@ -61,7 +61,7 @@ const Page = () => {
                 const response = await putRequestApi(endpoint, payload, source);
                 if (response.data) {
                     toast.success("Your business is listed successfully!");
-                    router.push(`/dashboard/business-listing`)
+                    router.push(`/dashboard/business-listing/view-all`)
                 }
             }
         } catch (error) {

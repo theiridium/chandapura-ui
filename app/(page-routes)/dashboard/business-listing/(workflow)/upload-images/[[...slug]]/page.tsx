@@ -77,7 +77,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
             if (type === "edit") {
                 toast.info("Redirecting to listing menu...")
                 await new Promise(resolve => setTimeout(resolve, 3000));
-                router.push(`/dashboard/business-listing`)
+                router.push(`/dashboard/business-listing/view-all`)
             }
             else if (type === "new" || type === "edit_back") {
                 let payload = {
@@ -87,7 +87,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
                 const response = await putRequestApi(endpoint, payload, source);
                 if (response.data) {
                     toast.success("Images saved successfully!");
-                    router.push(`/business-listing/payment?type=${type}&source=${response.data.id}`)
+                    router.push(`/dashboard/business-listing/payment?type=${type}&source=${response.data.id}`)
                 }
             }
         } catch (error) {
@@ -117,7 +117,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
                             <ImgMultiUploadLoading />}
                     </div>
                     <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>
-                        <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading} onClick={() => router.push(`/business-listing/add-details?type=edit_back&source=${source}`)}>
+                        <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading} onClick={() => router.push(`/dashboard/business-listing/add-details?type=edit_back&source=${source}`)}>
                             Back
                         </Button>
                         <Button className='btn-primary text-base' color='primary' isLoading={isSubmitLoading} onClick={onClickSave}>

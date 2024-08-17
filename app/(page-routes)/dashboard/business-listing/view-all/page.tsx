@@ -1,4 +1,5 @@
 "use client"
+import Breadcrumb from '@/app/sub-components/breadcrumb';
 import { getPublicApiResponse } from '@/lib/apiLibrary';
 import { DropdownList, Resource } from '@/public/shared/app.config';
 import { Button } from '@nextui-org/react';
@@ -34,7 +35,7 @@ const steps = [
   }
 ]
 const Page = () => {
-  const addNewUrl = "/business-listing/add-details?type=new";
+  const addNewUrl = "/dashboard/business-listing/add-details?type=new";
   const router = useRouter();
   const attr = DropdownList.BusinessList.api;
   const { data }: any = useSession();
@@ -54,14 +55,15 @@ const Page = () => {
   return (
     <div className='max-w-screen-xl min-h-screen mx-auto px-3 my-8 md:mt-8 md:mb-10'>
       <div className='flex gap-8 justify-between md:justify-normal'>
-        <h1 className="text-3xl font-bold text-gray-600 mb-8 md:mb-12">My Business</h1>
+        <h1 className="text-3xl font-semibold md:font-bold text-gray-600 mb-8 md:mb-12">My Business</h1>
         <Button color="primary" variant="ghost" radius="sm" className='hover:color-white'
           onClick={() => router.push(addNewUrl)}
           startContent={<Plus size={20} />}>
           Add New
         </Button>
       </div>
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-x-10'>
+      <Breadcrumb blockSecondLast={false} />
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-10'>
         {isLoading ? <>Loading..</> :
           list.length > 0 ?
             !isLoading && list.map((x: any, i: any) => {

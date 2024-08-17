@@ -15,6 +15,7 @@ import timeList from "@/lib/data/time-list.json";
 import { X } from 'lucide-react';
 import FormSubmitLoading from '@/app/loading-components/form-submit-loading';
 import { toast } from 'react-toastify';
+import AddLocationMap from '@/app/sub-components/add-location-map';
 
 const Page = () => {
     const { data }: any = useSession();
@@ -27,7 +28,16 @@ const Page = () => {
     const categoryList = useAtomValue<any>(categories).data;
     const locationList = useAtomValue<any>(locations).data;
     const [subCategoryList, setSubCategoryList] = useState([]);
-    const [contact, setContact] = useState<any>({ contact_name: userData.name, contact_number: userData.phone, contact_email_id: userData.email });
+    const [contact, setContact] = useState<any>({
+        contact_name: userData.name,
+        contact_number: userData.phone,
+        contact_email_id: userData.email
+    });
+    const [location, setLocation] = useState<any>({
+        geohash: "",
+        coordinates: { lat: 12.802076618635756, lng: 77.70497166549252 }
+    });
+    const [isExistingLoc, setIsExistingLoc] = useState(false);
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
     const defaultBusinessHours = [
         "Monday",
@@ -62,7 +72,8 @@ const Page = () => {
         services: [],
         bus_hours: businessHours,
         featured_image: {},
-        step_number: 1
+        step_number: 1,
+        location: location
     });
     const [apiRes, setApiRes] = useState<any>();
     const onCategoryChange = (id: any) => {
@@ -129,6 +140,8 @@ const Page = () => {
                 contact_number: apiRes.contact_number,
                 contact_email_id: apiRes.contact_email_id
             })
+            setLocation(apiRes.location);
+            setIsExistingLoc(true);
             setBusinessList(prevBusinessList => ({
                 ...prevBusinessList,
                 category: apiRes.category.id.toString(),
@@ -138,7 +151,8 @@ const Page = () => {
                 contact_number: apiRes.contact_number,
                 contact_email_id: apiRes.contact_email_id,
                 services: apiRes.services,
-                bus_hours: businessHours
+                bus_hours: businessHours,
+                location: apiRes.location
             }));
         }
     }, [apiRes, businessHours, categoryList, subCategoryList])
@@ -182,6 +196,7 @@ const Page = () => {
     };
 
     const handleContactDetails = (data: any) => setContact(data);
+    const handleLocation = (data: any) => setLocation(data);
 
     const onSubmit: SubmitHandler<any> = (data) => {
         setIsSubmitLoading(true);
@@ -202,7 +217,8 @@ const Page = () => {
             website: formdata.website,
             services: businessList.services,
             bus_hours: stringifyBusHours(businessList.bus_hours),
-            step_number: 2
+            step_number: 2,
+            location: location
         }
         postBusinessListing(payload);
     }
@@ -215,11 +231,11 @@ const Page = () => {
             console.log(response);
             if (response.data) {
                 toast.success("Business profile saved successfully!");
-                if (type === "edit_back") router.push(`/business-listing/upload-images?type=new&source=${response.data.id}`);
+                if (type === "edit_back") router.push(`/dashboard/business-listing/upload-images?type=new&source=${response.data.id}`);
                 else {
                     toast.info("Redirecting to listing menu...")
                     await new Promise(resolve => setTimeout(resolve, 3000));
-                    router.push(`/dashboard/business-listing`)
+                    router.push(`/dashboard/business-listing/view-all`)
                 }
             }
         }
@@ -228,7 +244,7 @@ const Page = () => {
             console.log(response);
             if (response.data) {
                 toast.success("Business profile saved successfully!");
-                router.push(`/business-listing/upload-images?type=${type}&source=${response.data.id}`);
+                router.push(`/dashboard/business-listing/upload-images?type=${type}&source=${response.data.id}`);
             }
         }
     }
@@ -352,7 +368,8 @@ const Page = () => {
                             />
                         </div>
                         <div className='mb-6'>
-                            <Input isDisabled={disabled} type="text" variant="flat" label="Set Location on Map" />
+                            <AddLocationMap setLocation={handleLocation} location={location} isExistingLoc={isExistingLoc} />
+                            <p>Selected Location: {location.coordinates.lat}, {location.coordinates.lng}</p>
                         </div>
                     </InView>
                     <InView as="div" threshold={1} onChange={onViewScroll} id='contact' className='listing-card border rounded-lg px-4 lg:px-7 py-6 scroll-mt-36'>

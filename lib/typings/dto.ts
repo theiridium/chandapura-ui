@@ -51,7 +51,8 @@ export interface BusinessListing {
     services: any[],
     bus_hours: BusinessHours[] | any,
     featured_image?: {},
-    step_number: number
+    step_number: number,
+    location: any
 }
 export interface ImageParams {
     refId: string | any,

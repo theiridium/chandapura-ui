@@ -1,8 +1,8 @@
 'use client'
 import ImageGallery from '@/app/components/modals/image-gallery';
-import LocationMap from '@/app/sub-components/location-map';
 import { useDisclosure } from '@nextui-org/react';
 import { Phone } from 'lucide-react';
+import ViewLocationMap from '@/app/components/maps/view-location-map';
 
 const BusinessDetail = ({ data }: any) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -102,7 +102,7 @@ const BusinessDetail = ({ data }: any) => {
             <div className='py-12'>
               <h5 className='text-sm text-gray-500 font-semibold mb-5'>Map Location</h5>
               {/* <Map /> */}
-              <LocationMap />
+              <ViewLocationMap coordinates={data.location.coordinates} />
             </div>
           </div>
         </div>

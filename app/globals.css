@@ -46,14 +46,14 @@ header {
   html {
     @apply scroll-smooth;
   }
-  button:hover:not(.embla *),
-  div:hover:not(.embla *, .sidemenubar *),
-  a:hover:not(.embla *) {
+  button:hover:not(.embla *, .google-map *),
+  div:hover:not(.embla *, .sidemenubar *, .google-map *),
+  a:hover:not(.embla *, .google-map *) {
     @apply transition duration-300 ease-in-out;
   }
-  button:not(.embla *),
-  div:not(.embla *, .sidemenubar *),
-  a:not(.embla *) {
+  button:not(.embla *, .google-map *),
+  div:not(.embla *, .sidemenubar *, .google-map *),
+  a:not(.embla *, .google-map *) {
     @apply transition duration-300 ease-in-out;
   }
   .link-pill {
@@ -217,8 +217,8 @@ header {
   .default-pill-btn {
     @apply pl-4 pr-1 py-1 bg-default font-medium rounded-full text-sm text-nowrap text-gray-800;
   }
-  .breadcrumb-item:not(.active){
-    @apply hover:text-color1d
+  .breadcrumb-item:not(.active) {
+    @apply hover:text-color1d;
   }
   .link-text {
     @apply text-color1d hover:underline cursor-pointer;

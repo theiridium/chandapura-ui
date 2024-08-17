@@ -11,7 +11,6 @@ const AddLocationMap = ({ setLocation, location, isExistingLoc }: any) => {
         libraries: libraries
     })
     const [center, setCenter] = useState(location.coordinates);
-    console.log(location, isExistingLoc)
     const autocompleteRef = useRef<any>(null);
 
     const createPayload = (loc: any) => {
@@ -80,8 +79,8 @@ const AddLocationMap = ({ setLocation, location, isExistingLoc }: any) => {
                 />
             </Autocomplete>
             <GoogleMap
-                mapContainerStyle={{ width: '100%', height: '500px' }}
-                mapContainerClassName='rounded-lg'
+                mapContainerStyle={{ width: '100%', height: '400px' }}
+                mapContainerClassName='google-map rounded-lg'
                 center={center}
                 zoom={20}
                 onClick={handleClick}

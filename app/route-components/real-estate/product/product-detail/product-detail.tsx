@@ -1,10 +1,10 @@
 "use client"
 import ContactButton from '@/app/sub-components/contact-btn';
 import ContactCard from '@/app/sub-components/contact-card'
-import LocationMap from '@/app/sub-components/location-map';
 import { ConvertCurrencyToWords } from '@/lib/helpers';
 import { IndianRupee } from 'lucide-react';
 import React from 'react'
+import ViewLocationMap from '@/app/components/maps/view-location-map';
 
 const ProductDetail = ({ data }: any) => {
     const contactName = `${data.user.firstname} ${data.user.lastname}`;
@@ -113,7 +113,7 @@ const ProductDetail = ({ data }: any) => {
                         <div className='mb-12'>
                             <h5 className='text-sm text-gray-500 font-semibold mb-5'>Map Location</h5>
                             {/* <Map /> */}
-                            <LocationMap />
+                            <ViewLocationMap />
                         </div>
                     </div>
                 </div>

@@ -15,7 +15,7 @@ import timeList from "@/lib/data/time-list.json";
 import { X } from 'lucide-react';
 import FormSubmitLoading from '@/app/loading-components/form-submit-loading';
 import { toast } from 'react-toastify';
-import AddLocationMap from '@/app/sub-components/add-location-map';
+import AddLocationMap from '@/app/components/maps/add-location-map';
 
 const Page = () => {
     const { data }: any = useSession();
@@ -369,7 +369,7 @@ const Page = () => {
                         </div>
                         <div className='mb-6'>
                             <AddLocationMap setLocation={handleLocation} location={location} isExistingLoc={isExistingLoc} />
-                            <p>Selected Location: {location.coordinates.lat}, {location.coordinates.lng}</p>
+                            {/* <p>Selected Location: {location.coordinates.lat}, {location.coordinates.lng}</p> */}
                         </div>
                     </InView>
                     <InView as="div" threshold={1} onChange={onViewScroll} id='contact' className='listing-card border rounded-lg px-4 lg:px-7 py-6 scroll-mt-36'>

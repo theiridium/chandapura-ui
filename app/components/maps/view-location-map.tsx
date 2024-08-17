@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useRef } from 'react';
-const LocationMap = () => {
+const ViewLocationMap = ({coordinates}: any) => {
   const mapRef: any = useRef(null);
   useEffect(() => {
     const googleMapsScript = document.createElement('script');
@@ -12,8 +12,8 @@ const LocationMap = () => {
   }, []);
   const initializeMap = () => {
     const map = new window.google.maps.Map(mapRef.current, {
-      center: { lat: 37.7749, lng: -122.4194 }, // Default to San Francisco
-      zoom: 12,
+      center: { lat: coordinates.lat, lng: coordinates.lng }, // Default to San Francisco
+      zoom: 20,
     });
     // Add your location-based features here
   };
@@ -21,4 +21,4 @@ const LocationMap = () => {
     <div ref={mapRef} style={{ height: '400px', width: '100%' }}></div>
   );
 };
-export default LocationMap;
+export default ViewLocationMap;

@@ -18,7 +18,7 @@ const ViewLocationMap = ({coordinates}: any) => {
     // Add your location-based features here
   };
   return (
-    <div ref={mapRef} style={{ height: '400px', width: '100%' }}></div>
+    <div className='google-map' ref={mapRef} style={{ height: '400px', width: '100%' }}></div>
   );
 };
 export default ViewLocationMap;

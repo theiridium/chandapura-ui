@@ -15,7 +15,7 @@ module.exports = {
     },
     Advertisement: {
       label: "Advertise",
-      link: "/",
+      link: "/dashboard/advertise/view-all",
     },
     Dashboard: {
       label: "Dashboard",

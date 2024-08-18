@@ -6,8 +6,9 @@ import TextLoading from "../loading-components/text-loading";
 import { useEffect, useState } from "react";
 import { Button } from "@nextui-org/react";
 import { CircleCheckBig, CircleX, IndianRupee } from "lucide-react";
+import { convertToReadableDate } from "@/lib/helpers";
 
-const PaymentCard = ({ adPrice, listingPrice, setAdPrice }: any) => {
+const PaymentCard = ({ adPrice, listingPrice, setAdPrice, expiryDate, setIsPaymentCompleted }: any) => {
     const { data }: any = useSession();
     const userData = data?.user;
     const router = useRouter();
@@ -16,8 +17,7 @@ const PaymentCard = ({ adPrice, listingPrice, setAdPrice }: any) => {
     const pageUrl = searchParams ? `${pathname}?${searchParams}` : `${pathname}`;
     const [isLoading, setIsLoading] = useState(true);
     const options: any = { day: '2-digit', month: 'short', year: 'numeric' };
-    const today = new Date();
-    const formattedDate = today.toLocaleDateString('en-US', options);
+    const currentDate = new Date();
     const [listingAmount, setListingAmount] = useState<number>(0);
     const [taxAmount, setTaxAmount] = useState<any>(0);
     const [totalAmount, setTotalAmount] = useState<any>(0);
@@ -28,6 +28,10 @@ const PaymentCard = ({ adPrice, listingPrice, setAdPrice }: any) => {
     useEffect(() => {
         setListingAmount(listingPrice.amount);
     }, [listingPrice])
+
+    useEffect(() => {
+        parseFloat(totalAmount) === 0? setIsPaymentCompleted(true): setIsPaymentCompleted(false);
+    }, [totalAmount])
 
     useEffect(() => {
         const tax = calculateTax();
@@ -51,15 +55,15 @@ const PaymentCard = ({ adPrice, listingPrice, setAdPrice }: any) => {
                 </div>
                 <div>
                     <div className='text-sm mb-1 font-semibold'>Billing Date</div>
-                    <div className='text-lg'>{formattedDate}</div>
+                    <div className='text-lg'>{convertToReadableDate(currentDate)}</div>
                 </div>
             </div>
             {/* <div className="mb-8 border-2 border-transparent hover:border-color1d bg-color1d/10 p-3"> */}
-            <div className={`mb-8 border-2 ${listingAmount ? 'border-transparent' : 'border-color1d'} hover:border-color1d bg-color1d/10 p-3`}>
+            <div className={`mb-8 border-2 border-dashed ${listingAmount ? 'border-transparent' : 'border-color1d'} hover:border-color1d bg-color1d/10 p-3`}>
                 <div className="flex justify-between items-center">
                     <div>
                         <div className="text-sm">Promotional Offer</div>
-                        <div className="text-xs font-semibold">Free listing until 3rd Jan, 2025</div>
+                        <div className="text-xs font-semibold">Free listing until {convertToReadableDate(new Date(expiryDate))}</div>
                     </div>
                     <Button className="pointer-cursor" radius="sm" size="sm" color={listingAmount ? "primary" : "success"} variant="flat" onClick={() => onClickApplyPromo()}>{listingAmount ? "Apply" : "Applied"}</Button>
                 </div>
@@ -68,7 +72,8 @@ const PaymentCard = ({ adPrice, listingPrice, setAdPrice }: any) => {
                 <div className='flex justify-between items-center'>
                     <div>
                         <div className='text-sm mb-1 font-semibold'>Business Listing Plan</div>
-                        <div>{listingPrice.type}</div>
+                        {listingAmount ? <div>{listingPrice.type}</div> : <div>Promotional</div>}
+                        {!listingAmount && <div className="text-xs font-semi-bold">Expires on {convertToReadableDate(new Date(expiryDate))}</div>}
                     </div>
                     <div className="flex">
                         {!listingAmount && <div className="text-xl flex items-center mr-2"><IndianRupee size={18} /><span className="line-through decoration-slate-500/60">{listingPrice.amount}</span></div>}

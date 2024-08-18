@@ -12,8 +12,11 @@ import { toast } from 'react-toastify';
 import PaymentCard from '@/app/sub-components/payment-card';
 
 const Page = () => {
+    const currentDate = new Date();
+    const expiryDate = "2025-01-03T00:00:00.000Z";
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [isPaymentCompleted, setIsPaymentCompleted] = useState(true);
     const { data }: any = useSession();
     const userData = data?.user;
     const router = useRouter();
@@ -66,7 +69,9 @@ const Page = () => {
             }
             else if (type === "new" || type === "edit_back") {
                 let payload = {
-                    step_number: 4
+                    step_number: 4,
+                    purchase_date: currentDate.toISOString(),
+                    expiry_date: expiryDate
                 }
                 const endpoint = Products.business.api.base;
                 const response = await putRequestApi(endpoint, payload, source);
@@ -173,14 +178,14 @@ const Page = () => {
                 </div>
             </div>
             <div className='col-span-full lg:col-span-3 mt-3 lg:my-8 mx-2 lg:mx-0 relative'>
-                <PaymentCard adPrice={adPrice} listingPrice={listingPrice} setAdPrice={setAdPrice} />
+                <PaymentCard adPrice={adPrice} listingPrice={listingPrice} setAdPrice={setAdPrice} expiryDate={expiryDate} setIsPaymentCompleted={setIsPaymentCompleted} />
             </div>
             <div className='col-span-full lg:col-start-3 lg:col-span-5 mt-3 lg:mt-0 mb-8 mx-2 lg:mx-0'>
                 <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>
                     <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading} onClick={() => router.push(`/dashboard/business-listing/upload-images?type=edit_back&source=${source}`)}>
                         Back
                     </Button>
-                    <Button className='btn-primary text-base' color='primary' isLoading={isSubmitLoading} onClick={onClickSave}>
+                    <Button className='btn-primary text-base' color='primary' isDisabled={!isPaymentCompleted} isLoading={isSubmitLoading} onClick={onClickSave}>
                         Continue to Preview
                     </Button>
                 </div>

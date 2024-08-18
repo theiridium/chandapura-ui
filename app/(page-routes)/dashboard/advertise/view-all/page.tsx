@@ -1,5 +1,4 @@
 "use client"
-import FormSubmitLoading from '@/app/loading-components/form-submit-loading';
 import Breadcrumb from '@/app/sub-components/breadcrumb';
 import { getPublicApiResponse } from '@/lib/apiLibrary';
 import { DropdownList, Resource } from '@/public/shared/app.config';
@@ -36,14 +35,13 @@ const steps = [
   }
 ]
 const Page = () => {
-  const addNewUrl = "/dashboard/business-listing/add-details?type=new";
+  const addNewUrl = "/dashboard/advertise/add-details?type=new";
   const router = useRouter();
   const attr = DropdownList.BusinessList.api;
   const { data }: any = useSession();
   const user = data?.user;
   const [list, setList] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isRedirecting, setIsRedirecting] = useState(false);
   const getBusinessList = async () => {
     let apiUrlContact = `${attr.base}?sort=${attr.sort}&${attr.filter}=${user?.email}&populate=featured_image`
     const response = await getPublicApiResponse(apiUrlContact);
@@ -57,22 +55,16 @@ const Page = () => {
   return (
     <div className='max-w-screen-xl min-h-screen mx-auto px-3 my-8 md:mt-8 md:mb-10'>
       <div className='flex gap-8 justify-between md:justify-normal'>
-        <h1 className="text-3xl font-semibold md:font-bold text-gray-600 mb-8 md:mb-12">My Business</h1>
+        <h1 className="text-3xl font-semibold md:font-bold text-gray-600 mb-8 md:mb-12">My Advertisements</h1>
         <Button color="primary" variant="ghost" radius="sm" className='hover:color-white'
-          onClick={() => {
-            setIsRedirecting(true);
-            router.push(addNewUrl)
-          }}
+          onClick={() => router.push(addNewUrl)}
           startContent={<Plus size={20} />}>
           Add New
         </Button>
       </div>
       <Breadcrumb blockSecondLast={false} />
       <div className='grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-10'>
-        {isLoading || isRedirecting ?
-          (isLoading ? <FormSubmitLoading text={"Loading your Business List..."} /> :
-            <FormSubmitLoading text={"Taking you to the Business Form page..."} />
-          ) :
+        {isLoading ? <>Loading..</> :
           list.length > 0 ?
             !isLoading && list.map((x: any, i: any) => {
               let continueUrl = "";

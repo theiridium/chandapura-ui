@@ -24,8 +24,8 @@ const SearchSection = () => {
             <Tabs color="secondary" aria-label="Tabs colors" radius="full"
               classNames={{
                 base: "mb-5 flex justify-center",
-                tabList: "bg-color2d/30 p-2 gap-0",
-                tab: "border border-transparent text-xs md:text-sm md:text-base px-2 md:px-3 data-[hover-unselected=true]:opacity-100 data-[hover-unselected=true]:border-color2d"
+                tabList: "bg-color2d/30 p-2 gap-0 w-full md:w-auto",
+                tab: "*:font-medium text-xs md:text-base px-2 md:px-5 md:py-5 data-[hover-unselected=true]:opacity-100 data-[hover-unselected=true]:bg-color2d/50 *:!text-secondary-foreground"
               }}
               selectedKey={productType}
               onSelectionChange={setProductType}>

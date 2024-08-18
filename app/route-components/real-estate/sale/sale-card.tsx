@@ -16,11 +16,11 @@ const SaleCard = (p: any) => {
                 </div>
                 <div className="re-card-body">
                     <div className="text-xs font-bold mb-2 flex items-center"><MapPin size={12} className='mr-1' /><span className='text-highlight'>{item.area}</span></div>
-                    <div className="text-sm md:text-base flex items-center justify-between mb-2 text-slate-600">
+                    <div className="text-sm flex items-center justify-between mb-2 text-slate-600">
                         <div>{item.rooms} {item.type}</div>
                         <div className="justify-self-end mr-2">{item.carpet_area} sqft</div>
                     </div>
-                    <div className="text-base md:text-lg font-semibold mb-2 truncate text-slate-600">{item.name}</div>
+                    <div className="text-base font-semibold mb-2 truncate text-slate-600">{item.name}</div>
                     <div className="flex items-center justify-between">
                         <div className="text-xl font-semibold flex items-center text-slate-700"><IndianRupee size={20} strokeWidth={2.5} />{item.listing_type === "Sale" ? ConvertCurrencyToWords(item.selling_amount) : ConvertCurrencyToWords(item.rental_amount)}</div>
                         <button className="btn-view_details justify-self-end">View Details</button>

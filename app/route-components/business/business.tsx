@@ -9,8 +9,8 @@ const Business = () => {
     return (
         <div className="max-w-screen-xl mx-auto px-3">
             <div className='flex justify-between mb-7'>
-                <h2 className="category-title">Recently Added</h2>
-                <Button className='btn-explore_more' variant='solid' href={Products.business.url} color='primary' radius='full' as={Link} size='sm' endContent={<MoveRight />}>Explore More</Button>
+                <h2 className="category-title">Recently Added Business</h2>
+                <Button className='btn-explore_more' variant='solid' href={Products.business.url} color='primary' radius='full' as={Link} size='sm' endContent={<MoveRight />}><span className='hidden md:block'>Explore More</span></Button>
             </div>
             <div className='relative'>
                 <Suspense fallback={<BusinessListLoading />}>

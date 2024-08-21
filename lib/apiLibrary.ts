@@ -149,7 +149,7 @@ export const getPublicSingleSearchResponse = async (payload: SearchPayload | und
     let headersList = {
         Accept: "application/json",
         'Access-Control-Allow-Origin': '*',
-        Authorization: "Bearer " + process.env.NEXT_PUBLIC_MEILISEARCH_TOKEN,
+        Authorization: "Bearer " + process.env.MEILISEARCH_TOKEN,
         "Content-Type": "application/json"
     }
     let bodyContent = JSON.stringify({

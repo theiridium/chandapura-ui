@@ -171,6 +171,32 @@ export const getPublicSingleSearchResponse = async (payload: SearchPayload | und
     return response.data;
 }
 
+// const paymentHost: any = process.env.NEXT_PUBLIC_MEILISEARCH_URL
+export const createOrderId = async (amount: any, receiptId: string) => {
+    try {
+        const response = await fetch(`${process.env.NEXTAUTH_URL}api/order`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                amount: parseFloat(amount) * 100,
+                receipt: receiptId
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        return data.orderId;
+
+    } catch (error) {
+        console.error('There was a problem with your fetch operation:', error);
+    }
+};
+
 export const getScreenSize = async () => {
     await new Promise(resolve => setTimeout(resolve, 3000))
     // const screenParameters = {

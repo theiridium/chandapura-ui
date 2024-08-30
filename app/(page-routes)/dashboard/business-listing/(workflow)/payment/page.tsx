@@ -10,13 +10,13 @@ import TextLoading from '@/app/loading-components/text-loading';
 import { IndianRupee } from 'lucide-react';
 import { toast } from 'react-toastify';
 import PaymentCard from '@/app/sub-components/payment-card';
+import { checkSubscriptionValidity } from '@/lib/helpers';
 
 const Page = () => {
     const currentDate = new Date();
     const expiryDate = "2025-01-03T00:00:00.000Z";
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [isPaymentCompleted, setIsPaymentCompleted] = useState(true);
     const { data }: any = useSession();
     const userData = data?.user;
     const router = useRouter();
@@ -24,6 +24,8 @@ const Page = () => {
     const type = searchParams.get('type');
     const source = searchParams.get('source');
     const [apiRes, setApiRes] = useState<any>();
+    const [paymentData, setPaymentData] = useState<any>({});
+    const [hasSubscribed, setHasSubscribed] = useState(false);
     const [listingPrice, setListingPrice] = useState<any>({
         type: "Monthly",
         amount: 0
@@ -38,11 +40,16 @@ const Page = () => {
             setIsLoading(true);
             if (source) {
                 const attr = Products.business.api;
-                let apiUrl = `${attr.base}?${attr.userFilter}=${userData?.email}&filters[id][$eq]=${source}&populate[0]=category&populate[1]=sub_category`;
+                let apiUrl = `${attr.base}?${attr.userFilter}=${userData?.email}&filters[id][$eq]=${source}&populate[0]=category&populate[1]=sub_category&populate[3]=payment_details&populate[4]=payment_history`;
                 const response = await getPublicApiResponse(apiUrl).then(res => res.data);
                 const data = response[0];
                 if (data) {
+                    data.payment_details && setHasSubscribed(checkSubscriptionValidity(data.payment_details.expiry_date, data.payment_details.isPaymentSuccess));
                     setApiRes(data);
+                    setPaymentData({
+                        payment_details: data.payment_details,
+                        payment_history: data.payment_history
+                    })
                     setListingPrice({ ...listingPrice, amount: data.sub_category.pricing });
                     setIsLoading(false);
                     return data;
@@ -142,7 +149,7 @@ const Page = () => {
                             </div>
                         </div>
                     </div>
-                    <Accordion className='listing-card border rounded-lg px-7 py-6'
+                    {/* <Accordion className='listing-card border rounded-lg px-7 py-6'
                         itemClasses={{
                             title: "card-header text-xl font-semibold px-0"
                         }}>
@@ -174,18 +181,18 @@ const Page = () => {
                                 </Tabs>
                             </div>
                         </AccordionItem>
-                    </Accordion>
+                    </Accordion> */}
                 </div>
             </div>
             <div className='col-span-full lg:col-span-3 mt-3 lg:my-8 mx-2 lg:mx-0 relative'>
-                <PaymentCard adPrice={adPrice} listingPrice={listingPrice} setAdPrice={setAdPrice} expiryDate={expiryDate} setIsPaymentCompleted={setIsPaymentCompleted} />
+                <PaymentCard adPrice={adPrice} listingPrice={listingPrice} setAdPrice={setAdPrice} expiryDate={expiryDate} paymentData={paymentData} hasSubscribed={hasSubscribed} setHasSubscribed={setHasSubscribed} />
             </div>
             <div className='col-span-full lg:col-start-3 lg:col-span-5 mt-3 lg:mt-0 mb-8 mx-2 lg:mx-0'>
                 <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>
                     <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading} onClick={() => router.push(`/dashboard/business-listing/upload-images?type=edit_back&source=${source}`)}>
                         Back
                     </Button>
-                    <Button className='btn-primary text-base' color='primary' isDisabled={!isPaymentCompleted} isLoading={isSubmitLoading} onClick={onClickSave}>
+                    <Button className='btn-primary text-base' color='primary' isDisabled={!hasSubscribed} isLoading={isSubmitLoading} onClick={onClickSave}>
                         Continue to Preview
                     </Button>
                 </div>

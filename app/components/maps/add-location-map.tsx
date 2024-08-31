@@ -7,7 +7,7 @@ const libraries: any = ['places'];
 const AddLocationMap = ({ setLocation, location, isExistingLoc }: any) => {
     // const [currentPosition, setCurrentPosition] = useState({ lat: 0, lng: 0 });
     const { isLoaded } = useJsApiLoader({
-        googleMapsApiKey: process.env.GOOGLE_MAP_API as string,
+        googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAP_API as string,
         libraries: libraries
     })
     const [center, setCenter] = useState(location.coordinates);

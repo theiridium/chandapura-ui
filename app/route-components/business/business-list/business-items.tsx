@@ -13,7 +13,7 @@ const BusinessItems = async (props: any) => {
     isSearchHit = true;
   }
   else {
-    let apiUrl = `${attr.base}?sort=updatedAt%3A${attr.sort}&${attr.populate}&${attr.isPublishedFilter}`
+    let apiUrl = `${attr.base}?sort=publishedAt%3A${attr.sort}&${attr.populate}&${attr.isPublishedFilter}`
     apiUrl = props.sub_category ? `${apiUrl}&filters[sub_category][slug][$eq]=${props.sub_category}` : apiUrl
     res = await getPublicApiResponse(apiUrl);
   }

@@ -126,15 +126,15 @@ const Page = () => {
                             <div className='flex flex-col md:flex-row *:basis-full *:md:basis-1/3'>
                                 <div className='mb-5'>
                                     <div className='text-sm mb-1 font-semibold'>Contact Name</div>
-                                    <div className='md:text-lg'>{apiRes.contact_name}</div>
+                                    <div className='md:text-lg'>{apiRes.contact.contact_name}</div>
                                 </div>
                                 <div className='mb-5'>
                                     <div className='text-sm mb-1 font-semibold'>Conatct Number</div>
-                                    <div className='md:text-lg'>{apiRes.contact_number}</div>
+                                    <div className='md:text-lg'>{apiRes.contact.contact_number}</div>
                                 </div>
                                 <div className='mb-5'>
                                     <div className='text-sm mb-1 font-semibold'>Business Email ID</div>
-                                    <div className='md:text-lg'>{apiRes.conatct_email_id}</div>
+                                    <div className='md:text-lg'>{apiRes.contact.conatct_email_id}</div>
                                 </div>
                             </div>
                         </div>

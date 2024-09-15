@@ -18,8 +18,8 @@ const UserBusinessList = () => {
     const [name, setName] = useState<any>("Add New");
     const [isLoading, setIsLoading] = useState(true);
     const getBusinessList = async () => {
-        let apiUrlContact = `${attr.base}?sort=${attr.sort}`
-        const response = await getPublicApiResponse(apiUrlContact);
+        let apiUrl = `${attr.base}?sort=${attr.sort}`
+        const response = await getPublicApiResponse(apiUrl);
         const filteredData = response.data.filter((x: any) => x.id.toString() === source)[0];
         setList(response);
         (filteredData && source) && setName(filteredData.name)

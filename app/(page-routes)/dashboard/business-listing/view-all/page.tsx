@@ -45,8 +45,8 @@ const Page = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const getBusinessList = async () => {
-    let apiUrlContact = `${attr.base}?sort=${attr.sort}&${attr.filter}=${user?.email}&populate=featured_image`
-    const response = await getPublicApiResponse(apiUrlContact);
+    let apiUrl = `${attr.base}?sort=${attr.sort}&${attr.filter}=${user?.email}&populate=featured_image`
+    const response = await getPublicApiResponse(apiUrl);
     setList(response.data);
     setIsLoading(false);
   }

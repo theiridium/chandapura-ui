@@ -37,14 +37,14 @@ const steps = [
 const Page = () => {
   const addNewUrl = "/dashboard/advertise/add-details?type=new";
   const router = useRouter();
-  const attr = DropdownList.BusinessList.api;
+  const attr = DropdownList.AdvertisementList.api;
   const { data }: any = useSession();
   const user = data?.user;
   const [list, setList] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
   const getBusinessList = async () => {
-    let apiUrlContact = `${attr.base}?sort=${attr.sort}&${attr.filter}=${user?.email}&populate=featured_image`
-    const response = await getPublicApiResponse(apiUrlContact);
+    let apiUrl = `${attr.base}?sort=${attr.sort}&${attr.filter}=${user?.email}&populate=featured_image`
+    const response = await getPublicApiResponse(apiUrl);
     setList(response.data);
     setIsLoading(false);
   }

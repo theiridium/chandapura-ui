@@ -17,6 +17,11 @@ const nextConfig = {
         destination: "/dashboard/business-listing/view-all",
         permanent: true,
       },
+      {
+        source: "/dashboard/advertise",
+        destination: "/dashboard/advertise/view-all",
+        permanent: true,
+      },
     ];
   },
 };

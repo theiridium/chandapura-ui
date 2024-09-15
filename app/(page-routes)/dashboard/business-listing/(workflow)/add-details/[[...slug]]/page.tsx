@@ -59,9 +59,7 @@ const Page = () => {
         name: "",
         full_address: "",
         description: "",
-        contact_name: contact.contact_name,
-        contact_number: contact.contact_number,
-        contact_email_id: contact.contact_email_id,
+        contact: contact,
         user: userData.strapiUserId,
         slug: "",
         tags: "",
@@ -135,11 +133,7 @@ const Page = () => {
     useEffect(() => {
         if (apiRes) {
             onCategoryChange(apiRes?.category.id);
-            setContact({
-                contact_name: apiRes.contact_name,
-                contact_number: apiRes.contact_number,
-                contact_email_id: apiRes.contact_email_id
-            })
+            setContact(apiRes.contact)
             setLocation(apiRes.location);
             setIsExistingLoc(true);
             setBusinessList(prevBusinessList => ({
@@ -147,9 +141,7 @@ const Page = () => {
                 category: apiRes.category.id.toString(),
                 sub_category: apiRes.sub_category.id.toString(),
                 area: locationList.filter((x: any) => x.name == apiRes.area)[0].id.toString(),
-                contact_name: apiRes.contact_name,
-                contact_number: apiRes.contact_number,
-                contact_email_id: apiRes.contact_email_id,
+                contact: apiRes.contact,
                 services: apiRes.services,
                 bus_hours: businessHours,
                 location: apiRes.location
@@ -206,9 +198,7 @@ const Page = () => {
             name: formdata.name,
             full_address: formdata.full_address,
             description: formdata.description,
-            contact_name: contact.contact_name,
-            contact_number: contact.contact_number,
-            contact_email_id: contact.contact_email_id,
+            contact: contact,
             user: userData.strapiUserId,
             slug: formdata.slug,
             tags: formdata.tags,

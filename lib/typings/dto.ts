@@ -38,9 +38,7 @@ export interface BusinessListing {
     name: string | undefined,
     full_address: string | undefined,
     description: string | undefined,
-    contact_email_id: string | any,
-    contact_name: string | any,
-    contact_number: string | any,
+    contact: any
     user: {},
     slug: string | undefined,
     tags: string | undefined,

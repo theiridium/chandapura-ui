@@ -85,7 +85,7 @@ module.exports = {
       api: {
         base: "business-listings",
         sort: "desc",
-        populate: "populate[0]=sub_category&populate[1]=category&populate[2]=user&populate[3]=featured_image&populate[4]=bus_contact&populate[5]=gallery_images",
+        populate: "populate[0]=sub_category&populate[1]=category&populate[2]=user&populate[3]=featured_image&populate[4]=bus_contact&populate[5]=gallery_images&populate[6]=contact",
         limit: 4,
         userFilter: "filters[author][email][$eq]",
         isPublishedFilter: "filters[publish_status][$eq]=true",
@@ -145,6 +145,14 @@ module.exports = {
       label: "businessList",
       api: {
         base: "business-listings",
+        sort: "name:asc",
+        filter: "filters[author][email][$eq]",
+      },
+    },
+    AdvertisementList: {
+      label: "advertisementList",
+      api: {
+        base: "advertisements",
         sort: "name:asc",
         filter: "filters[author][email][$eq]",
       },

@@ -35,7 +35,7 @@ const Page = () => {
     const fetchData = useCallback(async () => {
         try {
             setIsLoading(true);
-            const pricingPlanRes = await getPublicApiResponse(`${Products.pricingPlanByType}=Advertisement`);
+            const pricingPlanRes = await getPublicApiResponse(`${Products.pricingPlan.api.base}=Advertisement`);
             // console.log(pricingPlanRes)
             setPricingPlan(pricingPlanRes.data[0]);
             if (source) {

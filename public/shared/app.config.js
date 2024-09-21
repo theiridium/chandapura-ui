@@ -122,7 +122,11 @@ module.exports = {
         isPublishedFilter: "filters[publish_status][$eq]=true",
       },
     },
-    pricingPlanByType: "pricing-plans?filters[name][$eq]"
+    pricingPlan: {
+      api: {
+        base: "pricing-plans?filters[name][$eq]"
+      }
+    }
   },
   DropdownList: {
     Category: {

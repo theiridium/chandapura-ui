@@ -11,7 +11,7 @@ export function GetProductFromParam(val: string) {
   return Object.values(Products).find((x: any) => x.slug === val);
 }
 
-export function GetProductFromProductType(val: string) {
+export function GetProductFromProductType(val: string): any {
   return Object.values(Products).find((x: any) => x.productType === val);
 }
 

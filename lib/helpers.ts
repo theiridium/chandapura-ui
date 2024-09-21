@@ -12,7 +12,7 @@ export function GetProductFromParam(val: string) {
 }
 
 export function GetProductFromProductType(val: string) {
-  return Object.values(Products).find(x => x.productType === val);
+  return Object.values(Products).find((x: any) => x.productType === val);
 }
 
 export function isEmptyObject(obj: Object) {
@@ -71,6 +71,12 @@ export function checkSubscriptionValidity(expiryDate: any, isPaymentSuccess: boo
     return true;
   }
   else return false;
+}
+
+export function calculateDiscountPercentage(originalPrice: number, discountedPrice: number) {
+  let discount = originalPrice - discountedPrice;
+  let discountPercentage = (discount / originalPrice) * 100;
+  return Math.floor(discountPercentage);
 }
 
 let subcat = ["Banks", "Govt Dispensary", "BESCOM", "Post Office", "Petrol Bunk", "Old-Age Home", "Chandapura Municipality Corporation", "Panchayat Office", "Chandapura  Federation", "Veterinary Hospital", "Orphanage", "Fire Station", "Temple", "Cooking Gas Agency", "Gents Tailor", "Ladies & Kids Boutique", "Builder & Developer", "Real Estate Agent", "Flats For Rent", "Flats For Sale", "Individual House  Rent", "Individual House  Sale", "Used Car Sale", "Used Bike Sale", "Used Electronics Sale", "Used House Hold Materials Sale", "Individual Plot Sale", "Commercial Property  Sale", "Used Furniture Sale", "Car Repair", "Bike & Motor Cycle Repair", "Cycle Shop & Repair", "Tyre Shop", "Puncture Shop", "Car Body Painting Shop", "Driving School", "Bike Showroom", "Car Showroom", "Car & Bike Water Washing", "Primary School", "Higher Secondary School", "PU & Degree College", "Kindergarten", "Play School", "Day Care", "Coaching Institute", "Veg Hotel", "Veg Restaurant", "Non-veg & Veg Restaurant", "Coffee Shop", "Juice & Snacks Bar", "Food On Wheels", "Chat Centre", "Bakery", "Sweet Shop", "Bar & Restaurant", "Food Catering", "Pan Shop", "Cake Shop", "Chicken Centre", "Mutton Centre", "Chicken & Mutton Centre", "Fish Centre", "Chicken , Mutton & Fish Centre", "Pork Centre", "Departmental Store", "Fruit Shop", "Groccery Store", "Milk Supplier", "Pooja Items", "Drinking Water Supplier", "News Paper Agency", "Vegetable Shop", "Furniture Store", "Hardware Store", "Tiles & Sanitary Store", "Modular Kitchen", "Architects & Interior Designer", "Flower Nursery", "Welding & Aluminium Fabricator", "Building Material ( Cement & Iron)", "Photo Frame Shop", "Courier Service", "Dry Cleaning & Laundry", "Cable Tv & Internet Service Provider", "Water Tanker", "Art Work", "Duplicate Key Makers", "Insurance Agent", "Web Designer", "Auto Rikshaw Services", "Lawyer", "Security Manpower Agencies", "Music Class", "Carpenter", "Event Management", "Painter", "Plumber", "Electrician", "Stp Operator", "Gardener", "Swimming Pool Operator", "Driver", "House Keeping Service", "Packers & Movers", "Flower Decorators", "Masions", "Photo Studio", "Watch Sales & Repair", "Pest Control", "Borewell Motor Repair", "Civil Contractor", "Dance Class", "Children Hospital", "Multi Speciality Hospital", "Eye Clinic", "Gym & Fitness Centre", "Diagnostics Centre", "Homeopathy Clinic", "Ayurvedic Clinic", "Dental Clinic", "Pharmacy", "Sports Club", "Optical Store", "Beauty Parlour - Women & Kids", "Saloon- Men", "Saloon - Unisex", "Beauty Parlour At Home", "Spa", "Bridal Makeup", "Wedding & Convention Centre", "Tent House", "Jwellery Store", "Mobile Sales & Repair Centre", "Electrical Sales & Reapir", "Electronics Sales & Reapir", "Taxi For Hire", "Travel Agent", "Ticket ( Flight , Train , Bus)", "Lodging & Boarding", "Pet Shop", "Printing & Stickering", "Agriculture Product  Supplier", "Clothing &  Apparel Store", "Toys & Gifts Store", "E- Stamp Paper Sales", "Fancy Store", "PG Accommodation", "Pujari", "Recruitment"];

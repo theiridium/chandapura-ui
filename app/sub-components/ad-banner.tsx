@@ -10,7 +10,7 @@ const OPTIONS: EmblaOptionsType = { loop: true }
 const AdBanner = async ({ placement }: any) => {
   const currentDate = new Date();
   const attr = Products.advertisement.api;
-  const res = await getPublicApiResponse(`${attr.base}?sort=updatedAt%3A${attr.sort}&${attr.populate}&${attr.filter}=${currentDate.toISOString()}`);
+  const res = await getPublicApiResponse(`${attr.base}?sort=updatedAt%3A${attr.sort}&${attr.populate}&${attr.isPublishedFilter}=true&${attr.filter}=${currentDate.toISOString()}`);
   // const adBannerList = [
   //   { src: "https://flowbite.com/docs/images/carousel/carousel-1.svg", alt: "" },
   //   { src: "https://flowbite.com/docs/images/carousel/carousel-2.svg", alt: "" },

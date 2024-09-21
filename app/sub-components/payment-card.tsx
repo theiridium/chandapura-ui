@@ -12,7 +12,7 @@ import { createOrderId, putRequestApi } from "@/lib/apiLibrary";
 import { toast } from "react-toastify";
 import RazorpayButton from "./razorpay-button";
 
-const PaymentCard = ({ adPrice, listingPrice, setAdPrice, expiryDate, paymentData, hasSubscribed, setHasSubscribed }: any) => {
+const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSubscribed, isOfferApplicable }: any) => {
     const { data }: any = useSession();
     const userData = data?.user;
     const router = useRouter();
@@ -24,34 +24,29 @@ const PaymentCard = ({ adPrice, listingPrice, setAdPrice, expiryDate, paymentDat
     const [isLoading, setIsLoading] = useState(false);
     const options: any = { day: '2-digit', month: 'short', year: 'numeric' };
     const currentDate = new Date();
-    const [listingAmount, setListingAmount] = useState<number>(0);
+    const [listingAmount, setListingAmount] = useState<number>(pricing.amount);
     const [taxAmount, setTaxAmount] = useState<any>(0);
     const [isOfferApplied, setIsOfferApplied] = useState<boolean>(false);
     // const [noPaymentRequired, setNoPaymentRequired] = useState(false);
     const [totalAmount, setTotalAmount] = useState<any>(0);
     const calculateTax = (): number => {
-        return ((listingAmount + adPrice.amount) * 18) / 100;
+        return (listingAmount * 18) / 100;
     };
     useEffect(() => {
-        setListingAmount(listingPrice.amount);
-    }, [listingPrice])
-
-    // useEffect(() => {
-    //     parseFloat(totalAmount) === 0 ? setHasSubscribed(true) : setHasSubscribed(false);
-    // }, [totalAmount])
+        setListingAmount(pricing.amount);
+        setIsOfferApplied(false);
+    }, [pricing])
 
     useEffect(() => {
         const tax = calculateTax();
         setTaxAmount(tax);
-        setTotalAmount((listingAmount + adPrice.amount + tax).toFixed(2));
-    }, [listingPrice, adPrice, listingAmount])
-
-    const removeAdAmount = () => setAdPrice({ ...adPrice, amount: 0 });
+        setTotalAmount((listingAmount + tax).toFixed(2));
+    }, [listingAmount]);
 
     const onClickApplyPromo = () => {
         setIsOfferApplied(true);
         setListingAmount(0);
-    }
+    };
 
     const processPayment = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -131,7 +126,7 @@ const PaymentCard = ({ adPrice, listingPrice, setAdPrice, expiryDate, paymentDat
             if (type === "edit") {
                 toast.info("Redirecting to listing menu...")
                 await new Promise(resolve => setTimeout(resolve, 3000));
-                router.push(`/dashboard/business-listing/view-all`)
+                router.push(`/dashboard/advertisement/view-all`)
             }
             else if (type === "new" || type === "edit_back") {
                 let payment_details = {
@@ -147,7 +142,7 @@ const PaymentCard = ({ adPrice, listingPrice, setAdPrice, expiryDate, paymentDat
                     payment_details: payment_details,
                     payment_history: [...paymentData.payment_history, payment_details]
                 }
-                const endpoint = Products.business.api.base;
+                const endpoint = Products.advertisement.api.base;
                 const response = await putRequestApi(endpoint, payload, source);
                 if (response.data) {
                     toast.success("Payment details saved successfully!");
@@ -185,24 +180,24 @@ const PaymentCard = ({ adPrice, listingPrice, setAdPrice, expiryDate, paymentDat
                     </div>
                 </div>
                 {/* <div className="mb-8 border-2 border-transparent hover:border-color1d bg-color1d/10 p-3"> */}
-                <div className={`mb-8 border-2 border-dashed ${!isOfferApplied ? 'border-transparent' : 'border-color1d'} hover:border-color1d bg-color1d/10 p-3`}>
+                {isOfferApplicable && !hasSubscribed && <div className={`mb-8 border-2 border-dashed ${!isOfferApplied ? 'border-transparent' : 'border-color1d'} hover:border-color1d bg-color1d/10 p-3`}>
                     <div className="flex justify-between items-center">
                         <div>
                             <div className="text-sm">Promotional Offer</div>
                             <div className="text-xs font-semibold">Free listing until {convertToReadableDate(new Date(expiryDate))}</div>
                         </div>
-                        <Button className="pointer-cursor" radius="sm" size="sm" color={!isOfferApplied ? "primary" : "success"} variant="flat" onClick={() => onClickApplyPromo()}>{isOfferApplied ? "Apply" : "Applied"}</Button>
+                        <Button className="pointer-cursor" radius="sm" size="sm" color={!isOfferApplied ? "primary" : "success"} variant="flat" onClick={() => onClickApplyPromo()}>{!isOfferApplied ? "Apply" : "Applied"}</Button>
                     </div>
-                </div>
+                </div>}
                 <div className='divide-y *:py-4'>
                     <div className='flex justify-between items-center'>
                         <div>
                             <div className='text-sm mb-1 font-semibold'>Business Listing Plan</div>
-                            {!isOfferApplied ? <div>{listingPrice.type}</div> : <div>Promotional</div>}
+                            {!isOfferApplied ? <div>{pricing.type}</div> : <div>Promotional</div>}
                             {isOfferApplied && <div className="text-xs font-semi-bold">Expires on {convertToReadableDate(new Date(expiryDate))}</div>}
                         </div>
                         <div className="flex">
-                            {isOfferApplied && <div className="text-xl flex items-center mr-2"><IndianRupee size={18} /><span className="line-through decoration-slate-500/60">{listingPrice.amount}</span></div>}
+                            {isOfferApplied && <div className="text-xl flex items-center mr-2"><IndianRupee size={18} /><span className="line-through decoration-slate-500/60">{pricing.amount}</span></div>}
                             <div className="text-xl flex items-center"><IndianRupee size={18} />{listingAmount}</div>
                         </div>
                     </div>

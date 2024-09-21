@@ -47,7 +47,7 @@ const Header = () => {
                 <a href={Resource.BusinessListing.dashboardLink} className="hover-underline">{Resource.BusinessListing.label}</a>
               </li>
               <li>
-                <a href={Resource.Advertisement.link} className="hover-underline">{Resource.Advertisement.label}</a>
+                <a href={Resource.Advertisement.dashboardLink} className="hover-underline">{Resource.Advertisement.label}</a>
               </li>
             </ul>
             {/* <DynamicUserProfileButton /> */}

@@ -63,7 +63,7 @@ const Menubar = (props: any) => {
                         <a className='hover-underline' href={Resource.BusinessListing.dashboardLink}>{Resource.BusinessListing.label}</a>
                     </li>
                     <li className='mb-10'>
-                        <a className='hover-underline' href={Resource.Advertisement.link}>{Resource.Advertisement.label}</a>
+                        <a className='hover-underline' href={Resource.Advertisement.dashboardLink}>{Resource.Advertisement.label}</a>
                     </li>
                     {status === "authenticated" &&
                         <li className='mb-10'>

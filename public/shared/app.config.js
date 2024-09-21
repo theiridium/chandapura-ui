@@ -15,7 +15,11 @@ module.exports = {
     },
     Advertisement: {
       label: "Advertise",
-      link: "/dashboard/advertise/view-all",
+      dashboardLink: "/dashboard/advertise/view-all",
+      userLabel: "My Advertisements",
+      baseLink: "/dashboard/advertise",
+      addDetailsLink: "/dashboard/advertise/add-details",
+      uploadImagesLink: "/dashboard/advertise/upload-images",
     },
     Dashboard: {
       label: "Dashboard",
@@ -112,10 +116,13 @@ module.exports = {
         base: "advertisements",
         sort: "desc",
         populate: "populate[0]=ad_image&populate[1]=ad_contact",
-        filter: "filters[expiry_date][$gt]",
+        filter: "filters[payment_details][expiry_date][$gt]",
         limit: 0,
+        userFilter: "filters[author][email][$eq]",
+        isPublishedFilter: "filters[publish_status][$eq]=true",
       },
     },
+    pricingPlanByType: "pricing-plans?filters[name][$eq]"
   },
   DropdownList: {
     Category: {

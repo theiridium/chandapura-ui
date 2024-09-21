@@ -11,13 +11,13 @@ import { useEffect } from "react";
 const steps = [
     {
         number: 1,
-        title: "Business Details",
+        title: "Ad Details",
         currentPath: "add-details",
         nextPath: "upload-images"
     },
     {
         number: 2,
-        title: "Upload Images",
+        title: "Upload Image",
         currentPath: "upload-images",
         nextPath: "payment"
     },
@@ -35,7 +35,7 @@ const steps = [
     }
 ]
 
-const BusinessListingForm = ({ children, resCat, resLocation }: { children: React.ReactNode, resCat: any, resLocation: any }) => {
+const AdListingForm = ({ children, resCat, resLocation }: { children: React.ReactNode, resCat: any, resLocation: any }) => {
     const setCategories = useSetAtom(categories);
     const setLocations = useSetAtom(locations);
     const searchParams = useSearchParams();
@@ -49,7 +49,7 @@ const BusinessListingForm = ({ children, resCat, resLocation }: { children: Reac
         <div className='grid grid-cols-10 gap-5 relative'>
             <div className='col-span-full lg:col-span-2 my-8'>
                 <div className="sticky top-28 px-5 lg:px-7">
-                    <div className='mb-5'><MainMenuBtn url='/dashboard/business-listing/view-all' /></div>
+                    <div className='mb-5'><MainMenuBtn url='/dashboard/advertise/view-all' /></div>
                     <UserBusinessList />
                     {(type !== "edit") && <FormStep steps={steps} />}
                 </div>
@@ -59,4 +59,4 @@ const BusinessListingForm = ({ children, resCat, resLocation }: { children: Reac
     )
 }
 
-export default BusinessListingForm
+export default AdListingForm

@@ -52,6 +52,14 @@ export interface BusinessListing {
     step_number: number,
     location: any
 }
+export interface AdListing {
+    name: string | undefined,
+    contact: any
+    user: {},
+    website: string | undefined,
+    ad_image?: {},
+    step_number: number,
+}
 export interface ImageParams {
     refId: string | any,
     ref: string,

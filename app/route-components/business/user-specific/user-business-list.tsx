@@ -18,7 +18,7 @@ const UserBusinessList = () => {
     const [name, setName] = useState<any>("Add New");
     const [isLoading, setIsLoading] = useState(true);
     const getBusinessList = async () => {
-        let apiUrl = `${attr.base}?sort=${attr.sort}`
+        let apiUrl = `${attr.base}?sort=${attr.sortByName}`
         const response = await getPublicApiResponse(apiUrl);
         const filteredData = response.data.filter((x: any) => x.id.toString() === source)[0];
         setList(response);

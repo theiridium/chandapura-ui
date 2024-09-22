@@ -13,7 +13,7 @@ import { getPublicApiResponse, postRequestApi, putRequestApi } from '@/lib/apiLi
 import { Products } from '@/public/shared/app.config';
 import timeList from "@/lib/data/time-list.json";
 import { X } from 'lucide-react';
-import FormSubmitLoading from '@/app/loading-components/form-submit-loading';
+import FormLoading from '@/app/loading-components/form-loading';
 import { toast } from 'react-toastify';
 import AddLocationMap from '@/app/components/maps/add-location-map';
 
@@ -256,7 +256,7 @@ const Page = () => {
 
     return (
         <>
-            {isSubmitLoading && <FormSubmitLoading text={"Uploading your Business..."} />}
+            {isSubmitLoading && <FormLoading text={"Uploading your Business..."} />}
             <div className='col-span-full lg:col-span-6 mt-3 lg:my-8'>
                 <div className='listing-header mb-8'>
                     <div className='text-xl lg:text-4xl font-semibold text-gray-700 px-7'>{source ? "Modify Business Details" : "Add New Business"}</div>

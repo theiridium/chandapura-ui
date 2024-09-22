@@ -9,7 +9,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { getPublicApiResponse, postRequestApi, putRequestApi } from '@/lib/apiLibrary';
 import { Products } from '@/public/shared/app.config';
-import FormSubmitLoading from '@/app/loading-components/form-submit-loading';
+import FormLoading from '@/app/loading-components/form-loading';
 import { toast } from 'react-toastify';
 
 const Page = () => {
@@ -131,7 +131,7 @@ const Page = () => {
 
     return (
         <>
-            {isSubmitLoading && <FormSubmitLoading text={"Uploading your Advertisement..."} />}
+            {isSubmitLoading && <FormLoading text={"Uploading your Advertisement..."} />}
             <div className='col-span-full lg:col-span-6 mt-3 lg:my-8'>
                 <div className='listing-header mb-8'>
                     <div className='text-xl lg:text-4xl font-semibold text-gray-700 px-7'>{source ? "Modify Advertisement Details" : "Add New Advertisement"}</div>

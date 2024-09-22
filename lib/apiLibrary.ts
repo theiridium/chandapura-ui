@@ -180,7 +180,8 @@ export const createOrderId = async (amount: any, receiptId: string) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                amount: parseFloat(amount) * 100,
+                amount: Math.round(parseFloat(amount) * 100),
+                currency: "INR",
                 receipt: receiptId
             })
         });

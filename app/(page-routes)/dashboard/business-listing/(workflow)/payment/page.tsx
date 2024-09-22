@@ -2,7 +2,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Accordion, AccordionItem, Button, Input, Tab, Tabs } from '@nextui-org/react';
 import { useCallback, useEffect, useState } from 'react';
-import FormSubmitLoading from '@/app/loading-components/form-submit-loading';
+import FormLoading from '@/app/loading-components/form-loading';
 import { Products } from '@/public/shared/app.config';
 import { useSession } from 'next-auth/react';
 import { getPublicApiResponse, putRequestApi } from '@/lib/apiLibrary';
@@ -27,11 +27,7 @@ const Page = () => {
     const [paymentData, setPaymentData] = useState<any>({});
     const [hasSubscribed, setHasSubscribed] = useState(false);
     const [listingPrice, setListingPrice] = useState<any>({
-        type: "Monthly",
-        amount: 0
-    });
-    const [adPrice, setAdPrice] = useState<any>({
-        type: "Monthly",
+        type: "",
         amount: 0
     });
 
@@ -97,7 +93,7 @@ const Page = () => {
 
     return (
         <>
-            {isSubmitLoading && <FormSubmitLoading text={"Saving your payment details..."} />}
+            {isSubmitLoading && <FormLoading text={"Saving your payment details..."} />}
             <div className='col-span-full lg:col-span-5 mt-3 lg:my-8'>
                 <div className='listing-header mb-8'>
                     <div className='text-xl lg:text-4xl font-semibold text-gray-700 px-7'>Payment</div>
@@ -183,7 +179,6 @@ const Page = () => {
             <div className='col-span-full lg:col-span-3 mt-3 lg:my-8 mx-2 lg:mx-0 relative'>
                 <PaymentCard
                     pricing={listingPrice}
-                    setAdPrice={setAdPrice}
                     expiryDate={expiryDate}
                     paymentData={paymentData}
                     hasSubscribed={hasSubscribed}

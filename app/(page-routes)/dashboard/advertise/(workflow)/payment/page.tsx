@@ -2,7 +2,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Accordion, AccordionItem, Button, Input, Tab, Tabs } from '@nextui-org/react';
 import { useCallback, useEffect, useState } from 'react';
-import FormSubmitLoading from '@/app/loading-components/form-submit-loading';
+import FormLoading from '@/app/loading-components/form-loading';
 import { Products } from '@/public/shared/app.config';
 import { useSession } from 'next-auth/react';
 import { getPublicApiResponse, putRequestApi } from '@/lib/apiLibrary';
@@ -28,7 +28,7 @@ const Page = () => {
     const [hasSubscribed, setHasSubscribed] = useState(false);
     const [pricingPlan, setPricingPlan] = useState<any>({});
     const [adPrice, setAdPrice] = useState<any>({
-        type: "Monthly",
+        type: "",
         amount: 0
     });
 
@@ -36,7 +36,6 @@ const Page = () => {
         try {
             setIsLoading(true);
             const pricingPlanRes = await getPublicApiResponse(`${Products.pricingPlan.api.base}=Advertisement`);
-            // console.log(pricingPlanRes)
             setPricingPlan(pricingPlanRes.data[0]);
             if (source) {
                 const attr = Products.advertisement.api;
@@ -71,7 +70,7 @@ const Page = () => {
             if (type === "edit") {
                 toast.info("Redirecting to listing menu...")
                 await new Promise(resolve => setTimeout(resolve, 3000));
-                router.push(`/dashboard/advertisement/view-all`)
+                router.push(`/dashboard/advertise/view-all`)
             }
             else if (type === "new" || type === "edit_back") {
                 let payload = {
@@ -83,7 +82,7 @@ const Page = () => {
                 const response = await putRequestApi(endpoint, payload, source);
                 if (response.data) {
                     toast.success("Payment details saved successfully!");
-                    router.push(`/dashboard/advertisement/publish?type=${type}&source=${response.data.id}`)
+                    router.push(`/dashboard/advertise/publish?type=${type}&source=${response.data.id}`)
                 }
             }
         } catch (error) {
@@ -100,7 +99,7 @@ const Page = () => {
 
     return (
         <>
-            {isSubmitLoading && <FormSubmitLoading text={"Saving your payment details..."} />}
+            {isSubmitLoading && <FormLoading text={"Saving your payment details..."} />}
             <div className='col-span-full lg:col-span-5 mt-3 lg:my-8'>
                 <div className='listing-header mb-8'>
                     <div className='text-xl lg:text-4xl font-semibold text-gray-700 px-7'>Payment</div>
@@ -153,7 +152,6 @@ const Page = () => {
             <div className='col-span-full lg:col-span-3 mt-3 lg:my-8 mx-2 lg:mx-0 relative'>
                 <PaymentCard
                     pricing={adPrice}
-                    setAdPrice={setAdPrice}
                     expiryDate={expiryDate}
                     paymentData={paymentData}
                     hasSubscribed={hasSubscribed}

@@ -10,7 +10,7 @@ import ImgSingleUploadLoading from '@/app/loading-components/img-single-upload-l
 import ImgMultiUploadLoading from '@/app/loading-components/img-multi-upload-loading';
 import { Button } from '@nextui-org/react';
 import { toast } from 'react-toastify';
-import FormSubmitLoading from '@/app/loading-components/form-submit-loading';
+import FormLoading from '@/app/loading-components/form-loading';
 
 const Page = ({ params }: { params: { slug: string } }) => {
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
@@ -100,7 +100,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
 
     return (
         <>
-            {isSubmitLoading && <FormSubmitLoading text={"Saving Images for Business..."} />}
+            {isSubmitLoading && <FormLoading text={"Saving Images for Business..."} />}
             <div className='col-span-full lg:col-span-6 mt-3 lg:my-8'>
                 <div className='listing-header mb-8'>
                     <div className='text-xl lg:text-4xl font-semibold text-gray-700 px-7'>Upload Media Files</div>

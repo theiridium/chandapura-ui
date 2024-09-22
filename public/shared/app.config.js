@@ -156,7 +156,8 @@ module.exports = {
       label: "businessList",
       api: {
         base: "business-listings",
-        sort: "name:asc",
+        sortByName: "name:asc",
+        sortByDate: "updatedAt:desc",
         filter: "filters[author][email][$eq]",
       },
     },
@@ -164,7 +165,8 @@ module.exports = {
       label: "advertisementList",
       api: {
         base: "advertisements",
-        sort: "name:asc",
+        sortByName: "name:asc",
+        sortByDate: "updatedAt:desc",
         filter: "filters[author][email][$eq]",
       },
     }

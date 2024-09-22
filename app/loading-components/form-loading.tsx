@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 
-const FormSubmitLoading = ({text}: any) => {
+const FormLoading = ({text}: any) => {
     return (
         <div className='fixed w-screen h-screen top-0 right-0 bg-overlay/50 z-30 grid place-content-center'>
             <div className='text-center'>
@@ -12,4 +12,4 @@ const FormSubmitLoading = ({text}: any) => {
     )
 }
 
-export default FormSubmitLoading
+export default FormLoading

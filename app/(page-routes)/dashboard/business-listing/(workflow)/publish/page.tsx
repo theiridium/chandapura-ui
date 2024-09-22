@@ -2,7 +2,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button, Input } from '@nextui-org/react';
 import { useCallback, useEffect, useState } from 'react';
-import FormSubmitLoading from '@/app/loading-components/form-submit-loading';
+import FormLoading from '@/app/loading-components/form-loading';
 import { useSession } from 'next-auth/react';
 import { Products } from '@/public/shared/app.config';
 import { getPublicApiResponse, putRequestApi } from '@/lib/apiLibrary';
@@ -74,7 +74,7 @@ const Page = () => {
 
     return (
         <>
-            {isSubmitLoading && <FormSubmitLoading text={"Publishing your business..."} />}
+            {isSubmitLoading && <FormLoading text={"Publishing your business..."} />}
             <div className='col-span-full lg:col-span-6 mt-3 lg:my-8'>
                 <div className='listing-header mb-8'>
                     <div className='text-xl lg:text-4xl font-semibold text-gray-700 px-7'>Review & Publish</div>
@@ -134,7 +134,7 @@ const Page = () => {
                                 </div>
                                 <div className='mb-5'>
                                     <div className='text-sm mb-1 font-semibold'>Business Email ID</div>
-                                    <div className='md:text-lg'>{apiRes.contact.conatct_email_id}</div>
+                                    <div className='md:text-lg'>{apiRes.contact.contact_email_id}</div>
                                 </div>
                             </div>
                         </div>

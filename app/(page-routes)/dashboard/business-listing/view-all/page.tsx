@@ -1,5 +1,5 @@
 "use client"
-import FormSubmitLoading from '@/app/loading-components/form-submit-loading';
+import FormLoading from '@/app/loading-components/form-loading';
 import Breadcrumb from '@/app/sub-components/breadcrumb';
 import { getPublicApiResponse } from '@/lib/apiLibrary';
 import { DropdownList, Resource } from '@/public/shared/app.config';
@@ -45,7 +45,7 @@ const Page = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const getBusinessList = async () => {
-    let apiUrl = `${attr.base}?sort=${attr.sort}&${attr.filter}=${user?.email}&populate=featured_image`
+    let apiUrl = `${attr.base}?sort=${attr.sortByDate}&${attr.filter}=${user?.email}&populate=featured_image`
     const response = await getPublicApiResponse(apiUrl);
     setList(response.data);
     setIsLoading(false);
@@ -70,8 +70,8 @@ const Page = () => {
       <Breadcrumb blockSecondLast={false} />
       <div className='grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-10'>
         {isLoading || isRedirecting ?
-          (isLoading ? <FormSubmitLoading text={"Loading your Business List..."} /> :
-            <FormSubmitLoading text={"Taking you to the Business Form page..."} />
+          (isLoading ? <FormLoading text={"Loading your Business List..."} /> :
+            <FormLoading text={"Taking you to the Business Form page..."} />
           ) :
           list.length > 0 ?
             !isLoading && list.map((x: any, i: any) => {

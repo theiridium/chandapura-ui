@@ -59,7 +59,7 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
                 const orderId: string = await createOrderId(totalAmount, receiptId);
                 const options = {
                     key: process.env.RAZORPAY_API_KEY_ID,
-                    amount: parseFloat(totalAmount) * 100,
+                    amount: Math.round(parseFloat(totalAmount) * 100),
                     currency: 'INR',
                     name: userData.name,
                     description: 'description',
@@ -221,7 +221,7 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
                     </div>
                 </div>
                 <div className="flex justify-end mt-5">
-                    <Button isLoading={isLoading} radius="none" isDisabled={hasSubscribed} size="md" color={`${hasSubscribed ? 'success' : 'primary'}`} variant={`${hasSubscribed ? 'solid' : 'ghost'}`} onClick={(e: any) => processPayment(e)}>{hasSubscribed ? 'Paid' : 'Checkout'}</Button>
+                    <Button isLoading={isLoading} radius="none" isDisabled={hasSubscribed || !pricing.type} size="md" color={`${hasSubscribed ? 'success' : 'primary'}`} variant={`${hasSubscribed ? 'solid' : 'ghost'}`} onClick={(e: any) => processPayment(e)}>{hasSubscribed ? 'Paid' : 'Checkout'}</Button>
                     {/* <Button as={Link} href="https://rzp.io/l/8IapPlGi" radius="none" size="md" color="primary" variant="ghost">Checkout</Button> */}
                     {/* <RazorpayButton /> */}
                 </div>

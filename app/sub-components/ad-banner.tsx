@@ -30,7 +30,7 @@ const AdBanner = async ({ placement }: any) => {
     addBanner.src = x.ad_image.url;
     addBanner.alt = x.ad_image.alternativeText;
     adBannerList.push(addBanner);
-    urls.push(x.ad_url);
+    urls.push(x.website);
   });
 
   const SLIDES = Array.from(adBannerList, (x: any, i) => <img className="h-[200px] md:h-[384px]" key={i} src={x.src} alt={x.alt} />)

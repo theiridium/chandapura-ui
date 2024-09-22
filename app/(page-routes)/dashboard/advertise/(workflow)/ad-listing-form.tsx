@@ -35,15 +35,9 @@ const steps = [
     }
 ]
 
-const AdListingForm = ({ children, resCat, resLocation }: { children: React.ReactNode, resCat: any, resLocation: any }) => {
-    const setCategories = useSetAtom(categories);
-    const setLocations = useSetAtom(locations);
+const AdListingForm = ({ children }: { children: React.ReactNode }) => {
     const searchParams = useSearchParams();
     const type = searchParams.get('type');
-    useEffect(() => {
-        setCategories(resCat);
-        setLocations(resLocation);
-    }, [resCat, resLocation]);
 
     return (
         <div className='grid grid-cols-10 gap-5 relative'>

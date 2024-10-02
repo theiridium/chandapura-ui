@@ -10,7 +10,7 @@ import TextLoading from '@/app/loading-components/text-loading';
 import { IndianRupee } from 'lucide-react';
 import { toast } from 'react-toastify';
 import PaymentCard from '@/app/sub-components/payment-card';
-import { checkSubscriptionValidity } from '@/lib/helpers';
+import { calculateDiscountPercentage, checkSubscriptionValidity } from '@/lib/helpers';
 
 const Page = () => {
     const currentDate = new Date();
@@ -26,6 +26,7 @@ const Page = () => {
     const [apiRes, setApiRes] = useState<any>();
     const [paymentData, setPaymentData] = useState<any>({});
     const [hasSubscribed, setHasSubscribed] = useState(false);
+    const [pricingPlan, setPricingPlan] = useState<any>({});
     const [listingPrice, setListingPrice] = useState<any>({
         type: "",
         amount: 0
@@ -34,6 +35,9 @@ const Page = () => {
     const fetchData = useCallback(async () => {
         try {
             setIsLoading(true);
+            const pricingPlanRes = await getPublicApiResponse(`${Products.pricingPlan.api.base}=${encodeURI('Business Listing')}`);
+            console.log(pricingPlanRes)
+            setPricingPlan(pricingPlanRes.data[0]);
             if (source) {
                 const attr = Products.business.api;
                 let apiUrl = `${attr.base}?${attr.userFilter}=${userData?.email}&filters[id][$eq]=${source}&populate[0]=category&populate[1]=sub_category&populate[3]=payment_details&populate[4]=payment_history`;
@@ -47,6 +51,7 @@ const Page = () => {
                         payment_history: data.payment_history
                     })
                     setListingPrice({ ...listingPrice, amount: data.sub_category.pricing });
+                    setPricingPlan(pricingPlanRes.data[0]);
                     setIsLoading(false);
                     return data;
                 }
@@ -60,6 +65,10 @@ const Page = () => {
     useEffect(() => {
         fetchData();
     }, [fetchData]);
+
+    const onSelectAdPrice = useCallback((type: string, amount: number) => {
+        setListingPrice({ type: type, amount: amount });
+    }, [])
 
     const onClickSave = async () => {
         try {
@@ -125,7 +134,7 @@ const Page = () => {
                         </p>} */}
                         <div className='bg-color1d/10 rounded-lg p-8'>
                             <div className='w-full'>
-                                <Tabs fullWidth color='secondary' radius='full' size='lg' aria-label="Pricing Tabs"
+                                {/* <Tabs fullWidth color='secondary' radius='full' size='lg' aria-label="Pricing Tabs"
                                     classNames={{
                                         tabList: "bg-color2d/40 p-0",
                                         tabContent: "text-black",
@@ -137,6 +146,41 @@ const Page = () => {
                                         </div>
                                     </Tab>
                                     <Tab key="yearly" title="Yearly" />
+                                </Tabs> */}
+                                <Tabs fullWidth color='secondary' radius='full' size='lg' aria-label="Pricing Tabs"
+                                    classNames={{
+                                        tabList: "bg-color2d/40 p-0",
+                                        tabContent: "text-black",
+                                        tab: "z-10"
+                                    }}>
+                                    <Tab key="monthly" title="Monthly">
+                                        <div className='my-5'>
+                                            {isLoading ? <TextLoading /> :
+                                                <>
+                                                    <div className='flex items-end justify-center mb-10'><div className='text-5xl font-semibold flex items-center'><IndianRupee strokeWidth={3} size={30} />{pricingPlan.monthly}</div><span className='font-semibold'>/month</span></div>
+                                                    {!hasSubscribed &&
+                                                        <div className='flex justify-center'><Button radius="none" size="lg" color="primary" variant="bordered" onClick={() => onSelectAdPrice("Monthly", pricingPlan.monthly)}>Choose Monthly Plan</Button></div>
+                                                    }
+                                                </>
+                                            }
+                                        </div>
+                                    </Tab>
+                                    <Tab key="yearly" title="Yearly">
+                                        <div className='my-5'>
+                                            {isLoading ? <TextLoading /> :
+                                                <>
+                                                    <div className='flex items-end justify-center text-md mb-5'>
+                                                        <div className='flex items-center line-through decoration-slate-500/60'><IndianRupee size={15} />{pricingPlan.monthly * 12}</div><span className='text-xs'>/year</span>
+                                                        <div className='ml-2 bg-color1d/10 rounded-full px-5'>Save {calculateDiscountPercentage(pricingPlan.monthly * 12, pricingPlan.yearly)}%</div>
+                                                    </div>
+                                                    <div className='flex items-end justify-center mb-10'><div className='text-5xl font-semibold flex items-center'><IndianRupee strokeWidth={3} size={30} />{pricingPlan.yearly}</div><span className='font-semibold'>/year</span></div>
+                                                    {!hasSubscribed &&
+                                                        <div className='flex justify-center'><Button radius="none" size="lg" color="primary" variant="bordered" onClick={() => onSelectAdPrice("Yearly", pricingPlan.yearly)}>Choose Yearly Plan</Button></div>
+                                                    }
+                                                </>
+                                            }
+                                        </div>
+                                    </Tab>
                                 </Tabs>
                             </div>
                         </div>
@@ -183,7 +227,7 @@ const Page = () => {
                     paymentData={paymentData}
                     hasSubscribed={hasSubscribed}
                     setHasSubscribed={setHasSubscribed}
-                    isOfferApplicable={true} />
+                    isOfferApplicable={false} />
             </div>
             <div className='col-span-full lg:col-start-3 lg:col-span-5 mt-3 lg:mt-0 mb-8 mx-2 lg:mx-0'>
                 <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>

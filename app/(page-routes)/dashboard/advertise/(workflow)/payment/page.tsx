@@ -160,7 +160,7 @@ const Page = () => {
             </div>
             <div className='col-span-full lg:col-start-3 lg:col-span-5 mt-3 lg:mt-0 mb-8 mx-2 lg:mx-0'>
                 <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>
-                    <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading} onClick={() => router.push(`/dashboard/advertisement/upload-images?type=edit_back&source=${source}`)}>
+                    <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading} onClick={() => router.push(`/dashboard/advertise/upload-images?type=edit_back&source=${source}`)}>
                         Back
                     </Button>
                     <Button className='btn-primary text-base' color='primary' isDisabled={!hasSubscribed} isLoading={isSubmitLoading} onClick={onClickSave}>

@@ -5,7 +5,7 @@ import { useEffect, useState, useCallback, useMemo } from "react";
 import { useDropzone } from 'react-dropzone';
 import { toast } from "react-toastify";
 
-const MultiImage = ({ imageParams, uploadSuccess }: any) => {
+const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery }: any) => {
     const [files, setFiles] = useState<any[]>([]);
     const [existingFiles, setExistingFiles] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
@@ -105,6 +105,12 @@ const MultiImage = ({ imageParams, uploadSuccess }: any) => {
         setExistingFiles(imageParams.imgData);
     }, [imageParams]);
 
+    const isImagesInGallery = files.length > 0 || delFilesList.length > 0;
+
+    useEffect(() => {
+        setIsImagesInGallery(isImagesInGallery);
+    }, [isImagesInGallery, setIsImagesInGallery]);
+
     return (
         <>
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
@@ -119,7 +125,7 @@ const MultiImage = ({ imageParams, uploadSuccess }: any) => {
                     </div>
                 </div>
             </div>
-            {((files.length > 0) || (delFilesList.length > 0)) &&
+            {isImagesInGallery &&
                 <div className="flex justify-center mb-4">
                     <Button color="success" className="w-auto rounded-lg py-2" isLoading={loading} onClick={uploadImageWithContent}>
                         Save Images to Gallery

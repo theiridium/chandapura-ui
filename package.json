@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@nextui-org/react": "^2.2.10",
+    "@nextui-org/react": "^2.4.8",
     "@react-google-maps/api": "^2.19.3",
     "axios": "^1.7.2",
     "embla-carousel-autoplay": "^8.0.0",

@@ -20,11 +20,13 @@ const config: Config = {
   },
   darkMode: "class",
   plugins: [nextui({
+    prefix: "ch",
     themes: {
       light: {
         colors: {
           primary: {
             DEFAULT: "#650081",
+            700: "#650081",
             foreground: "#FFFFFF"
           },
           secondary: {

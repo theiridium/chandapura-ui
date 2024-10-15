@@ -55,18 +55,17 @@ const Page = () => {
             else if (type === "new" || type === "edit_back") {
                 let payload = {
                     step_number: 5,
-                    publish_status: true
                 }
                 const endpoint = Products.advertisement.api.base;
                 const response = await putRequestApi(endpoint, payload, source);
                 if (response.data) {
-                    toast.success("Your advertisement is published successfully!");
+                    toast.success("Your advertisement is sent for approval!");
                     router.push(`/dashboard/advertise/view-all`)
                 }
             }
         } catch (error) {
             console.error("An error occurred during the process:", error);
-            toast.error("Failed to publish. Please contact our support team.");
+            toast.error("Failed to submit. Please contact our support team.");
         } finally {
             setIsSubmitLoading(false);
         }
@@ -74,10 +73,10 @@ const Page = () => {
 
     return (
         <>
-            {isSubmitLoading && <FormLoading text={"Publishing your Advertisement..."} />}
+            {isSubmitLoading && <FormLoading text={"Submitting your Advertisement..."} />}
             <div className='col-span-full lg:col-span-6 mt-3 lg:my-8'>
                 <div className='listing-header mb-8'>
-                    <div className='text-xl lg:text-4xl font-semibold text-gray-700 px-7'>Review & Publish</div>
+                    <div className='text-xl lg:text-4xl font-semibold text-gray-700 px-7'>Review & Submit</div>
                 </div>
                 {isLoading ? "Loading..." :
                     <div className='grid grid-cols-1 gap-10 mx-2'>
@@ -117,7 +116,7 @@ const Page = () => {
                         </div>
                         <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>
                             <Button className='btn-primary text-base' color='primary' isLoading={isSubmitLoading} onClick={onClickSave}>
-                                Publish
+                                Submit
                             </Button>
                         </div>
                     </div>

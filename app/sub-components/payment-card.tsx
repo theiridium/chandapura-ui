@@ -1,5 +1,4 @@
 "use client"
-import { Products, Resource } from "@/public/shared/app.config";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import TextLoading from "../loading-components/text-loading";
@@ -10,9 +9,8 @@ import { convertToReadableDate, hashCode } from "@/lib/helpers";
 import Script from "next/script";
 import { createOrderId, putRequestApi } from "@/lib/apiLibrary";
 import { toast } from "react-toastify";
-import RazorpayButton from "./razorpay-button";
 
-const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSubscribed, isOfferApplicable }: any) => {
+const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSubscribed, isOfferApplicable, endpoint }: any) => {
     const { data }: any = useSession();
     const userData = data?.user;
     const router = useRouter();
@@ -142,7 +140,6 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
                     payment_details: payment_details,
                     payment_history: [...paymentData.payment_history, payment_details]
                 }
-                const endpoint = Products.advertisement.api.base;
                 const response = await putRequestApi(endpoint, payload, source);
                 if (response.data) {
                     toast.success("Payment details saved successfully!");

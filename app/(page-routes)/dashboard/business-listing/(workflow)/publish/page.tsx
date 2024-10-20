@@ -54,8 +54,7 @@ const Page = () => {
             }
             else if (type === "new" || type === "edit_back") {
                 let payload = {
-                    step_number: 5,
-                    publish_status: true
+                    step_number: 5
                 }
                 const endpoint = Products.business.api.base;
                 const response = await putRequestApi(endpoint, payload, source);

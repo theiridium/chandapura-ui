@@ -125,7 +125,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
                         <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading} onClick={() => router.push(`/dashboard/business-listing/add-details?type=edit_back&source=${source}`)}>
                             Back
                         </Button>
-                        <Button className='btn-primary text-base' color='primary' isDisabled={isImagesInGallery} isLoading={isSubmitLoading} onClick={onClickSave}>
+                        <Button className='btn-primary text-base' color='primary' isDisabled={isImagesInGallery || !imageParamsFeatured.imgData} isLoading={isSubmitLoading} onClick={onClickSave}>
                             {!isSubmitLoading && ((type === "edit") ? "Save" : "Save and Continue")}
                         </Button>
                     </div>

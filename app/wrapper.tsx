@@ -18,7 +18,7 @@ const Wrapper = ({
   // setScreenParameters(useScreenSize());
   return (
     <SessionProvider session={session}>
-      <NextUIProvider>
+      <NextUIProvider validationBehavior="native">
         <Provider store={myStore}>
           <ToastContainer
             position="top-center"

@@ -273,7 +273,7 @@ const Page = () => {
                                     onSelectionChange={onCategoryChange}
                                     selectedKey={businessList.category}
                                     isDisabled={!!source || disabled}
-                                    isRequired={true}
+                                    isRequired
                                 >
                                     {(item: any) => <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>}
                                 </Autocomplete>
@@ -284,7 +284,7 @@ const Page = () => {
                                     onSelectionChange={onSubCategoryChange}
                                     selectedKey={businessList.sub_category}
                                     isDisabled={!!source || disabled}
-                                    isRequired={true}
+                                    isRequired
                                 >
                                     {(item: any) => <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>}
                                 </Autocomplete>
@@ -301,7 +301,7 @@ const Page = () => {
                                         type="text"
                                         variant="flat"
                                         label="Business Name"
-                                        isRequired={true} />
+                                        isRequired />
                                 )}
                             />
                         </div>
@@ -338,7 +338,7 @@ const Page = () => {
                                 onSelectionChange={onAreaChange}
                                 isDisabled={disabled}
                                 selectedKey={businessList.area}
-                                isRequired={true}
+                                isRequired
                             >
                                 {(item: any) => <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>}
                             </Autocomplete>
@@ -353,7 +353,7 @@ const Page = () => {
                                         value={value}
                                         variant="flat"
                                         label="Full Address"
-                                        isRequired={true} />
+                                        isRequired />
                                 )}
                             />
                         </div>

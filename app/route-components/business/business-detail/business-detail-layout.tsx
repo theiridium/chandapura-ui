@@ -9,7 +9,7 @@ const BusinessDetailLayout = async ({ id }: any) => {
     const item = data[0];
     return (
         <>
-            <Breadcrumb blockSecondLast={true} />
+            <div className="hidden lg:block"><Breadcrumb blockSecondLast={true} /></div>
             <BusinessDetail data={item} />
         </>
     )

@@ -5,7 +5,7 @@ import GlobalSearchListLoading from "@/app/loading-components/global-search-list
 const Page = ({ searchParams }: any) => {
     const id = searchParams.source;
     return (
-        <div className="max-w-screen-xl mx-auto px-3 my-5 lg:my-6">
+        <div className="max-w-screen-xl mx-auto lg:px-3 lg:my-6">
             <Suspense fallback={<GlobalSearchListLoading />}>
                 <ProductDetailLayout id={id} />
             </Suspense>

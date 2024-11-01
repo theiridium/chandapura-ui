@@ -17,11 +17,11 @@ const ContactCard = ({ heading, name, contact }: any) => {
                     <div className="flex lg:block justify-between lg:justify-normal">
                         <div className='mb-5'>
                             <div className='text-sm text-gray-500 font-semibold'>Name</div>
-                            <div className='text-lg font-semibold'>{name}</div>
+                            <div className='lg:text-lg font-semibold'>{name}</div>
                         </div>
                         <div>
                             <div className='text-sm text-gray-500 font-semibold'>Contact</div>
-                            <div className='text-lg font-semibold'>+91 {contact}</div>
+                            <div className='lg:text-lg font-semibold'>+91 {contact}</div>
                         </div>
                     </div> :
                     <button className="btn-primary" onClick={() => router.push(Resource.Login.link + "?redirect=" + pageUrl)}>{Resource.Login.label}</button>

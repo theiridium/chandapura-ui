@@ -1,6 +1,10 @@
+import FormLoading from "./loading-components/form-loading"
+
 const loading = () => {
     return (
-        <div>loading nain</div>
+        <div className="h-screen">
+            <FormLoading text={'Loading...'} />
+        </div>
     )
 }
 

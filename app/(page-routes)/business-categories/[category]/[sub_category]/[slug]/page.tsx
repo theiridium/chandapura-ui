@@ -9,7 +9,7 @@ const Page = ({ searchParams }: any) => {
     const id = searchParams.source;
     return (
         <div className="max-w-screen-xl mx-auto lg:px-3 lg:my-6">
-            <Suspense fallback={<FormLoading text={"Uploading your Business..."} />}>
+            <Suspense fallback={<div className="h-screen"><FormLoading text={"Loading..."} /></div>}>
                 <BusinessDetailLayout id={id} />
             </Suspense>
             <div className="col-span-1 lg:col-span-full my-10">

@@ -15,22 +15,21 @@ const BusinessDetail = ({ data }: any) => {
           <div className="lg:border border-gray-300 rounded-xl bg-white lg:p-7 gap-x-5 lg:gap-x-7">
             <div>
               <div className='grid lg:grid-rows-2 lg:grid-cols-7 gap-5 lg:gap-7 lg:mb-12'>
-                <div className="row-span-2 col-span-4 lg:col-span-5">
+                <div className={`${data.gallery_images ? 'row-span-2 col-span-4 lg:col-span-5': 'row-span-2 col-span-4 lg:col-span-full'}`}>
                   {data.featured_image &&
                     <div className='relative'>
                       <img src={data.featured_image.url} className="w-full h-[250px] lg:h-[380px] lg:rounded-xl object-cover" />
-                      {data.gallery_images && data.gallery_images.length > 2 &&
+                      {data.gallery_images &&
                         <div className='absolute bottom-3 right-3 rounded-md bg-black/50 hover:bg-black/40 w-fit px-3 py-1 text-white cursor-pointer' onClick={onOpen}>{data.gallery_images.length + 1} Photos</div>
                       }
                     </div>
                   }
                 </div>
-                <div className="hidden lg:block col-span-2">
-                  {data.gallery_images ?
-                    <img src={data.gallery_images[0].url} className="w-full h-full rounded-xl" /> :
-                    <img src="/images/placeholder.png" className="w-full h-full rounded-xl" />
-                  }
-                </div>
+                {data.gallery_images &&
+                  <div className="hidden lg:block col-span-2">
+                    <img src={data.gallery_images[0].url} className="w-full h-full rounded-xl" />
+                  </div>
+                }
                 {data.gallery_images && data.gallery_images.length > 2 ?
                   <div className="hidden lg:block col-span-2 cursor-pointer relative" onClick={onOpen}>
                     <img src={data.gallery_images[1].url} className="w-full h-full rounded-xl" />
@@ -38,10 +37,9 @@ const BusinessDetail = ({ data }: any) => {
                       <span className='text-white text-[3.25rem] m-auto font-light'>+{data.gallery_images.length - 2}</span>
                     </div>
                   </div> :
-                  <div className="col-span-2">
-                    {data.gallery_images && data.gallery_images[1] ?
-                      <img src={data.gallery_images[1].url} className="w-full h-full rounded-xl" /> :
-                      <img src="/images/placeholder.png" className="w-full h-full rounded-xl" />
+                  <div className="hidden lg:block col-span-2">
+                    {data.gallery_images && data.gallery_images[1] &&
+                      <img src={data.gallery_images[1].url} className="w-full h-full rounded-xl" />
                     }
                   </div>
                 }

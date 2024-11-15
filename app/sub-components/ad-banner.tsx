@@ -37,7 +37,7 @@ const AdBanner = async ({ placement }: any) => {
   return (
     <div className={placement}>
       <div>
-        <EmblaCarousel bg="bg-gray-200" radius="rounded-md" height={'h-[200px] md:h-[384px]'} slides={SLIDES} options={OPTIONS} isAutoplay={true} urls={urls} />
+        <EmblaCarousel bg="bg-gray-200" height={'h-[200px] md:h-[384px]'} slides={SLIDES} options={OPTIONS} isAutoplay={true} urls={urls} />
       </div>
     </div>
   )

@@ -20,7 +20,6 @@ const BusinessItemsList = (props: any) => {
                         ))}
                     </div>
                 </div>
-                <div></div>
             </div>
         </>
     )

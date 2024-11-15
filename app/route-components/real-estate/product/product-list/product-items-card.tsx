@@ -12,29 +12,29 @@ const ProductItemsCard = ({ data, id, product }: any) => {
                             <img src={data.property_images[0].url} className="w-full h-full rounded-xl" />}
                     </div>
                     <div className="w-full flex flex-col">
-                        <h2 className="md:text-lg font-medium mb-2">{data.rooms} {data.type} for {data.listing_type} in {data.area}</h2>
+                        <h2 className="md:text-lg font-medium mb-2">{data.property_details.rooms} {data.property_details.type} for {data.property_details.listing_type} in {data.property_details.area}</h2>
                         <h3 className="font-semibold mb-5 text-gray-500">{data.name}</h3>
                         <div className="flex flex-wrap gap-x-3 md:gap-x-5 text-xs md:text-sm mb-3 text-gray-400 font-semibold">
                             <div className="mb-2">
-                                {data.carpet_area} Sqft
+                                {data.property_details.carpet_area} Sqft
                             </div>
                             <div className="mb-2">
-                                {data.bathrooms} Bathrooms
+                                {data.property_details.bathrooms} Bathrooms
                             </div>
                             <div className="mb-2">
-                                {data.parking_type} Parking
+                                {data.property_details.parking_type} Parking
                             </div>
                             <div className="mb-2">
-                                {data.facing} Facing
+                                {data.property_details.facing} Facing
                             </div>
                         </div>
                         <div className="tags">
-                            {data.real_estate_amenities.map((x: any, i: any) =>
+                            {data.amenities.map((x: any, i: any) =>
                                 <div className="px-3 py-1 bg-color2d/70 font-semibold rounded-xl text-xs text-nowrap text-gray-600" key={i}>{x.title}</div>
                             )}
                         </div>
                         <div className="w-full flex justify-between lg:justify-normal gap-x-6">
-                            <div className="text-xl font-semibold text-gray-600 flex items-center"><IndianRupee size={20} />{data.listing_type === "Sale" ? ConvertCurrencyToWords(data.selling_amount) : ConvertCurrencyToWords(data.rental_amount)}</div>
+                            <div className="text-xl font-semibold text-gray-600 flex items-center"><IndianRupee size={20} />{data.property_details.listing_type === "Sale" ? ConvertCurrencyToWords(data.property_details.selling_amount) : ConvertCurrencyToWords(data.property_details.rental_amount)}</div>
                             <button className="border-2 border-color1d bg-color1d text-white px-5 py-1 rounded-full h-fit text-center text-sm md:text-base">Contact Owner</button>
                         </div>
                     </div>

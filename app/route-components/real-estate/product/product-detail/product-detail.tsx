@@ -38,10 +38,10 @@ const ProductDetail = ({ data }: any) => {
                             <div className='re-header flex-none lg:flex justify-between mb-12'>
                                 <div className="lg:hidden"><Breadcrumb /></div>
                                 <div>
-                                    <h1 className="md:text-xl font-medium text-gray-500 mb-5">{data.rooms} {data.type} <span className='text-highlight'>for {data.listing_type}</span> in {data.area}</h1>
+                                    <h1 className="md:text-xl font-medium text-gray-500 mb-5">{data.property_details.rooms} {data.property_details.type} <span className='text-highlight'>for {data.property_details.listing_type}</span> in {data.property_details.area}</h1>
                                     <h2 className="font-semibold text-xl lg:text-3xl mb-2 lg:mb-0">{data.name}</h2>
                                 </div>
-                                <div className='text-2xl font-semibold text-gray-600 flex items-center bg-color2d/70 px-5 py-1 mt-0 lg:mt-5 lg:mt-0 w-fit float-right lg:float-none'><IndianRupee strokeWidth={3} size={20} />{data.listing_type === "Rent" ? ConvertCurrencyToWords(data.rental_amount) : ConvertCurrencyToWords(data.selling_amount)}</div>
+                                <div className='text-2xl font-semibold text-gray-600 flex items-center bg-color2d/70 px-5 py-1 mt-0 lg:mt-5 lg:mt-0 w-fit float-right lg:float-none'><IndianRupee strokeWidth={3} size={20} />{data.property_details.listing_type === "Rent" ? ConvertCurrencyToWords(data.property_details.rental_amount) : ConvertCurrencyToWords(data.property_details.selling_amount)}</div>
                             </div>
                             <div className='mb-12 pt-5'>
                                 <div className='mb-5'>
@@ -61,7 +61,7 @@ const ProductDetail = ({ data }: any) => {
                             <div className='flex lg:flex-none flex-wrap lg:grid lg:grid-flow-col lg:justify-stretch gap-x-10 lg:gap-x-5 mb-12'>
                                 <div className='mb-5 lg:mb-0'>
                                     <div className='text-sm text-gray-500 font-semibold'>Type</div>
-                                    <div className='md:text-lg font-medium'>{data.type}</div>
+                                    <div className='md:text-lg font-medium'>{data.property_details.type}</div>
                                 </div>
                                 <div className='mb-5 lg:mb-0'>
                                     <div className='text-sm text-gray-500 font-semibold'>Availability</div>
@@ -69,30 +69,30 @@ const ProductDetail = ({ data }: any) => {
                                 </div>
                                 <div className='mb-5 lg:mb-0'>
                                     <div className='text-sm text-gray-500 font-semibold'>Rooms</div>
-                                    <div className='md:text-lg font-medium'>{data.rooms}</div>
+                                    <div className='md:text-lg font-medium'>{data.property_details.rooms}</div>
                                 </div>
                                 <div className='mb-5 lg:mb-0'>
                                     <div className='text-sm text-gray-500 font-semibold'>Direction</div>
-                                    <div className='md:text-lg font-medium'>{data.facing} Facing</div>
+                                    <div className='md:text-lg font-medium'>{data.property_details.facing} Facing</div>
                                 </div>
                                 <div className='mb-5 lg:mb-0'>
                                     <div className='text-sm text-gray-500 font-semibold'>Furnishing</div>
-                                    <div className='md:text-lg font-medium'>{data.furnishing} Furnished</div>
+                                    <div className='md:text-lg font-medium'>{data.property_details.furnishing}</div>
                                 </div>
                             </div>
                             <hr className='mb-12' />
                             <div className='flex lg:flex-none flex-nowrap lg:grid lg:grid-cols-5 gap-x-5 lg:gap-x-10 mb-12 overflow-x-auto'>
                                 <div className='border rounded-lg aspect-square grid place-items-center text-center p-2'>
                                     <img className='max-w-[64px]' src='/images/icons/area.png' />
-                                    <div className='text-xs lg:text-sm text-gray-500 font-semibold w-24 lg:w-auto'>{data.carpet_area} Sqft</div>
+                                    <div className='text-xs lg:text-sm text-gray-500 font-semibold w-24 lg:w-auto'>{data.property_details.carpet_area} Sqft</div>
                                 </div>
                                 <div className='border rounded-lg aspect-square grid place-items-center text-center p-2'>
                                     <img className='max-w-[64px]' src='/images/icons/bathroom.png' />
-                                    <div className='text-xs lg:text-sm text-gray-500 font-semibold w-24 lg:w-auto'>{data.bathrooms} Baths</div>
+                                    <div className='text-xs lg:text-sm text-gray-500 font-semibold w-24 lg:w-auto'>{data.property_details.bathrooms} Baths</div>
                                 </div>
                                 <div className='border rounded-lg aspect-square grid place-items-center text-center p-2'>
                                     <img className='max-w-[64px]' src='/images/icons/floor.png' />
-                                    <div className='text-xs lg:text-sm text-gray-500 font-semibold w-24 lg:w-auto'>{data.floor_number} Floor</div>
+                                    <div className='text-xs lg:text-sm text-gray-500 font-semibold w-24 lg:w-auto'>{data.property_details.floor_number} Floor</div>
                                 </div>
                                 <div className='border rounded-lg aspect-square grid place-items-center text-center p-2'>
                                     <img className='max-w-[64px]' src='/images/icons/balcony.png' />
@@ -100,14 +100,14 @@ const ProductDetail = ({ data }: any) => {
                                 </div>
                                 <div className='border rounded-lg aspect-square grid place-items-center text-center p-2'>
                                     <img className='max-w-[64px]' src='/images/icons/parking.png' />
-                                    <div className='text-xs lg:text-sm text-gray-500 font-semibold w-24 lg:w-auto'>{data.parking_type} Parking</div>
+                                    <div className='text-xs lg:text-sm text-gray-500 font-semibold w-24 lg:w-auto'>{data.property_details.parking_type} Parking</div>
                                 </div>
                             </div>
                             <hr className='mb-12' />
                             <div className='mb-12'>
                                 <h5 className='text-sm text-gray-500 font-semibold mb-5'>Amenities</h5>
                                 <div className="tags">
-                                    {data.real_estate_amenities.map((x: any, i: any) =>
+                                    {data.amenities.map((x: any, i: any) =>
                                         <div className="px-4 py-1 bg-color2d/70 font-semibold rounded-full text-sm text-nowrap text-gray-600" key={i}>{x.title}</div>
                                     )}
                                 </div>

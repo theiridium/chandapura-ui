@@ -3,7 +3,7 @@ import SaleCard from "./sale-card"
 import { getPublicApiResponse } from "@/lib/apiLibrary";
 
 const SaleList = async () => {
-  const res = await getPublicApiResponse("real-estates?sort=updatedAt%3Adesc&pagination%5Blimit%5D=4&filters[listing_type][$eq]=Sale&populate=property_images%2C%20user");
+  const res = await getPublicApiResponse("real-estates?sort=updatedAt%3Adesc&pagination%5Blimit%5D=4&populate=property_details,property_images,user&filters[property_details][listing_type][$eq]=Sale");
   return (
     <>
       <div className="card-list-row">

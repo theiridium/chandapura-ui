@@ -7,9 +7,9 @@ const ProductItemsCard = ({ data, id, product }: any) => {
             <div className="border border-gray-300 rounded-xl bg-white">
                 <div className="flex-none md:flex p-5 lg:p-7 gap-x-5 lg:gap-x-7">
                     <div className="flex-none w-full h-[230px] lg:w-[300px] lg:h-[200px] mb-5 md:mb-0">
-                        {data.property_images === null ?
+                        {data.featured_image === null ?
                             <img src="/images/placeholder.png" className="w-full h-full rounded-xl" /> :
-                            <img src={data.property_images[0].url} className="w-full h-full rounded-xl" />}
+                            <img src={data.featured_image.url} className="w-full h-full rounded-xl" />}
                     </div>
                     <div className="w-full flex flex-col">
                         <h2 className="md:text-lg font-medium mb-2">{data.property_details.rooms} {data.property_details.type} for {data.property_details.listing_type} in {data.property_details.area}</h2>

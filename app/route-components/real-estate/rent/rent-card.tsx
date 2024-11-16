@@ -10,9 +10,9 @@ const RentCard = (p: any) => {
         <a href={`${Products.rent.url}/${item.slug}?source=${id}`} className="re-card-link">
             <div className="re-card">
                 <div className="re-card-img">
-                    {item.property_images === null ?
+                    {item.featured_image === null ?
                         <img src="/images/placeholder.png" /> :
-                        <img src={item.property_images[0].url} />}
+                        <img src={item.featured_image.url} />}
                 </div>
                 <div className="re-card-body">
                     <div className="text-xs font-bold mb-2 flex items-center"><MapPin size={12} className='mr-1' /><span className='text-highlight'>{item.property_details.area}</span></div>

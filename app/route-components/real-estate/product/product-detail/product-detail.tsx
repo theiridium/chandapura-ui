@@ -8,7 +8,6 @@ import ViewLocationMap from '@/app/components/maps/view-location-map';
 import Breadcrumb from '@/app/sub-components/breadcrumb';
 
 const ProductDetail = ({ data }: any) => {
-    const contactName = `${data.user.firstname} ${data.user.lastname}`;
     return (
         <div>
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-5 lg:gap-10 text-gray-700">
@@ -16,21 +15,21 @@ const ProductDetail = ({ data }: any) => {
                     <div className="lg:border border-gray-300 rounded-xl bg-white lg:p-7 gap-x-5 lg:gap-x-7">
                         <div className='grid lg:grid-rows-2 lg:grid-cols-7 gap-5 lg:gap-7 lg:mb-12'>
                             <div className="row-span-2 col-span-4 lg:col-span-5 *:w-full *:h-[250px] *:lg:h-[380px] *:lg:rounded-xl *:object-cover">
-                                {data.property_images === null ?
+                                {data.featured_image === null ?
                                     <img src="/images/placeholder.png" /> :
-                                    <img src={data.property_images[0].url} />
+                                    <img src={data.featured_image.url} />
                                 }
                             </div>
                             <div className="hidden lg:block col-span-2 *:w-full *:h-full *:rounded-xl">
-                                {data.property_images === null ?
+                                {data.featured_image === null ?
                                     <img src="/images/placeholder.png" /> :
-                                    <img src={data.property_images[0].url} />
+                                    <img src={data.featured_image.url} />
                                 }
                             </div>
                             <div className="hidden lg:block col-span-2 *:w-full *:h-full *:rounded-xl">
-                                {data.property_images === null ?
+                                {data.featured_image === null ?
                                     <img src="/images/placeholder.png" /> :
-                                    <img src={data.property_images[0].url} />
+                                    <img src={data.featured_image.url} />
                                 }
                             </div>
                         </div>
@@ -55,7 +54,7 @@ const ProductDetail = ({ data }: any) => {
                                 </div>
                             </div>
                             <div className='mb-12'>
-                                <ContactButton name={contactName} phone={data.user.phone} maskedText={"Owner"} />
+                                <ContactButton name={data.contact.contact_name} phone={data.contact.contact_number} maskedText={"Owner"} />
                             </div>
                             <hr className='mb-12' />
                             <div className='flex lg:flex-none flex-wrap lg:grid lg:grid-flow-col lg:justify-stretch gap-x-10 lg:gap-x-5 mb-12'>
@@ -122,7 +121,7 @@ const ProductDetail = ({ data }: any) => {
                     </div>
                 </div>
                 <div className='lg:col-span-1 relative m-5 lg:m-0'>
-                    <ContactCard heading="Owner Contact Details" name={contactName} contact={data.user.phone} />
+                    <ContactCard heading="Owner Contact Details" name={data.contact.contact_name} contact={data.contact.contact_number} />
                 </div>
             </div>
         </div>

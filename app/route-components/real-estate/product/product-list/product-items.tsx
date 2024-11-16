@@ -13,7 +13,7 @@ const ProductItems = async (props: any) => {
     isSearchHit = true;
   }
   else
-    res = await getPublicApiResponse(`${attr.base}?sort=updatedAt%3A${attr.sort}&populate=property_details,amenities,property_images,user`);
+    res = await getPublicApiResponse(`${attr.base}?sort=updatedAt%3A${attr.sort}&populate=property_details,amenities,featured_image,gallery_images,contact,user`);
 
   return <ProductItemsList result={res} product={props.product} isSearchHit={isSearchHit} />
 }

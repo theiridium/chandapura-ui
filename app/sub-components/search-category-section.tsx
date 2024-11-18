@@ -8,7 +8,7 @@ import ListArrow from "../route-components/business/list-arrow";
 const SearchCategorySection = ({ productType }: any) => {
     const [categories, SetCategories] = useState([]);
     const getCategoryList = async () => {
-        const { data } = await getPublicApiResponse(`categories?populate=image`);
+        const { data } = await getPublicApiResponse(`categories?populate=image&sort=name`);
         SetCategories(data);
     }
     useEffect(() => {

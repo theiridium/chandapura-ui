@@ -65,6 +65,9 @@ const Menubar = (props: any) => {
                     <li className='mb-10'>
                         <a className='hover-underline' href={Resource.Advertisement.dashboardLink}>{Resource.Advertisement.label}</a>
                     </li>
+                    <li className='mb-10'>
+                        <a className='hover-underline' href={Resource.PropertyListing.dashboardLink}>{Resource.PropertyListing.label}</a>
+                    </li>
                     {status === "authenticated" &&
                         <li className='mb-10'>
                             <button className='hover-underline' onClick={() => signOut({ callbackUrl: '/' })}>{Resource.Logout.label}</button>

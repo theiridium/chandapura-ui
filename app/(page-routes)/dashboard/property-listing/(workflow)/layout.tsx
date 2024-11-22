@@ -2,25 +2,25 @@ import GlobalSearchListLoading from "@/app/loading-components/global-search-list
 import { getPublicApiResponse } from "@/lib/apiLibrary";
 import { DropdownList } from "@/public/shared/app.config";
 import { Suspense } from "react"
-import BusinessListingForm from "./business-listing-form";
+import PropertyListingForm from "./property-listing-form";
 
 export default async function BusinessListingLayout({
     children,
 }: {
     children: React.ReactNode
 }) {
-    const attrCat = DropdownList.Category.api;
+    const attrAmenities = DropdownList.Amenities.api;
     const attrArea = DropdownList.Area.api;
-    let apiUrlCat = `${attrCat.base}?sort=${attrCat.sort}&populate=${attrCat.populate}`
+    let apiUrlAmenities = `${attrAmenities.base}?sort=${attrAmenities.sort}`
     let apiUrlArea = `${attrArea.base}?sort=${attrArea.sort}`
-    const resCat = await getPublicApiResponse(apiUrlCat);
+    const resAmenities = await getPublicApiResponse(apiUrlAmenities);
     const resArea = await getPublicApiResponse(apiUrlArea);
     return (
         <div className="max-w-screen-xl mx-auto">
             <Suspense fallback={<GlobalSearchListLoading />}>
-                <BusinessListingForm resCat={resCat} resArea={resArea}>
+                <PropertyListingForm resAmenities={resAmenities} resArea={resArea}>
                     {children}
-                </BusinessListingForm>
+                </PropertyListingForm>
             </Suspense>
         </div>
     )

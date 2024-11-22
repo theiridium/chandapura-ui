@@ -3,10 +3,7 @@
 import FormStep from "@/app/components/stepper/form-step";
 import UserBusinessList from "@/app/route-components/business/user-specific/user-business-list";
 import MainMenuBtn from "@/app/sub-components/main-menu-btn";
-import { categories, locations } from "@/lib/atom";
-import { useSetAtom } from "jotai";
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
 
 const steps = [
     {

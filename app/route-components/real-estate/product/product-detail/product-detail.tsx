@@ -37,10 +37,10 @@ const ProductDetail = ({ data }: any) => {
                             <div className='re-header flex-none lg:flex justify-between mb-12'>
                                 <div className="lg:hidden"><Breadcrumb /></div>
                                 <div>
-                                    <h1 className="md:text-xl font-medium text-gray-500 mb-5">{data.property_details.rooms} {data.property_details.type} <span className='text-highlight'>for {data.property_details.listing_type}</span> in {data.property_details.area}</h1>
+                                    <h1 className="md:text-xl font-medium text-gray-500 mb-5">{data.room_type} {data.property_type} <span className='text-highlight'>for {data.listing_type}</span> in {data.area.name}</h1>
                                     <h2 className="font-semibold text-xl lg:text-3xl mb-2 lg:mb-0">{data.name}</h2>
                                 </div>
-                                <div className='text-2xl font-semibold text-gray-600 flex items-center bg-color2d/70 px-5 py-1 mt-0 lg:mt-5 lg:mt-0 w-fit float-right lg:float-none'><IndianRupee strokeWidth={3} size={20} />{data.property_details.listing_type === "Rent" ? ConvertCurrencyToWords(data.property_details.rental_amount) : ConvertCurrencyToWords(data.property_details.selling_amount)}</div>
+                                <div className='text-2xl font-semibold text-gray-600 flex items-center bg-color2d/70 px-5 py-1 mt-0 lg:mt-5 lg:mt-0 w-fit float-right lg:float-none'><IndianRupee strokeWidth={3} size={20} />{data.listing_type === "Rent" ? ConvertCurrencyToWords(data.property_details.rental_amount) : ConvertCurrencyToWords(data.property_details.selling_amount)}</div>
                             </div>
                             <div className='mb-12 pt-5'>
                                 <div className='mb-5'>
@@ -60,7 +60,7 @@ const ProductDetail = ({ data }: any) => {
                             <div className='flex lg:flex-none flex-wrap lg:grid lg:grid-flow-col lg:justify-stretch gap-x-10 lg:gap-x-5 mb-12'>
                                 <div className='mb-5 lg:mb-0'>
                                     <div className='text-sm text-gray-500 font-semibold'>Type</div>
-                                    <div className='md:text-lg font-medium'>{data.property_details.type}</div>
+                                    <div className='md:text-lg font-medium'>{data.property_type}</div>
                                 </div>
                                 <div className='mb-5 lg:mb-0'>
                                     <div className='text-sm text-gray-500 font-semibold'>Availability</div>
@@ -68,7 +68,7 @@ const ProductDetail = ({ data }: any) => {
                                 </div>
                                 <div className='mb-5 lg:mb-0'>
                                     <div className='text-sm text-gray-500 font-semibold'>Rooms</div>
-                                    <div className='md:text-lg font-medium'>{data.property_details.rooms}</div>
+                                    <div className='md:text-lg font-medium'>{data.room_type}</div>
                                 </div>
                                 <div className='mb-5 lg:mb-0'>
                                     <div className='text-sm text-gray-500 font-semibold'>Direction</div>

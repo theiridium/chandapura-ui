@@ -48,7 +48,7 @@ const BusinessDetail = ({ data }: any) => {
                 <div className='re-header flex-none lg:flex justify-between mb-12'>
                   <div className="lg:hidden"><Breadcrumb blockSecondLast={true} /></div>
                   <div>
-                    <h1 className="md:text-xl font-medium text-gray-500 mb-5"><span className='text-highlight'>{data.sub_category.name}</span> in {data.area}</h1>
+                    <h1 className="md:text-xl font-medium text-gray-500 mb-5"><span className='text-highlight'>{data.sub_category.name}</span> in {data.area.name}</h1>
                     <h2 className="font-semibold text-xl lg:text-3xl">{data.name}</h2>
                   </div>
                 </div>

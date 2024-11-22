@@ -15,11 +15,11 @@ module.exports = {
     },
     PropertyListing: {
       label: "Property Listing",
-      dashboardLink: "/dashboard/advertise/view-all",
-      userLabel: "My Advertisements",
-      baseLink: "/dashboard/advertise",
-      addDetailsLink: "/dashboard/advertise/add-details",
-      uploadImagesLink: "/dashboard/advertise/upload-images",
+      dashboardLink: "/dashboard/property-listing/view-all",
+      userLabel: "My Listings",
+      baseLink: "/dashboard/property-listing",
+      addDetailsLink: "/dashboard/property-listing/add-details",
+      uploadImagesLink: "/dashboard/property-listing/upload-images",
     },
     Classifieds: {
       label: "Classifieds",
@@ -105,6 +105,19 @@ module.exports = {
         limit: 4,
       },
     },
+    realEstate: {
+      label: "Real Estate",
+      productType: "real-estate",
+      api: {
+        base: "real-estates",
+        sort: "desc",
+        populate:
+          "property_details,featured_image,area,gallery_images,contact",
+        limit: 4,
+        userFilter: "filters[author][email][$eq]",
+        isPublishedFilter: "filters[publish_status][$eq]=true",
+      },
+    },
     business: {
       label: "business",
       productType: "business-listing",
@@ -113,7 +126,8 @@ module.exports = {
       api: {
         base: "business-listings",
         sort: "desc",
-        populate: "populate[0]=sub_category&populate[1]=category&populate[2]=user&populate[3]=featured_image&populate[4]=bus_contact&populate[5]=gallery_images&populate[6]=contact",
+        populate:
+          "populate[0]=sub_category&populate[1]=category&populate[2]=user&populate[3]=featured_image&populate[4]=area&populate[5]=gallery_images&populate[6]=contact",
         limit: 4,
         userFilter: "filters[author][email][$eq]",
         isPublishedFilter: "filters[publish_status][$eq]=true",
@@ -148,11 +162,18 @@ module.exports = {
     },
     pricingPlan: {
       api: {
-        base: "pricing-plans?filters[name][$eq]"
-      }
-    }
+        base: "pricing-plans?filters[name][$eq]",
+      },
+    },
   },
   DropdownList: {
+    Amenities: {
+      label: "amenities",
+      api: {
+        base: "real-estate-amenities",
+        sort: "name:asc",
+      },
+    },
     Category: {
       label: "category",
       api: {
@@ -161,10 +182,10 @@ module.exports = {
         populate: "sub_categories",
       },
     },
-    Location: {
-      label: "loacation",
+    Area: {
+      label: "area",
       api: {
-        base: "locations",
+        base: "areas",
         sort: "name:asc",
       },
     },
@@ -185,6 +206,15 @@ module.exports = {
         filter: "filters[author][email][$eq]",
       },
     },
+    PropertyList: {
+      label: "propertyList",
+      api: {
+        base: "real-estates",
+        sortByName: "name:asc",
+        sortByDate: "updatedAt:desc",
+        filter: "filters[author][email][$eq]",
+      },
+    },
     AdvertisementList: {
       label: "advertisementList",
       api: {
@@ -193,6 +223,21 @@ module.exports = {
         sortByDate: "updatedAt:desc",
         filter: "filters[author][email][$eq]",
       },
-    }
-  }
+    },
+  },
+  SelectList: {
+    PropertyType: ["Apartment", "Individual", "Villa"],
+    Direction: [
+      "East",
+      "West",
+      "North",
+      "South",
+      "North-East",
+      "South-East",
+      "North-West",
+      "South-West",
+    ],
+    Furnishhing: ["Semi Furnished", "Fully Furnished", "Non Furnished"],
+    ParkingType: ["Open", "Covered"]
+  },
 };

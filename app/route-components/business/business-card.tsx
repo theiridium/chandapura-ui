@@ -14,7 +14,7 @@ const BusinessCard = (p: any) => {
                         <img src={item.featured_image.url} />}
                 </div>
                 <div className="business-card-body">
-                    <div className="text-xs font-bold mb-2 flex items-center"><MapPin size={12} className='mr-1' /><span className='text-highlight'>{item.area}</span></div>
+                    <div className="text-xs font-bold mb-2 flex items-center"><MapPin size={12} className='mr-1' /><span className='text-highlight'>{item.area.name}</span></div>
                     <div className="mb-2 truncate text-sm text-slate-600">{item.sub_category.name} / {item.category.name}</div>
                     <div className="text-base md:text-lg font-semibold mb-2 lg:mb-5 text-slate-600">{item.name}</div>
                     <div className="flex items-center justify-between gap-x-3 lg:gap-x-10 gap-y-1">

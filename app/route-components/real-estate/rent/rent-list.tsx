@@ -3,7 +3,7 @@ import RentCard from "./rent-card"
 import { getPublicApiResponse } from "@/lib/apiLibrary";
 
 const RentList = async () => {
-  const propertyList = await getPublicApiResponse("real-estates?sort=updatedAt%3Adesc&pagination%5Blimit%5D=4&populate=property_details,featured_image,contact&filters[property_details][listing_type][$eq]=Rent");
+  const propertyList = await getPublicApiResponse("real-estates?sort=updatedAt%3Adesc&pagination%5Blimit%5D=4&populate=property_details,featured_image,contact,area&filters[listing_type][$eq]=Rent&filters[publish_status][$eq]=true");
   return (
     <>
       <div className="card-list-row">

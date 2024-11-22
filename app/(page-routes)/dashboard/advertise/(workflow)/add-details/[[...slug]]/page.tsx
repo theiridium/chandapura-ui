@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { InView } from 'react-intersection-observer';
 import { useSession } from 'next-auth/react';
 import ContactForm from '@/app/components/forms/contact-form';
-import { AdListing } from '@/lib/typings/dto';
+import { AdListing, ContactComponent } from '@/lib/typings/dto';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { getPublicApiResponse, postRequestApi, putRequestApi } from '@/lib/apiLibrary';
@@ -20,7 +20,7 @@ const Page = () => {
     const type = searchParams.get('type');
     const source = searchParams.get('source');
     const [disabled, setDisabled] = useState(true);
-    const [contact, setContact] = useState<any>({
+    const [contact, setContact] = useState<ContactComponent>({
         contact_name: userData.name,
         contact_number: userData.phone,
         contact_email_id: userData.email

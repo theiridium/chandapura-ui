@@ -4,9 +4,9 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { InView } from 'react-intersection-observer';
 import { useSession } from 'next-auth/react';
 import ContactForm from '@/app/components/forms/contact-form';
-import { BusinessListing } from '@/lib/typings/dto';
+import { BusinessListing, ContactComponent } from '@/lib/typings/dto';
 import { useAtomValue } from 'jotai';
-import { categories, locations } from '@/lib/atom';
+import { areas, categories } from '@/lib/atom';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { getPublicApiResponse, postRequestApi, putRequestApi } from '@/lib/apiLibrary';
@@ -26,9 +26,10 @@ const Page = () => {
     const source = searchParams.get('source');
     const [disabled, setDisabled] = useState(true);
     const categoryList = useAtomValue<any>(categories).data;
-    const locationList = useAtomValue<any>(locations).data;
+    const areaList = useAtomValue<any>(areas).data;
+    console.log(areaList)
     const [subCategoryList, setSubCategoryList] = useState([]);
-    const [contact, setContact] = useState<any>({
+    const [contact, setContact] = useState<ContactComponent>({
         contact_name: userData.name,
         contact_number: userData.phone,
         contact_email_id: userData.email
@@ -60,7 +61,6 @@ const Page = () => {
         full_address: "",
         description: "",
         contact: contact,
-        user: userData.strapiUserId,
         slug: "",
         tags: "",
         sub_category: "",
@@ -140,7 +140,7 @@ const Page = () => {
                 ...prevBusinessList,
                 category: apiRes.category.id.toString(),
                 sub_category: apiRes.sub_category.id.toString(),
-                area: locationList.filter((x: any) => x.name == apiRes.area)[0].id.toString(),
+                area: apiRes.area.id.toString(),
                 contact: apiRes.contact,
                 services: apiRes.services,
                 bus_hours: businessHours,
@@ -194,12 +194,11 @@ const Page = () => {
         setIsSubmitLoading(true);
         let formdata = { ...data, businessList }
         const payload: BusinessListing = {
-            area: locationList.filter((x: any) => x.id == parseInt(businessList.area))[0].name,
+            area: businessList.area,
             name: formdata.name,
             full_address: formdata.full_address,
             description: formdata.description,
             contact: contact,
-            user: userData.strapiUserId,
             slug: formdata.slug,
             tags: formdata.tags,
             sub_category: businessList.sub_category,
@@ -333,7 +332,7 @@ const Page = () => {
                         <div className="mb-8">
                             <Autocomplete
                                 variant="flat"
-                                defaultItems={locationList || []}
+                                defaultItems={areaList || []}
                                 label="Select an Area"
                                 onSelectionChange={onAreaChange}
                                 isDisabled={disabled}

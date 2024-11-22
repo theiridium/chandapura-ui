@@ -11,7 +11,7 @@ const BusinessItemsCard = ({ data, id, product }: any) => {
                             <img src={data.featured_image.url} className="w-full h-full rounded-xl" />}
                     </div>
                     <div className="w-full flex flex-col">
-                        <h2 className="md:text-lg font-medium mb-2">{data.sub_category.name} in {data.area}</h2>
+                        <h2 className="md:text-lg font-medium mb-2">{data.sub_category.name} in {data.area.name}</h2>
                         <h3 className="font-semibold mb-3 text-gray-500">{data.name}</h3>
                         {data.description && <div className="flex flex-wrap gap-x-5 text-sm mb-3 text-gray-500 truncate-2">{data.description}</div>}
                         {data.services && <div className="tags">

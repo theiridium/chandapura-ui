@@ -8,7 +8,8 @@ const BusinessItems = async (props: any) => {
   if (props.searchParams && props.searchParams.q) {
     res = await getPublicSingleSearchResponse({
       indexUid: props.searchParams.index,
-      q: props.searchParams.q
+      q: props.searchParams.q,
+      filter: ""
     });
     isSearchHit = true;
   }

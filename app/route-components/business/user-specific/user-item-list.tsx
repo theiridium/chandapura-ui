@@ -1,24 +1,22 @@
 "use client"
 import ProductListModal from '@/app/components/modals/product-list-modal';
 import { getPublicApiResponse } from '@/lib/apiLibrary';
-import { DropdownList } from '@/public/shared/app.config';
 import { Button, useDisclosure } from '@nextui-org/react';
 import { ChevronDown } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
-const UserBusinessList = () => {
+const UserItemList = (props: any) => {
     const searchParams = useSearchParams();
     const source = searchParams.get('source');
-    const attr = DropdownList.BusinessList.api;
     const { data }: any = useSession();
-    const user = data?.user;
+    const userData = data?.user;
     const [list, setList] = useState<any>([]);
     const [name, setName] = useState<any>("Add New");
     const [isLoading, setIsLoading] = useState(true);
     const getBusinessList = async () => {
-        let apiUrl = `${attr.base}?sort=${attr.sortByName}`
+        let apiUrl = `${props.attr.base}?sort=${props.attr.sortByName}&${props.attr.filter}=${userData?.email}`
         const response = await getPublicApiResponse(apiUrl);
         const filteredData = response.data.filter((x: any) => x.id.toString() === source)[0];
         setList(response);
@@ -35,9 +33,9 @@ const UserBusinessList = () => {
             <Button isDisabled={isLoading} radius="sm" onPress={onOpen} className='justify-between' fullWidth={true} size='lg' endContent={<ChevronDown />}>
                 {name}
             </Button>
-            <ProductListModal isOpen={isOpen} onOpenChange={onOpenChange} title={"Select Business"} list={list.data} />
+            <ProductListModal isOpen={isOpen} onOpenChange={onOpenChange} title={props.title} list={list.data} />
         </div>
     )
 }
 
-export default UserBusinessList
+export default UserItemList

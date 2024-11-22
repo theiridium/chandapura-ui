@@ -1,9 +1,10 @@
 "use client"
 
 import FormStep from "@/app/components/stepper/form-step";
-import UserBusinessList from "@/app/route-components/business/user-specific/user-business-list";
+import UserItemList from "@/app/route-components/business/user-specific/user-item-list";
 import MainMenuBtn from "@/app/sub-components/main-menu-btn";
 import { areas, categories } from "@/lib/atom";
+import { DropdownList } from "@/public/shared/app.config";
 import { useSetAtom } from "jotai";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
@@ -50,7 +51,7 @@ const BusinessListingForm = ({ children, resCat, resArea }: { children: React.Re
             <div className='col-span-full lg:col-span-2 my-8'>
                 <div className="sticky top-28 px-5 lg:px-7">
                     <div className='mb-5'><MainMenuBtn url='/dashboard/business-listing/view-all' /></div>
-                    <UserBusinessList />
+                    <UserItemList attr={DropdownList.BusinessList.api} title={"Select a Business"} />
                     {(type !== "edit") && <FormStep steps={steps} />}
                 </div>
             </div>

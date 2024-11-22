@@ -124,7 +124,7 @@ const Page = () => {
                   </div>
                 </div>)
             }) :
-            <p className='text-lg'>Your list is empty, click on <a className='link-text' href={addNewUrl}>Add New</a> to start listing your Business today.</p>}
+            <p className='text-lg'>Your list is empty, click on <a className='link-text' href={addNewUrl}>Add New</a> to start listing your business today.</p>}
       </div>
     </div>
   )

@@ -70,8 +70,8 @@ const Page = () => {
       <Breadcrumb blockSecondLast={false} />
       <div className='grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-10'>
         {isLoading || isRedirecting ?
-          (isLoading ? <FormLoading text={"Loading your Business List..."} /> :
-            <FormLoading text={"Taking you to the Business Form page..."} />
+          (isLoading ? <FormLoading text={"Loading your listed properties..."} /> :
+            <FormLoading text={"Taking you to the Property Form page..."} />
           ) :
           list.length > 0 ?
             !isLoading && list.map((x: any, i: any) => {
@@ -124,7 +124,7 @@ const Page = () => {
                   </div>
                 </div>)
             }) :
-            <p className='text-lg'>Your list is empty, click on <a className='link-text' href={addNewUrl}>Add New</a> to start listing your Business today.</p>}
+            <p className='text-lg'>Your list is empty, click on <a className='link-text' href={addNewUrl}>Add New</a> to start listing your property today.</p>}
       </div>
     </div>
   )

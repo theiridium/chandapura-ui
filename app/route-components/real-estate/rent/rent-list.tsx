@@ -1,13 +1,15 @@
+import { Products } from "@/public/shared/app.config";
 import ListArrow from "../../business/list-arrow";
 import RentCard from "./rent-card"
 import { getPublicApiResponse } from "@/lib/apiLibrary";
 
 const RentList = async () => {
-  const propertyList = await getPublicApiResponse("real-estates?sort=updatedAt%3Adesc&pagination%5Blimit%5D=4&populate=property_details,featured_image,contact,area&filters[listing_type][$eq]=Rent&filters[publish_status][$eq]=true");
+  const attr = Products.rent.api;
+  const res = await getPublicApiResponse(`${attr.base}?sort=updatedAt%3Adesc&pagination%5Blimit%5D=4&populate=property_details,featured_image,contact,area&${attr.listingTypeFilter}&${attr.isPublishedFilter}`);
   return (
     <>
       <div className="card-list-row">
-        {propertyList.data.map((property: any, i: any) => (
+        {res.data.map((property: any, i: any) => (
           <RentCard key={i} list={property} id={property.id} />
         ))}
       </div>

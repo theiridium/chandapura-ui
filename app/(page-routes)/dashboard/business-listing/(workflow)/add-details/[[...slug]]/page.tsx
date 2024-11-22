@@ -27,7 +27,6 @@ const Page = () => {
     const [disabled, setDisabled] = useState(true);
     const categoryList = useAtomValue<any>(categories).data;
     const areaList = useAtomValue<any>(areas).data;
-    console.log(areaList)
     const [subCategoryList, setSubCategoryList] = useState([]);
     const [contact, setContact] = useState<ContactComponent>({
         contact_name: userData.name,

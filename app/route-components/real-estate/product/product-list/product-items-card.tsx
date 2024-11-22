@@ -1,9 +1,11 @@
 import { ConvertCurrencyToWords } from "@/lib/helpers"
+import { Products } from "@/public/shared/app.config"
 import { IndianRupee } from "lucide-react"
 
 const ProductItemsCard = ({ data, id, product }: any) => {
+    let productSlug = data.listing_type === "Rent"? Products.rent.url: Products.sale.url;
     return (
-        <a className="card_link" href={`${product.slug}/${data.slug}?source=${id}`}>
+        <a className="card_link" href={`/${productSlug}/${data.slug}?source=${id}`}>
             <div className="border border-gray-300 rounded-xl bg-white">
                 <div className="flex-none md:flex p-5 lg:p-7 gap-x-5 lg:gap-x-7">
                     <div className="flex-none w-full h-[230px] lg:w-[300px] lg:h-[200px] mb-5 md:mb-0">
@@ -25,12 +27,12 @@ const ProductItemsCard = ({ data, id, product }: any) => {
                                 {data.property_details.parking_type} Parking
                             </div>
                             <div className="mb-2">
-                                {data.property_details.facing} Facing
+                                {data.property_details.direction} Facing
                             </div>
                         </div>
                         <div className="tags">
                             {data.amenities.map((x: any, i: any) =>
-                                <div className="px-3 py-1 bg-color2d/70 font-semibold rounded-xl text-xs text-nowrap text-gray-600" key={i}>{x.title}</div>
+                                <div className="px-3 py-1 bg-color2d/70 font-semibold rounded-xl text-xs text-nowrap text-gray-600" key={i}>{x.name}</div>
                             )}
                         </div>
                         <div className="w-full flex justify-between lg:justify-normal gap-x-6">

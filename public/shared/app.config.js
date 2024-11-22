@@ -83,44 +83,61 @@ module.exports = {
   Products: {
     sale: {
       label: "sale",
-      productType: "real-estate",
+      productType: "real-estate-sale",
+      searchIndex: "real-estate",
       slug: "property-for-sale",
       url: "real-estate/property-for-sale",
       api: {
         base: "real-estates",
         sort: "desc",
-        populate: "",
+        populateList: "property_details,featured_image,area,contact,amenities",
+        populateDetails:
+          "property_details,featured_image,area,gallery_images,contact,amenities",
+        limit: 4,
+        userFilter: "filters[author][email][$eq]",
+        isPublishedFilter: "filters[publish_status][$eq]=true",
+        listingTypeFilter: "filters[listing_type][$eq]=Sale",
         limit: 4,
       },
     },
     rent: {
       label: "rent",
-      productType: "real-estate",
+      productType: "real-estate-rent",
+      searchIndex: "real-estate",
       slug: "property-for-rent",
       url: "real-estate/property-for-rent",
       api: {
         base: "real-estates",
         sort: "desc",
-        populate: "",
+        populateList: "property_details,featured_image,area,contact,amenities",
+        populateDetails:
+          "property_details,featured_image,area,gallery_images,contact,amenities",
+        userFilter: "filters[author][email][$eq]",
+        isPublishedFilter: "filters[publish_status][$eq]=true",
+        listingTypeFilter: "filters[listing_type][$eq]=Rent",
         limit: 4,
       },
     },
     realEstate: {
-      label: "Real Estate",
+      label: "real estate",
       productType: "real-estate",
+      searchIndex: "real-estate",
+      url: "real-estate",
       api: {
         base: "real-estates",
         sort: "desc",
-        populate:
-          "property_details,featured_image,area,gallery_images,contact",
-        limit: 4,
+        populateList: "property_details,featured_image,area,contact,amenities",
+        populateDetails:
+          "property_details,featured_image,area,gallery_images,contact,amenities",
         userFilter: "filters[author][email][$eq]",
         isPublishedFilter: "filters[publish_status][$eq]=true",
+        limit: 4,
       },
     },
     business: {
       label: "business",
       productType: "business-listing",
+      searchIndex: "business-listing",
       slug: "business-categories",
       url: "business-categories",
       api: {
@@ -128,9 +145,9 @@ module.exports = {
         sort: "desc",
         populate:
           "populate[0]=sub_category&populate[1]=category&populate[2]=user&populate[3]=featured_image&populate[4]=area&populate[5]=gallery_images&populate[6]=contact",
-        limit: 4,
         userFilter: "filters[author][email][$eq]",
         isPublishedFilter: "filters[publish_status][$eq]=true",
+        limit: 4,
       },
     },
     job: {
@@ -238,6 +255,6 @@ module.exports = {
       "South-West",
     ],
     Furnishhing: ["Semi Furnished", "Fully Furnished", "Non Furnished"],
-    ParkingType: ["Open", "Covered"]
+    ParkingType: ["Open", "Covered"],
   },
 };

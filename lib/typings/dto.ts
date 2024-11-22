@@ -7,6 +7,7 @@ export interface ApiFilter {
 export interface SearchPayload {
     indexUid: string
     q: string
+    filter: string
 }
 export interface SingleItemData {
     id: any

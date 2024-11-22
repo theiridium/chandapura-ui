@@ -114,7 +114,7 @@ header {
     @apply text-xl md:text-3xl font-semibold;
   }
   .btn-primary {
-    @apply bg-color1d text-white py-3 px-8 w-full rounded-full font-semibold;
+    @apply bg-color1d text-white py-3 px-8 w-full rounded-full font-medium;
   }
   .btn-view_details {
     color: #333;

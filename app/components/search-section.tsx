@@ -47,7 +47,7 @@ const SearchSection = () => {
         </div>
       </div>
       <div className="max-w-screen-xl mx-auto px-3 mb-12 md:mb-20">
-        {(productType === Products.business.productType || productType === Products.sale.productType) &&
+        {(productType === Products.business.productType || productType === Products.realEstate.productType) &&
           <div className="col-span-1 lg:col-span-12">
             <SearchCategorySection productType={productType} />
           </div>

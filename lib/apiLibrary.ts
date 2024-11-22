@@ -152,12 +152,14 @@ export const getPublicSingleSearchResponse = async (payload: SearchPayload | und
         Authorization: "Bearer " + process.env.MEILISEARCH_TOKEN,
         "Content-Type": "application/json"
     }
+    let filters = ["publish_status = true"];
+    if(payload?.filter) filters.push(payload.filter);
     let bodyContent = JSON.stringify({
         "queries": [
             {
                 "indexUid": payload?.indexUid,
                 "q": payload?.q,
-                "filter": ["publish_status = true"]
+                "filter": filters
             }
         ]
     });

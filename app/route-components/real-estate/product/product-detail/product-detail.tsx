@@ -6,32 +6,46 @@ import { IndianRupee } from 'lucide-react';
 import React from 'react'
 import ViewLocationMap from '@/app/components/maps/view-location-map';
 import Breadcrumb from '@/app/sub-components/breadcrumb';
+import ImageGallery from '@/app/components/modals/image-gallery';
+import { useDisclosure } from '@nextui-org/react';
 
 const ProductDetail = ({ data }: any) => {
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
     return (
         <div>
+            <ImageGallery isOpen={isOpen} onOpenChange={onOpenChange} list={data.gallery_images} />
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-5 lg:gap-10 text-gray-700">
                 <div className="lg:col-span-3">
                     <div className="lg:border border-gray-300 rounded-xl bg-white lg:p-7 gap-x-5 lg:gap-x-7">
                         <div className='grid lg:grid-rows-2 lg:grid-cols-7 gap-5 lg:gap-7 lg:mb-12'>
-                            <div className="row-span-2 col-span-4 lg:col-span-5 *:w-full *:h-[250px] *:lg:h-[380px] *:lg:rounded-xl *:object-cover">
-                                {data.featured_image === null ?
-                                    <img src="/images/placeholder.png" /> :
-                                    <img src={data.featured_image.url} />
+                            <div className={`${data.gallery_images ? 'row-span-2 col-span-4 lg:col-span-5' : 'row-span-2 col-span-4 lg:col-span-full'}`}>
+                                {data.featured_image &&
+                                    <div className='relative'>
+                                        <img src={data.featured_image.url} className="w-full h-[250px] lg:h-[380px] lg:rounded-xl object-cover" />
+                                        {data.gallery_images &&
+                                            <div className='absolute bottom-3 right-3 rounded-md bg-black/50 hover:bg-black/40 w-fit px-3 py-1 text-white cursor-pointer' onClick={onOpen}>{data.gallery_images.length + 1} Photos</div>
+                                        }
+                                    </div>
                                 }
                             </div>
-                            <div className="hidden lg:block col-span-2 *:w-full *:h-full *:rounded-xl">
-                                {data.featured_image === null ?
-                                    <img src="/images/placeholder.png" /> :
-                                    <img src={data.featured_image.url} />
-                                }
-                            </div>
-                            <div className="hidden lg:block col-span-2 *:w-full *:h-full *:rounded-xl">
-                                {data.featured_image === null ?
-                                    <img src="/images/placeholder.png" /> :
-                                    <img src={data.featured_image.url} />
-                                }
-                            </div>
+                            {data.gallery_images &&
+                                <div className="hidden lg:block col-span-2">
+                                    <img src={data.gallery_images[0].url} className="w-full h-full rounded-xl" />
+                                </div>
+                            }
+                            {data.gallery_images && data.gallery_images.length > 2 ?
+                                <div className="hidden lg:block col-span-2 cursor-pointer relative" onClick={onOpen}>
+                                    <img src={data.gallery_images[1].url} className="w-full h-full rounded-xl" />
+                                    <div className="w-full h-full rounded-xl bg-black/50 hover:bg-black/40 absolute top-0 left-0 flex">
+                                        <span className='text-white text-[3.25rem] m-auto font-light'>+{data.gallery_images.length - 2}</span>
+                                    </div>
+                                </div> :
+                                <div className="hidden lg:block col-span-2">
+                                    {data.gallery_images && data.gallery_images[1] &&
+                                        <img src={data.gallery_images[1].url} className="w-full h-full rounded-xl" />
+                                    }
+                                </div>
+                            }
                         </div>
                         <div className='p-5 lg:p-0'>
                             <div className='re-header flex-none lg:flex justify-between mb-12'>
@@ -43,15 +57,14 @@ const ProductDetail = ({ data }: any) => {
                                 <div className='text-2xl font-semibold text-gray-600 flex items-center bg-color2d/70 px-5 py-1 mt-0 lg:mt-5 lg:mt-0 w-fit float-right lg:float-none'><IndianRupee strokeWidth={3} size={20} />{data.listing_type === "Rent" ? ConvertCurrencyToWords(data.property_details.rental_amount) : ConvertCurrencyToWords(data.property_details.selling_amount)}</div>
                             </div>
                             <div className='mb-12 pt-5'>
-                                <div className='mb-5'>
-                                    <div className='text-sm text-gray-500 font-semibold'>Address</div>
-                                    <p className='md:text-lg font-medium'>VBHC Vaibhava, Chandapura-Anekal main road, Byagadadenahalli</p>
-                                    <p className='md:text-lg font-medium'>Bangalore 562106, Karnataka</p>
-                                </div>
                                 <div>
-                                    <div className='text-sm text-gray-500 font-semibold'>Landmark</div>
-                                    <p className='md:text-lg font-medium'>Nayara Petrol Station</p>
+                                    <div className='text-sm text-gray-500 font-semibold'>Address</div>
+                                    <p className='text-sm md:text-lg font-medium'>{data.full_address}</p>
                                 </div>
+                                {data.property_details.landmark && <div className='mt-5'>
+                                    <div className='text-sm text-gray-500 font-semibold'>Landmark</div>
+                                    <p className='text-sm md:text-lg font-medium'>{data.property_details.landmark}</p>
+                                </div>}
                             </div>
                             <div className='mb-12'>
                                 <ContactButton name={data.contact.contact_name} phone={data.contact.contact_number} maskedText={"Owner"} />
@@ -60,23 +73,23 @@ const ProductDetail = ({ data }: any) => {
                             <div className='flex lg:flex-none flex-wrap lg:grid lg:grid-flow-col lg:justify-stretch gap-x-10 lg:gap-x-5 mb-12'>
                                 <div className='mb-5 lg:mb-0'>
                                     <div className='text-sm text-gray-500 font-semibold'>Type</div>
-                                    <div className='md:text-lg font-medium'>{data.property_type}</div>
+                                    <div className='text-sm md:text-lg font-medium'>{data.property_type}</div>
                                 </div>
                                 <div className='mb-5 lg:mb-0'>
                                     <div className='text-sm text-gray-500 font-semibold'>Availability</div>
-                                    <div className='md:text-lg font-medium'>Immediate</div>
+                                    <div className='text-sm md:text-lg font-medium'>Immediate</div>
                                 </div>
                                 <div className='mb-5 lg:mb-0'>
                                     <div className='text-sm text-gray-500 font-semibold'>Rooms</div>
-                                    <div className='md:text-lg font-medium'>{data.room_type}</div>
+                                    <div className='text-sm md:text-lg font-medium'>{data.room_type}</div>
                                 </div>
                                 <div className='mb-5 lg:mb-0'>
                                     <div className='text-sm text-gray-500 font-semibold'>Direction</div>
-                                    <div className='md:text-lg font-medium'>{data.property_details.facing} Facing</div>
+                                    <div className='text-sm md:text-lg font-medium'>{data.property_details.facing} Facing</div>
                                 </div>
                                 <div className='mb-5 lg:mb-0'>
                                     <div className='text-sm text-gray-500 font-semibold'>Furnishing</div>
-                                    <div className='md:text-lg font-medium'>{data.property_details.furnishing}</div>
+                                    <div className='text-sm md:text-lg font-medium'>{data.property_details.furnishing}</div>
                                 </div>
                             </div>
                             <hr className='mb-12' />
@@ -91,7 +104,9 @@ const ProductDetail = ({ data }: any) => {
                                 </div>
                                 <div className='border rounded-lg aspect-square grid place-items-center text-center p-2'>
                                     <img className='max-w-[64px]' src='/images/icons/floor.png' />
-                                    <div className='text-xs lg:text-sm text-gray-500 font-semibold w-24 lg:w-auto'>{data.property_details.floor_number} Floor</div>
+                                    <div className='text-xs lg:text-sm text-gray-500 font-semibold w-24 lg:w-auto'>
+                                        {data.property_details.floor_number} Floor
+                                    </div>
                                 </div>
                                 <div className='border rounded-lg aspect-square grid place-items-center text-center p-2'>
                                     <img className='max-w-[64px]' src='/images/icons/balcony.png' />
@@ -107,7 +122,7 @@ const ProductDetail = ({ data }: any) => {
                                 <h5 className='text-sm text-gray-500 font-semibold mb-5'>Amenities</h5>
                                 <div className="tags">
                                     {data.amenities.map((x: any, i: any) =>
-                                        <div className="px-4 py-1 bg-color2d/70 font-semibold rounded-full text-sm text-nowrap text-gray-600" key={i}>{x.title}</div>
+                                        <div className="px-4 py-1 bg-color2d/70 font-semibold rounded-full text-sm text-nowrap text-gray-600" key={i}>{x.name}</div>
                                     )}
                                 </div>
                             </div>
@@ -115,7 +130,7 @@ const ProductDetail = ({ data }: any) => {
                             <div className='mb-12'>
                                 <h5 className='text-sm text-gray-500 font-semibold mb-5'>Map Location</h5>
                                 {/* <Map /> */}
-                                {/* <ViewLocationMap /> */}
+                                <ViewLocationMap coordinates={data.location.coordinates} />
                             </div>
                         </div>
                     </div>

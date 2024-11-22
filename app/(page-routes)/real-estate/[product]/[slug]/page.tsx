@@ -1,6 +1,8 @@
 import { Suspense } from "react"
 import ProductDetailLayout from "@/app/route-components/real-estate/product/product-detail/product-detail-layout";
 import GlobalSearchListLoading from "@/app/loading-components/global-search-list-loading";
+import AdLoading from "@/app/loading-components/ad-loading";
+import AdBanner from "@/app/sub-components/ad-banner";
 
 const Page = ({ searchParams }: any) => {
     const id = searchParams.source;
@@ -9,6 +11,11 @@ const Page = ({ searchParams }: any) => {
             <Suspense fallback={<GlobalSearchListLoading />}>
                 <ProductDetailLayout id={id} />
             </Suspense>
+            <div className="col-span-1 lg:col-span-full my-10">
+                <Suspense fallback={<AdLoading />}>
+                    <AdBanner placement="grid grid-cols-1 gap-x-10 mb-5" />
+                </Suspense>
+            </div>
         </div>
     )
 }

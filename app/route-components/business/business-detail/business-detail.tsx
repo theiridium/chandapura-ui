@@ -4,6 +4,7 @@ import { useDisclosure } from '@nextui-org/react';
 import { Phone } from 'lucide-react';
 import ViewLocationMap from '@/app/components/maps/view-location-map';
 import Breadcrumb from '@/app/sub-components/breadcrumb';
+import ContactButton from '@/app/sub-components/contact-btn';
 
 const BusinessDetail = ({ data }: any) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -15,7 +16,7 @@ const BusinessDetail = ({ data }: any) => {
           <div className="lg:border border-gray-300 rounded-xl bg-white lg:p-7 gap-x-5 lg:gap-x-7">
             <div>
               <div className='grid lg:grid-rows-2 lg:grid-cols-7 gap-5 lg:gap-7 lg:mb-12'>
-                <div className={`${data.gallery_images ? 'row-span-2 col-span-4 lg:col-span-5': 'row-span-2 col-span-4 lg:col-span-full'}`}>
+                <div className={`${data.gallery_images ? 'row-span-2 col-span-4 lg:col-span-5' : 'row-span-2 col-span-4 lg:col-span-full'}`}>
                   {data.featured_image &&
                     <div className='relative'>
                       <img src={data.featured_image.url} className="w-full h-[250px] lg:h-[380px] lg:rounded-xl object-cover" />
@@ -54,18 +55,17 @@ const BusinessDetail = ({ data }: any) => {
                 </div>
                 <div className='mb-12'>
                   <div className='text-sm text-gray-500 font-semibold'>Address</div>
-                  <p className='md:text-lg font-medium'>{data.full_address}</p>
+                  <p className='text-sm md:text-lg font-medium'>{data.full_address}</p>
                 </div>
                 <div className='mb-12'>
-                  <div className='text-sm text-gray-500 font-semibold mb-2'>Business Contact Name: <span className='text-black font-semibold'>{data.contact.contact_name}</span></div>
-                  <button className="border-2 border-color1d bg-color1d text-white px-5 py-1 rounded-full font-semibold h-fit text-center flex items-center gap-x-2 text-sm md:text-medium"><Phone size={18} fill='#fff' stroke='none' />+91 {data.contact.contact_number}</button>
+                  <ContactButton name={data.contact.contact_name} phone={data.contact.contact_number} openContact={true} />
                 </div>
                 <hr />
                 {data.description &&
                   <>
                     <div className='py-12'>
                       <div className='text-sm text-gray-500 font-semibold'>Description</div>
-                      <p className='md:text-lg font-medium'>{data.description}</p>
+                      <p className='text-sm md:text-lg font-medium'>{data.description}</p>
                     </div>
                     <hr />
                   </>}
@@ -102,14 +102,15 @@ const BusinessDetail = ({ data }: any) => {
                 </div>
                 <hr />
                 {(data.services || data.length > 0) &&
-                  <><div className='py-12'>
-                    <h5 className='text-sm text-gray-500 font-semibold mb-5'>Services</h5>
-                    {data.services && <div className="tags">
-                      {data.services.map((x: any, i: any) =>
-                        <div className="px-4 py-1 bg-color2d/70 font-semibold rounded-full text-sm text-nowrap text-gray-600" key={i}>{x.trim()}</div>
-                      )}
-                    </div>}
-                  </div>
+                  <>
+                    <div className='py-12'>
+                      <h5 className='text-sm text-gray-500 font-semibold mb-5'>Services</h5>
+                      {data.services && <div className="tags">
+                        {data.services.map((x: any, i: any) =>
+                          <div className="px-4 py-1 bg-color2d/70 font-semibold rounded-full text-sm text-nowrap text-gray-600" key={i}>{x.trim()}</div>
+                        )}
+                      </div>}
+                    </div>
                     <hr />
                   </>}
                 <div className='py-12'>

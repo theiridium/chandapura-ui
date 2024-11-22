@@ -32,7 +32,7 @@ const SearchCategorySection = ({ productType }: any) => {
                     <ListArrow size={400} row="search-cat-sec" infinite={false} minirow={"top-1/3"} displayInMobile={true} />
                 </div>
             }
-            {(productType === Products.sale.productType) &&
+            {(productType === Products.realEstate.productType) &&
                 <div className="search-cat-sec justify-center">
                     <a href={Products.sale.url} className='mini-card'>
                         <Image src={'/images/icons/sale-re.png'} width={50} height={50} alt="" />

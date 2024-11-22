@@ -36,7 +36,6 @@ const Page = () => {
         try {
             setIsLoading(true);
             const pricingPlanRes = await getPublicApiResponse(`${Products.pricingPlan.api.base}=${encodeURI('Business Listing')}`);
-            console.log(pricingPlanRes)
             setPricingPlan(pricingPlanRes.data[0]);
             if (source) {
                 const attr = Products.business.api;

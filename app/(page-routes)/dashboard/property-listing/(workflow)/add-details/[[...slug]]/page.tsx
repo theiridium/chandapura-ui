@@ -15,6 +15,7 @@ import FormLoading from '@/app/loading-components/form-loading';
 import { toast } from 'react-toastify';
 import AddLocationMap from '@/app/components/maps/add-location-map';
 import { RadioBox } from '@/app/sub-components/radio-box';
+import { ListingWorkflow } from '@/lib/typings/enums';
 
 const Page = () => {
     const { data }: any = useSession();
@@ -48,7 +49,7 @@ const Page = () => {
         contact: contact,
         gallery_images: [],
         featured_image: {},
-        step_number: 1,
+        step_number: ListingWorkflow.Initial,
         location: location,
         amenities: [],
         property_details: {
@@ -129,7 +130,7 @@ const Page = () => {
             description: formdata.description,
             room_type: formdata.room_type,
             contact: contact,
-            step_number: 2,
+            step_number: ListingWorkflow.AddDetails,
             location: location,
         }
         postPropertyListing(payload);
@@ -197,7 +198,7 @@ const Page = () => {
                             </RadioGroup>
                         </div>
                         <div className='mb-8'>
-                            <Select label="Select a Property Type" selectedKeys={[propertyListing.property_type]}
+                            <Select label="Select a Property Type" selectedKeys={[propertyListing.property_type]} isDisabled={disabled}
                                 onChange={(e: any) => setPropertyListing({ ...propertyListing, property_type: e.target.value })}>
                                 {SelectList.PropertyType.map((item) => (
                                     <SelectItem key={item}>
@@ -274,6 +275,7 @@ const Page = () => {
                                 }
                                 isRequired />
                             <Select label="Direction" selectedKeys={[propertyListing.property_details.direction]}
+                                isDisabled={disabled}
                                 onChange={(e: any) =>
                                     setPropertyListing((prev) => ({
                                         ...prev,
@@ -290,6 +292,7 @@ const Page = () => {
                                 ))}
                             </Select>
                             <Select label="Number of Bathrooms" selectedKeys={[propertyListing.property_details.bathrooms?.toString() || "1"]}
+                                isDisabled={disabled}
                                 onChange={(e: any) =>
                                     setPropertyListing((prev) => ({
                                         ...prev,
@@ -340,6 +343,7 @@ const Page = () => {
                                     isRequired />
                             }
                             <Select label="Furnishing" selectedKeys={[propertyListing.property_details.furnishing]}
+                                isDisabled={disabled}
                                 onChange={(e: any) =>
                                     setPropertyListing((prev) => ({
                                         ...prev,
@@ -356,6 +360,7 @@ const Page = () => {
                                 ))}
                             </Select>
                             <Select label="Parking Type" selectedKeys={[propertyListing.property_details.parking_type]}
+                                isDisabled={disabled}
                                 onChange={(e: any) =>
                                     setPropertyListing((prev) => ({
                                         ...prev,
@@ -385,6 +390,7 @@ const Page = () => {
                                     trigger: "min-h-12 py-2",
                                 }}
                                 selectedKeys={propertyListing.amenities}
+                                isDisabled={disabled}
                                 onChange={(e: any) =>
                                     setPropertyListing((prev) => ({
                                         ...prev,

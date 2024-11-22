@@ -11,6 +11,7 @@ import { getPublicApiResponse, postRequestApi, putRequestApi } from '@/lib/apiLi
 import { Products } from '@/public/shared/app.config';
 import FormLoading from '@/app/loading-components/form-loading';
 import { toast } from 'react-toastify';
+import { ListingWorkflow } from '@/lib/typings/enums';
 
 const Page = () => {
     const { data }: any = useSession();
@@ -32,7 +33,7 @@ const Page = () => {
         user: userData.strapiUserId,
         website: "",
         ad_image: {},
-        step_number: 1
+        step_number: ListingWorkflow.Initial
     });
     const [apiRes, setApiRes] = useState<any>();
 
@@ -89,7 +90,7 @@ const Page = () => {
             contact: contact,
             user: userData.strapiUserId,
             website: formdata.website,
-            step_number: 2
+            step_number: ListingWorkflow.AddDetails
         }
         postAdListing(payload);
     }

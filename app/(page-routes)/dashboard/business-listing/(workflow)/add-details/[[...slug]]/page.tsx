@@ -16,6 +16,7 @@ import { X } from 'lucide-react';
 import FormLoading from '@/app/loading-components/form-loading';
 import { toast } from 'react-toastify';
 import AddLocationMap from '@/app/components/maps/add-location-map';
+import { ListingWorkflow } from '@/lib/typings/enums';
 
 const Page = () => {
     const { data }: any = useSession();
@@ -69,7 +70,7 @@ const Page = () => {
         services: [],
         bus_hours: businessHours,
         featured_image: {},
-        step_number: 1,
+        step_number: ListingWorkflow.Initial,
         location: location
     });
     const [apiRes, setApiRes] = useState<any>();
@@ -205,7 +206,7 @@ const Page = () => {
             website: formdata.website,
             services: businessList.services,
             bus_hours: stringifyBusHours(businessList.bus_hours),
-            step_number: 2,
+            step_number: ListingWorkflow.AddDetails,
             location: location
         }
         postBusinessListing(payload);

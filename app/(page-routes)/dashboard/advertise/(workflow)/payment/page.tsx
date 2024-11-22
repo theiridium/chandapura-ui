@@ -11,6 +11,7 @@ import { IndianRupee } from 'lucide-react';
 import { toast } from 'react-toastify';
 import PaymentCard from '@/app/sub-components/payment-card';
 import { calculateDiscountPercentage, checkSubscriptionValidity } from '@/lib/helpers';
+import { ListingWorkflow } from '@/lib/typings/enums';
 
 const Page = () => {
     const currentDate = new Date();
@@ -74,7 +75,7 @@ const Page = () => {
             }
             else if (type === "new" || type === "edit_back") {
                 let payload = {
-                    step_number: 4,
+                    step_number: ListingWorkflow.Payment,
                     purchase_date: currentDate.toISOString(),
                     expiry_date: expiryDate
                 }

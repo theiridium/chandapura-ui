@@ -11,6 +11,7 @@ import ImgMultiUploadLoading from '@/app/loading-components/img-multi-upload-loa
 import { Button } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 import FormLoading from '@/app/loading-components/form-loading';
+import { ListingWorkflow } from '@/lib/typings/enums';
 
 const Page = ({ params }: { params: { slug: string } }) => {
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
@@ -86,7 +87,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
             }
             else if (type === "new" || type === "edit_back") {
                 let payload = {
-                    step_number: 3
+                    step_number: ListingWorkflow.UploadImages
                 }
                 const endpoint = Products.business.api.base;
                 const response = await putRequestApi(endpoint, payload, source);

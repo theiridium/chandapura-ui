@@ -2,6 +2,7 @@
 import FormLoading from '@/app/loading-components/form-loading';
 import Breadcrumb from '@/app/sub-components/breadcrumb';
 import { getPublicApiResponse } from '@/lib/apiLibrary';
+import { ListingWorkflow } from '@/lib/typings/enums';
 import { DropdownList, Resource } from '@/public/shared/app.config';
 import { Button } from '@nextui-org/react';
 import { MoveRight, Pencil, Plus } from 'lucide-react';
@@ -11,25 +12,25 @@ import React, { useEffect, useState } from 'react'
 
 const steps = [
   {
-    number: 1,
-    title: "Business Details",
+    number: 0,
+    title: "Ad Details",
     currentPath: "add-details",
     nextPath: "upload-images"
   },
   {
-    number: 2,
+    number: 1,
     title: "Upload Images",
     currentPath: "upload-images",
     nextPath: "payment"
   },
   {
-    number: 3,
+    number: 2,
     title: "Payment",
     currentPath: "payment",
     nextPath: "publish"
   },
   {
-    number: 4,
+    number: 3,
     title: "Review & Publish",
     currentPath: "publish",
     nextPath: "completed"
@@ -93,7 +94,7 @@ const Page = () => {
                             <div className='border rounded-full text-xs md:text-sm px-3 border-emerald-500 text-emerald-500 font-medium'>Published</div>}
                         </> :
                         <>
-                          {(x.step_number === 5 && !x.publish_status) ? <div className='border rounded-full text-xs md:text-sm px-3 border-amber-600 text-amber-600 font-medium'>Pending Approval</div> :
+                          {(x.step_number === ListingWorkflow.Publish && !x.publish_status) ? <div className='border rounded-full text-xs md:text-sm px-3 border-amber-600 text-amber-600 font-medium'>Pending Approval</div> :
                             <div className='border rounded-full text-xs md:text-sm px-3 border-sky-500 text-sky-500 font-medium'>Draft</div>
                           }
                         </>}

@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 import { Products } from '@/public/shared/app.config';
 import { getPublicApiResponse, putRequestApi } from '@/lib/apiLibrary';
 import { toast } from 'react-toastify';
+import { ListingWorkflow } from '@/lib/typings/enums';
 
 const Page = () => {
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
@@ -54,7 +55,7 @@ const Page = () => {
             }
             else if (type === "new" || type === "edit_back") {
                 let payload = {
-                    step_number: 5
+                    step_number: ListingWorkflow.Publish
                 }
                 const endpoint = Products.business.api.base;
                 const response = await putRequestApi(endpoint, payload, source);
@@ -109,7 +110,7 @@ const Page = () => {
                             <div className='card-header text-xl font-semibold mb-5'>Location</div>
                             <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Area</div>
-                                <div className='md:text-lg'>{apiRes.area}</div>
+                                <div className='md:text-lg'>{apiRes.area.name}</div>
                             </div>
                             <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Full Address</div>
@@ -117,7 +118,7 @@ const Page = () => {
                             </div>
                             <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Map Location</div>
-                                <div className='md:text-lg'>{apiRes.area}</div>
+                                <div className='md:text-lg'>{apiRes.area.name}</div>
                             </div>
                         </div>
                         <div className='listing-card border rounded-lg p-5 md:px-7 md:py-6'>

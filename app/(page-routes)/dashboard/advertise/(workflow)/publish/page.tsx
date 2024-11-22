@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 import { Products } from '@/public/shared/app.config';
 import { getPublicApiResponse, putRequestApi } from '@/lib/apiLibrary';
 import { toast } from 'react-toastify';
+import { ListingWorkflow } from '@/lib/typings/enums';
 
 const Page = () => {
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
@@ -54,7 +55,7 @@ const Page = () => {
             }
             else if (type === "new" || type === "edit_back") {
                 let payload = {
-                    step_number: 5,
+                    step_number: ListingWorkflow.Publish,
                 }
                 const endpoint = Products.advertisement.api.base;
                 const response = await putRequestApi(endpoint, payload, source);

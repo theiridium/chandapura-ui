@@ -3,6 +3,7 @@ import { getPublicApiResponse } from "@/lib/apiLibrary";
 import { DropdownList } from "@/public/shared/app.config";
 import { Suspense } from "react"
 import BusinessListingForm from "./business-listing-form";
+export const dynamic = 'force-dynamic'
 
 export default async function BusinessListingLayout({
     children,

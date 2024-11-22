@@ -1,6 +1,7 @@
 import Hero from "./components/hero";
 import MidSection from "./components/mid-section";
 import SearchSection from "./components/search-section";
+export const dynamic = 'force-dynamic'
 
 export default function Home() {
   return (

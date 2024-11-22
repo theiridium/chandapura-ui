@@ -5,6 +5,7 @@ import AdBanner from '@/app/sub-components/ad-banner'
 import SearchBar from '@/app/sub-components/search-bar'
 import { Products } from '@/public/shared/app.config'
 import React, { Suspense } from 'react'
+export const dynamic = 'force-dynamic'
 
 const Page = ({ searchParams }: any) => {
   return (

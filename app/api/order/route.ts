@@ -1,5 +1,6 @@
 import Razorpay from 'razorpay';
 import { NextRequest, NextResponse } from 'next/server';
+export const dynamic = 'force-dynamic'
 
 const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_API_KEY_ID!,

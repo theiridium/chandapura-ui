@@ -50,7 +50,6 @@ const Page = () => {
                         payment_details: data.payment_details,
                         payment_history: data.payment_history
                     })
-                    setListingPrice({ ...listingPrice, amount: data.sub_category.pricing });
                     setPricingPlan(pricingPlanRes.data[0]);
                     setIsLoading(false);
                     return data;

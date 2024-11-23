@@ -85,11 +85,11 @@ const Page = () => {
                             <div className='card-header text-xl font-semibold mb-5'>General</div>
                             <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Business Name</div>
-                                <div className='md:text-lg'>{apiRes.name}</div>
+                                <div>{apiRes.name}</div>
                             </div>
                             <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Business Website</div>
-                                <div className='md:text-lg'>
+                                <div>
                                     <a href={apiRes.website}>{apiRes.website}</a>
                                 </div>
                             </div>
@@ -99,16 +99,16 @@ const Page = () => {
                             <div className='flex flex-col md:flex-row *:basis-full *:md:basis-1/3'>
                                 <div className='mb-5'>
                                     <div className='text-sm mb-1 font-semibold'>Contact Name</div>
-                                    <div className='md:text-lg'>{apiRes.contact.contact_name}</div>
+                                    <div>{apiRes.contact.contact_name}</div>
                                 </div>
                                 <div className='mb-5'>
                                     <div className='text-sm mb-1 font-semibold'>Conatct Number</div>
-                                    <div className='md:text-lg'>{apiRes.contact.contact_number}</div>
+                                    <div>{apiRes.contact.contact_number}</div>
                                 </div>
-                                <div className='mb-5'>
-                                    <div className='text-sm mb-1 font-semibold'>Business Email ID</div>
-                                    <div className='md:text-lg'>{apiRes.contact.contact_email_id}</div>
-                                </div>
+                            </div>
+                            <div className='mb-5'>
+                                <div className='text-sm mb-1 font-semibold'>Business Email ID</div>
+                                <div>{apiRes.contact.contact_email_id}</div>
                             </div>
                         </div>
                         <div className='listing-card border rounded-lg p-5 md:px-7 md:py-6'>

@@ -188,7 +188,8 @@ const Page = () => {
                                 orientation="horizontal"
                                 label="Listing Type"
                                 description="Listing type cannot be changed once its published."
-                                isDisabled={!!source || disabled}>
+                                isDisabled={!!source || disabled}
+                                isRequired>
                                 <RadioBox value="Rent">
                                     For Rent
                                 </RadioBox>
@@ -199,7 +200,8 @@ const Page = () => {
                         </div>
                         <div className='mb-8'>
                             <Select label="Select a Property Type" selectedKeys={[propertyListing.property_type]} isDisabled={disabled}
-                                onChange={(e: any) => setPropertyListing({ ...propertyListing, property_type: e.target.value })}>
+                                onChange={(e: any) => setPropertyListing({ ...propertyListing, property_type: e.target.value })}
+                                isRequired>
                                 {SelectList.PropertyType.map((item) => (
                                     <SelectItem key={item}>
                                         {item}
@@ -276,6 +278,7 @@ const Page = () => {
                                 isRequired />
                             <Select label="Direction" selectedKeys={[propertyListing.property_details.direction]}
                                 isDisabled={disabled}
+                                isRequired
                                 onChange={(e: any) =>
                                     setPropertyListing((prev) => ({
                                         ...prev,
@@ -293,6 +296,7 @@ const Page = () => {
                             </Select>
                             <Select label="Number of Bathrooms" selectedKeys={[propertyListing.property_details.bathrooms?.toString() || "1"]}
                                 isDisabled={disabled}
+                                isRequired
                                 onChange={(e: any) =>
                                     setPropertyListing((prev) => ({
                                         ...prev,
@@ -344,6 +348,7 @@ const Page = () => {
                             }
                             <Select label="Furnishing" selectedKeys={[propertyListing.property_details.furnishing]}
                                 isDisabled={disabled}
+                                isRequired
                                 onChange={(e: any) =>
                                     setPropertyListing((prev) => ({
                                         ...prev,
@@ -361,6 +366,7 @@ const Page = () => {
                             </Select>
                             <Select label="Parking Type" selectedKeys={[propertyListing.property_details.parking_type]}
                                 isDisabled={disabled}
+                                isRequired
                                 onChange={(e: any) =>
                                     setPropertyListing((prev) => ({
                                         ...prev,

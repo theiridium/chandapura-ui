@@ -11,6 +11,7 @@ import ImgMultiUploadLoading from '@/app/loading-components/img-multi-upload-loa
 import { Button } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 import FormLoading from '@/app/loading-components/form-loading';
+import { ListingWorkflow } from '@/lib/typings/enums';
 
 const Page = ({ params }: { params: { slug: string } }) => {
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
@@ -25,17 +26,17 @@ const Page = ({ params }: { params: { slug: string } }) => {
     const [keyGa, setKeyGa] = useState(0);
     const [imageParamsFeatured, setImageParamsFeatured] = useState<ImageParams>({
         refId: source,
-        ref: "api::business-listing.business-listing",
+        ref: "api::real-estate.real-estate",
         field: "featured_image",
         imgData: null,
     });
     const [imageParamsGallery, setImageParamsGallery] = useState<ImageParams>({
         refId: source,
-        ref: "api::business-listing.business-listing",
+        ref: "api::real-estate.real-estate",
         field: "gallery_images",
         imgData: null,
     });
-    const attr = Products.business.api;
+    const attr = Products.realEstate.api;
     const populateFeaturedImage = useCallback(async () => {
         let apiUrl = `${attr.base}?filters[id][$eq]=${source}&populate=featured_image`;
         const response = await getPublicApiResponse(apiUrl).then(res => res.data);
@@ -82,17 +83,17 @@ const Page = ({ params }: { params: { slug: string } }) => {
             if (type === "edit") {
                 toast.info("Redirecting to listing menu...")
                 await new Promise(resolve => setTimeout(resolve, 3000));
-                router.push(`/dashboard/business-listing/view-all`)
+                router.push(`/dashboard/property-listing/view-all`)
             }
             else if (type === "new" || type === "edit_back") {
                 let payload = {
-                    step_number: 3
+                    step_number: ListingWorkflow.UploadImages
                 }
-                const endpoint = Products.business.api.base;
+                const endpoint = Products.realEstate.api.base;
                 const response = await putRequestApi(endpoint, payload, source);
                 if (response.data) {
                     toast.success("Images saved successfully!");
-                    router.push(`/dashboard/business-listing/payment?type=${type}&source=${response.data.id}`)
+                    router.push(`/dashboard/property-listing/payment?type=${type}&source=${response.data.id}`)
                 }
             }
         } catch (error) {
@@ -105,7 +106,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
 
     return (
         <>
-            {isSubmitLoading && <FormLoading text={"Saving Images for Business..."} />}
+            {isSubmitLoading && <FormLoading text={"Saving Images for Property..."} />}
             <div className='col-span-full lg:col-span-6 mt-3 lg:my-8'>
                 <div className='listing-header mb-8'>
                     <div className='text-xl lg:text-4xl font-semibold text-gray-700 px-7'>Upload Media Files</div>
@@ -122,7 +123,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
                             <ImgMultiUploadLoading />}
                     </div>
                     <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>
-                        <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading} onClick={() => router.push(`/dashboard/business-listing/add-details?type=edit_back&source=${source}`)}>
+                        <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading} onClick={() => router.push(`/dashboard/property-listing/add-details?type=edit_back&source=${source}`)}>
                             Back
                         </Button>
                         <Button className='btn-primary text-base' color='primary' isDisabled={isImagesInGallery || !imageParamsFeatured.imgData} isLoading={isSubmitLoading} onClick={onClickSave}>

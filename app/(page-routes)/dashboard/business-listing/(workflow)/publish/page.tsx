@@ -60,7 +60,7 @@ const Page = () => {
                 const endpoint = Products.business.api.base;
                 const response = await putRequestApi(endpoint, payload, source);
                 if (response.data) {
-                    toast.success("Your business is listed successfully!");
+                    toast.success("Your business listing has been uploaded sucessfully!");
                     router.push(`/dashboard/business-listing/view-all`)
                 }
             }
@@ -86,39 +86,39 @@ const Page = () => {
                             <div className='flex flex-col md:flex-row *:basis-full *:md:basis-1/2'>
                                 <div className='mb-5'>
                                     <div className='text-sm mb-1 font-semibold'>Category</div>
-                                    <div className='md:text-lg'>{apiRes.category.name}</div>
+                                    <div>{apiRes.category.name}</div>
                                 </div>
                                 <div className='mb-5'>
                                     <div className='text-sm mb-1 font-semibold'>Sub-Category</div>
-                                    <div className='md:text-lg'>{apiRes.sub_category.name}</div>
+                                    <div>{apiRes.sub_category.name}</div>
                                 </div>
                             </div>
                             <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Business Name</div>
-                                <div className='md:text-lg'>{apiRes.name}</div>
+                                <div>{apiRes.name}</div>
                             </div>
                             <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Description</div>
-                                <div className='md:text-lg'>{apiRes.description}</div>
+                                <div>{apiRes.description}</div>
                             </div>
                             <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Business Website</div>
-                                <div className='md:text-lg'>{apiRes.website}</div>
+                                <div>{apiRes.website}</div>
                             </div>
                         </div>
                         <div className='listing-card border rounded-lg p-5 md:px-7 md:py-6'>
                             <div className='card-header text-xl font-semibold mb-5'>Location</div>
                             <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Area</div>
-                                <div className='md:text-lg'>{apiRes.area.name}</div>
+                                <div>{apiRes.area.name}</div>
                             </div>
                             <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Full Address</div>
-                                <div className='md:text-lg'>{apiRes.full_address}</div>
+                                <div>{apiRes.full_address}</div>
                             </div>
                             <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Map Location</div>
-                                <div className='md:text-lg'>{apiRes.area.name}</div>
+                                <div>{apiRes.area.name}</div>
                             </div>
                         </div>
                         <div className='listing-card border rounded-lg p-5 md:px-7 md:py-6'>
@@ -126,16 +126,16 @@ const Page = () => {
                             <div className='flex flex-col md:flex-row *:basis-full *:md:basis-1/3'>
                                 <div className='mb-5'>
                                     <div className='text-sm mb-1 font-semibold'>Contact Name</div>
-                                    <div className='md:text-lg'>{apiRes.contact.contact_name}</div>
+                                    <div>{apiRes.contact.contact_name}</div>
                                 </div>
                                 <div className='mb-5'>
                                     <div className='text-sm mb-1 font-semibold'>Conatct Number</div>
-                                    <div className='md:text-lg'>{apiRes.contact.contact_number}</div>
+                                    <div>{apiRes.contact.contact_number}</div>
                                 </div>
-                                <div className='mb-5'>
-                                    <div className='text-sm mb-1 font-semibold'>Business Email ID</div>
-                                    <div className='md:text-lg'>{apiRes.contact.contact_email_id}</div>
-                                </div>
+                            </div>
+                            <div className='mb-5'>
+                                <div className='text-sm mb-1 font-semibold'>Business Email ID</div>
+                                <div>{apiRes.contact.contact_email_id}</div>
                             </div>
                         </div>
                         <div className='listing-card border rounded-lg p-5 md:px-7 md:py-6'>
@@ -193,7 +193,7 @@ const Page = () => {
                             <div className='card-header text-xl font-semibold mb-5'>Advertisement</div>
                             <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Is this business opted for advertisement?</div>
-                                <div className='md:text-lg'>{apiRes.advertisement ? 'Yes' : 'No'}</div>
+                                <div>{apiRes.advertisement ? 'Yes' : 'No'}</div>
                             </div>
                             {apiRes.advertisement && <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Ad Banner Image</div>

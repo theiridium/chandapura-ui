@@ -12,25 +12,25 @@ import React, { useEffect, useState } from 'react'
 
 const steps = [
   {
-    number: 0,
+    number: 1,
     title: "Ad Details",
     currentPath: "add-details",
     nextPath: "upload-images"
   },
   {
-    number: 1,
+    number: 2,
     title: "Upload Images",
     currentPath: "upload-images",
     nextPath: "payment"
   },
   {
-    number: 2,
+    number: 3,
     title: "Payment",
     currentPath: "payment",
     nextPath: "publish"
   },
   {
-    number: 3,
+    number: 4,
     title: "Review & Publish",
     currentPath: "publish",
     nextPath: "completed"
@@ -79,7 +79,7 @@ const Page = () => {
             !isLoading && list.map((x: any, i: any) => {
               let continueUrl = "";
               if (!x.publish_status) {
-                let baseUrl = steps.find(({ number }) => number === x.step_number)?.currentPath;
+                let baseUrl = steps.find(({ number }) => number === x.step_number + 1)?.currentPath;
                 continueUrl = `${Resource.Advertisement.baseLink}/${baseUrl}?type=new&source=${x.id}`
               }
               const renewUrl = `${Resource.Advertisement.baseLink}/payment?type=new&source=${x.id}`;

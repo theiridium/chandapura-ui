@@ -11,6 +11,7 @@ import { IndianRupee } from 'lucide-react';
 import { toast } from 'react-toastify';
 import PaymentCard from '@/app/sub-components/payment-card';
 import { calculateDiscountPercentage, checkSubscriptionValidity } from '@/lib/helpers';
+import { ListingWorkflow } from '@/lib/typings/enums';
 
 const Page = () => {
     const currentDate = new Date();
@@ -35,10 +36,10 @@ const Page = () => {
     const fetchData = useCallback(async () => {
         try {
             setIsLoading(true);
-            const pricingPlanRes = await getPublicApiResponse(`${Products.pricingPlan.api.base}=${encodeURI('Business Listing')}`);
+            const pricingPlanRes = await getPublicApiResponse(`${Products.pricingPlan.api.base}=${encodeURI('Property Listing')}`);
             setPricingPlan(pricingPlanRes.data[0]);
             if (source) {
-                const attr = Products.business.api;
+                const attr = Products.realEstate.api;
                 let apiUrl = `${attr.base}?${attr.userFilter}=${userData?.email}&filters[id][$eq]=${source}&populate[0]=category&populate[1]=sub_category&populate[3]=payment_details&populate[4]=payment_history`;
                 const response = await getPublicApiResponse(apiUrl).then(res => res.data);
                 const data = response[0];
@@ -49,7 +50,6 @@ const Page = () => {
                         payment_details: data.payment_details,
                         payment_history: data.payment_history
                     })
-                    setListingPrice({ ...listingPrice, amount: data.sub_category.pricing });
                     setPricingPlan(pricingPlanRes.data[0]);
                     setIsLoading(false);
                     return data;
@@ -76,19 +76,19 @@ const Page = () => {
             if (type === "edit") {
                 toast.info("Redirecting to listing menu...")
                 await new Promise(resolve => setTimeout(resolve, 3000));
-                router.push(`/dashboard/business-listing/view-all`)
+                router.push(`/dashboard/property-listing/view-all`)
             }
             else if (type === "new" || type === "edit_back") {
                 let payload = {
-                    step_number: 4,
+                    step_number: ListingWorkflow.Payment,
                     purchase_date: currentDate.toISOString(),
                     expiry_date: expiryDate
                 }
-                const endpoint = Products.business.api.base;
+                const endpoint = Products.realEstate.api.base;
                 const response = await putRequestApi(endpoint, payload, source);
                 if (response.data) {
                     toast.success("Payment details saved successfully!");
-                    router.push(`/dashboard/business-listing/publish?type=${type}&source=${response.data.id}`)
+                    router.push(`/dashboard/property-listing/publish?type=${type}&source=${response.data.id}`)
                 }
             }
         } catch (error) {
@@ -108,20 +108,20 @@ const Page = () => {
                 </div>
                 <div className='grid grid-cols-1 gap-10 mx-2'>
                     <div className='listing-card border rounded-lg px-7 py-6 scroll-mt-36'>
-                        <div className='card-header text-xl font-semibold mb-5'>Business Details</div>
+                        <div className='card-header text-xl font-semibold mb-5'>Property Details</div>
                         <div className='bg-color1d text-white rounded-lg p-8'>
                             <div className='mb-5'>
-                                <div className='text-sm mb-1 font-semibold'>Business Name</div>
+                                <div className='text-sm mb-1 font-semibold'>Property Name</div>
                                 {isLoading ? <TextLoading /> : <div className='text-lg text-color2d'>{apiRes.name}</div>}
                             </div>
                             <div className='flex flex-col md:flex-row justify-between'>
                                 <div className='mb-5 md:mb-0'>
-                                    <div className='text-sm mb-1 font-semibold'>Business Category</div>
-                                    {isLoading ? <TextLoading /> : <div className='text-lg text-color2d'>{apiRes.category.name}</div>}
+                                    <div className='text-sm mb-1 font-semibold'>Listing Type</div>
+                                    {isLoading ? <TextLoading /> : <div className='text-lg text-color2d'>{apiRes.listing_type}</div>}
                                 </div>
                                 <div>
-                                    <div className='text-sm mb-1 font-semibold'>Business Sub-Category</div>
-                                    {isLoading ? <TextLoading /> : <div className='text-lg text-color2d'>{apiRes.sub_category.name}</div>}
+                                    <div className='text-sm mb-1 font-semibold'>Property Type</div>
+                                    {isLoading ? <TextLoading /> : <div className='text-lg text-color2d'>{apiRes.property_type}</div>}
                                 </div>
                             </div>
                         </div>
@@ -227,11 +227,11 @@ const Page = () => {
                     hasSubscribed={hasSubscribed}
                     setHasSubscribed={setHasSubscribed}
                     isOfferApplicable={false}
-                    endpoint={Products.business.api.base} />
+                    endpoint={Products.realEstate.api.base} />
             </div>
             <div className='col-span-full lg:col-start-3 lg:col-span-5 mt-3 lg:mt-0 mb-8 mx-2 lg:mx-0'>
                 <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>
-                    <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading} onClick={() => router.push(`/dashboard/business-listing/upload-images?type=edit_back&source=${source}`)}>
+                    <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading} onClick={() => router.push(`/dashboard/property-listing/upload-images?type=edit_back&source=${source}`)}>
                         Back
                     </Button>
                     <Button className='btn-primary text-base' color='primary' isDisabled={!hasSubscribed} isLoading={isSubmitLoading} onClick={onClickSave}>

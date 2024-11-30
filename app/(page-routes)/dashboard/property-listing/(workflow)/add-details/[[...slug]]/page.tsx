@@ -201,6 +201,7 @@ const Page = () => {
                         <div className='mb-8'>
                             <Select label="Select a Property Type" selectedKeys={[propertyListing.property_type]} isDisabled={disabled}
                                 onChange={(e: any) => setPropertyListing({ ...propertyListing, property_type: e.target.value })}
+                                classNames={{ listboxWrapper: "nextui-listbox"}}
                                 isRequired>
                                 {SelectList.PropertyType.map((item) => (
                                     <SelectItem key={item}>
@@ -278,6 +279,7 @@ const Page = () => {
                                 isRequired />
                             <Select label="Direction" selectedKeys={[propertyListing.property_details.direction]}
                                 isDisabled={disabled}
+                                classNames={{ listboxWrapper: "nextui-listbox"}}
                                 isRequired
                                 onChange={(e: any) =>
                                     setPropertyListing((prev) => ({
@@ -296,6 +298,7 @@ const Page = () => {
                             </Select>
                             <Select label="Number of Bathrooms" selectedKeys={[propertyListing.property_details.bathrooms?.toString() || "1"]}
                                 isDisabled={disabled}
+                                classNames={{ listboxWrapper: "nextui-listbox"}}
                                 isRequired
                                 onChange={(e: any) =>
                                     setPropertyListing((prev) => ({
@@ -348,6 +351,7 @@ const Page = () => {
                             }
                             <Select label="Furnishing" selectedKeys={[propertyListing.property_details.furnishing]}
                                 isDisabled={disabled}
+                                classNames={{ listboxWrapper: "nextui-listbox"}}
                                 isRequired
                                 onChange={(e: any) =>
                                     setPropertyListing((prev) => ({
@@ -366,6 +370,7 @@ const Page = () => {
                             </Select>
                             <Select label="Parking Type" selectedKeys={[propertyListing.property_details.parking_type]}
                                 isDisabled={disabled}
+                                classNames={{ listboxWrapper: "nextui-listbox"}}
                                 isRequired
                                 onChange={(e: any) =>
                                     setPropertyListing((prev) => ({
@@ -394,6 +399,7 @@ const Page = () => {
                                 classNames={{
                                     base: "w-full",
                                     trigger: "min-h-12 py-2",
+                                    listboxWrapper: "nextui-listbox"
                                 }}
                                 selectedKeys={propertyListing.amenities}
                                 isDisabled={disabled}
@@ -513,6 +519,7 @@ const Page = () => {
                                 onSelectionChange={onAreaChange}
                                 isDisabled={disabled}
                                 selectedKey={propertyListing.area}
+                                classNames={{ listboxWrapper: "nextui-listbox"}}
                                 isRequired
                             >
                                 {(item: any) => <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>}

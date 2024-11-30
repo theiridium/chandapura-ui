@@ -272,6 +272,7 @@ const Page = () => {
                                     onSelectionChange={onCategoryChange}
                                     selectedKey={businessList.category}
                                     isDisabled={!!source || disabled}
+                                    classNames={{ listboxWrapper: "nextui-listbox"}}
                                     isRequired
                                 >
                                     {(item: any) => <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>}
@@ -283,6 +284,7 @@ const Page = () => {
                                     onSelectionChange={onSubCategoryChange}
                                     selectedKey={businessList.sub_category}
                                     isDisabled={!!source || disabled}
+                                    classNames={{ listboxWrapper: "nextui-listbox"}}
                                     isRequired
                                 >
                                     {(item: any) => <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>}
@@ -337,6 +339,7 @@ const Page = () => {
                                 onSelectionChange={onAreaChange}
                                 isDisabled={disabled}
                                 selectedKey={businessList.area}
+                                classNames={{ listboxWrapper: "nextui-listbox"}}
                                 isRequired
                             >
                                 {(item: any) => <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>}

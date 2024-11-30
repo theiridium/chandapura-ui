@@ -71,6 +71,15 @@ header {
   z-index: 20 !important;
 }
 
+.nextui-listbox {
+  width: 100%;
+  max-height: 16rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scroll-padding-top: 1.5rem;
+  scroll-padding-bottom: 1.5rem;
+}
+
 @layer components {
   html {
     @apply scroll-smooth;

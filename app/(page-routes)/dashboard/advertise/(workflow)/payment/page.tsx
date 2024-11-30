@@ -36,8 +36,8 @@ const Page = () => {
     const fetchData = useCallback(async () => {
         try {
             setIsLoading(true);
-            const pricingPlanRes = await getPublicApiResponse(`${Products.pricingPlan.api.base}=Advertisement`);
-            setPricingPlan(pricingPlanRes.data[0]);
+            const pricingPlanRes = await getPublicApiResponse(`${Products.advertisementPricingPlan.api.base}`);
+            setPricingPlan(pricingPlanRes.data);
             if (source) {
                 const attr = Products.advertisement.api;
                 let apiUrl = `${attr.base}?${attr.userFilter}=${userData?.email}&filters[id][$eq]=${source}&populate[0]=payment_details&populate[1]=payment_history`;

@@ -15,7 +15,8 @@ import { ListingWorkflow } from '@/lib/typings/enums';
 
 const Page = () => {
     const currentDate = new Date();
-    const expiryDate = "2025-01-03T00:00:00.000Z";
+    const expiryDate = new Date(currentDate.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString();
+    const expiryTimestamp = new Date(expiryDate).getTime();
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const { data }: any = useSession();
@@ -36,21 +37,21 @@ const Page = () => {
     const fetchData = useCallback(async () => {
         try {
             setIsLoading(true);
-            const pricingPlanRes = await getPublicApiResponse(`${Products.pricingPlan.api.base}=${encodeURI('Business Listing')}`);
-            setPricingPlan(pricingPlanRes.data[0]);
+            const pricingPlanRes = await getPublicApiResponse(`${Products.businessListingPricingPlan.api.base}`);
+            setPricingPlan(pricingPlanRes.data);
             if (source) {
                 const attr = Products.business.api;
                 let apiUrl = `${attr.base}?${attr.userFilter}=${userData?.email}&filters[id][$eq]=${source}&populate[0]=category&populate[1]=sub_category&populate[3]=payment_details&populate[4]=payment_history`;
                 const response = await getPublicApiResponse(apiUrl).then(res => res.data);
                 const data = response[0];
                 if (data) {
-                    data.payment_details && setHasSubscribed(checkSubscriptionValidity(data.payment_details.expiry_date, data.payment_details.isPaymentSuccess));
+                    data.payment_details && setHasSubscribed(checkSubscriptionValidity(data.payment_details.expiry_date_timestamp, data.payment_details.isPaymentSuccess));
                     setApiRes(data);
                     setPaymentData({
                         payment_details: data.payment_details,
                         payment_history: data.payment_history
                     })
-                    setPricingPlan(pricingPlanRes.data[0]);
+                    setPricingPlan(pricingPlanRes.data);
                     setIsLoading(false);
                     return data;
                 }
@@ -82,8 +83,10 @@ const Page = () => {
                 let payload = {
                     step_number: ListingWorkflow.Payment,
                     purchase_date: currentDate.toISOString(),
-                    expiry_date: expiryDate
+                    expiry_date: expiryDate,
+                    expiry_timestamp: expiryTimestamp
                 }
+                console.log("payload",payload)
                 const endpoint = Products.business.api.base;
                 const response = await putRequestApi(endpoint, payload, source);
                 if (response.data) {

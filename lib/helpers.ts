@@ -65,9 +65,9 @@ export function hashCode(str: string) {
   return hash.toString(36);
 }
 
-export function checkSubscriptionValidity(expiryDate: any, isPaymentSuccess: boolean) {
-  const currentDate = new Date().toISOString();
-  if (expiryDate >= currentDate && isPaymentSuccess) {
+export function checkSubscriptionValidity(expiryDateTmestamp: any, isPaymentSuccess: boolean) {
+  const currentDateTimestamp = new Date().getTime();
+  if (expiryDateTmestamp >= currentDateTimestamp && isPaymentSuccess) {
     return true;
   }
   else return false;

@@ -1,3 +1,4 @@
+const currentDate = new Date().getTime();
 module.exports = {
   sm: 640,
   md: 768,
@@ -95,7 +96,7 @@ module.exports = {
           "property_details,featured_image,area,gallery_images,contact,amenities",
         limit: 4,
         userFilter: "filters[author][email][$eq]",
-        isPublishedFilter: "filters[publish_status][$eq]=true",
+        isPublishedFilter: `filters[publish_status][$eq]=true&filters[payment_details][expiry_date_timestamp][$gt]=${currentDate}`,
         listingTypeFilter: "filters[listing_type][$eq]=Sale",
         limit: 4,
       },
@@ -113,7 +114,7 @@ module.exports = {
         populateDetails:
           "property_details,featured_image,area,gallery_images,contact,amenities",
         userFilter: "filters[author][email][$eq]",
-        isPublishedFilter: "filters[publish_status][$eq]=true",
+        isPublishedFilter: `filters[publish_status][$eq]=true&filters[payment_details][expiry_date_timestamp][$gt]=${currentDate}`,
         listingTypeFilter: "filters[listing_type][$eq]=Rent",
         limit: 4,
       },
@@ -130,7 +131,7 @@ module.exports = {
         populateDetails:
           "property_details,featured_image,area,gallery_images,contact,amenities",
         userFilter: "filters[author][email][$eq]",
-        isPublishedFilter: "filters[publish_status][$eq]=true",
+        isPublishedFilter: `filters[publish_status][$eq]=true&filters[payment_details][expiry_date_timestamp][$gt]=${currentDate}`,
         limit: 4,
       },
     },
@@ -146,7 +147,7 @@ module.exports = {
         populate:
           "populate[0]=sub_category&populate[1]=category&populate[2]=user&populate[3]=featured_image&populate[4]=area&populate[5]=gallery_images&populate[6]=contact",
         userFilter: "filters[author][email][$eq]",
-        isPublishedFilter: "filters[publish_status][$eq]=true",
+        isPublishedFilter: `filters[publish_status][$eq]=true&filters[payment_details][expiry_date_timestamp][$gt]=${currentDate}`,
         limit: 4,
       },
     },
@@ -174,12 +175,27 @@ module.exports = {
         filter: "filters[payment_details][expiry_date][$gt]",
         limit: 0,
         userFilter: "filters[author][email][$eq]",
-        isPublishedFilter: "filters[publish_status][$eq]=true",
+        isPublishedFilter: `filters[publish_status][$eq]=true&filters[payment_details][expiry_date_timestamp][$gt]=${currentDate}`,
       },
     },
     pricingPlan: {
       api: {
         base: "pricing-plans?filters[name][$eq]",
+      },
+    },
+    businessListingPricingPlan: {
+      api: {
+        base: "business-listing-pricing-plan",
+      },
+    },
+    realEstatePricingPlan: {
+      api: {
+        base: "real-estate-pricing-plan",
+      },
+    },
+    advertisementPricingPlan: {
+      api: {
+        base: "advertisement-pricing-plan",
       },
     },
   },

@@ -10,19 +10,7 @@ const OPTIONS: EmblaOptionsType = { loop: true }
 const AdBanner = async ({ placement }: any) => {
   const currentDate = new Date();
   const attr = Products.advertisement.api;
-  const res = await getPublicApiResponse(`${attr.base}?sort=updatedAt%3A${attr.sort}&${attr.populate}&${attr.isPublishedFilter}=true&${attr.filter}=${currentDate.toISOString()}`);
-  // const adBannerList = [
-  //   { src: "https://flowbite.com/docs/images/carousel/carousel-1.svg", alt: "" },
-  //   { src: "https://flowbite.com/docs/images/carousel/carousel-2.svg", alt: "" },
-  //   { src: "https://flowbite.com/docs/images/carousel/carousel-3.svg", alt: "" },
-  //   { src: "https://flowbite.com/docs/images/carousel/carousel-4.svg", alt: "" },
-  //   { src: "https://flowbite.com/docs/images/carousel/carousel-5.svg", alt: "" },
-  // ]
-  // console.log(data)
-  // const SLIDES = adBanner1.map((x: any, i) =>
-  //   <img key={i} src={x.src} alt={x.alt} />
-  // );
-  // const SLIDES = adBanner1.length
+  const res = await getPublicApiResponse(`${attr.base}?sort=updatedAt%3A${attr.sort}&${attr.populate}&${attr.isPublishedFilter}&${attr.filter}=${currentDate.toISOString()}`);
   let adBannerList: any = []
   let urls: any = []
   res.data.forEach((x: any) => {

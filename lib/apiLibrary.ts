@@ -3,6 +3,8 @@ import axios from "axios";
 import { SearchPayload } from "./typings/dto";
 import axiosInstance from "./axiosInstance";
 
+const currentDate = new Date().getTime();
+
 export const getPublicApiResponse = async (endpoint: any) => {
     // await new Promise(resolve => setTimeout(resolve, 5000))
     try {
@@ -152,7 +154,7 @@ export const getPublicSingleSearchResponse = async (payload: SearchPayload | und
         Authorization: "Bearer " + process.env.MEILISEARCH_TOKEN,
         "Content-Type": "application/json"
     }
-    let filters = ["publish_status = true"];
+    let filters = ["publish_status = true", `payment_details.expiry_date_timestamp > ${currentDate}`];
     if(payload?.filter) filters.push(payload.filter);
     let bodyContent = JSON.stringify({
         "queries": [

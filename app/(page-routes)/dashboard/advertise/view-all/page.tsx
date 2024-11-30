@@ -46,14 +46,14 @@ const Page = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const getBusinessList = async () => {
-    let apiUrl = `${attr.base}?sort=${attr.sortByDate}&${attr.filter}=${user?.email}&populate=ad_image&populate=payment_details`;
+    let apiUrl = `${attr.base}?sort=${attr.sortByDate}&${attr.filter}=${user?.email}&populate=ad_image,payment_details`;
     const response = await getPublicApiResponse(apiUrl);
     setList(response.data);
     setIsLoading(false);
   }
   useEffect(() => {
     getBusinessList();
-  }, [isLoading])
+  }, [])
 
   return (
     <div className='max-w-screen-xl min-h-screen mx-auto px-3 my-8 md:mt-8 md:mb-10'>
@@ -63,8 +63,7 @@ const Page = () => {
           onClick={() => {
             setIsRedirecting(true);
             router.push(addNewUrl)
-          }
-          }
+          }}
           startContent={<Plus size={20} />}>
           Add New
         </Button>
@@ -89,7 +88,7 @@ const Page = () => {
                     <div className='absolute -top-6 right-0'>
                       {x.publish_status ?
                         <>
-                          {new Date(x.payment_details.expiry_date) <= new Date() ?
+                          {x.payment_details.expiry_date_timestamp <= new Date().getTime() ?
                             <div className='border rounded-full text-xs md:text-sm px-3 border-red-500 text-red-500 font-medium'>Expired</div> :
                             <div className='border rounded-full text-xs md:text-sm px-3 border-emerald-500 text-emerald-500 font-medium'>Published</div>}
                         </> :
@@ -113,7 +112,7 @@ const Page = () => {
                         <>
                           <div className='flex text-sm border-y-1 divide-x *:px-2 *:py-1 *:flex *:items-center *:grow *:justify-center *:gap-x-1 text-color1d'>
                             {x.publish_status ? <>
-                              {new Date(x.payment_details.expiry_date) <= new Date() ?
+                              {(x.payment_details && x.payment_details.expiry_date_timestamp <= new Date().getTime()) ?
                                 <a className='hover:bg-color2d/20' href={renewUrl}>Renew subscription<MoveRight size={15} /></a> :
                                 <>
                                   <a className='hover:bg-color2d/20' href={Resource.Advertisement.addDetailsLink + '?type=edit&source=' + x.id}>Ad Profile<Pencil size={15} /></a>

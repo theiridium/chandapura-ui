@@ -53,7 +53,7 @@ const Page = () => {
   }
   useEffect(() => {
     getPropertyList();
-  }, [isLoading])
+  }, [])
 
   return (
     <div className='max-w-screen-xl min-h-screen mx-auto px-3 my-8 md:mt-8 md:mb-10'>
@@ -81,13 +81,14 @@ const Page = () => {
                 let baseUrl = steps.find(({ number }) => number === x.step_number + 1)?.currentPath;
                 continueUrl = `${Resource.PropertyListing.baseLink}/${baseUrl}?type=new&source=${x.id}`
               }
+              const renewUrl = `${Resource.PropertyListing.baseLink}/payment?type=new&source=${x.id}`;
               return (
                 <div key={i} className={`py-10 md:px-5 border-b-1 md:border md:rounded-lg ${i === 0 && 'border-t-1'}`}>
                   <div className="flex gap-5 md:gap-10 relative">
                     <div className='absolute -top-6 right-0'>
                       {x.publish_status ?
                         <>
-                          {x.payment_details && new Date(x.payment_details.expiry_date) <= new Date() ?
+                          {x.payment_details && x.payment_details.expiry_date_timestamp <= new Date().getTime() ?
                             <div className='border rounded-full text-xs md:text-sm px-3 border-red-500 text-red-500 font-medium'>Expired</div> :
                             <div className='border rounded-full text-xs md:text-sm px-3 border-emerald-500 text-emerald-500 font-medium'>Published</div>}
                         </> :
@@ -108,14 +109,16 @@ const Page = () => {
                           <div className='font-semibold md:text-2xl mb-1'>{x.name}</div>
                           <div className='text-sm font-light'>{x.area}</div>
                         </div>
-                        {/* {!x.advertise && <div className='flex'>
-                          <Button className='w-full md:w-auto' color='primary' variant='flat' size='sm'>Advertise Now</Button>
-                        </div>} */}
                         <>
                           <div className='flex text-sm border-y-1 divide-x *:px-2 *:py-1 *:flex *:items-center *:grow *:justify-center *:gap-x-1 text-color1d'>
                             {x.publish_status ? <>
-                              <a className='hover:bg-color2d/20' href={Resource.PropertyListing.addDetailsLink + '?type=edit&source=' + x.id}>Property Details<Pencil size={15} /></a>
-                              <a className='hover:bg-color2d/20' href={Resource.PropertyListing.uploadImagesLink + '?type=edit&source=' + x.id}>Images<Pencil size={15} /></a>
+                              {(x.payment_details && x.payment_details.expiry_date_timestamp <= new Date().getTime()) ?
+                                <a className='hover:bg-color2d/20' href={renewUrl}>Renew subscription<MoveRight size={15} /></a> :
+                                <>
+                                  <a className='hover:bg-color2d/20' href={Resource.Advertisement.addDetailsLink + '?type=edit&source=' + x.id}>Ad Profile<Pencil size={15} /></a>
+                                  <a className='hover:bg-color2d/20' href={Resource.Advertisement.uploadImagesLink + '?type=edit&source=' + x.id}>Image<Pencil size={15} /></a>
+                                </>
+                              }
                             </> :
                               <a className='hover:bg-color2d/20' href={continueUrl}>Continue to complete listing<MoveRight size={15} /></a>}
                           </div>

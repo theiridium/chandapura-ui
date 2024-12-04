@@ -69,10 +69,6 @@ const Page = ({ params }: { params: { slug: string } }) => {
         populateGalleryImages();
     }, [keyGa])
 
-    // const IsImagesInReview = () => {
-    //     isImagesInGallery || imageParamsGallery.imgData.length === 0
-    // }
-
     const reloadFeaturedComp = () => setKeyFt(prevKey => prevKey + 1);
     const reloadGalleryComp = () => setKeyGa(prevKey => prevKey + 1);
 
@@ -87,7 +83,8 @@ const Page = ({ params }: { params: { slug: string } }) => {
             }
             else if (type === "new" || type === "edit_back") {
                 let payload = {
-                    step_number: ListingWorkflow.UploadImages
+                    step_number: ListingWorkflow.UploadImages,
+                    publish_status: false
                 }
                 const endpoint = Products.realEstate.api.base;
                 const response = await putRequestApi(endpoint, payload, source);

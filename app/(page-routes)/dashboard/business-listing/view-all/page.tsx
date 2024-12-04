@@ -81,7 +81,7 @@ const Page = () => {
                 let baseUrl = steps.find(({ number }) => number === x.step_number + 1)?.currentPath;
                 continueUrl = `${Resource.BusinessListing.baseLink}/${baseUrl}?type=new&source=${x.id}`
               }
-              const renewUrl = `${Resource.BusinessListing.baseLink}/payment?type=new&source=${x.id}`;
+              const renewUrl = `${Resource.BusinessListing.baseLink}/payment?type=renew&source=${x.id}`;
               return (
                 <div key={i} className={`py-10 md:px-5 border-b-1 md:border md:rounded-lg ${i === 0 && 'border-t-1'}`}>
                   <div className="flex gap-5 md:gap-10 relative">

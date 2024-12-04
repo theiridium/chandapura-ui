@@ -53,8 +53,8 @@ const SingleImage = ({ imageParams, uploadSuccess }: any) => {
 
     const newImage = files.map((file: any, index: number) => (
         <div className="flex justify-left gap-5 mb-6" key={file.name}>
-            <div className="relative transition-all duration-300 hover:brightness-90">
-                <img className="border object-cover w-80 h-48 rounded-md" src={blobUrls[index]}
+            <div className="relative transition-all duration-300 hover:brightness-90 grow">
+                <img className="border object-cover w-full h-full lg:h-80 rounded-md" src={blobUrls[index]}
                     onLoad={() => { URL.revokeObjectURL(blobUrls[index]) }}
                 />
             </div>
@@ -67,8 +67,8 @@ const SingleImage = ({ imageParams, uploadSuccess }: any) => {
 
     const ExistingImage = () => (
         <div className="flex justify-left gap-5 mb-6">
-            <div className="relative transition-all duration-300 hover:brightness-90">
-                <img className="border object-cover w-80 h-48 rounded-md" src={imageParams.imgData.url} />
+            <div className="relative transition-all duration-300 hover:brightness-90 grow">
+                <img className="border object-cover w-full h-full lg:h-80 rounded-md" src={imageParams.imgData.url} />
             </div>
             <div className="flex flex-col gap-5">
                 <button disabled={loading} className="w-14 h-14 border grid place-content-center rounded-md hover:bg-color2d/70" onClick={() => deleteImage(imageParams.imgData.id)}>

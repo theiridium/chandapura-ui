@@ -259,7 +259,8 @@ module.exports = {
     },
   },
   SelectList: {
-    PropertyType: ["Apartment", "Individual", "Villa"],
+    PropertyTypeRent: ["Apartment", "Individual", "Villa", "PG"],
+    PropertyTypeSale: ["Apartment", "Individual", "Villa", "Plot"],
     Direction: [
       "East",
       "West",
@@ -272,5 +273,6 @@ module.exports = {
     ],
     Furnishhing: ["Semi Furnished", "Fully Furnished", "Non Furnished"],
     ParkingType: ["Open", "Covered"],
+    RoomType: ["Studio", "1BHK", "2BHK", "3BHK", "4BHK", "5BHK"],
   },
 };

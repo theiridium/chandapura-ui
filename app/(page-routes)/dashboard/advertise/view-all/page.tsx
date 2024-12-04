@@ -45,14 +45,14 @@ const Page = () => {
   const [list, setList] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isRedirecting, setIsRedirecting] = useState(false);
-  const getBusinessList = async () => {
+  const getAdList = async () => {
     let apiUrl = `${attr.base}?sort=${attr.sortByDate}&${attr.filter}=${user?.email}&populate=ad_image,payment_details`;
     const response = await getPublicApiResponse(apiUrl);
     setList(response.data);
     setIsLoading(false);
   }
   useEffect(() => {
-    getBusinessList();
+    getAdList();
   }, [])
 
   return (
@@ -81,7 +81,7 @@ const Page = () => {
                 let baseUrl = steps.find(({ number }) => number === x.step_number + 1)?.currentPath;
                 continueUrl = `${Resource.Advertisement.baseLink}/${baseUrl}?type=new&source=${x.id}`
               }
-              const renewUrl = `${Resource.Advertisement.baseLink}/payment?type=new&source=${x.id}`;
+              const renewUrl = `${Resource.Advertisement.baseLink}/payment?type=renew&source=${x.id}`;
               return (
                 <div key={i} className={`py-10 md:px-5 border-b-1 md:border md:rounded-lg ${i === 0 && 'border-t-1'}`}>
                   <div className="flex gap-5 md:gap-10 relative">
@@ -128,7 +128,7 @@ const Page = () => {
                   </div>
                 </div>)
             }) :
-            <p className='text-lg'>Your list is empty, click on <a className='link-text' href={addNewUrl}>Add New</a> to start listing your Business today.</p>}
+            <p className='text-lg'>Your list is empty, click on <a className='link-text' href={addNewUrl}>Add New</a> to display your banner Advertisement.</p>}
       </div>
     </div>
   )

@@ -29,6 +29,7 @@ const Page = () => {
                 const response = await getPublicApiResponse(apiUrl).then(res => res.data);
                 const data = response[0];
                 if (data) {
+                    if (data.step_number !== ListingWorkflow.Payment) router.push(`/dashboard/business-listing/view-all`);
                     setApiRes(data);
                     setIsLoading(false);
                     return data;
@@ -53,7 +54,7 @@ const Page = () => {
                 await new Promise(resolve => setTimeout(resolve, 3000));
                 router.push(`/dashboard/business-listing/view-all`)
             }
-            else if (type === "new" || type === "edit_back") {
+            else if (type === "new" || type === "renew") {
                 let payload = {
                     step_number: ListingWorkflow.Publish
                 }

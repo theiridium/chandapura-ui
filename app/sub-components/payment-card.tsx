@@ -9,6 +9,7 @@ import { convertToReadableDate, hashCode } from "@/lib/helpers";
 import Script from "next/script";
 import { createOrderId, putRequestApi } from "@/lib/apiLibrary";
 import { toast } from "react-toastify";
+import FormLoading from "../loading-components/form-loading";
 
 const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSubscribed, isOfferApplicable, endpoint }: any) => {
     const { data }: any = useSession();
@@ -25,6 +26,7 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
     const [listingAmount, setListingAmount] = useState<number>(pricing.amount);
     const [taxAmount, setTaxAmount] = useState<any>(0);
     const [isOfferApplied, setIsOfferApplied] = useState<boolean>(false);
+    const [expiryTimestamp, setExpiryTimestamp] = useState(new Date(expiryDate).getTime());
     // const [noPaymentRequired, setNoPaymentRequired] = useState(false);
     const [totalAmount, setTotalAmount] = useState<any>(0);
     const calculateTax = (): number => {
@@ -45,6 +47,10 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
         setIsOfferApplied(true);
         setListingAmount(0);
     };
+
+    useEffect(() => {
+        setExpiryTimestamp(new Date(expiryDate).getTime());
+    }, [expiryDate]);
 
     const processPayment = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -80,7 +86,6 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
                             toast.success("Payment completed successfully!");
                             isPaymentSuccess = await savePaymentDetails(data);
                             if (isPaymentSuccess) setHasSubscribed(true);
-                            setIsLoading(false);
                         }
                         else {
                             alert(res.message);
@@ -99,7 +104,6 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
                     alert(response.error.description);
                 });
                 paymentObject.open();
-                setIsLoading(false);
             }
             else {
                 const data = {
@@ -113,42 +117,40 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
                     setHasSubscribed(true);
                     toast.success(`You have unlocked free listing untill ${convertToReadableDate(new Date(expiryDate))}. Please continue to Preview.`);
                 }
-                setIsLoading(false);
             }
         } catch (error) {
             console.log(error);
+        } finally {
+            setIsLoading(false);
         }
     };
     const savePaymentDetails: any = async (data: any) => {
         try {
-            if (type === "edit") {
-                toast.info("Redirecting to listing menu...")
-                await new Promise(resolve => setTimeout(resolve, 3000));
-                router.push(`/dashboard/advertisement/view-all`)
+            setIsLoading(true);
+            let payment_details = {
+                purchase_date: currentDate.toISOString(),
+                amount: totalAmount,
+                expiry_date: expiryDate,
+                expiry_date_timestamp: expiryTimestamp,
+                raz_order_id: data.razorpayOrderId,
+                raz_payment_id: data.razorpayPaymentId,
+                isPaymentSuccess: true,
+                isOfferApplied: isOfferApplied
             }
-            else if (type === "new" || type === "edit_back") {
-                let payment_details = {
-                    purchase_date: currentDate.toISOString(),
-                    amount: totalAmount,
-                    expiry_date: expiryDate,
-                    raz_order_id: data.razorpayOrderId,
-                    raz_payment_id: data.razorpayPaymentId,
-                    isPaymentSuccess: true,
-                    isOfferApplied: isOfferApplied
-                }
-                let payload = {
-                    payment_details: payment_details,
-                    payment_history: [...paymentData.payment_history, payment_details]
-                }
-                const response = await putRequestApi(endpoint, payload, source);
-                if (response.data) {
-                    toast.success("Payment details saved successfully!");
-                    return true;
-                }
-                else {
-                    toast.error("Could not save your payment details. Please contact the support.");
-                    return false;
-                }
+            let payload = {
+                payment_details: payment_details,
+                payment_history: [...paymentData.payment_history, payment_details],
+                publish_status: false
+            }
+            const response = await putRequestApi(endpoint, payload, source);
+            if (response.data) {
+                console.log(response.data)
+                toast.success("Payment details saved successfully!");
+                return true;
+            }
+            else {
+                toast.error("Could not save your payment details. Please contact the support.");
+                return false;
             }
         } catch (error) {
             console.error("An error occurred during the process:", error);
@@ -164,6 +166,7 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
                 id="razorpay-checkout-js"
                 src="https://checkout.razorpay.com/v1/checkout.js"
             />
+            {isLoading && <FormLoading text="Processing your payment..." />}
             <div className="border rounded-lg bg-white px-7 py-6 lg:sticky lg:top-[6.5rem]">
                 <div className='card-header text-xl font-semibold mb-5'>Order Summary</div>
                 <div className='mb-8 flex justify-between'>
@@ -191,7 +194,7 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
                         <div>
                             <div className='text-sm mb-1 font-semibold'>Business Listing Plan</div>
                             {!isOfferApplied ? <div>{pricing.type}</div> : <div>Promotional</div>}
-                            {isOfferApplied && <div className="text-xs font-semi-bold">Expires on {convertToReadableDate(new Date(expiryDate))}</div>}
+                            {listingAmount > 0 && <div className="text-xs font-semi-bold">Expires on {convertToReadableDate(new Date(expiryDate))}</div>}
                         </div>
                         <div className="flex">
                             {isOfferApplied && <div className="text-xl flex items-center mr-2"><IndianRupee size={18} /><span className="line-through decoration-slate-500/60">{pricing.amount}</span></div>}
@@ -209,7 +212,10 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
                         </div>
                     </div> */}
                     <div className='flex justify-between items-center'>
-                        <div className='text-sm mb-1 font-semibold'>Taxes & Fees</div>
+                        <div>
+                            <div className='text-sm mb-1 font-semibold'>GST</div>
+                            <div className="text-xs font-semi-bold">18%</div>
+                        </div>
                         <div className="text-xl flex items-center"><IndianRupee size={18} />{taxAmount}</div>
                     </div>
                     <div className='flex justify-between items-center'>
@@ -218,7 +224,7 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
                     </div>
                 </div>
                 <div className="flex justify-end mt-5">
-                    <Button isLoading={isLoading} radius="none" isDisabled={hasSubscribed || !pricing.type} size="md" color={`${hasSubscribed ? 'success' : 'primary'}`} variant={`${hasSubscribed ? 'solid' : 'ghost'}`} onClick={(e: any) => processPayment(e)}>{hasSubscribed ? 'Paid' : 'Checkout'}</Button>
+                    <Button isLoading={isLoading} radius="none" isDisabled={hasSubscribed || !pricing.type || isLoading} size="md" color={`${hasSubscribed ? 'success' : 'primary'}`} variant={`${hasSubscribed ? 'solid' : 'ghost'}`} onClick={(e: any) => processPayment(e)}>{hasSubscribed ? 'Paid' : 'Checkout'}</Button>
                     {/* <Button as={Link} href="https://rzp.io/l/8IapPlGi" radius="none" size="md" color="primary" variant="ghost">Checkout</Button> */}
                     {/* <RazorpayButton /> */}
                 </div>

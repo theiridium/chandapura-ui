@@ -15,8 +15,9 @@ import { ListingWorkflow } from '@/lib/typings/enums';
 
 const Page = () => {
     const currentDate = new Date();
-    const expiryDate = new Date(currentDate.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString();
-    const expiryTimestamp = new Date(expiryDate).getTime();
+    const monthSpan = new Date(currentDate.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString();
+    const yearSpan = new Date(currentDate.setFullYear(currentDate.getFullYear() + 1)).toISOString();
+    const [expiryDate, setExpiryDate] = useState(monthSpan);
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const { data }: any = useSession();
@@ -37,21 +38,21 @@ const Page = () => {
     const fetchData = useCallback(async () => {
         try {
             setIsLoading(true);
-            const pricingPlanRes = await getPublicApiResponse(`${Products.businessListingPricingPlan.api.base}`);
-            setPricingPlan(pricingPlanRes.data);
             if (source) {
+                const pricingPlanRes = await getPublicApiResponse(`${Products.businessListingPricingPlan.api.base}`);
+                setPricingPlan(pricingPlanRes.data);
                 const attr = Products.business.api;
                 let apiUrl = `${attr.base}?${attr.userFilter}=${userData?.email}&filters[id][$eq]=${source}&populate[0]=category&populate[1]=sub_category&populate[3]=payment_details&populate[4]=payment_history`;
                 const response = await getPublicApiResponse(apiUrl).then(res => res.data);
                 const data = response[0];
                 if (data) {
+                    if (data.step_number !== ListingWorkflow.UploadImages && type !== "renew") router.push(`/dashboard/business-listing/view-all`);
                     data.payment_details && setHasSubscribed(checkSubscriptionValidity(data.payment_details.expiry_date_timestamp, data.payment_details.isPaymentSuccess));
                     setApiRes(data);
                     setPaymentData({
                         payment_details: data.payment_details,
                         payment_history: data.payment_history
                     })
-                    setPricingPlan(pricingPlanRes.data);
                     setIsLoading(false);
                     return data;
                 }
@@ -66,8 +67,10 @@ const Page = () => {
         fetchData();
     }, [fetchData]);
 
-    const onSelectAdPrice = useCallback((type: string, amount: number) => {
+    const onPlanSelect = useCallback((type: string, amount: number) => {
         setListingPrice({ type: type, amount: amount });
+        if (type === "Monthly") setExpiryDate(monthSpan);
+        else setExpiryDate(yearSpan);
     }, [])
 
     const onClickSave = async () => {
@@ -79,14 +82,11 @@ const Page = () => {
                 await new Promise(resolve => setTimeout(resolve, 3000));
                 router.push(`/dashboard/business-listing/view-all`)
             }
-            else if (type === "new" || type === "edit_back") {
+            else if (type === "new" || type === "renew") {
                 let payload = {
-                    step_number: ListingWorkflow.Payment,
-                    purchase_date: currentDate.toISOString(),
-                    expiry_date: expiryDate,
-                    expiry_timestamp: expiryTimestamp
+                    step_number: ListingWorkflow.Payment
                 }
-                console.log("payload",payload)
+                console.log("payload", payload)
                 const endpoint = Products.business.api.base;
                 const response = await putRequestApi(endpoint, payload, source);
                 if (response.data) {
@@ -136,19 +136,6 @@ const Page = () => {
                         </p>} */}
                         <div className='bg-color1d/10 rounded-lg p-8'>
                             <div className='w-full'>
-                                {/* <Tabs fullWidth color='secondary' radius='full' size='lg' aria-label="Pricing Tabs"
-                                    classNames={{
-                                        tabList: "bg-color2d/40 p-0",
-                                        tabContent: "text-black",
-                                    }}
-                                    disabledKeys={["yearly"]}>
-                                    <Tab key="monthly" title="Monthly">
-                                        <div className='my-5'>
-                                            <div className='flex items-end justify-center'><div className='text-5xl font-semibold flex items-center'><IndianRupee strokeWidth={3} size={30} />{listingPrice.amount}</div><span className='font-semibold'>/month</span></div>
-                                        </div>
-                                    </Tab>
-                                    <Tab key="yearly" title="Yearly" />
-                                </Tabs> */}
                                 <Tabs fullWidth color='secondary' radius='full' size='lg' aria-label="Pricing Tabs"
                                     classNames={{
                                         tabList: "bg-color2d/40 p-0",
@@ -161,7 +148,7 @@ const Page = () => {
                                                 <>
                                                     <div className='flex items-end justify-center mb-10'><div className='text-5xl font-semibold flex items-center'><IndianRupee strokeWidth={3} size={30} />{pricingPlan.monthly}</div><span className='font-semibold'>/month</span></div>
                                                     {!hasSubscribed &&
-                                                        <div className='flex justify-center'><Button radius="none" size="lg" color="primary" variant="bordered" onClick={() => onSelectAdPrice("Monthly", pricingPlan.monthly)}>Choose Monthly Plan</Button></div>
+                                                        <div className='flex justify-center'><Button radius="none" size="lg" color="primary" variant="bordered" onClick={() => onPlanSelect("Monthly", pricingPlan.monthly)}>Choose Monthly Plan</Button></div>
                                                     }
                                                 </>
                                             }
@@ -177,7 +164,7 @@ const Page = () => {
                                                     </div>
                                                     <div className='flex items-end justify-center mb-10'><div className='text-5xl font-semibold flex items-center'><IndianRupee strokeWidth={3} size={30} />{pricingPlan.yearly}</div><span className='font-semibold'>/year</span></div>
                                                     {!hasSubscribed &&
-                                                        <div className='flex justify-center'><Button radius="none" size="lg" color="primary" variant="bordered" onClick={() => onSelectAdPrice("Yearly", pricingPlan.yearly)}>Choose Yearly Plan</Button></div>
+                                                        <div className='flex justify-center'><Button radius="none" size="lg" color="primary" variant="bordered" onClick={() => onPlanSelect("Yearly", pricingPlan.yearly)}>Choose Yearly Plan</Button></div>
                                                     }
                                                 </>
                                             }
@@ -203,7 +190,7 @@ const Page = () => {
                                     <Tab key="monthly" title="Monthly">
                                         <div className='my-5'>
                                             <div className='flex items-end justify-center mb-10'><div className='text-5xl font-semibold flex items-center'><IndianRupee strokeWidth={3} size={30} />299</div><span className='font-semibold'>/month</span></div>
-                                            <div className='flex justify-center'><Button radius="none" size="lg" color="primary" variant="bordered" onClick={() => onSelectAdPrice("Monthly", 299)}>Choose Monthly Plan</Button></div>
+                                            <div className='flex justify-center'><Button radius="none" size="lg" color="primary" variant="bordered" onClick={() => onPlanSelect("Monthly", 299)}>Choose Monthly Plan</Button></div>
                                         </div>
                                     </Tab>
                                     <Tab key="yearly" title="Yearly">
@@ -213,7 +200,7 @@ const Page = () => {
                                                 <div className='ml-2 bg-color1d/10 rounded-full px-5'>Save 20%</div>
                                             </div>
                                             <div className='flex items-end justify-center mb-10'><div className='text-5xl font-semibold flex items-center'><IndianRupee strokeWidth={3} size={30} />2870</div><span className='font-semibold'>/year</span></div>
-                                            <div className='flex justify-center'><Button radius="none" size="lg" color="primary" variant="bordered" onClick={() => onSelectAdPrice("Yearly", 2870)}>Choose Yearly Plan</Button></div>
+                                            <div className='flex justify-center'><Button radius="none" size="lg" color="primary" variant="bordered" onClick={() => onPlanSelect("Yearly", 2870)}>Choose Yearly Plan</Button></div>
                                         </div>
                                     </Tab>
                                 </Tabs>

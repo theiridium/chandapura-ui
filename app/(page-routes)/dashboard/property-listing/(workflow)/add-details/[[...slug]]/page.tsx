@@ -25,6 +25,7 @@ const Page = () => {
     const type = searchParams.get('type');
     const source = searchParams.get('source');
     const [disabled, setDisabled] = useState(true);
+    const [propertyType, setPropertyType] = useState(SelectList.PropertyTypeRent);
     const amenityList = useAtomValue<any>(amenities).data;
     const areaList = useAtomValue<any>(areas).data;
     const [contact, setContact] = useState<ContactComponent>({
@@ -91,6 +92,12 @@ const Page = () => {
         }
     }, [apiRes])
 
+    useEffect(() => {
+        if (propertyListing.listing_type === "Rent") setPropertyType(SelectList.PropertyTypeRent);
+        else setPropertyType(SelectList.PropertyTypeSale);
+    }, [propertyListing.listing_type])
+
+
     const populateBusinessDetails = useCallback(async () => {
         if (source) {
             const attr = Products.realEstate.api;
@@ -128,7 +135,6 @@ const Page = () => {
             name: formdata.name,
             full_address: formdata.full_address,
             description: formdata.description,
-            room_type: formdata.room_type,
             contact: contact,
             step_number: ListingWorkflow.AddDetails,
             location: location,
@@ -201,31 +207,27 @@ const Page = () => {
                         <div className='mb-8'>
                             <Select label="Select a Property Type" selectedKeys={[propertyListing.property_type]} isDisabled={disabled}
                                 onChange={(e: any) => setPropertyListing({ ...propertyListing, property_type: e.target.value })}
-                                classNames={{ listboxWrapper: "nextui-listbox"}}
+                                classNames={{ listboxWrapper: "nextui-listbox" }}
                                 isRequired>
-                                {SelectList.PropertyType.map((item) => (
+                                {propertyType.map((item) => (
                                     <SelectItem key={item}>
                                         {item}
                                     </SelectItem>
                                 ))}
                             </Select>
                         </div>
-                        <div className="flex w-full gap-4 mb-8">
-                            <Controller
-                                control={control}
-                                name='room_type'
-                                render={({ field: { value } }) => (
-                                    <Input isDisabled={disabled}
-                                        {...register("room_type")}
-                                        value={value || ""}
-                                        type="text"
-                                        variant="flat"
-                                        label="Room Type"
-                                        className='basis-1/2 lg:basis-1/3'
-                                        placeholder='2BHK'
-                                        isRequired />
-                                )}
-                            />
+                        <div className="flex w-full gap-8 lg:gap-4 mb-8 flex-wrap md:flex-nowrap">
+                            <Select label="Room Type" selectedKeys={[propertyListing.room_type]} isDisabled={disabled}
+                                onChange={(e: any) => setPropertyListing({ ...propertyListing, room_type: e.target.value })}
+                                className="md:basis-1/4"
+                                classNames={{ listboxWrapper: "nextui-listbox" }}
+                                isRequired>
+                                {SelectList.RoomType.map((item) => (
+                                    <SelectItem key={item}>
+                                        {item}
+                                    </SelectItem>
+                                ))}
+                            </Select>
                             <Controller
                                 control={control}
                                 name='name'
@@ -256,7 +258,7 @@ const Page = () => {
                     </InView>
                     <InView as="div" threshold={1} onChange={onViewScroll} id='propertyDetails' className='listing-card border rounded-lg px-4 lg:px-7 py-6 scroll-mt-36'>
                         <div className='card-header text-xl font-semibold mb-5'>Property Details</div>
-                        <div className='flex w-full gap-4 mt-3 mb-8 flex-wrap md:flex-nowrap'>
+                        <div className='flex w-full gap-8 lg:gap-4 mt-3 mb-8 flex-wrap md:flex-nowrap'>
                             <Input isDisabled={disabled}
                                 value={propertyListing.property_details.carpet_area?.toString() || ""}
                                 onChange={(e: any) =>
@@ -279,7 +281,7 @@ const Page = () => {
                                 isRequired />
                             <Select label="Direction" selectedKeys={[propertyListing.property_details.direction]}
                                 isDisabled={disabled}
-                                classNames={{ listboxWrapper: "nextui-listbox"}}
+                                classNames={{ listboxWrapper: "nextui-listbox" }}
                                 isRequired
                                 onChange={(e: any) =>
                                     setPropertyListing((prev) => ({
@@ -298,7 +300,7 @@ const Page = () => {
                             </Select>
                             <Select label="Number of Bathrooms" selectedKeys={[propertyListing.property_details.bathrooms?.toString() || "1"]}
                                 isDisabled={disabled}
-                                classNames={{ listboxWrapper: "nextui-listbox"}}
+                                classNames={{ listboxWrapper: "nextui-listbox" }}
                                 isRequired
                                 onChange={(e: any) =>
                                     setPropertyListing((prev) => ({
@@ -316,7 +318,7 @@ const Page = () => {
                                 ))}
                             </Select>
                         </div>
-                        <div className='flex w-full gap-4 mt-3 mb-8 flex-wrap md:flex-nowrap'>
+                        <div className='flex w-full gap-8 lg:gap-4 mt-3 mb-8 flex-wrap md:flex-nowrap'>
                             {propertyListing.property_type === "Apartment" ?
                                 <Input isDisabled={disabled}
                                     value={propertyListing.property_details.floor_number?.toString() || ""}
@@ -351,7 +353,7 @@ const Page = () => {
                             }
                             <Select label="Furnishing" selectedKeys={[propertyListing.property_details.furnishing]}
                                 isDisabled={disabled}
-                                classNames={{ listboxWrapper: "nextui-listbox"}}
+                                classNames={{ listboxWrapper: "nextui-listbox" }}
                                 isRequired
                                 onChange={(e: any) =>
                                     setPropertyListing((prev) => ({
@@ -370,7 +372,7 @@ const Page = () => {
                             </Select>
                             <Select label="Parking Type" selectedKeys={[propertyListing.property_details.parking_type]}
                                 isDisabled={disabled}
-                                classNames={{ listboxWrapper: "nextui-listbox"}}
+                                classNames={{ listboxWrapper: "nextui-listbox" }}
                                 isRequired
                                 onChange={(e: any) =>
                                     setPropertyListing((prev) => ({
@@ -399,7 +401,7 @@ const Page = () => {
                                 classNames={{
                                     base: "w-full",
                                     trigger: "min-h-12 py-2",
-                                    listboxWrapper: "nextui-listbox"
+                                    listboxWrapper: "nextui-listbox relative"
                                 }}
                                 selectedKeys={propertyListing.amenities}
                                 isDisabled={disabled}
@@ -421,7 +423,10 @@ const Page = () => {
                             >
                                 {(item) => (
                                     <SelectItem key={item.id}>
-                                        {item.name}
+                                        <div className=''>
+                                            {item.name}
+                                            <span className='border border-slate-500 absolute right-1 w-5 h-5'></span>
+                                        </div>
                                     </SelectItem>
                                 )}
                             </Select>
@@ -442,7 +447,7 @@ const Page = () => {
                                 variant="flat"
                                 label="Landmark (Optional)" />
                         </div>
-                        <div className='flex w-full gap-4 mb-8 flex-wrap md:flex-nowrap'>
+                        <div className='flex w-full gap-8 lg:gap-4 mb-8 flex-wrap md:flex-nowrap'>
                             {propertyListing.listing_type === "Rent" ?
                                 <>
                                     <Input isDisabled={disabled}
@@ -519,7 +524,7 @@ const Page = () => {
                                 onSelectionChange={onAreaChange}
                                 isDisabled={disabled}
                                 selectedKey={propertyListing.area}
-                                classNames={{ listboxWrapper: "nextui-listbox"}}
+                                classNames={{ listboxWrapper: "nextui-listbox" }}
                                 isRequired
                             >
                                 {(item: any) => <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>}

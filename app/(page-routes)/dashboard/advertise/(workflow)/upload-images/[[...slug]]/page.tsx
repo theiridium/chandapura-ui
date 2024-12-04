@@ -54,7 +54,8 @@ const Page = ({ params }: { params: { slug: string } }) => {
             }
             else if (type === "new" || type === "edit_back") {
                 let payload = {
-                    step_number: ListingWorkflow.UploadImages
+                    step_number: ListingWorkflow.UploadImages,
+                    publish_status: false
                 }
                 const endpoint = Products.advertisement.api.base;
                 const response = await putRequestApi(endpoint, payload, source);
@@ -73,7 +74,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
 
     return (
         <>
-            {isSubmitLoading && <FormLoading text={"Saving Images for Business..."} />}
+            {isSubmitLoading && <FormLoading text={"Saving Images for Advertisemnt..."} />}
             <div className='col-span-full lg:col-span-6 mt-3 lg:my-8'>
                 <div className='listing-header mb-8'>
                     <div className='text-xl lg:text-4xl font-semibold text-gray-700 px-7'>Upload Media Files</div>

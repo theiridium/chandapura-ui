@@ -15,7 +15,9 @@ import { ListingWorkflow } from '@/lib/typings/enums';
 
 const Page = () => {
     const currentDate = new Date();
-    const expiryDate = "2025-01-03T00:00:00.000Z";
+    const monthSpan = new Date(currentDate.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString();
+    const yearSpan = new Date(currentDate.setFullYear(currentDate.getFullYear() + 1)).toISOString();
+    const [expiryDate, setExpiryDate] = useState(monthSpan);
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const { data }: any = useSession();
@@ -36,14 +38,15 @@ const Page = () => {
     const fetchData = useCallback(async () => {
         try {
             setIsLoading(true);
-            const pricingPlanRes = await getPublicApiResponse(`${Products.advertisementPricingPlan.api.base}`);
-            setPricingPlan(pricingPlanRes.data);
             if (source) {
+                const pricingPlanRes = await getPublicApiResponse(`${Products.advertisementPricingPlan.api.base}`);
+                setPricingPlan(pricingPlanRes.data);
                 const attr = Products.advertisement.api;
                 let apiUrl = `${attr.base}?${attr.userFilter}=${userData?.email}&filters[id][$eq]=${source}&populate[0]=payment_details&populate[1]=payment_history`;
                 const response = await getPublicApiResponse(apiUrl).then(res => res.data);
                 const data = response[0];
                 if (data) {
+                    if (data.step_number !== ListingWorkflow.UploadImages && type !== "renew") router.push(`/dashboard/advertise/view-all`);
                     data.payment_details && setHasSubscribed(checkSubscriptionValidity(data.payment_details.expiry_date, data.payment_details.isPaymentSuccess));
                     setApiRes(data);
                     setPaymentData({
@@ -73,11 +76,9 @@ const Page = () => {
                 await new Promise(resolve => setTimeout(resolve, 3000));
                 router.push(`/dashboard/advertise/view-all`)
             }
-            else if (type === "new" || type === "edit_back") {
+            else if (type === "new" || type === "renew") {
                 let payload = {
-                    step_number: ListingWorkflow.Payment,
-                    purchase_date: currentDate.toISOString(),
-                    expiry_date: expiryDate
+                    step_number: ListingWorkflow.Payment
                 }
                 const endpoint = Products.advertisement.api.base;
                 const response = await putRequestApi(endpoint, payload, source);
@@ -94,8 +95,10 @@ const Page = () => {
         }
     }
 
-    const onSelectAdPrice = useCallback((type: string, amount: number) => {
+    const onPlanSelect = useCallback((type: string, amount: number) => {
         setAdPrice({ type: type, amount: amount });
+        if (type === "Monthly") setExpiryDate(monthSpan);
+        else setExpiryDate(yearSpan);
     }, [])
 
     return (
@@ -122,7 +125,7 @@ const Page = () => {
                                                 <>
                                                     <div className='flex items-end justify-center mb-10'><div className='text-5xl font-semibold flex items-center'><IndianRupee strokeWidth={3} size={30} />{pricingPlan.monthly}</div><span className='font-semibold'>/month</span></div>
                                                     {!hasSubscribed &&
-                                                        <div className='flex justify-center'><Button radius="none" size="lg" color="primary" variant="bordered" onClick={() => onSelectAdPrice("Monthly", pricingPlan.monthly)}>Choose Monthly Plan</Button></div>
+                                                        <div className='flex justify-center'><Button radius="none" size="lg" color="primary" variant="bordered" onClick={() => onPlanSelect("Monthly", pricingPlan.monthly)}>Choose Monthly Plan</Button></div>
                                                     }
                                                 </>
                                             }
@@ -138,7 +141,7 @@ const Page = () => {
                                                     </div>
                                                     <div className='flex items-end justify-center mb-10'><div className='text-5xl font-semibold flex items-center'><IndianRupee strokeWidth={3} size={30} />{pricingPlan.yearly}</div><span className='font-semibold'>/year</span></div>
                                                     {!hasSubscribed &&
-                                                        <div className='flex justify-center'><Button radius="none" size="lg" color="primary" variant="bordered" onClick={() => onSelectAdPrice("Yearly", pricingPlan.yearly)}>Choose Yearly Plan</Button></div>
+                                                        <div className='flex justify-center'><Button radius="none" size="lg" color="primary" variant="bordered" onClick={() => onPlanSelect("Yearly", pricingPlan.yearly)}>Choose Yearly Plan</Button></div>
                                                     }
                                                 </>
                                             }

@@ -98,7 +98,7 @@ const Page = () => {
     }, [propertyListing.listing_type])
 
 
-    const populateBusinessDetails = useCallback(async () => {
+    const populatePropertyDetails = useCallback(async () => {
         if (source) {
             const attr = Products.realEstate.api;
             let apiUrl = `${attr.base}?${attr.userFilter}=${userData?.email}&filters[id][$eq]=${source}&populate=*`;
@@ -121,7 +121,7 @@ const Page = () => {
         reset,
         control
     } = useForm<any>({
-        defaultValues: async () => populateBusinessDetails()
+        defaultValues: async () => populatePropertyDetails()
     });
 
     const handleContactDetails = (data: any) => setContact(data);

@@ -9,7 +9,7 @@ const Classifieds = () => {
     return (
         <div className="max-w-screen-xl mx-auto px-3">
             <div className='flex justify-between mb-7'>
-                <h2 className="category-title">Classifieds</h2>
+                <h2 className="category-title">Resale Marketplace</h2>
                 <Button className='btn-explore_more' variant='solid' href={Products.classifieds.url} color='primary' radius='full' as={Link} size='sm' endContent={<MoveRight />}><span className='hidden md:block'>Explore More</span></Button>
             </div>
             <div className='relative'>

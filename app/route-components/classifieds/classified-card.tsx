@@ -16,10 +16,9 @@ const ClassifiedCard = (p: any) => {
                 </div>
                 <div className="re-card-body">
                     <div className="text-xs font-bold mb-2 flex items-center"><MapPin size={12} className='mr-1' /><span className='text-highlight'>{item.area.name}</span></div>
-                    {/* <div className="text-sm flex items-center justify-between mb-2 text-slate-600">
-                        <div>{item.room_type} {item.property_type}</div>
-                        <div className="justify-self-end mr-2">{item.property_details.carpet_area} sqft</div>
-                    </div> */}
+                    <div className="text-sm mb-2 text-slate-600">
+                        <div>{item.category.name}</div>
+                    </div>
                     <div className="text-base font-semibold mb-2 truncate text-slate-600">{item.name}</div>
                     <div className="flex items-center justify-between">
                         <div className="text-xl font-semibold flex items-center text-slate-700"><IndianRupee size={20} strokeWidth={2.5} />{ConvertCurrencyToWords(item.sale_amount)}</div>

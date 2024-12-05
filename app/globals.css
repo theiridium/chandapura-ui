@@ -166,6 +166,10 @@ header {
     /* @apply bg-color2d/80 pt-10 pb-14 mb-20; */
     @apply bg-color1d/10 pt-10 pb-14 mb-20;
   }
+  #section-4 {
+    /* @apply bg-color2d/80 pt-10 pb-14 mb-20; */
+    @apply bg-color2d/10 py-10 mb-20;
+  }
   .card-list-row {
     @apply flex overflow-x-auto lg:overflow-visible lg:grid lg:grid-cols-4 gap-5 lg:gap-7;
   }

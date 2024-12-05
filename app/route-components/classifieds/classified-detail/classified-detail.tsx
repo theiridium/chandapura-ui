@@ -1,10 +1,12 @@
 'use client'
 import ImageGallery from '@/app/components/modals/image-gallery';
 import { useDisclosure } from '@nextui-org/react';
-import { Phone } from 'lucide-react';
+import { IndianRupee, Phone } from 'lucide-react';
 import ViewLocationMap from '@/app/components/maps/view-location-map';
 import Breadcrumb from '@/app/sub-components/breadcrumb';
 import ContactButton from '@/app/sub-components/contact-btn';
+import ContactCard from '@/app/sub-components/contact-card';
+import { ConvertCurrencyToWords } from '@/lib/helpers';
 
 const ClassifiedDetail = ({ data }: any) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -52,39 +54,26 @@ const ClassifiedDetail = ({ data }: any) => {
                     <h1 className="md:text-xl font-medium text-gray-500 mb-5"><span className='text-highlight'>{data.category.name}</span> for Sale in {data.area.name}</h1>
                     <h2 className="font-semibold text-xl lg:text-3xl">{data.name}</h2>
                   </div>
+                  <div className='text-2xl font-semibold text-gray-600 flex items-center bg-color2d/70 px-5 py-1 mt-0 lg:mt-5 lg:mt-0 w-fit float-right lg:float-none'><IndianRupee strokeWidth={3} size={20} />{ConvertCurrencyToWords(data.sale_amount)}</div>
                 </div>
                 <div className='mb-12'>
-                  <ContactButton name={data.contact.contact_name} phone={data.contact.contact_number} openContact={true} />
+                  <ContactButton name={data.contact.contact_name} phone={data.contact.contact_number} maskedText={"Owner"} />
                 </div>
-                <hr />
                 {data.description &&
                   <>
+                    <hr />
                     <div className='py-12'>
                       <div className='text-sm text-gray-500 font-semibold'>Description</div>
                       <p className='text-sm md:text-lg font-medium'>{data.description}</p>
                     </div>
-                    <hr />
                   </>}
-                <hr />
-                {/* {(data.services || data.length > 0) &&
-                  <>
-                    <div className='py-12'>
-                      <h5 className='text-sm text-gray-500 font-semibold mb-5'>Services</h5>
-                      {data.services && <div className="tags">
-                        {data.services.map((x: any, i: any) =>
-                          <div className="px-4 py-1 bg-color2d/70 font-semibold rounded-full text-sm text-nowrap text-gray-600" key={i}>{x.trim()}</div>
-                        )}
-                      </div>}
-                    </div>
-                    <hr />
-                  </>} */}
               </div>
             </div>
           </div>
         </div>
-        {/* <div className='lg:col-span-1 relative'>
-          <ContactCard heading="Owner Contact Details" name={data.contact_name} contact={data.contact_number} />
-        </div> */}
+        <div className='lg:col-span-1 relative m-5 lg:m-0'>
+          <ContactCard heading="Owner Contact Details" name={data.contact.contact_name} contact={data.contact.contact_number} />
+        </div>
       </div>
     </div>
   )

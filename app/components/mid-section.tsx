@@ -1,7 +1,7 @@
-import Classifieds from "./classifieds/classifieds"
 import Rent from "../route-components/real-estate/rent/rent"
 import Sale from "../route-components/real-estate/sale/sale"
 import Business from "../route-components/business/business"
+import Classifieds from "../route-components/classifieds/classifieds"
 
 
 const MidSection = () => {
@@ -12,7 +12,7 @@ const MidSection = () => {
       </div>
       <Rent />
       <Sale />
-      {/* <Classifieds /> */}
+      <Classifieds />
       {/* <Job /> */}
     </div>
   )

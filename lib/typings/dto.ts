@@ -8,6 +8,7 @@ export interface SearchPayload {
     indexUid: string
     q: string
     filter: string
+    noExpFilter?: boolean
 }
 export interface SingleItemData {
     id: any

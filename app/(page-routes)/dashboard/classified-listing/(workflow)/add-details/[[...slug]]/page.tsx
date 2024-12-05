@@ -102,7 +102,7 @@ const Page = () => {
         const payload: ClassifiedListing = {
             name: formdata.name,
             area: classifiedList.area,
-            sale_amount: classifiedList.sale_amount,
+            sale_amount: formdata.sale_amount,
             description: formdata.description,
             contact: contact,
             slug: formdata.slug,

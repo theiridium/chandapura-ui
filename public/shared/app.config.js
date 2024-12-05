@@ -73,12 +73,12 @@ module.exports = {
       value: "real-estate",
     },
     {
-      label: "Job Vacancy",
-      value: "job-vacancy",
-    },
-    {
       label: "Classifieds",
       value: "classifieds",
+    },
+    {
+      label: "Job Vacancy",
+      value: "job-vacancy",
     },
   ],
   Products: {
@@ -153,17 +153,17 @@ module.exports = {
     },
     classifieds: {
       label: "classified",
-      productType: "classified-listing",
+      productType: "classifieds",
       searchIndex: "classified-listing",
-      slug: "classified-categories",
-      url: "classified-categories",
+      slug: "classifieds",
+      url: "classifieds",
       api: {
         base: "classified-listings",
         sort: "desc",
         populate:
           "populate[0]=category&populate[1]=user&populate[2]=featured_image&populate[3]=area&populate[4]=gallery_images&populate[5]=contact",
         userFilter: "filters[author][email][$eq]",
-        isPublishedFilter: `filters[publish_status][$eq]=true&filters[payment_details][expiry_date_timestamp][$gt]=${currentDate}`,
+        isPublishedFilter: `filters[publish_status][$eq]=true`,
         limit: 4,
       },
     },

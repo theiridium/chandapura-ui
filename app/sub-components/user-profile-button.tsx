@@ -1,9 +1,6 @@
 "use client"
 import React from 'react'
-import GlobalConfig, { Resource } from "../../public/shared/app.config";
 import { useEffect, useState } from 'react';
-import { useAtom, useAtomValue } from 'jotai';
-import { IsUserLogged } from '@/lib/atom';
 import { User, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Menubar from './menubar';
@@ -14,9 +11,24 @@ const UserProfileButton = () => {
     const toggle = (x: boolean) => setBtnToggle(x);
     const { data }: any = useSession();
     const userData = data?.user;
-    // const isUserLogged = useAtomValue<any>(IsUserLogged);
-    // useEffect(() => {
-    // }, [isUserLogged])
+
+    useEffect(() => {
+        if (btnToggle) {
+            // Add styles to prevent scrolling when menu is open
+            document.documentElement.style.paddingRight = "0px";
+            document.documentElement.style.overflow = "hidden";
+        } else {
+            // Reset styles when menu is closed
+            document.documentElement.style.paddingRight = "";
+            document.documentElement.style.overflow = "";
+        }
+
+        // Cleanup on component unmount
+        return () => {
+            document.documentElement.style.paddingRight = "";
+            document.documentElement.style.overflow = "";
+        };
+    }, [btnToggle]);
 
     return (
         <>
@@ -30,7 +42,7 @@ const UserProfileButton = () => {
                     <User strokeWidth={2.2} fill='#ffc901' className='h-[24px] w-[24px]' />
                 </button>
             }
-            <AnimatePresence>
+            <AnimatePresence initial={false}>
                 {btnToggle &&
                     <Menubar btnToggle={toggle} isOpen={btnToggle} />
                 }

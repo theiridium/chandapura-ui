@@ -84,14 +84,13 @@ header {
   html {
     @apply scroll-smooth;
   }
-  button:hover:not(.embla *, .google-map *),
-  div:hover:not(.embla *, .sidemenubar *, .google-map *),
-  a:hover:not(.embla *, .google-map *) {
+  button:hover:not(.embla *, .google-map *, .sidemenubar *),
+  a:hover:not(.embla *, .google-map *, .sidemenubar *) {
     @apply transition duration-300 ease-in-out;
   }
-  button:not(.embla *, .google-map *),
-  div:not(.embla *, .sidemenubar *, .google-map *),
-  a:not(.embla *, .google-map *) {
+
+  button:not(.embla *, .google-map *, .sidemenubar *),
+  a:not(.embla *, .google-map *, .sidemenubar *) {
     @apply transition duration-300 ease-in-out;
   }
   .link-pill {

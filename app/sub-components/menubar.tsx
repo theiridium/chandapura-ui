@@ -33,7 +33,7 @@ const Menubar = (props: any) => {
     }
     return (
         <motion.div className='sidemenubar fixed w-screen h-screen top-0 right-0 bg-overlay/50' variants={var_menu} initial="bgHidden" animate="bgVisible" exit="bgHidden">
-            <motion.div className='h-screen fixed w-full md:w-96 bg-color1d text-white absolute top-0 right-0 p-10' variants={var_menu} initial="hidden" animate="visible" exit="hidden">
+            <motion.div className='h-screen fixed w-full md:w-96 bg-color1d text-white absolute top-0 right-0 p-10 overflow-auto' variants={var_menu} initial="hidden" animate="visible" exit="hidden">
                 {status === "authenticated" &&
                     <>
                         <div className='text-2xl mb-2'>Welcome back</div>

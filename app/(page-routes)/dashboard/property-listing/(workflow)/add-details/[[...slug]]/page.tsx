@@ -520,7 +520,7 @@ const Page = () => {
                             <Autocomplete
                                 variant="flat"
                                 defaultItems={areaList || []}
-                                label="Select an Area"
+                                label="Select your Area"
                                 onSelectionChange={onAreaChange}
                                 isDisabled={disabled}
                                 selectedKey={propertyListing.area}

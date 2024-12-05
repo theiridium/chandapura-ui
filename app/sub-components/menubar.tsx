@@ -40,10 +40,10 @@ const Menubar = (props: any) => {
                         <div className='text-3xl font-semibold'>{data?.user?.firstname} !</div>
                     </>
                 }
-                <button className='absolute right-7 top-5' onClick={() => props.btnToggle(!props.isOpen)}>
+                <button className='absolute right-7 top-5 hover:text-color2d' onClick={() => props.btnToggle(!props.isOpen)}>
                     <X strokeWidth={3} size={34} />
                 </button>
-                <ul className="text-3xl my-14 gap-10">
+                <ul className="text-2xl my-12 gap-10">
                     {status === "unauthenticated" &&
                         <li className='mb-10'>
                             <a className='hover-underline' href={Resource.Login.link}>{Resource.Login.label}</a>
@@ -60,17 +60,23 @@ const Menubar = (props: any) => {
                         </>
                     }
                     <li className='mb-10'>
-                        <a className='hover-underline' href={Resource.BusinessListing.dashboardLink}>{Resource.BusinessListing.label}</a>
+                        <a className='hover-underline' href={Resource.Advertisement.dashboardLink}>{Resource.Advertisement.label}</a>
                     </li>
                     <li className='mb-10'>
-                        <a className='hover-underline' href={Resource.Advertisement.dashboardLink}>{Resource.Advertisement.label}</a>
+                        <a className='hover-underline' href={Resource.BusinessListing.dashboardLink}>{Resource.BusinessListing.label}</a>
                     </li>
                     <li className='mb-10'>
                         <a className='hover-underline' href={Resource.PropertyListing.dashboardLink}>{Resource.PropertyListing.label}</a>
                     </li>
+                    <li className='mb-10'>
+                        <a className='hover-underline' href={Resource.ClassifiedListing.dashboardLink}>{Resource.ClassifiedListing.label}</a>
+                    </li>
+                    <li className='mb-10'>
+                        <a className='hover-underline' href={Resource.JobListing.dashboardLink}>{Resource.JobListing.label}</a>
+                    </li>
                     {status === "authenticated" &&
                         <li className='mb-10'>
-                            <button className='hover-underline' onClick={() => signOut({ callbackUrl: '/' })}>{Resource.Logout.label}</button>
+                            <button className='bg-purple-950 text-red-500 py-2 px-4' onClick={() => signOut({ callbackUrl: '/' })}>{Resource.Logout.label}</button>
                         </li>
                     }
                 </ul>

@@ -162,7 +162,7 @@ const Page = () => {
                         Back
                     </Button>
                     <Button className='btn-primary text-base' color='primary' isDisabled={!hasSubscribed} isLoading={isSubmitLoading} onClick={onClickSave}>
-                        Continue to Preview
+                        {!isSubmitLoading && "Continue to Preview"}
                     </Button>
                 </div>
             </div>

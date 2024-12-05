@@ -22,13 +22,13 @@ module.exports = {
       addDetailsLink: "/dashboard/property-listing/add-details",
       uploadImagesLink: "/dashboard/property-listing/upload-images",
     },
-    Classifieds: {
+    ClassifiedListing: {
       label: "Classifieds",
-      dashboardLink: "/dashboard/advertise/view-all",
-      userLabel: "My Advertisements",
-      baseLink: "/dashboard/advertise",
-      addDetailsLink: "/dashboard/advertise/add-details",
-      uploadImagesLink: "/dashboard/advertise/upload-images",
+      dashboardLink: "/dashboard/classified-listing/view-all",
+      userLabel: "My Classifieds",
+      baseLink: "/dashboard/classified-listing",
+      addDetailsLink: "/dashboard/classified-listing/add-details",
+      uploadImagesLink: "/dashboard/classified-listing/upload-images",
     },
     JobListing: {
       label: "Job Listing",
@@ -151,6 +151,22 @@ module.exports = {
         limit: 4,
       },
     },
+    classifieds: {
+      label: "classified",
+      productType: "classified-listing",
+      searchIndex: "classified-listing",
+      slug: "classified-categories",
+      url: "classified-categories",
+      api: {
+        base: "classified-listings",
+        sort: "desc",
+        populate:
+          "populate[0]=category&populate[1]=user&populate[2]=featured_image&populate[3]=area&populate[4]=gallery_images&populate[5]=contact",
+        userFilter: "filters[author][email][$eq]",
+        isPublishedFilter: `filters[publish_status][$eq]=true&filters[payment_details][expiry_date_timestamp][$gt]=${currentDate}`,
+        limit: 4,
+      },
+    },
     job: {
       label: "job",
       productType: "job-vacancy",
@@ -215,6 +231,14 @@ module.exports = {
         populate: "sub_categories",
       },
     },
+    ClassifiedCategory: {
+      label: "classifiedCategory",
+      api: {
+        base: "classified-categories",
+        sort: "name:asc",
+        populate: "*",
+      },
+    },
     Area: {
       label: "area",
       api: {
@@ -243,6 +267,15 @@ module.exports = {
       label: "propertyList",
       api: {
         base: "real-estates",
+        sortByName: "name:asc",
+        sortByDate: "updatedAt:desc",
+        filter: "filters[author][email][$eq]",
+      },
+    },
+    ClassifiedList: {
+      label: "classifiedList",
+      api: {
+        base: "classified-listings",
         sortByName: "name:asc",
         sortByDate: "updatedAt:desc",
         filter: "filters[author][email][$eq]",

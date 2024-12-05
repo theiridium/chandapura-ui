@@ -1,3 +1,4 @@
+//NOT IN USE
 "use client"
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Accordion, AccordionItem, Button, Input, Tab, Tabs } from '@nextui-org/react';
@@ -16,7 +17,6 @@ import { ListingWorkflow } from '@/lib/typings/enums';
 const Page = () => {
     const currentDate = new Date();
     const monthSpan = new Date(currentDate.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString();
-    const yearSpan = new Date(currentDate.setFullYear(currentDate.getFullYear() + 1)).toISOString();
     const [expiryDate, setExpiryDate] = useState(monthSpan);
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -30,7 +30,7 @@ const Page = () => {
     const [paymentData, setPaymentData] = useState<any>({});
     const [hasSubscribed, setHasSubscribed] = useState(false);
     const [pricingPlan, setPricingPlan] = useState<any>({});
-    const [adPrice, setAdPrice] = useState<any>({
+    const [listingPrice, setListingPrice] = useState<any>({
         type: "",
         amount: 0
     });
@@ -39,20 +39,20 @@ const Page = () => {
         try {
             setIsLoading(true);
             if (source) {
-                const pricingPlanRes = await getPublicApiResponse(`${Products.advertisementPricingPlan.api.base}`);
+                const pricingPlanRes = await getPublicApiResponse(`${Products.businessListingPricingPlan.api.base}`);
                 setPricingPlan(pricingPlanRes.data);
-                const attr = Products.advertisement.api;
-                let apiUrl = `${attr.base}?${attr.userFilter}=${userData?.email}&filters[id][$eq]=${source}&populate[0]=payment_details&populate[1]=payment_history`;
+                const attr = Products.business.api;
+                let apiUrl = `${attr.base}?${attr.userFilter}=${userData?.email}&filters[id][$eq]=${source}&populate[0]=category&populate[1]=sub_category&populate[3]=payment_details&populate[4]=payment_history`;
                 const response = await getPublicApiResponse(apiUrl).then(res => res.data);
                 const data = response[0];
                 if (data) {
-                    if (data.step_number !== ListingWorkflow.UploadImages && type !== "renew") router.push(`/dashboard/advertise/view-all`);
-                    data.payment_details && setHasSubscribed(checkSubscriptionValidity(data.payment_details.expiry_date, data.payment_details.isPaymentSuccess));
+                    if (data.step_number !== ListingWorkflow.UploadImages && type !== "renew") router.push(`/dashboard/business-listing/view-all`);
+                    data.payment_details && setHasSubscribed(checkSubscriptionValidity(data.payment_details.expiry_date_timestamp, data.payment_details.isPaymentSuccess));
                     setApiRes(data);
                     setPaymentData({
                         payment_details: data.payment_details,
                         payment_history: data.payment_history
-                    });
+                    })
                     setIsLoading(false);
                     return data;
                 }
@@ -74,17 +74,18 @@ const Page = () => {
             if (type === "edit") {
                 toast.info("Redirecting to listing menu...")
                 await new Promise(resolve => setTimeout(resolve, 3000));
-                router.push(`/dashboard/advertise/view-all`)
+                router.push(`/dashboard/business-listing/view-all`)
             }
             else if (type === "new" || type === "renew") {
                 let payload = {
                     step_number: ListingWorkflow.Payment
                 }
-                const endpoint = Products.advertisement.api.base;
+                console.log("payload", payload)
+                const endpoint = Products.business.api.base;
                 const response = await putRequestApi(endpoint, payload, source);
                 if (response.data) {
                     toast.success("Payment details saved successfully!");
-                    router.push(`/dashboard/advertise/publish?type=${type}&source=${response.data.id}`)
+                    router.push(`/dashboard/business-listing/publish?type=${type}&source=${response.data.id}`)
                 }
             }
         } catch (error) {
@@ -95,12 +96,6 @@ const Page = () => {
         }
     }
 
-    const onPlanSelect = useCallback((type: string, amount: number) => {
-        setAdPrice({ type: type, amount: amount });
-        if (type === "Monthly") setExpiryDate(monthSpan);
-        else setExpiryDate(yearSpan);
-    }, [])
-
     return (
         <>
             {isSubmitLoading && <FormLoading text={"Saving your payment details..."} />}
@@ -110,7 +105,29 @@ const Page = () => {
                 </div>
                 <div className='grid grid-cols-1 gap-10 mx-2'>
                     <div className='listing-card border rounded-lg px-7 py-6 scroll-mt-36'>
+                        <div className='card-header text-xl font-semibold mb-5'>Business Details</div>
+                        <div className='bg-color1d text-white rounded-lg p-8'>
+                            <div className='mb-5'>
+                                <div className='text-sm mb-1 font-semibold'>Business Name</div>
+                                {isLoading ? <TextLoading /> : <div className='text-lg text-color2d'>{apiRes.name}</div>}
+                            </div>
+                            <div className='flex flex-col md:flex-row justify-between'>
+                                <div className='mb-5 md:mb-0'>
+                                    <div className='text-sm mb-1 font-semibold'>Business Category</div>
+                                    {isLoading ? <TextLoading /> : <div className='text-lg text-color2d'>{apiRes.category.name}</div>}
+                                </div>
+                                <div>
+                                    <div className='text-sm mb-1 font-semibold'>Business Sub-Category</div>
+                                    {isLoading ? <TextLoading /> : <div className='text-lg text-color2d'>{apiRes.sub_category.name}</div>}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='listing-card border rounded-lg px-7 py-6 scroll-mt-36'>
                         <div className='card-header text-xl font-semibold mb-5'>Pricing Plan</div>
+                        {/* {isLoading ? <TextLoading /> : <p className='bg-green-200 px-6 py-1 rounded-full w-fit-content text-lg'>
+                            Yay! Your business category is eligible for free listing. 🎉
+                        </p>} */}
                         <div className='bg-color1d/10 rounded-lg p-8'>
                             <div className='w-full'>
                                 <Tabs fullWidth color='secondary' radius='full' size='lg' aria-label="Pricing Tabs"
@@ -119,7 +136,7 @@ const Page = () => {
                                         tabContent: "text-black",
                                         tab: "z-10"
                                     }}>
-                                    <Tab key="monthly" title="Monthly">
+                                    {/* <Tab key="monthly" title="Monthly">
                                         <div className='my-5'>
                                             {isLoading ? <TextLoading /> :
                                                 <>
@@ -146,26 +163,59 @@ const Page = () => {
                                                 </>
                                             }
                                         </div>
-                                    </Tab>
+                                    </Tab> */}
                                 </Tabs>
                             </div>
                         </div>
                     </div>
+                    {/* <Accordion className='listing-card border rounded-lg px-7 py-6'
+                        itemClasses={{
+                            title: "card-header text-xl font-semibold px-0"
+                        }}>
+                        <AccordionItem key="1" aria-label="Advertise Business" title="Would you like to advertise your business?">
+                            <div>
+                                <div className='mb-5'>Choose a Pricing Plan</div>
+                                <Tabs fullWidth color='secondary' radius='full' size='lg' aria-label="Pricing Tabs"
+                                    classNames={{
+                                        tabList: "bg-color2d/40 p-0",
+                                        tabContent: "text-black",
+                                        tab: "z-10"
+                                    }}>
+                                    <Tab key="monthly" title="Monthly">
+                                        <div className='my-5'>
+                                            <div className='flex items-end justify-center mb-10'><div className='text-5xl font-semibold flex items-center'><IndianRupee strokeWidth={3} size={30} />299</div><span className='font-semibold'>/month</span></div>
+                                            <div className='flex justify-center'><Button radius="none" size="lg" color="primary" variant="bordered" onClick={() => onPlanSelect("Monthly", 299)}>Choose Monthly Plan</Button></div>
+                                        </div>
+                                    </Tab>
+                                    <Tab key="yearly" title="Yearly">
+                                        <div className='my-5'>
+                                            <div className='flex items-end justify-center text-md mb-5'>
+                                                <div className='flex items-center line-through decoration-slate-500/60'><IndianRupee size={15} />3588</div><span className='text-xs'>/year</span>
+                                                <div className='ml-2 bg-color1d/10 rounded-full px-5'>Save 20%</div>
+                                            </div>
+                                            <div className='flex items-end justify-center mb-10'><div className='text-5xl font-semibold flex items-center'><IndianRupee strokeWidth={3} size={30} />2870</div><span className='font-semibold'>/year</span></div>
+                                            <div className='flex justify-center'><Button radius="none" size="lg" color="primary" variant="bordered" onClick={() => onPlanSelect("Yearly", 2870)}>Choose Yearly Plan</Button></div>
+                                        </div>
+                                    </Tab>
+                                </Tabs>
+                            </div>
+                        </AccordionItem>
+                    </Accordion> */}
                 </div>
             </div>
             <div className='col-span-full lg:col-span-3 mt-3 lg:my-8 mx-2 lg:mx-0 relative'>
                 <PaymentCard
-                    pricing={adPrice}
+                    pricing={listingPrice}
                     expiryDate={expiryDate}
                     paymentData={paymentData}
                     hasSubscribed={hasSubscribed}
                     setHasSubscribed={setHasSubscribed}
                     isOfferApplicable={false}
-                    endpoint={Products.advertisement.api.base} />
+                    endpoint={Products.business.api.base} />
             </div>
             <div className='col-span-full lg:col-start-3 lg:col-span-5 mt-3 lg:mt-0 mb-8 mx-2 lg:mx-0'>
                 <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>
-                    <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading} onClick={() => router.push(`/dashboard/advertise/upload-images?type=edit_back&source=${source}`)}>
+                    <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading} onClick={() => router.push(`/dashboard/business-listing/upload-images?type=edit_back&source=${source}`)}>
                         Back
                     </Button>
                     <Button className='btn-primary text-base' color='primary' isDisabled={!hasSubscribed} isLoading={isSubmitLoading} onClick={onClickSave}>

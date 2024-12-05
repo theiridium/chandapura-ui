@@ -13,7 +13,7 @@ import React, { useEffect, useState } from 'react'
 const steps = [
   {
     number: 1,
-    title: "Property Details",
+    title: "Classified Details",
     currentPath: "add-details",
     nextPath: "upload-images"
   },
@@ -21,14 +21,14 @@ const steps = [
     number: 2,
     title: "Upload Images",
     currentPath: "upload-images",
-    nextPath: "payment"
-  },
-  {
-    number: 3,
-    title: "Payment",
-    currentPath: "payment",
     nextPath: "publish"
   },
+  // {
+  //   number: 3,
+  //   title: "Payment",
+  //   currentPath: "payment",
+  //   nextPath: "publish"
+  // },
   {
     number: 4,
     title: "Review & Publish",
@@ -37,28 +37,28 @@ const steps = [
   }
 ]
 const Page = () => {
-  const addNewUrl = "/dashboard/property-listing/add-details?type=new";
+  const addNewUrl = "/dashboard/classified-listing/add-details?type=new";
   const router = useRouter();
-  const attr = DropdownList.PropertyList.api;
+  const attr = DropdownList.ClassifiedList.api;
   const { data }: any = useSession();
   const user = data?.user;
   const [list, setList] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isRedirecting, setIsRedirecting] = useState(false);
-  const getPropertyList = async () => {
-    let apiUrl = `${attr.base}?sort=${attr.sortByDate}&${attr.filter}=${user?.email}&populate=featured_image`
+  const getClassifiedList = async () => {
+    let apiUrl = `${attr.base}?sort=${attr.sortByDate}&${attr.filter}=${user?.email}&populate=featured_image,payment_details`
     const response = await getPublicApiResponse(apiUrl);
     setList(response.data);
     setIsLoading(false);
   }
   useEffect(() => {
-    getPropertyList();
+    getClassifiedList();
   }, [])
 
   return (
     <div className='max-w-screen-xl min-h-screen mx-auto px-3 my-8 md:mt-8 md:mb-10'>
       <div className='flex gap-8 justify-between md:justify-normal'>
-        <h1 className="text-3xl font-semibold md:font-bold text-gray-600 mb-8 md:mb-12">My Properties</h1>
+        <h1 className="text-3xl font-semibold md:font-bold text-gray-600 mb-8 md:mb-12">My Classifieds</h1>
         <Button color="primary" variant="ghost" radius="sm" className='hover:color-white'
           onClick={() => {
             setIsRedirecting(true);
@@ -71,27 +71,23 @@ const Page = () => {
       <Breadcrumb blockSecondLast={false} />
       <div className='grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-10'>
         {isLoading || isRedirecting ?
-          (isLoading ? <FormLoading text={"Loading your listed properties..."} /> :
-            <FormLoading text={"Taking you to the Property Form page..."} />
+          (isLoading ? <FormLoading text={"Loading your Classified List..."} /> :
+            <FormLoading text={"Taking you to the Classified Form page..."} />
           ) :
           list.length > 0 ?
             !isLoading && list.map((x: any, i: any) => {
               let continueUrl = "";
               if (!x.publish_status) {
                 let baseUrl = steps.find(({ number }) => number === x.step_number)?.nextPath;
-                continueUrl = `${Resource.PropertyListing.baseLink}/${baseUrl}?type=new&source=${x.id}`
+                continueUrl = `${Resource.ClassifiedListing.baseLink}/${baseUrl}?type=new&source=${x.id}`
               }
-              const renewUrl = `${Resource.PropertyListing.baseLink}/payment?type=renew&source=${x.id}`;
+              // const renewUrl = `${Resource.ClassifiedListing.baseLink}/payment?type=renew&source=${x.id}`;
               return (
                 <div key={i} className={`py-10 md:px-5 border-b-1 md:border md:rounded-lg ${i === 0 && 'border-t-1'}`}>
                   <div className="flex gap-5 md:gap-10 relative">
                     <div className='absolute -top-6 right-0'>
                       {x.publish_status ?
-                        <>
-                          {x.payment_details && x.payment_details.expiry_date_timestamp <= new Date().getTime() ?
-                            <div className='border rounded-full text-xs md:text-sm px-3 border-red-500 text-red-500 font-medium'>Expired</div> :
-                            <div className='border rounded-full text-xs md:text-sm px-3 border-emerald-500 text-emerald-500 font-medium'>Published</div>}
-                        </> :
+                        <div className='border rounded-full text-xs md:text-sm px-3 border-emerald-500 text-emerald-500 font-medium'>Published</div> :
                         <>
                           {(x.step_number === ListingWorkflow.Publish && !x.publish_status) ? <div className='border rounded-full text-xs md:text-sm px-3 border-amber-600 text-amber-600 font-medium'>Pending Approval</div> :
                             <div className='border rounded-full text-xs md:text-sm px-3 border-sky-500 text-sky-500 font-medium'>Draft</div>
@@ -112,13 +108,8 @@ const Page = () => {
                         <>
                           <div className='flex text-sm border-y-1 divide-x *:px-2 *:py-1 *:flex *:items-center *:grow *:justify-center *:gap-x-1 text-color1d'>
                             {x.publish_status ? <>
-                              {(x.payment_details && x.payment_details.expiry_date_timestamp <= new Date().getTime()) ?
-                                <a className='hover:bg-color2d/20' href={renewUrl}>Renew subscription<MoveRight size={15} /></a> :
-                                <>
-                                  <a className='hover:bg-color2d/20' href={Resource.Advertisement.addDetailsLink + '?type=edit&source=' + x.id}>Ad Profile<Pencil size={15} /></a>
-                                  <a className='hover:bg-color2d/20' href={Resource.Advertisement.uploadImagesLink + '?type=edit&source=' + x.id}>Image<Pencil size={15} /></a>
-                                </>
-                              }
+                              <a className='hover:bg-color2d/20' href={Resource.ClassifiedListing.addDetailsLink + '?type=edit&source=' + x.id}>Classified Profile<Pencil size={15} /></a>
+                              <a className='hover:bg-color2d/20' href={Resource.ClassifiedListing.uploadImagesLink + '?type=edit&source=' + x.id}>Image<Pencil size={15} /></a>
                             </> :
                               <a className='hover:bg-color2d/20' href={continueUrl}>Continue to complete listing<MoveRight size={15} /></a>}
                           </div>
@@ -128,7 +119,7 @@ const Page = () => {
                   </div>
                 </div>)
             }) :
-            <p className='text-lg'>Your list is empty, click on <a className='link-text' href={addNewUrl}>Add New</a> to start listing your property today.</p>}
+            <p className='text-lg'>Your list is empty, click on <a className='link-text' href={addNewUrl}>Add New</a> to start listing your classifieds for sale today.</p>}
       </div>
     </div>
   )

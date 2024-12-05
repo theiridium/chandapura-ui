@@ -1,7 +1,7 @@
 "use client"
 
 import FormStep from "@/app/components/stepper/form-step";
-import UserItemList from "@/app/route-components/business/user-specific/user-item-list";
+import UserItemList from "@/app/route-components/user-specific/user-item-list";
 import MainMenuBtn from "@/app/sub-components/main-menu-btn";
 import { areas, categories } from "@/lib/atom";
 import { DropdownList } from "@/public/shared/app.config";

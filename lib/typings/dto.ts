@@ -97,3 +97,16 @@ export interface RealEstateComponent {
     deposit_amount: number
     furnishing: string
 }
+export interface ClassifiedListing {
+    name: string | undefined
+    area: any
+    sale_amount: number
+    description: string | undefined
+    contact: ContactComponent
+    slug: string | undefined
+    tags: string | undefined
+    category: string | undefined
+    featured_image?: {}
+    gallery_images?: any[]
+    step_number: number
+}

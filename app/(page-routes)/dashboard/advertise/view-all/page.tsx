@@ -78,7 +78,7 @@ const Page = () => {
             !isLoading && list.map((x: any, i: any) => {
               let continueUrl = "";
               if (!x.publish_status) {
-                let baseUrl = steps.find(({ number }) => number === x.step_number + 1)?.currentPath;
+                let baseUrl = steps.find(({ number }) => number === x.step_number)?.nextPath;
                 continueUrl = `${Resource.Advertisement.baseLink}/${baseUrl}?type=new&source=${x.id}`
               }
               const renewUrl = `${Resource.Advertisement.baseLink}/payment?type=renew&source=${x.id}`;

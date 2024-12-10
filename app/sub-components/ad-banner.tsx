@@ -21,7 +21,7 @@ const AdBanner = async ({ placement }: any) => {
     urls.push(x.website);
   });
 
-  const SLIDES = Array.from(adBannerList, (x: any, i) => <img className="h-[200px] md:h-[384px]" key={i} src={x.src} alt={x.alt} />)
+  const SLIDES = Array.from(adBannerList, (x: any, i) => <img className="h-[200px] md:h-[384px] object-cover" key={i} src={x.src} alt={x.alt} />)
   return (
     <div className={placement}>
       <div>

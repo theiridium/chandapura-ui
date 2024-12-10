@@ -9,7 +9,7 @@ const Hero = async () => {
   // const attr = Products.advertisement.api;
   // const res = await getPublicApiResponse(`${attr.base}?sort=updatedAt%3A${attr.sort}&${attr.populate}`);
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 mt-3 lg:mt-10 relative gap-5 lg:gap-10">
+    <div className="grid grid-cols-1 lg:grid-cols-12 lg:mt-10 relative gap-5 lg:gap-10">
       <div className="col-span-1 lg:col-span-full">
         <Suspense fallback={<AdLoading />}>
           <AdBanner placement="grid grid-cols-1 gap-x-10 mb-5" />

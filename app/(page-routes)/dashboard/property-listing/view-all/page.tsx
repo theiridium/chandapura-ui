@@ -60,7 +60,7 @@ const Page = () => {
       <div className='flex gap-8 justify-between md:justify-normal'>
         <h1 className="text-3xl font-semibold md:font-bold text-gray-600 mb-8 md:mb-12">My Properties</h1>
         <Button color="primary" variant="ghost" radius="sm" className='hover:color-white'
-          onClick={() => {
+          onPress={() => {
             setIsRedirecting(true);
             router.push(addNewUrl)
           }}

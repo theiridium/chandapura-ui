@@ -53,7 +53,6 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
     }, [expiryDate]);
 
     const processPayment = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
         let isPaymentSuccess = false;
         try {
             setIsLoading(true);
@@ -186,7 +185,7 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
                             <div className="text-sm">Promotional Offer</div>
                             <div className="text-xs font-semibold">Free listing until {convertToReadableDate(new Date(expiryDate))}</div>
                         </div>
-                        <Button className="pointer-cursor" radius="sm" size="sm" color={!isOfferApplied ? "primary" : "success"} variant="flat" onClick={() => onClickApplyPromo()}>{!isOfferApplied ? "Apply" : "Applied"}</Button>
+                        <Button className="pointer-cursor" radius="sm" size="sm" color={!isOfferApplied ? "primary" : "success"} variant="flat" onPress={() => onClickApplyPromo()}>{!isOfferApplied ? "Apply" : "Applied"}</Button>
                     </div>
                 </div>}
                 <div className='divide-y *:py-4'>
@@ -224,7 +223,7 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
                     </div>
                 </div>
                 <div className="flex justify-end mt-5">
-                    <Button isLoading={isLoading} radius="none" isDisabled={hasSubscribed || !pricing.type || isLoading} size="md" color={`${hasSubscribed ? 'success' : 'primary'}`} variant={`${hasSubscribed ? 'solid' : 'ghost'}`} onClick={(e: any) => processPayment(e)}>{hasSubscribed ? 'Paid' : 'Checkout'}</Button>
+                    <Button isLoading={isLoading} radius="none" isDisabled={hasSubscribed || !pricing.type || isLoading} size="md" color={`${hasSubscribed ? 'success' : 'primary'}`} variant={`${hasSubscribed ? 'solid' : 'ghost'}`} onPress={(e: any) => processPayment(e)}>{hasSubscribed ? 'Paid' : 'Checkout'}</Button>
                     {/* <Button as={Link} href="https://rzp.io/l/8IapPlGi" radius="none" size="md" color="primary" variant="ghost">Checkout</Button> */}
                     {/* <RazorpayButton /> */}
                 </div>

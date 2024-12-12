@@ -127,7 +127,7 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery }: any) =
             </div>
             {isImagesInGallery &&
                 <div className="flex justify-center mb-4">
-                    <Button color="success" className="w-auto rounded-lg py-2" isLoading={loading} onClick={uploadImageWithContent}>
+                    <Button color="success" className="w-auto rounded-lg py-2" isLoading={loading} onPress={uploadImageWithContent}>
                         Save Images to Gallery
                     </Button>
                 </div>

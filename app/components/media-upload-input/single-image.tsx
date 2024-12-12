@@ -113,12 +113,12 @@ const SingleImage = ({ imageParams, uploadSuccess }: any) => {
             }
             <div className="flex mb-4 gap-x-5">
                 {files.length > 0 && !isEditing &&
-                    <Button color="success" className="w-auto rounded-lg py-2" isLoading={loading} onClick={uploadImageWithContent}>
+                    <Button color="success" className="w-auto rounded-lg py-2" isLoading={loading} onPress={uploadImageWithContent}>
                         Upload Featured Image
                     </Button>
                 }
                 {isEditing &&
-                    <Button color="danger" className="w-auto rounded-lg py-2" onClick={() => onCancelClick()}>
+                    <Button color="danger" className="w-auto rounded-lg py-2" onPress={() => onCancelClick()}>
                         Cancel
                     </Button>
                 }

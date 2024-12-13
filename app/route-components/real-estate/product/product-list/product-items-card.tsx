@@ -8,7 +8,7 @@ const ProductItemsCard = ({ data, id, product }: any) => {
         <a className="card_link" href={`/${productSlug}/${data.slug}?source=${id}`}>
             <div className="border border-gray-300 rounded-xl bg-white">
                 <div className="flex-none md:flex p-5 lg:p-7 gap-x-5 lg:gap-x-7">
-                    <div className="flex-none w-full h-[230px] lg:w-[300px] lg:h-[200px] mb-5 md:mb-0">
+                    <div className="flex-none w-full h-[230px] md:w-[300px] md:h-[200px] mb-5 md:mb-0">
                         {data.featured_image === null ?
                             <img src="/images/placeholder.png" className="w-full h-full rounded-xl" /> :
                             <img src={data.featured_image.url} className="w-full h-full rounded-xl" />}

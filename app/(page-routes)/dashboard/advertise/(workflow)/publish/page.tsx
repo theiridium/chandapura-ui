@@ -117,7 +117,7 @@ const Page = () => {
                             {apiRes.ad_image ? <img src={apiRes.ad_image.url} /> : "No banner image uploaded"}
                         </div>
                         <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>
-                            <Button className='btn-primary text-base' color='primary' isLoading={isSubmitLoading} onClick={onClickSave}>
+                            <Button className='btn-primary text-base' color='primary' isLoading={isSubmitLoading} onPress={onClickSave}>
                                 {!isSubmitLoading && "Submit"}
                             </Button>
                         </div>

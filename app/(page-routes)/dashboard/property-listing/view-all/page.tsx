@@ -46,7 +46,7 @@ const Page = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const getPropertyList = async () => {
-    let apiUrl = `${attr.base}?sort=${attr.sortByDate}&${attr.filter}=${user?.email}&populate=featured_image`
+    let apiUrl = `${attr.base}?sort=${attr.sortByDate}&${attr.filter}=${user?.email}&populate=featured_image,payment_details`
     const response = await getPublicApiResponse(apiUrl);
     setList(response.data);
     setIsLoading(false);
@@ -115,8 +115,8 @@ const Page = () => {
                               {(x.payment_details && x.payment_details.expiry_date_timestamp <= new Date().getTime()) ?
                                 <a className='hover:bg-color2d/20' href={renewUrl}>Renew subscription<MoveRight size={15} /></a> :
                                 <>
-                                  <a className='hover:bg-color2d/20' href={Resource.Advertisement.addDetailsLink + '?type=edit&source=' + x.id}>Ad Profile<Pencil size={15} /></a>
-                                  <a className='hover:bg-color2d/20' href={Resource.Advertisement.uploadImagesLink + '?type=edit&source=' + x.id}>Image<Pencil size={15} /></a>
+                                  <a className='hover:bg-color2d/20' href={Resource.PropertyListing.addDetailsLink + '?type=edit&source=' + x.id}>Property Details<Pencil size={15} /></a>
+                                  <a className='hover:bg-color2d/20' href={Resource.PropertyListing.uploadImagesLink + '?type=edit&source=' + x.id}>Image<Pencil size={15} /></a>
                                 </>
                               }
                             </> :

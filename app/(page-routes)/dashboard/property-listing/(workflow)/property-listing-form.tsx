@@ -3,7 +3,7 @@
 import FormStep from "@/app/components/stepper/form-step";
 import UserItemList from "@/app/route-components/user-specific/user-item-list";
 import MainMenuBtn from "@/app/sub-components/main-menu-btn";
-import { areas, amenities } from "@/lib/atom";
+import { areas, REamenities, PGamenities } from "@/lib/atom";
 import { DropdownList } from "@/public/shared/app.config";
 import { useSetAtom } from "jotai";
 import { useSearchParams } from "next/navigation";
@@ -36,15 +36,17 @@ const steps = [
     }
 ]
 
-const PropertyListingForm = ({ children, resAmenities, resArea }: { children: React.ReactNode, resAmenities: any, resArea: any }) => {
-    const setAmenities = useSetAtom(amenities);
+const PropertyListingForm = ({ children, resRealEstateAmenities, resPgAmenities, resArea }: { children: React.ReactNode, resRealEstateAmenities: any, resPgAmenities: any, resArea: any }) => {
+    const setRealEstateAmenities = useSetAtom(REamenities);
+    const setPgAmenities = useSetAtom(PGamenities);
     const setAreas = useSetAtom(areas);
     const searchParams = useSearchParams();
     const type = searchParams.get('type');
     useEffect(() => {
-        setAmenities(resAmenities);
+        setRealEstateAmenities(resRealEstateAmenities);
+        setPgAmenities(resPgAmenities);
         setAreas(resArea);
-    }, [resAmenities, resArea]);
+    }, [resRealEstateAmenities, resPgAmenities, resArea]);
 
     return (
         <div className='grid grid-cols-10 gap-5 relative'>

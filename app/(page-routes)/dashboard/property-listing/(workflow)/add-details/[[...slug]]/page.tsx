@@ -1,12 +1,12 @@
 "use client"
-import { Autocomplete, AutocompleteItem, Button, Chip, Input, RadioGroup, Select, SelectedItems, SelectItem, Switch, Textarea, TimeInput, useDisclosure } from '@nextui-org/react'
+import { Autocomplete, AutocompleteItem, Button, Chip, Input, RadioGroup, Select, SelectedItems, SelectItem, Switch, Textarea, TimeInput, useDisclosure, Selection } from '@nextui-org/react'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { InView } from 'react-intersection-observer';
 import { useSession } from 'next-auth/react';
 import ContactForm from '@/app/components/forms/contact-form';
 import { ContactComponent, PropertyListing } from '@/lib/typings/dto';
 import { useAtomValue } from 'jotai';
-import { areas, amenities } from '@/lib/atom';
+import { areas, REamenities, PGamenities } from '@/lib/atom';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { getPublicApiResponse, postRequestApi, putRequestApi } from '@/lib/apiLibrary';
@@ -25,9 +25,14 @@ const Page = () => {
     const type = searchParams.get('type');
     const source = searchParams.get('source');
     const [disabled, setDisabled] = useState(true);
-    const [propertyType, setPropertyType] = useState(SelectList.PropertyTypeRent);
-    const amenityList = useAtomValue<any>(amenities).data;
+    const propertyTypeList = SelectList.PropertyType;
+    const [propertyTypeDisabledKeys, setPropertyTypeDisabledKeys] = useState<any>([]);
+    const realEstateAmenityList = useAtomValue<any>(REamenities).data;
+    const pgAmenityList = useAtomValue<any>(PGamenities).data;
+    const [amenityList, setAmenityList] = useState<any>([]);
     const areaList = useAtomValue<any>(areas).data;
+    const [propertyDetails, setPropertyDetails] = useState<any>(null);
+    const [amenitiesValues, setAmenitiesValues] = useState<Selection | any>();
     const [contact, setContact] = useState<ContactComponent>({
         contact_name: userData.name,
         contact_number: userData.phone,
@@ -52,20 +57,7 @@ const Page = () => {
         featured_image: {},
         step_number: ListingWorkflow.Initial,
         location: location,
-        amenities: [],
-        property_details: {
-            bathrooms: 0,
-            direction: "",
-            floor_number: 0,
-            total_floors: 0,
-            carpet_area: 0,
-            parking_type: "",
-            landmark: "",
-            rental_amount: 0,
-            selling_amount: 0,
-            deposit_amount: 0,
-            furnishing: "",
-        }
+        details_by_listingtype: propertyDetails
     });
     const [apiRes, setApiRes] = useState<any>();
     const onAreaChange = (id: any) => setPropertyListing({ ...propertyListing, area: id });
@@ -79,29 +71,89 @@ const Page = () => {
 
     useEffect(() => {
         if (apiRes) {
+            const property_details = getPropertyDetailsComp(apiRes);
             setContact(apiRes.contact)
             setLocation(apiRes.location);
             setIsExistingLoc(true);
+            setPropertyDetails(property_details);
+            setAmenitiesValues(new Set(property_details.amenities.map((item: any) => String(item.id))))
             setPropertyListing({
                 ...apiRes,
                 area: apiRes.area.id?.toString(),
                 contact: apiRes.contact,
                 location: apiRes.location,
-                amenities: apiRes.amenities?.map((item: any) => item.id.toString()) || []
+                details_by_listingtype: propertyDetails
             });
         }
     }, [apiRes])
 
     useEffect(() => {
-        if (propertyListing.listing_type === "Rent") setPropertyType(SelectList.PropertyTypeRent);
-        else setPropertyType(SelectList.PropertyTypeSale);
-    }, [propertyListing.listing_type])
+        switch (propertyListing.listing_type) {
+            case "PG":
+                setAmenityList(pgAmenityList);
+                setPropertyListing((prev: any) => ({
+                    ...prev,
+                    property_type: "PG"
+                }));
+                setPropertyDetails((prev: any) => ({
+                    ...prev,
+                    __component: Products.pg.api.component
+                }));
+                break;
 
+            case "Rent":
+                setAmenityList(realEstateAmenityList);
+                setPropertyDetails((prev: any) => ({
+                    ...prev,
+                    __component: Products.rent.api.component
+                }))
+                break;
 
+            case "Sale":
+                setAmenityList(realEstateAmenityList);
+                if (propertyListing.property_type !== "Plot")
+                    setPropertyDetails((prev: any) => ({
+                        ...prev,
+                        __component: Products.sale.api.component
+                    }))
+                else
+                    setPropertyDetails((prev: any) => ({
+                        ...prev,
+                        __component: Products.plot.api.component
+                    }))
+                break;
+
+            default:
+                setAmenityList(realEstateAmenityList);
+                break;
+        }
+    }, [propertyListing.listing_type, propertyListing.property_type, realEstateAmenityList, pgAmenityList])
+
+    const getPropertyDetailsComp = (data: any) => {
+        let property_details: any = null;
+        switch (data.property_type) {
+            case "PG":
+                property_details = data.details_by_listingtype.find((x: any) => x.__component === Products.pg.api.component);
+                break;
+
+            case "Plot":
+                property_details = data.details_by_listingtype.find((x: any) => x.__component === Products.plot.api.component);
+                break;
+
+            default:
+                if (data.listing_type == "Rent")
+                    property_details = data.details_by_listingtype.find((x: any) => x.__component === Products.rent.api.component);
+                else if (data.listing_type == "Sale")
+                    property_details = data.details_by_listingtype.find((x: any) => x.__component === Products.sale.api.component);
+                else property_details = null;
+                break;
+        }
+        return property_details;
+    }
     const populatePropertyDetails = useCallback(async () => {
         if (source) {
             const attr = Products.realEstate.api;
-            let apiUrl = `${attr.base}?${attr.userFilter}=${userData?.email}&filters[id][$eq]=${source}&populate=*`;
+            let apiUrl = `${attr.base}?${attr.userFilter}=${userData?.email}&filters[id][$eq]=${source}&populate=${attr.populateList}`;
             const response = await getPublicApiResponse(apiUrl).then(res => res.data);
             const data = response[0];
             if (data) {
@@ -138,6 +190,7 @@ const Page = () => {
             contact: contact,
             step_number: ListingWorkflow.AddDetails,
             location: location,
+            details_by_listingtype: [propertyDetails]
         }
         postPropertyListing(payload);
     }
@@ -167,9 +220,45 @@ const Page = () => {
             }
         }
     }
+    useEffect(() => {
+        amenityList && amenitiesValues && setPropertyDetails((prev: any) => ({
+            ...prev,
+            amenities: amenityList.filter((item: any) => amenitiesValues.has(String(item.id)))
+        }))
+    }, [amenitiesValues])
+    useEffect(() => {
+        // !!propertyListing.listing_type && setAmenitiesValues(new Set([]))
+        amenitiesValues && setPropertyDetails((prev: any) => ({
+            ...prev,
+            amenities: []
+        }))
+    }, [propertyListing.listing_type])
+    useEffect(() => {
+        switch (propertyListing.listing_type) {
+            case "Rent":
+                setPropertyTypeDisabledKeys(["Plot", "PG"]);
+                break;
+
+            case "Sale":
+                setPropertyTypeDisabledKeys(["PG"]);
+                break;
+
+            default:
+                break;
+        }
+        setPropertyListing((prev: any) => ({
+            ...prev,
+            property_type: "",
+            room_type: "",
+        }))
+    }, [propertyListing.listing_type])
+
     // useEffect(() => {
     //     console.log(propertyListing)
     // }, [propertyListing])
+    // useEffect(() => {
+    //     console.log(propertyDetails)
+    // }, [propertyDetails])
 
     const onKeyPress = (e: React.KeyboardEvent<HTMLFormElement>) => {
         if (e.key === 'Enter') {
@@ -190,7 +279,10 @@ const Page = () => {
                         <div className='mb-8'>
                             <RadioGroup
                                 value={propertyListing.listing_type}
-                                onChange={(e: any) => setPropertyListing({ ...propertyListing, listing_type: e.target.value })}
+                                onChange={(e: any) => {
+                                    setAmenitiesValues(new Set([]))
+                                    setPropertyListing({ ...propertyListing, listing_type: e.target.value })
+                                }}
                                 orientation="horizontal"
                                 label="Listing Type"
                                 description="Listing type cannot be changed once its published."
@@ -202,32 +294,45 @@ const Page = () => {
                                 <RadioBox value="Sale">
                                     For Sale
                                 </RadioBox>
+                                <RadioBox value="PG">
+                                    PG
+                                </RadioBox>
                             </RadioGroup>
                         </div>
-                        <div className='mb-8'>
-                            <Select label="Select a Property Type" selectedKeys={[propertyListing.property_type]} isDisabled={disabled}
-                                onChange={(e: any) => setPropertyListing({ ...propertyListing, property_type: e.target.value })}
-                                classNames={{ listboxWrapper: "nextui-listbox" }}
-                                isRequired>
-                                {propertyType.map((item) => (
-                                    <SelectItem key={item}>
-                                        {item}
-                                    </SelectItem>
-                                ))}
-                            </Select>
-                        </div>
+                        {propertyListing.listing_type !== "PG" &&
+                            <div className='mb-8'>
+                                <Select label="Select a Property Type" selectedKeys={[propertyListing.property_type]} isDisabled={disabled || !propertyListing.listing_type}
+                                    onChange={(e: any) => setPropertyListing({ ...propertyListing, property_type: e.target.value })}
+                                    classNames={{ listboxWrapper: "nextui-listbox" }}
+                                    disabledKeys={propertyTypeDisabledKeys}
+                                    isRequired>
+                                    {propertyTypeList.map((item) => (
+                                        <SelectItem key={item}>
+                                            {item}
+                                        </SelectItem>
+                                    ))}
+                                </Select>
+                            </div>
+                        }
                         <div className="flex w-full gap-8 lg:gap-4 mb-8 flex-wrap md:flex-nowrap">
-                            <Select label="Room Type" selectedKeys={[propertyListing.room_type]} isDisabled={disabled}
-                                onChange={(e: any) => setPropertyListing({ ...propertyListing, room_type: e.target.value })}
-                                className="md:basis-1/4"
-                                classNames={{ listboxWrapper: "nextui-listbox" }}
-                                isRequired>
-                                {SelectList.RoomType.map((item) => (
-                                    <SelectItem key={item}>
-                                        {item}
-                                    </SelectItem>
-                                ))}
-                            </Select>
+                            {propertyListing.listing_type !== "PG" && propertyListing.property_type !== "Plot" &&
+                                <Select label="Room Type" selectedKeys={[propertyDetails?.room_type]} isDisabled={disabled}
+                                    onChange={(e: any) =>
+                                        setPropertyDetails((prev: any) => ({
+                                            ...prev,
+                                            room_type: e.target.value,
+                                        }))
+                                    }
+                                    className="md:basis-1/4"
+                                    classNames={{ listboxWrapper: "nextui-listbox" }}
+                                    isRequired>
+                                    {SelectList.RoomType.map((item) => (
+                                        <SelectItem key={item}>
+                                            {item}
+                                        </SelectItem>
+                                    ))}
+                                </Select>
+                            }
                             <Controller
                                 control={control}
                                 name='name'
@@ -258,138 +363,121 @@ const Page = () => {
                     </InView>
                     <InView as="div" threshold={1} onChange={onViewScroll} id='propertyDetails' className='listing-card border rounded-lg px-4 lg:px-7 py-6 scroll-mt-36'>
                         <div className='card-header text-xl font-semibold mb-5'>Property Details</div>
-                        <div className='flex w-full gap-8 lg:gap-4 mt-3 mb-8 flex-wrap md:flex-nowrap'>
-                            <Input isDisabled={disabled}
-                                value={propertyListing.property_details.carpet_area?.toString() || ""}
-                                onChange={(e: any) =>
-                                    setPropertyListing((prev) => ({
-                                        ...prev,
-                                        property_details: {
-                                            ...prev.property_details,
-                                            carpet_area: e.target.value,
-                                        },
-                                    }))
-                                }
-                                type="number"
-                                variant="flat"
-                                label="Carpet Area"
-                                endContent={
-                                    <div className="pointer-events-none flex items-center">
-                                        <span className="text-default-400 text-small">sqft</span>
-                                    </div>
-                                }
-                                isRequired />
-                            <Select label="Direction" selectedKeys={[propertyListing.property_details.direction]}
-                                isDisabled={disabled}
-                                classNames={{ listboxWrapper: "nextui-listbox" }}
-                                isRequired
-                                onChange={(e: any) =>
-                                    setPropertyListing((prev) => ({
-                                        ...prev,
-                                        property_details: {
-                                            ...prev.property_details,
-                                            direction: e.target.value,
-                                        },
-                                    }))
-                                }>
-                                {SelectList.Direction.map((item) => (
-                                    <SelectItem key={item}>
-                                        {item}
-                                    </SelectItem>
-                                ))}
-                            </Select>
-                            <Select label="Number of Bathrooms" selectedKeys={[propertyListing.property_details.bathrooms?.toString() || "1"]}
-                                isDisabled={disabled}
-                                classNames={{ listboxWrapper: "nextui-listbox" }}
-                                isRequired
-                                onChange={(e: any) =>
-                                    setPropertyListing((prev) => ({
-                                        ...prev,
-                                        property_details: {
-                                            ...prev.property_details,
-                                            bathrooms: e.target.value,
-                                        },
-                                    }))
-                                }>
-                                {Array.from({ length: 10 }).map((_, i) => (
-                                    <SelectItem key={i}>
-                                        {(i + 1).toString()}
-                                    </SelectItem>
-                                ))}
-                            </Select>
-                        </div>
-                        <div className='flex w-full gap-8 lg:gap-4 mt-3 mb-8 flex-wrap md:flex-nowrap'>
-                            {propertyListing.property_type === "Apartment" ?
-                                <Input isDisabled={disabled}
-                                    value={propertyListing.property_details.floor_number?.toString() || ""}
-                                    onChange={(e: any) =>
-                                        setPropertyListing((prev) => ({
-                                            ...prev,
-                                            property_details: {
-                                                ...prev.property_details,
-                                                floor_number: e.target.value,
-                                            },
-                                        }))
+                        {propertyListing.listing_type !== "PG" && propertyListing.property_type !== "Plot" &&
+                            <>
+                                <div className='flex w-full gap-8 lg:gap-4 mt-3 mb-8 flex-wrap md:flex-nowrap'>
+                                    <Input isDisabled={disabled}
+                                        value={propertyDetails?.carpet_area?.toString() || ""}
+                                        onChange={(e: any) =>
+                                            setPropertyDetails((prev: any) => ({
+                                                ...prev,
+                                                carpet_area: e.target.value,
+                                            }))
+                                        }
+                                        type="number"
+                                        variant="flat"
+                                        label="Carpet Area"
+                                        endContent={
+                                            <div className="pointer-events-none flex items-center">
+                                                <span className="text-default-400 text-small">sqft</span>
+                                            </div>
+                                        }
+                                        isRequired />
+                                    <Select label="Direction" selectedKeys={[propertyDetails?.direction]}
+                                        isDisabled={disabled}
+                                        classNames={{ listboxWrapper: "nextui-listbox" }}
+                                        isRequired
+                                        onChange={(e: any) =>
+                                            setPropertyDetails((prev: any) => ({
+                                                ...prev,
+                                                direction: e.target.value,
+                                            }))
+                                        }>
+                                        {SelectList.Direction.map((item) => (
+                                            <SelectItem key={item}>
+                                                {item}
+                                            </SelectItem>
+                                        ))}
+                                    </Select>
+                                    <Select label="Number of Bathrooms" selectedKeys={[(propertyDetails?.bathrooms)?.toString()]}
+                                        isDisabled={disabled}
+                                        classNames={{ listboxWrapper: "nextui-listbox" }}
+                                        isRequired
+                                        onChange={(e: any) =>
+                                            setPropertyDetails((prev: any) => ({
+                                                ...prev,
+                                                bathrooms: e.target.value,
+                                            }))
+                                        }>
+                                        {Array.from({ length: 10 }).map((_, i) => (
+                                            <SelectItem key={i + 1}>
+                                                {(i + 1).toString()}
+                                            </SelectItem>
+                                        ))}
+                                    </Select>
+                                </div>
+                                <div className='flex w-full gap-8 lg:gap-4 mt-3 mb-8 flex-wrap md:flex-nowrap'>
+                                    {propertyListing.property_type === "Apartment" ?
+                                        <Input isDisabled={disabled}
+                                            value={propertyDetails?.floor_number?.toString() || ""}
+                                            onChange={(e: any) =>
+                                                setPropertyDetails((prev: any) => ({
+                                                    ...prev,
+                                                    floor_number: e.target.value,
+                                                }))
+                                            }
+                                            type="number"
+                                            variant="flat"
+                                            label="Floor Number"
+                                            isRequired /> :
+                                        <Input isDisabled={disabled}
+                                            value={propertyDetails?.total_floors?.toString() || ""}
+                                            onChange={(e: any) =>
+                                                setPropertyDetails((prev: any) => ({
+                                                    ...prev,
+                                                    total_floors: e.target.value,
+                                                }))
+                                            }
+                                            type="number"
+                                            variant="flat"
+                                            label="Total floors"
+                                            isRequired />
                                     }
-                                    type="number"
-                                    variant="flat"
-                                    label="Floor Number"
-                                    isRequired /> :
-                                <Input isDisabled={disabled}
-                                    value={propertyListing.property_details.total_floors?.toString() || ""}
-                                    onChange={(e: any) =>
-                                        setPropertyListing((prev) => ({
-                                            ...prev,
-                                            property_details: {
-                                                ...prev.property_details,
-                                                total_floors: e.target.value,
-                                            },
-                                        }))
-                                    }
-                                    type="number"
-                                    variant="flat"
-                                    label="Total floors"
-                                    isRequired />
-                            }
-                            <Select label="Furnishing" selectedKeys={[propertyListing.property_details.furnishing]}
-                                isDisabled={disabled}
-                                classNames={{ listboxWrapper: "nextui-listbox" }}
-                                isRequired
-                                onChange={(e: any) =>
-                                    setPropertyListing((prev) => ({
-                                        ...prev,
-                                        property_details: {
-                                            ...prev.property_details,
-                                            furnishing: e.target.value,
-                                        },
-                                    }))
-                                }>
-                                {SelectList.Furnishhing.map((item) => (
-                                    <SelectItem key={item}>
-                                        {item}
-                                    </SelectItem>
-                                ))}
-                            </Select>
-                            <Select label="Parking Type" selectedKeys={[propertyListing.property_details.parking_type]}
-                                isDisabled={disabled}
-                                classNames={{ listboxWrapper: "nextui-listbox" }}
-                                isRequired
-                                onChange={(e: any) =>
-                                    setPropertyListing((prev) => ({
-                                        ...prev,
-                                        property_details: {
-                                            ...prev.property_details,
-                                            parking_type: e.target.value,
-                                        },
-                                    }))
-                                }>
-                                {SelectList.ParkingType.map((item) => (
-                                    <SelectItem key={item}>
-                                        {item}
-                                    </SelectItem>
-                                ))}
-                            </Select>
-                        </div>
+                                    <Select label="Furnishing" selectedKeys={[propertyDetails?.furnishing]}
+                                        isDisabled={disabled}
+                                        classNames={{ listboxWrapper: "nextui-listbox" }}
+                                        isRequired
+                                        onChange={(e: any) =>
+                                            setPropertyDetails((prev: any) => ({
+                                                ...prev,
+                                                furnishing: e.target.value,
+                                            }))
+                                        }>
+                                        {SelectList.Furnishhing.map((item) => (
+                                            <SelectItem key={item}>
+                                                {item}
+                                            </SelectItem>
+                                        ))}
+                                    </Select>
+                                    <Select label="Parking Type" selectedKeys={[propertyDetails?.parking_type]}
+                                        isDisabled={disabled}
+                                        classNames={{ listboxWrapper: "nextui-listbox" }}
+                                        isRequired
+                                        onChange={(e: any) =>
+                                            setPropertyDetails((prev: any) => ({
+                                                ...prev,
+                                                parking_type: e.target.value,
+                                            }))
+                                        }>
+                                        {SelectList.ParkingType.map((item) => (
+                                            <SelectItem key={item}>
+                                                {item}
+                                            </SelectItem>
+                                        ))}
+                                    </Select>
+                                </div>
+                            </>
+                        }
                         <div className='mb-8'>
                             <Select
                                 items={amenityList || []}
@@ -403,14 +491,9 @@ const Page = () => {
                                     trigger: "min-h-12 py-2",
                                     listboxWrapper: "nextui-listbox relative"
                                 }}
-                                selectedKeys={propertyListing.amenities}
+                                selectedKeys={amenitiesValues}
                                 isDisabled={disabled}
-                                onChange={(e: any) =>
-                                    setPropertyListing((prev) => ({
-                                        ...prev,
-                                        amenities: e.target.value.split(","),
-                                    }))
-                                }
+                                onSelectionChange={setAmenitiesValues}
                                 renderValue={(items: SelectedItems<any>) => {
                                     return (
                                         <div className="flex flex-wrap gap-2">
@@ -431,14 +514,14 @@ const Page = () => {
                                 )}
                             </Select>
                         </div>
-                        <div className='mb-8'>
+                        {/* <div className='mb-8'>
                             <Input isDisabled={disabled}
-                                value={propertyListing.property_details.landmark || ""}
+                                value={propertyDetails?.landmark || ""}
                                 onChange={(e: any) =>
                                     setPropertyListing((prev) => ({
                                         ...prev,
-                                        property_details: {
-                                            ...prev.property_details,
+                                        details_by_listingtype: {
+                                            ...prev.details_by_listingtype,
                                             landmark: e.target.value,
                                         },
                                     }))
@@ -446,60 +529,54 @@ const Page = () => {
                                 type="text"
                                 variant="flat"
                                 label="Landmark (Optional)" />
-                        </div>
-                        <div className='flex w-full gap-8 lg:gap-4 mb-8 flex-wrap md:flex-nowrap'>
-                            {propertyListing.listing_type === "Rent" ?
-                                <>
-                                    <Input isDisabled={disabled}
-                                        value={propertyListing.property_details.rental_amount?.toString() || ""}
-                                        onChange={(e: any) =>
-                                            setPropertyListing((prev) => ({
-                                                ...prev,
-                                                property_details: {
-                                                    ...prev.property_details,
-                                                    rental_amount: e.target.value,
-                                                },
-                                            }))
-                                        }
-                                        type="number"
-                                        variant="flat"
-                                        label="Rental Monthly Amount"
-                                        startContent={
-                                            <div className="pointer-events-none flex items-center">
-                                                <span className="text-default-400 text-small">₹</span>
-                                            </div>
-                                        }
-                                        isRequired />
-                                    <Input isDisabled={disabled}
-                                        value={propertyListing.property_details.deposit_amount?.toString() || ""}
-                                        onChange={(e: any) =>
-                                            setPropertyListing((prev) => ({
-                                                ...prev,
-                                                property_details: {
-                                                    ...prev.property_details,
-                                                    deposit_amount: e.target.value,
-                                                },
-                                            }))
-                                        }
-                                        type="number"
-                                        variant="flat"
-                                        label="Deposit Amount"
-                                        startContent={
-                                            <div className="pointer-events-none flex items-center">
-                                                <span className="text-default-400 text-small">₹</span>
-                                            </div>
-                                        }
-                                        isRequired />
-                                </> :
+                        </div> */}
+
+                        {propertyListing.listing_type === "Rent" &&
+                            <div className='flex w-full gap-8 lg:gap-4 mb-8 flex-wrap md:flex-nowrap'>
                                 <Input isDisabled={disabled}
-                                    value={propertyListing.property_details.selling_amount?.toString() || ""}
+                                    value={propertyDetails?.rental_amount?.toString() || ""}
                                     onChange={(e: any) =>
-                                        setPropertyListing((prev) => ({
+                                        setPropertyDetails((prev: any) => ({
                                             ...prev,
-                                            property_details: {
-                                                ...prev.property_details,
-                                                selling_amount: e.target.value,
-                                            },
+                                            rental_amount: e.target.value,
+                                        }))
+                                    }
+                                    type="number"
+                                    variant="flat"
+                                    label="Rental Monthly Amount"
+                                    startContent={
+                                        <div className="pointer-events-none flex items-center">
+                                            <span className="text-default-400 text-small">₹</span>
+                                        </div>
+                                    }
+                                    isRequired />
+                                <Input isDisabled={disabled}
+                                    value={propertyDetails?.deposit_amount?.toString() || ""}
+                                    onChange={(e: any) =>
+                                        setPropertyDetails((prev: any) => ({
+                                            ...prev,
+                                            deposit_amount: e.target.value,
+                                        }))
+                                    }
+                                    type="number"
+                                    variant="flat"
+                                    label="Deposit Amount"
+                                    startContent={
+                                        <div className="pointer-events-none flex items-center">
+                                            <span className="text-default-400 text-small">₹</span>
+                                        </div>
+                                    }
+                                    isRequired />
+                            </div>
+                        }
+                        {propertyListing.listing_type === "Sale" &&
+                            <div className='flex w-full gap-8 lg:gap-4 mb-8 flex-wrap md:flex-nowrap'>
+                                <Input isDisabled={disabled}
+                                    value={propertyDetails?.selling_amount?.toString() || ""}
+                                    onChange={(e: any) =>
+                                        setPropertyDetails((prev: any) => ({
+                                            ...prev,
+                                            selling_amount: e.target.value,
                                         }))
                                     }
                                     type="number"
@@ -511,8 +588,38 @@ const Page = () => {
                                         </div>
                                     }
                                     isRequired />
-                            }
-                        </div>
+                            </div>
+                        }
+                        {propertyListing.listing_type === "PG" &&
+                            <>
+                                <div className='mb-5 text-sm md:text-base'>Occupancy Based Rent Per Month</div>
+                                <div className='mb-8 flex flex-col md:gap-x-4 gap-y-10 md:gap-y-8'>
+                                    {SelectList.OccupancyType.map((x: any, i: any) =>
+                                        <div className='grid grid-cols-7 content-center flex items-center gap-y-5 md:gap-y-0 gap-x-5' key={i}>
+                                            <div
+                                                className={`col-span-full md:col-span-2 p-2 border w-full h-full rounded-xl flex items-center justify-center
+                                                 ${!!propertyDetails?.occupancy_type?.[x.name]?.toString() && ' bg-color2d/80 border-color2d/80'}`}>{x.label}</div>
+                                            <Input
+                                                isDisabled={disabled}
+                                                value={propertyDetails?.occupancy_type?.[x.name]?.toString() || ""}
+                                                onChange={(e: any) =>
+                                                    setPropertyDetails((prev: any) => ({
+                                                        ...prev,
+                                                        occupancy_type: {
+                                                            ...prev.occupancy_type,
+                                                            [x.name]: e.target.value || null
+                                                        },
+                                                    }))
+                                                }
+                                                type="number"
+                                                variant="flat"
+                                                label="Amount"
+                                                className='col-span-full md:col-span-5 max-w-xs' />
+                                        </div>
+                                    )}
+                                </div>
+                            </>
+                        }
                     </InView>
                     <InView threshold={1} as="div" onChange={onViewScroll} id='location' className='listing-card border rounded-lg px-4 lg:px-7 py-6 scroll-mt-36'>
                         <div className='card-header text-xl font-semibold mb-5'>Location</div>

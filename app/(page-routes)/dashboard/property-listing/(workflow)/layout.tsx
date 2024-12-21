@@ -10,16 +10,19 @@ export default async function BusinessListingLayout({
 }: {
     children: React.ReactNode
 }) {
-    const attrAmenities = DropdownList.Amenities.api;
+    const attrRealEstateAmenities = DropdownList.RealEstateAmenities.api;
+    const attrPgAmenities = DropdownList.PGAmenities.api;
     const attrArea = DropdownList.Area.api;
-    let apiUrlAmenities = `${attrAmenities.base}?sort=${attrAmenities.sort}`
+    let apiUrlRealEstateAmenities = `${attrRealEstateAmenities.base}?sort=${attrRealEstateAmenities.sort}`
+    let apiUrlPgAmenities = `${attrPgAmenities.base}?sort=${attrPgAmenities.sort}`
     let apiUrlArea = `${attrArea.base}?sort=${attrArea.sort}`
-    const resAmenities = await getPublicApiResponse(apiUrlAmenities);
+    const resRealEstateAmenities = await getPublicApiResponse(apiUrlRealEstateAmenities);
+    const resPgAmenities = await getPublicApiResponse(apiUrlPgAmenities);
     const resArea = await getPublicApiResponse(apiUrlArea);
     return (
         <div className="max-w-screen-xl mx-auto">
             <Suspense fallback={<GlobalSearchListLoading />}>
-                <PropertyListingForm resAmenities={resAmenities} resArea={resArea}>
+                <PropertyListingForm resRealEstateAmenities={resRealEstateAmenities} resPgAmenities={resPgAmenities} resArea={resArea}>
                     {children}
                 </PropertyListingForm>
             </Suspense>

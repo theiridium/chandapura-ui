@@ -3,13 +3,17 @@ import ProductDetailLayout from "@/app/route-components/real-estate/product/prod
 import GlobalSearchListLoading from "@/app/loading-components/global-search-list-loading";
 import AdLoading from "@/app/loading-components/ad-loading";
 import AdBanner from "@/app/sub-components/ad-banner";
+import { GetProductFromParam, IsProductUrl } from "@/lib/helpers";
+import { notFound } from "next/navigation";
 
-const Page = ({ searchParams }: any) => {
+const Page = ({ params, searchParams }: { params: { product: string }, searchParams: any }) => {
     const id = searchParams.source;
+    if (!IsProductUrl(params.product)) notFound();
+    const product: any = GetProductFromParam(params.product);
     return (
         <div className="max-w-screen-xl mx-auto lg:px-3 lg:my-6">
             <Suspense fallback={<GlobalSearchListLoading />}>
-                <ProductDetailLayout id={id} />
+                <ProductDetailLayout id={id} product={product} />
             </Suspense>
             <div className="col-span-1 lg:col-span-full my-10">
                 <Suspense fallback={<AdLoading />}>

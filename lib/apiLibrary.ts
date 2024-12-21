@@ -156,7 +156,7 @@ export const getPublicSingleSearchResponse = async (payload: SearchPayload | und
     }
     let filters = payload?.noExpFilter ?
         ["publish_status = true"] :
-        ["publish_status = true", `payment_details.expiry_date_timestamp > ${currentDate}`];
+        ["publish_status = true", `payment_details.expiry_date_timestamp > ${currentDate}`, 'payment_details.isPaymentSuccess = true'];
     if (payload?.filter) filters.push(payload.filter);
     let bodyContent = JSON.stringify({
         "queries": [

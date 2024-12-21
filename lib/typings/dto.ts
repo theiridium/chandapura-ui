@@ -82,21 +82,48 @@ export interface PropertyListing {
     contact: ContactComponent
     featured_image?: {}
     gallery_images?: any[]
-    amenities: any[]
-    property_details: RealEstateComponent
+    details_by_listingtype: [RentComponent | SaleComponent | PGComponent | PlotComponent | any]
 }
-export interface RealEstateComponent {
-    bathrooms: number
+export interface RentComponent {
+    __component: string,
+    bathrooms: number,
+    direction: string,
+    floor_number: number,
+    total_floors: number,
+    carpet_area: number,
+    parking_type: string,
+    furnishing: string,
+    rental_amount: number,
+    deposit_amount: number,
+    amenities: any[],
+    room_type: string
+}
+export interface SaleComponent {
+    __component: string,
+    bathrooms: number,
+    direction: string,
+    floor_number: number,
+    total_floors: number,
+    carpet_area: number,
+    parking_type: string,
+    furnishing: string,
+    selling_amount: number,
+    amenities: any[],
+    room_type: string
+}
+export interface PGComponent {
+    __component: string,
+    amenities: any[],
+    room_type: OccupancyType
+}
+export interface PlotComponent {
+    __component: string,
+    dimension: number,
     direction: string
-    floor_number: number
-    total_floors: number
-    carpet_area: number
-    parking_type: string
-    landmark: string
-    rental_amount: number
-    selling_amount: number
-    deposit_amount: number
-    furnishing: string
+}
+export interface OccupancyType {
+    occupancy_type: string,
+    amount: number
 }
 export interface ClassifiedListing {
     name: string | undefined

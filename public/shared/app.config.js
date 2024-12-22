@@ -147,6 +147,8 @@ module.exports = {
           "featured_image,area,contact,details_by_listingtype.amenities,details_by_listingtype.occupancy_type",
         populateDetails:
           "featured_image,area,gallery_images,contact,details_by_listingtype.amenities,details_by_listingtype.occupancy_type",
+        populateForPayment:
+          "details_by_listingtype.amenities,details_by_listingtype.occupancy_type,payment_history,payment_details",
         userFilter: "filters[author][email][$eq]",
         isPublishedFilter: `filters[publish_status][$eq]=true&filters[payment_details][expiry_date_timestamp][$gt]=${currentDate}`,
         limit: 4,

@@ -39,15 +39,15 @@ const Page = () => {
             setIsLoading(true);
             if (source) {
                 const attr = Products.realEstate.api;
-                let apiUrl = `${attr.base}?${attr.userFilter}=${userData?.email}&filters[id][$eq]=${source}&populate[0]=category&populate[1]=sub_category&populate[3]=payment_details&populate[4]=payment_history`;
+                let apiUrl = `${attr.base}?${attr.userFilter}=${userData?.email}&filters[id][$eq]=${source}&populate=${attr.populateForPayment}`;
                 const response = await getPublicApiResponse(apiUrl).then(res => res.data);
                 const data = response[0];
                 if (data) {
                     if (data.step_number !== ListingWorkflow.UploadImages && type !== "renew") router.push(`/dashboard/property-listing/view-all`);
-                    const pricingPlanRes = await getPublicApiResponse(`${Products.realEstatePricingPlan.api.base}?populate=${data.listing_type.toLowerCase()}`);
+                    const pricingPlanRes = await getPublicApiResponse(`${Products.realEstatePricingPlan.api.base}?populate=${data.listing_type}`);
                     let amount = 0;
-                    if (pricingPlanRes.data.rent) amount = findPriceByRoomType(pricingPlanRes.data.rent, data);
-                    else if (pricingPlanRes.data.sale) amount = findPriceByRoomType(pricingPlanRes.data.sale, data);
+                    if (pricingPlanRes.data.Rent) amount = findPriceByRoomType(pricingPlanRes.data.Rent, data);
+                    else if (pricingPlanRes.data.Sale) amount = findPriceByRoomType(pricingPlanRes.data.Sale, data);
                     setPricingPlan({ monthly: amount });
                     setListingPrice({ type: 'Monthly', amount: amount });
                     data.payment_details && setHasSubscribed(checkSubscriptionValidity(data.payment_details.expiry_date, data.payment_details.isPaymentSuccess));
@@ -67,7 +67,7 @@ const Page = () => {
     }, []);
 
     const findPriceByRoomType = (pricingPlan: any, data: any) => {
-        let planData = pricingPlan.find((x: any) => x.type = data.room_type.toLowerCase());
+        let planData = pricingPlan.find((x: any) => x.type === data.details_by_listingtype[0].room_type);
         return planData.amount;
     }
 
@@ -129,7 +129,7 @@ const Page = () => {
                                 </div>
                                 <div>
                                     <div className='text-sm mb-1 font-semibold'>Room Type</div>
-                                    {isLoading ? <TextLoading /> : <div className='text-lg text-color2d'>{apiRes.room_type}</div>}
+                                    {isLoading ? <TextLoading /> : <div className='text-lg text-color2d'>{apiRes.details_by_listingtype[0].room_type}</div>}
                                 </div>
                             </div>
                         </div>

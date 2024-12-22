@@ -52,7 +52,7 @@ const ProductDetail = ({ data, product }: any) => {
                             <div className='re-header flex-none lg:flex justify-between mb-12'>
                                 <div className="lg:hidden"><Breadcrumb /></div>
                                 <div>
-                                    <h1 className="md:text-xl font-medium text-gray-500 mb-5">{data.room_type} {data.property_type} <span className='text-highlight'>for {data.listing_type}</span> in {data.area.name}</h1>
+                                    <h1 className="md:text-xl font-medium text-gray-500 mb-5">{property_details.room_type} {data.property_type} <span className='text-highlight'>for {data.listing_type}</span> in {data.area.name}</h1>
                                     <h2 className="font-semibold text-xl lg:text-3xl mb-2 lg:mb-0">{data.name}</h2>
                                 </div>
                                 <div className='text-2xl font-semibold text-gray-600 flex items-center bg-color2d/70 px-5 py-1 mt-0 lg:mt-5 lg:mt-0 w-fit float-right lg:float-none'><IndianRupee strokeWidth={3} size={20} />{data.listing_type === "Rent" ? ConvertCurrencyToWords(property_details.rental_amount) : ConvertCurrencyToWords(property_details.selling_amount)}</div>

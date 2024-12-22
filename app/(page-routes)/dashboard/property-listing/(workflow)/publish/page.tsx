@@ -19,18 +19,20 @@ const Page = () => {
     const type = searchParams.get('type');
     const source = searchParams.get('source');
     const [apiRes, setApiRes] = useState<any>();
+    const [propertyDetails, setPropertyDetails] = useState<any>();
 
     const fetchData = useCallback(async () => {
         try {
             setIsLoading(true);
             if (source) {
                 const attr = Products.realEstate.api;
-                let apiUrl = `${attr.base}?${attr.userFilter}=${userData?.email}&filters[id][$eq]=${source}&populate=*`;
+                let apiUrl = `${attr.base}?${attr.userFilter}=${userData?.email}&filters[id][$eq]=${source}&populate=${attr.populateDetails}`;
                 const response = await getPublicApiResponse(apiUrl).then(res => res.data);
                 const data = response[0];
                 if (data) {
                     if (data.step_number !== ListingWorkflow.Payment) router.push(`/dashboard/property-listing/view-all`);
                     setApiRes(data);
+                    setPropertyDetails(data.details_by_listingtype[0])
                     setIsLoading(false);
                     return data;
                 }
@@ -97,7 +99,7 @@ const Page = () => {
                             <div className='flex flex-col md:flex-row *:basis-full *:md:basis-1/2'>
                                 <div className='mb-5'>
                                     <div className='text-sm mb-1 font-semibold'>Room Type</div>
-                                    <div>{apiRes.room_type}</div>
+                                    <div>{propertyDetails.room_type}</div>
                                 </div>
                                 <div className='mb-5'>
                                     <div className='text-sm mb-1 font-semibold'>Property Name</div>
@@ -114,41 +116,41 @@ const Page = () => {
                             <div className='flex flex-col md:flex-row *:basis-full *:md:basis-1/3'>
                                 <div className='mb-5'>
                                     <div className='text-sm mb-1 font-semibold'>Carpet Area</div>
-                                    <div>{apiRes.property_details.carpet_area} sqft</div>
+                                    <div>{propertyDetails.carpet_area} sqft</div>
                                 </div>
                                 <div className='mb-5'>
                                     <div className='text-sm mb-1 font-semibold'>Direction</div>
-                                    <div>{apiRes.property_details.direction} facing</div>
+                                    <div>{propertyDetails.direction} facing</div>
                                 </div>
                                 <div className='mb-5'>
                                     <div className='text-sm mb-1 font-semibold'>Number of Bathrooms</div>
-                                    <div>{apiRes.property_details.bathrooms}</div>
+                                    <div>{propertyDetails.bathrooms}</div>
                                 </div>
                             </div>
                             <div className='flex flex-col md:flex-row *:basis-full *:md:basis-1/3'>
                                 {apiRes.property_type === "Apartment" ?
                                     <div className='mb-5'>
                                         <div className='text-sm mb-1 font-semibold'>Floor Number</div>
-                                        <div>{apiRes.property_details.floor_number}</div>
+                                        <div>{propertyDetails.floor_number}</div>
                                     </div> :
                                     <div className='mb-5'>
                                         <div className='text-sm mb-1 font-semibold'>Total Floors</div>
-                                        <div>{apiRes.property_details.total_floors}</div>
+                                        <div>{propertyDetails.total_floors}</div>
                                     </div>
                                 }
                                 <div className='mb-5'>
                                     <div className='text-sm mb-1 font-semibold'>Furnishing</div>
-                                    <div>{apiRes.property_details.furnishing}</div>
+                                    <div>{propertyDetails.furnishing}</div>
                                 </div>
                                 <div className='mb-5'>
                                     <div className='text-sm mb-1 font-semibold'>Parking Type</div>
-                                    <div>{apiRes.property_details.parking_type}</div>
+                                    <div>{propertyDetails.parking_type}</div>
                                 </div>
                             </div>
                             <div className='mt-2 mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Amenities</div>
-                                {apiRes.amenities && <div className="tags">
-                                    {apiRes.amenities.map((x: any, i: any) =>
+                                {propertyDetails.amenities && <div className="tags">
+                                    {propertyDetails.amenities.map((x: any, i: any) =>
                                         <div className="px-4 py-1 bg-color2d/70 font-semibold rounded-full text-sm text-nowrap text-gray-600" key={i}>{x.name.trim()}</div>
                                     )}
                                 </div>}
@@ -160,16 +162,16 @@ const Page = () => {
                                 <div className='flex flex-col md:flex-row *:basis-full *:md:basis-1/2'>
                                     <div className='mb-5'>
                                         <div className='text-sm mb-1 font-semibold'>Monthly Rent</div>
-                                        <div>{apiRes.property_details.rental_amount}</div>
+                                        <div>{propertyDetails.rental_amount}</div>
                                     </div>
                                     <div className='mb-5'>
                                         <div className='text-sm mb-1 font-semibold'>Security Deposit</div>
-                                        <div>{apiRes.property_details.deposit_amount}</div>
+                                        <div>{propertyDetails.deposit_amount}</div>
                                     </div>
                                 </div> :
                                 <div className='mb-5'>
                                     <div className='text-sm mb-1 font-semibold'>Selling Amount</div>
-                                    <div>{apiRes.property_details.selling_amount}</div>
+                                    <div>{propertyDetails.selling_amount}</div>
                                 </div>
                             }
                         </div>

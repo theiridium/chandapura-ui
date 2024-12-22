@@ -226,7 +226,7 @@ header {
     @apply text-sm text-gray-500;
   }
   .tags {
-    @apply flex flex-nowrap gap-x-2 mb-5 overflow-x-auto;
+    @apply flex flex-wrap gap-2 mb-5 overflow-x-auto;
   }
   .card_link:hover h2 {
     @apply underline underline-offset-2;

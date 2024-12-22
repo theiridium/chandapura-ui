@@ -26,13 +26,13 @@ const Page = ({ params }: { params: { slug: string } }) => {
     const [keyGa, setKeyGa] = useState(0);
     const [imageParamsFeatured, setImageParamsFeatured] = useState<ImageParams>({
         refId: source,
-        ref: "api::real-estate.real-estate",
+        ref: "api::property-listing.property-listing",
         field: "featured_image",
         imgData: null,
     });
     const [imageParamsGallery, setImageParamsGallery] = useState<ImageParams>({
         refId: source,
-        ref: "api::real-estate.real-estate",
+        ref: "api::property-listing.property-listing",
         field: "gallery_images",
         imgData: null,
     });

@@ -9,7 +9,7 @@ module.exports = {
     BusinessListing: {
       label: "Business Listing",
       dashboardLink: "/dashboard/business-listing/view-all",
-      userLabel: "My Listing",
+      userLabel: "My Businesess",
       baseLink: "/dashboard/business-listing",
       addDetailsLink: "/dashboard/business-listing/add-details",
       uploadImagesLink: "/dashboard/business-listing/upload-images",
@@ -17,7 +17,7 @@ module.exports = {
     PropertyListing: {
       label: "Property Listing",
       dashboardLink: "/dashboard/property-listing/view-all",
-      userLabel: "My Listings",
+      userLabel: "My Properties",
       baseLink: "/dashboard/property-listing",
       addDetailsLink: "/dashboard/property-listing/add-details",
       uploadImagesLink: "/dashboard/property-listing/upload-images",
@@ -32,14 +32,14 @@ module.exports = {
     },
     JobListing: {
       label: "Job Listing",
-      dashboardLink: "/dashboard/advertise/view-all",
-      userLabel: "My Advertisements",
-      baseLink: "/dashboard/advertise",
-      addDetailsLink: "/dashboard/advertise/add-details",
-      uploadImagesLink: "/dashboard/advertise/upload-images",
+      dashboardLink: "/dashboard/job-listing/view-all",
+      userLabel: "My Job Listings",
+      baseLink: "/dashboard/job-listing",
+      addDetailsLink: "/dashboard/job-listing/add-details",
+      uploadImagesLink: "/dashboard/job-listing/upload-images",
     },
     Advertisement: {
-      label: "Banner Ad",
+      label: "Banner Ads",
       dashboardLink: "/dashboard/advertise/view-all",
       userLabel: "My Advertisements",
       baseLink: "/dashboard/advertise",
@@ -85,51 +85,68 @@ module.exports = {
     sale: {
       label: "sale",
       productType: "real-estate-sale",
-      searchIndex: "real-estate",
+      searchIndex: "property-listing",
       slug: "property-for-sale",
       url: "real-estate/property-for-sale",
       api: {
-        base: "real-estates",
+        base: "property-listings",
         sort: "desc",
-        populateList: "property_details,featured_image,area,contact,amenities",
+        populateList:
+          "featured_image,area,contact,details_by_listingtype.amenities,details_by_listingtype.occupancy_type",
         populateDetails:
-          "property_details,featured_image,area,gallery_images,contact,amenities",
+          "featured_image,area,gallery_images,contact,details_by_listingtype.amenities,details_by_listingtype.occupancy_type",
         limit: 4,
         userFilter: "filters[author][email][$eq]",
         isPublishedFilter: `filters[publish_status][$eq]=true&filters[payment_details][expiry_date_timestamp][$gt]=${currentDate}`,
         listingTypeFilter: "filters[listing_type][$eq]=Sale",
         limit: 4,
+        component: "real-estate.sale-property-details",
       },
     },
     rent: {
       label: "rent",
       productType: "real-estate-rent",
-      searchIndex: "real-estate",
+      searchIndex: "property-listing",
       slug: "property-for-rent",
       url: "real-estate/property-for-rent",
       api: {
-        base: "real-estates",
+        base: "property-listings",
         sort: "desc",
-        populateList: "property_details,featured_image,area,contact,amenities",
+        populateList:
+          "featured_image,area,contact,details_by_listingtype.amenities,details_by_listingtype.occupancy_type",
         populateDetails:
-          "property_details,featured_image,area,gallery_images,contact,amenities",
+          "featured_image,area,gallery_images,contact,details_by_listingtype.amenities,details_by_listingtype.occupancy_type",
         userFilter: "filters[author][email][$eq]",
         isPublishedFilter: `filters[publish_status][$eq]=true&filters[payment_details][expiry_date_timestamp][$gt]=${currentDate}`,
         listingTypeFilter: "filters[listing_type][$eq]=Rent",
         limit: 4,
+        component: "real-estate.rent-property-details",
+      },
+    },
+    plot: {
+      label: "plot",
+      api: {
+        component: "real-estate.plot-details",
+      },
+    },
+    pg: {
+      label: "pg",
+      api: {
+        component: "real-estate.pg-details",
       },
     },
     realEstate: {
       label: "real estate",
       productType: "real-estate",
-      searchIndex: "real-estate",
+      searchIndex: "property-listing",
       url: "real-estate",
       api: {
-        base: "real-estates",
+        base: "property-listings",
         sort: "desc",
-        populateList: "property_details,featured_image,area,contact,amenities",
+        populateList:
+          "featured_image,area,contact,details_by_listingtype.amenities,details_by_listingtype.occupancy_type",
         populateDetails:
-          "property_details,featured_image,area,gallery_images,contact,amenities",
+          "featured_image,area,gallery_images,contact,details_by_listingtype.amenities,details_by_listingtype.occupancy_type",
         userFilter: "filters[author][email][$eq]",
         isPublishedFilter: `filters[publish_status][$eq]=true&filters[payment_details][expiry_date_timestamp][$gt]=${currentDate}`,
         limit: 4,
@@ -170,12 +187,16 @@ module.exports = {
     job: {
       label: "job",
       productType: "job-vacancy",
-      path: "job-vaccancy",
-      url: "/job-vaccancy",
+      searchIndex: "job-listing",
+      slug: "job-vacancy",
+      url: "job-vacancy",
       api: {
-        base: "properties",
+        base: "job-listings",
         sort: "desc",
-        populate: "",
+        populate:
+          "populate[0]=user&populate[1]=featured_image&populate[2]=area&populate[3]=contact",
+        userFilter: "filters[author][email][$eq]",
+        isPublishedFilter: `filters[publish_status][$eq]=true`,
         limit: 4,
       },
     },
@@ -216,10 +237,17 @@ module.exports = {
     },
   },
   DropdownList: {
-    Amenities: {
-      label: "amenities",
+    RealEstateAmenities: {
+      label: "real estate amenities",
       api: {
         base: "real-estate-amenities",
+        sort: "name:asc",
+      },
+    },
+    PGAmenities: {
+      label: "pg amenities",
+      api: {
+        base: "pg-amenities",
         sort: "name:asc",
       },
     },
@@ -266,7 +294,7 @@ module.exports = {
     PropertyList: {
       label: "propertyList",
       api: {
-        base: "real-estates",
+        base: "property-listings",
         sortByName: "name:asc",
         sortByDate: "updatedAt:desc",
         filter: "filters[author][email][$eq]",
@@ -276,6 +304,15 @@ module.exports = {
       label: "classifiedList",
       api: {
         base: "classified-listings",
+        sortByName: "name:asc",
+        sortByDate: "updatedAt:desc",
+        filter: "filters[author][email][$eq]",
+      },
+    },
+    JobList: {
+      label: "jobList",
+      api: {
+        base: "job-listings",
         sortByName: "name:asc",
         sortByDate: "updatedAt:desc",
         filter: "filters[author][email][$eq]",
@@ -292,8 +329,8 @@ module.exports = {
     },
   },
   SelectList: {
-    PropertyTypeRent: ["Apartment", "Individual", "Villa", "PG"],
-    PropertyTypeSale: ["Apartment", "Individual", "Villa", "Plot"],
+    PropertyType: ["Apartment", "Individual House", "Villa", "Plot", "PG"],
+    // PropertyTypeSale: ["Apartment", "Individual House", "Villa", "Plot"],
     Direction: [
       "East",
       "West",
@@ -306,6 +343,16 @@ module.exports = {
     ],
     Furnishhing: ["Semi Furnished", "Fully Furnished", "Non Furnished"],
     ParkingType: ["Open", "Covered"],
-    RoomType: ["Studio", "1BHK", "2BHK", "3BHK", "4BHK", "5BHK"],
+    RoomType: ["Studio", "1BHK", "2BHK", "3BHK", "4BHK", "5BHK", "5BHK+"],
+    OccupancyType: [
+      { label: "Single Room", name: "single_room" },
+      { label: "Twin Sharing", name: "twin_sharing" },
+      { label: "Triple Sharing", name: "triple_sharing" },
+      { label: "Four Sharing", name: "four_sharing" },
+    ],
+    //PG - occupancy type -single, double, triple, quadraple
+    //attached bathroom
+    //plot - dim and dir amenities - bescom, water supply
+    //job title
   },
 };

@@ -131,7 +131,21 @@ module.exports = {
     },
     pg: {
       label: "pg",
+      productType: "real-estate-pg",
+      searchIndex: "property-listing",
+      slug: "pg-accomodations",
+      url: "real-estate/pg-accomodations",
       api: {
+        base: "property-listings",
+        sort: "desc",
+        populateList:
+          "featured_image,area,contact,details_by_listingtype.amenities,details_by_listingtype.occupancy_type",
+        populateDetails:
+          "featured_image,area,gallery_images,contact,details_by_listingtype.amenities,details_by_listingtype.occupancy_type",
+        userFilter: "filters[author][email][$eq]",
+        isPublishedFilter: `filters[publish_status][$eq]=true&filters[payment_details][expiry_date_timestamp][$gt]=${currentDate}`,
+        listingTypeFilter: "filters[listing_type][$eq]=PG",
+        limit: 4,
         component: "real-estate.pg-details",
       },
     },

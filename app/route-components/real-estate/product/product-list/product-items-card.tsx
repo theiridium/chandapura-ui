@@ -3,7 +3,7 @@ import { Products } from "@/public/shared/app.config"
 import { IndianRupee } from "lucide-react"
 
 const ProductItemsCard = ({ data, id, product }: any) => {
-    let productSlug = data.listing_type === "Rent" ? Products.rent.url : Products.sale.url;
+    let productSlug = data.listing_type === "Rent" ? Products.rent.url : (data.listing_type === "Sale" ? Products.sale.url : Products.pg.url);
     let property_details = data.details_by_listingtype[0];
     if (product.productType !== "real-estate") property_details = data.details_by_listingtype.find((x: any) => x.__component == product.api.component);
     return (
@@ -17,7 +17,7 @@ const ProductItemsCard = ({ data, id, product }: any) => {
                     </div>
                     <div className="w-full flex flex-col justify-between">
                         <div>
-                            <h2 className="md:text-lg font-medium mb-2">{property_details.room_type} {data.property_type} for {data.listing_type} in {data.area.name}</h2>
+                            <h2 className="md:text-lg font-medium mb-2">{property_details.room_type} {data.property_type} {data.listing_type !== "PG" && `for ${data.listing_type}`} in {data.area.name}</h2>
                             <h3 className="font-semibold mb-5 text-gray-500">{data.name}</h3>
                             <div className="flex flex-wrap gap-x-3 md:gap-x-5 text-xs md:text-sm mb-3 text-gray-500 font-medium">
                                 <div className="mb-2">

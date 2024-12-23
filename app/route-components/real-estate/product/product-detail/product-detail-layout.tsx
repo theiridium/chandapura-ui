@@ -1,9 +1,11 @@
 import { getPublicApiResponse } from "@/lib/apiLibrary";
 import ProductDetail from "./product-detail";
 import Breadcrumb from "@/app/sub-components/breadcrumb";
+import { Products } from "@/public/shared/app.config";
 
 const ProductDetailLayout = async ({ id, product }: any) => {
-    const { data } = await getPublicApiResponse(`property-listings?populate=featured_image,area,gallery_images,contact,details_by_listingtype.amenities&filters[id]=${id}`);
+    const attr = Products.realEstate.api;
+    const { data } = await getPublicApiResponse(`${attr.base}?populate=${attr.populateDetails}&filters[id]=${id}`);
     const item = data[0];
     return (
         <>

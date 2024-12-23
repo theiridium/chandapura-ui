@@ -48,6 +48,7 @@ const Page = () => {
                     let amount = 0;
                     if (pricingPlanRes.data.Rent) amount = findPriceByRoomType(pricingPlanRes.data.Rent, data);
                     else if (pricingPlanRes.data.Sale) amount = findPriceByRoomType(pricingPlanRes.data.Sale, data);
+                    else if (pricingPlanRes.data.PG) amount = findPriceByRoomType(pricingPlanRes.data.PG, data);
                     setPricingPlan({ monthly: amount });
                     setListingPrice({ type: 'Monthly', amount: amount });
                     data.payment_details && setHasSubscribed(checkSubscriptionValidity(data.payment_details.expiry_date, data.payment_details.isPaymentSuccess));
@@ -67,7 +68,22 @@ const Page = () => {
     }, []);
 
     const findPriceByRoomType = (pricingPlan: any, data: any) => {
-        let planData = pricingPlan.find((x: any) => x.type === data.details_by_listingtype[0].room_type);
+        let planData: any = 0;
+        switch (data.property_type) {
+            case "PG":
+                planData = pricingPlan.find((x: any) => x.type === data.property_type);
+                break;
+
+            case "Plot":
+                planData = pricingPlan.find((x: any) => x.type === data.property_type);
+                break;
+        
+            default:
+                planData = pricingPlan.find((x: any) => x.type === data.details_by_listingtype[0].room_type);
+                break;
+        }
+        console.log(data.property_type)
+        console.log(planData)
         return planData.amount;
     }
 
@@ -123,14 +139,18 @@ const Page = () => {
                                     <div className='text-sm mb-1 font-semibold'>Listing Type</div>
                                     {isLoading ? <TextLoading /> : <div className='text-lg text-color2d'>{apiRes.listing_type}</div>}
                                 </div>
-                                <div>
-                                    <div className='text-sm mb-1 font-semibold'>Property Type</div>
-                                    {isLoading ? <TextLoading /> : <div className='text-lg text-color2d'>{apiRes.property_type}</div>}
-                                </div>
-                                <div>
-                                    <div className='text-sm mb-1 font-semibold'>Room Type</div>
-                                    {isLoading ? <TextLoading /> : <div className='text-lg text-color2d'>{apiRes.details_by_listingtype[0].room_type}</div>}
-                                </div>
+                                {apiRes.property_type !== "PG" && apiRes.property_type !== "Plot" &&
+                                    <>
+                                        <div>
+                                            <div className='text-sm mb-1 font-semibold'>Property Type</div>
+                                            {isLoading ? <TextLoading /> : <div className='text-lg text-color2d'>{apiRes.property_type}</div>}
+                                        </div>
+                                        <div>
+                                            <div className='text-sm mb-1 font-semibold'>Room Type</div>
+                                            {isLoading ? <TextLoading /> : <div className='text-lg text-color2d'>{apiRes.details_by_listingtype[0].room_type}</div>}
+                                        </div>
+                                    </>
+                                }
                             </div>
                         </div>
                     </div>

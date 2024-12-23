@@ -8,6 +8,7 @@ import ViewLocationMap from '@/app/components/maps/view-location-map';
 import Breadcrumb from '@/app/sub-components/breadcrumb';
 import ImageGallery from '@/app/components/modals/image-gallery';
 import { useDisclosure } from '@nextui-org/react';
+import { SelectList } from '@/public/shared/app.config';
 
 const ProductDetail = ({ data, product }: any) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -52,10 +53,12 @@ const ProductDetail = ({ data, product }: any) => {
                             <div className='re-header flex-none lg:flex justify-between mb-12'>
                                 <div className="lg:hidden"><Breadcrumb /></div>
                                 <div>
-                                    <h1 className="md:text-xl font-medium text-gray-500 mb-5">{property_details.room_type} {data.property_type} <span className='text-highlight'>for {data.listing_type}</span> in {data.area.name}</h1>
+                                    <h1 className="md:text-xl font-medium text-gray-500 mb-5">{property_details.room_type} {data.property_type} {data.listing_type !== "PG" && <span className='text-highlight'>for {data.listing_type}</span>} in {data.area.name}</h1>
                                     <h2 className="font-semibold text-xl lg:text-3xl mb-2 lg:mb-0">{data.name}</h2>
                                 </div>
-                                <div className='text-2xl font-semibold text-gray-600 flex items-center bg-color2d/70 px-5 py-1 mt-0 lg:mt-5 lg:mt-0 w-fit float-right lg:float-none'><IndianRupee strokeWidth={3} size={20} />{data.listing_type === "Rent" ? ConvertCurrencyToWords(property_details.rental_amount) : ConvertCurrencyToWords(property_details.selling_amount)}</div>
+                                {data.listing_type !== "PG" &&
+                                    <div className='text-2xl font-semibold text-gray-600 flex items-center bg-color2d/70 px-5 py-1 mt-0 lg:mt-5 lg:mt-0 w-fit float-right lg:float-none'><IndianRupee strokeWidth={3} size={20} />{data.listing_type === "Rent" ? ConvertCurrencyToWords(property_details.rental_amount) : ConvertCurrencyToWords(property_details.selling_amount)}</div>
+                                }
                             </div>
                             <div className='mb-12 pt-5'>
                                 <div>
@@ -71,54 +74,62 @@ const ProductDetail = ({ data, product }: any) => {
                                 <ContactButton name={data.contact.contact_name} phone={data.contact.contact_number} maskedText={"Owner"} />
                             </div>
                             <hr className='mb-12' />
-                            <div className='flex lg:flex-none flex-wrap lg:grid lg:grid-flow-col lg:justify-stretch gap-x-10 lg:gap-x-5 mb-12'>
-                                <div className='mb-5 lg:mb-0'>
-                                    <div className='text-sm text-gray-500 font-semibold'>Type</div>
-                                    <div className='text-sm md:text-lg font-medium'>{data.property_type}</div>
-                                </div>
-                                <div className='mb-5 lg:mb-0'>
-                                    <div className='text-sm text-gray-500 font-semibold'>Availability</div>
-                                    <div className='text-sm md:text-lg font-medium'>Immediate</div>
-                                </div>
-                                <div className='mb-5 lg:mb-0'>
-                                    <div className='text-sm text-gray-500 font-semibold'>Rooms</div>
-                                    <div className='text-sm md:text-lg font-medium'>{data.room_type}</div>
-                                </div>
-                                <div className='mb-5 lg:mb-0'>
-                                    <div className='text-sm text-gray-500 font-semibold'>Direction</div>
-                                    <div className='text-sm md:text-lg font-medium'>{property_details.facing} Facing</div>
-                                </div>
-                                <div className='mb-5 lg:mb-0'>
-                                    <div className='text-sm text-gray-500 font-semibold'>Furnishing</div>
-                                    <div className='text-sm md:text-lg font-medium'>{property_details.furnishing}</div>
-                                </div>
-                            </div>
-                            <hr className='mb-12' />
-                            <div className='flex lg:flex-none flex-nowrap lg:grid lg:grid-cols-5 gap-x-5 lg:gap-x-10 mb-12 overflow-x-auto'>
-                                <div className='border rounded-lg aspect-square grid place-items-center text-center p-2'>
-                                    <img className='max-w-[64px]' src='/images/icons/area.png' />
-                                    <div className='text-xs lg:text-sm text-gray-500 font-semibold w-24 lg:w-auto'>{property_details.carpet_area} Sqft</div>
-                                </div>
-                                <div className='border rounded-lg aspect-square grid place-items-center text-center p-2'>
-                                    <img className='max-w-[64px]' src='/images/icons/bathroom.png' />
-                                    <div className='text-xs lg:text-sm text-gray-500 font-semibold w-24 lg:w-auto'>{property_details.bathrooms} Baths</div>
-                                </div>
-                                <div className='border rounded-lg aspect-square grid place-items-center text-center p-2'>
-                                    <img className='max-w-[64px]' src='/images/icons/floor.png' />
-                                    <div className='text-xs lg:text-sm text-gray-500 font-semibold w-24 lg:w-auto'>
-                                        {property_details.floor_number} Floor
+                            {data.listing_type !== "PG" &&
+                                <>
+                                    <div className='flex lg:flex-none flex-wrap lg:grid lg:grid-flow-col lg:justify-stretch gap-x-10 lg:gap-x-5 mb-12'>
+                                        <div className='mb-5 lg:mb-0'>
+                                            <div className='text-sm text-gray-500 font-semibold'>Type</div>
+                                            <div className='text-sm md:text-lg font-medium'>{data.property_type}</div>
+                                        </div>
+                                        <div className='mb-5 lg:mb-0'>
+                                            <div className='text-sm text-gray-500 font-semibold'>Availability</div>
+                                            <div className='text-sm md:text-lg font-medium'>Immediate</div>
+                                        </div>
+                                        <div className='mb-5 lg:mb-0'>
+                                            <div className='text-sm text-gray-500 font-semibold'>Rooms</div>
+                                            <div className='text-sm md:text-lg font-medium'>{data.room_type}</div>
+                                        </div>
+                                        <div className='mb-5 lg:mb-0'>
+                                            <div className='text-sm text-gray-500 font-semibold'>Direction</div>
+                                            <div className='text-sm md:text-lg font-medium'>{property_details.facing} Facing</div>
+                                        </div>
+                                        <div className='mb-5 lg:mb-0'>
+                                            <div className='text-sm text-gray-500 font-semibold'>Furnishing</div>
+                                            <div className='text-sm md:text-lg font-medium'>{property_details.furnishing}</div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className='border rounded-lg aspect-square grid place-items-center text-center p-2'>
-                                    <img className='max-w-[64px]' src='/images/icons/balcony.png' />
-                                    <div className='text-xs lg:text-sm text-gray-500 font-semibold w-24 lg:w-auto'>1 Balcony</div>
-                                </div>
-                                <div className='border rounded-lg aspect-square grid place-items-center text-center p-2'>
-                                    <img className='max-w-[64px]' src='/images/icons/parking.png' />
-                                    <div className='text-xs lg:text-sm text-gray-500 font-semibold w-24 lg:w-auto'>{property_details.parking_type} Parking</div>
-                                </div>
-                            </div>
-                            <hr className='mb-12' />
+                                    <hr className='mb-12' />
+                                </>
+                            }
+                            {data.listing_type !== "PG" &&
+                                <>
+                                    <div className='flex lg:flex-none flex-nowrap lg:grid lg:grid-cols-5 gap-x-5 lg:gap-x-10 mb-12 overflow-x-auto'>
+                                        <div className='border rounded-lg aspect-square grid place-items-center text-center p-2'>
+                                            <img className='max-w-[64px]' src='/images/icons/area.png' />
+                                            <div className='text-xs lg:text-sm text-gray-500 font-semibold w-24 lg:w-auto'>{property_details.carpet_area} Sqft</div>
+                                        </div>
+                                        <div className='border rounded-lg aspect-square grid place-items-center text-center p-2'>
+                                            <img className='max-w-[64px]' src='/images/icons/bathroom.png' />
+                                            <div className='text-xs lg:text-sm text-gray-500 font-semibold w-24 lg:w-auto'>{property_details.bathrooms} Baths</div>
+                                        </div>
+                                        <div className='border rounded-lg aspect-square grid place-items-center text-center p-2'>
+                                            <img className='max-w-[64px]' src='/images/icons/floor.png' />
+                                            <div className='text-xs lg:text-sm text-gray-500 font-semibold w-24 lg:w-auto'>
+                                                {property_details.floor_number} Floor
+                                            </div>
+                                        </div>
+                                        <div className='border rounded-lg aspect-square grid place-items-center text-center p-2'>
+                                            <img className='max-w-[64px]' src='/images/icons/balcony.png' />
+                                            <div className='text-xs lg:text-sm text-gray-500 font-semibold w-24 lg:w-auto'>1 Balcony</div>
+                                        </div>
+                                        <div className='border rounded-lg aspect-square grid place-items-center text-center p-2'>
+                                            <img className='max-w-[64px]' src='/images/icons/parking.png' />
+                                            <div className='text-xs lg:text-sm text-gray-500 font-semibold w-24 lg:w-auto'>{property_details.parking_type} Parking</div>
+                                        </div>
+                                    </div>
+                                    <hr className='mb-12' />
+                                </>
+                            }
                             <div className='mb-12'>
                                 <h5 className='text-sm text-gray-500 font-semibold mb-5'>Amenities</h5>
                                 <div className="tags">
@@ -128,6 +139,23 @@ const ProductDetail = ({ data, product }: any) => {
                                 </div>
                             </div>
                             <hr className='mb-12' />
+                            {data.listing_type === "PG" &&
+                                <>
+                                    <div className='mb-12'>
+                                        <div className='text-sm text-gray-500 font-semibold mb-5'>Occupancy Based Rent Per Month</div>
+                                        <div className='grid grid-cols-2 md:grid-cols-4 content-center gap-y-5 md:gap-y-0 gap-x-5'>
+                                            {SelectList.OccupancyType.map((x: any, i: any) =>
+                                                <div className={`p-5 border border-color1d/30 col-span-auto w-full h-full rounded-xl flex flex-col items-center justify-center
+                                                         ${!!property_details?.occupancy_type?.[x.name]?.toString() && property_details?.occupancy_type?.[x.name] > 0 && ' bg-color1d/30'}`}>
+                                                    <div>{x.label}</div>
+                                                    <div>{(property_details?.occupancy_type?.[x.name] && (`₹ ${property_details?.occupancy_type?.[x.name]?.toString()}`)) || "Not Available"}</div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <hr className='mb-12' />
+                                </>
+                            }
                             <div className='mb-12'>
                                 <h5 className='text-sm text-gray-500 font-semibold mb-5'>Map Location</h5>
                                 {/* <Map /> */}

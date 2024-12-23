@@ -42,6 +42,10 @@ const SearchCategorySection = ({ productType }: any) => {
                         <Image src={'/images/icons/rent-re.png'} width={50} height={50} alt="" />
                         <div className='text'>Rental Property</div>
                     </a>
+                    <a href={Products.pg.url} className='mini-card'>
+                        <Image src={'/images/icons/pg-re.png'} width={50} height={50} alt="" />
+                        <div className='text'>PG Rooms</div>
+                    </a>
                 </div>
             }
         </>

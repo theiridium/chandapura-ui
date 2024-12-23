@@ -281,7 +281,11 @@ const Page = () => {
                                 value={propertyListing.listing_type}
                                 onChange={(e: any) => {
                                     setAmenitiesValues(new Set([]))
-                                    setPropertyListing({ ...propertyListing, listing_type: e.target.value })
+                                    setPropertyListing({
+                                        ...propertyListing,
+                                        listing_type: e.target.value,
+                                        property_type: e.target.value === "PG" ? "PG" : ""
+                                    })
                                 }}
                                 orientation="horizontal"
                                 label="Listing Type"
@@ -598,7 +602,7 @@ const Page = () => {
                                         <div className='grid grid-cols-7 content-center flex items-center gap-y-5 md:gap-y-0 gap-x-5' key={i}>
                                             <div
                                                 className={`col-span-full md:col-span-2 p-2 border w-full h-full rounded-xl flex items-center justify-center
-                                                 ${!!propertyDetails?.occupancy_type?.[x.name]?.toString() && ' bg-color2d/80 border-color2d/80'}`}>{x.label}</div>
+                                                 ${!!propertyDetails?.occupancy_type?.[x.name]?.toString() && propertyDetails?.occupancy_type?.[x.name] > 0 && ' bg-color2d/80 border-color2d/80'}`}>{x.label}</div>
                                             <Input
                                                 isDisabled={disabled}
                                                 value={propertyDetails?.occupancy_type?.[x.name]?.toString() || ""}

@@ -123,7 +123,10 @@ const Page = () => {
                                 </>
                               }
                             </> :
-                              <a className='hover:bg-color2d/20' href={continueUrl}>Continue to complete listing<MoveRight size={15} /></a>}
+                              <>
+                                {!x.publish_status && x.step_number === 4 ? <div>Pending Approval from Admin</div> : <a className='hover:bg-color2d/20' href={continueUrl}>Continue to complete listing<MoveRight size={15} /></a>}
+                              </>
+                            }
                           </div>
                         </>
                       </div>

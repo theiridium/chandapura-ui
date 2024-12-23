@@ -218,6 +218,10 @@ const Page = () => {
                 toast.success("Property details saved successfully!");
                 router.push(`/dashboard/property-listing/upload-images?type=${type}&source=${response.data.id}`);
             }
+            else {
+                toast.success("Some unexpected error has occured, Please contact support.");
+                router.push(`/dashboard/property-listing/upload-images?type=${type}&source=${response.data.id}`);
+            }
         }
     }
     useEffect(() => {
@@ -227,7 +231,6 @@ const Page = () => {
         }))
     }, [amenitiesValues])
     useEffect(() => {
-        // !!propertyListing.listing_type && setAmenitiesValues(new Set([]))
         amenitiesValues && setPropertyDetails((prev: any) => ({
             ...prev,
             amenities: []

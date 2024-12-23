@@ -82,8 +82,6 @@ const Page = () => {
                 planData = pricingPlan.find((x: any) => x.type === data.details_by_listingtype[0].room_type);
                 break;
         }
-        console.log(data.property_type)
-        console.log(planData)
         return planData.amount;
     }
 
@@ -139,7 +137,7 @@ const Page = () => {
                                     <div className='text-sm mb-1 font-semibold'>Listing Type</div>
                                     {isLoading ? <TextLoading /> : <div className='text-lg text-color2d'>{apiRes.listing_type}</div>}
                                 </div>
-                                {apiRes.property_type !== "PG" && apiRes.property_type !== "Plot" &&
+                                {apiRes?.property_type !== "PG" && apiRes?.property_type !== "Plot" &&
                                     <>
                                         <div>
                                             <div className='text-sm mb-1 font-semibold'>Property Type</div>

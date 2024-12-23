@@ -278,7 +278,7 @@ const Page = () => {
                         <div className='card-header text-xl font-semibold mb-5'>General</div>
                         <div className='mb-8'>
                             <RadioGroup
-                                value={propertyListing.listing_type}
+                                value={propertyListing?.listing_type}
                                 onChange={(e: any) => {
                                     setAmenitiesValues(new Set([]))
                                     setPropertyListing({
@@ -303,9 +303,9 @@ const Page = () => {
                                 </RadioBox>
                             </RadioGroup>
                         </div>
-                        {propertyListing.listing_type !== "PG" &&
+                        {propertyListing?.listing_type !== "PG" &&
                             <div className='mb-8'>
-                                <Select label="Select a Property Type" selectedKeys={[propertyListing.property_type]} isDisabled={disabled || !propertyListing.listing_type}
+                                <Select label="Select a Property Type" selectedKeys={[propertyListing?.property_type]} isDisabled={disabled || !propertyListing?.listing_type}
                                     onChange={(e: any) => setPropertyListing({ ...propertyListing, property_type: e.target.value })}
                                     classNames={{ listboxWrapper: "nextui-listbox" }}
                                     disabledKeys={propertyTypeDisabledKeys}
@@ -319,7 +319,7 @@ const Page = () => {
                             </div>
                         }
                         <div className="flex w-full gap-8 lg:gap-4 mb-8 flex-wrap md:flex-nowrap">
-                            {propertyListing.listing_type !== "PG" && propertyListing.property_type !== "Plot" &&
+                            {propertyListing?.listing_type !== "PG" && propertyListing?.property_type !== "Plot" &&
                                 <Select label="Room Type" selectedKeys={[propertyDetails?.room_type]} isDisabled={disabled}
                                     onChange={(e: any) =>
                                         setPropertyDetails((prev: any) => ({
@@ -367,7 +367,7 @@ const Page = () => {
                     </InView>
                     <InView as="div" threshold={1} onChange={onViewScroll} id='propertyDetails' className='listing-card border rounded-lg px-4 lg:px-7 py-6 scroll-mt-36'>
                         <div className='card-header text-xl font-semibold mb-5'>Property Details</div>
-                        {propertyListing.listing_type !== "PG" && propertyListing.property_type !== "Plot" &&
+                        {propertyListing?.listing_type !== "PG" && propertyListing?.property_type !== "Plot" &&
                             <>
                                 <div className='flex w-full gap-8 lg:gap-4 mt-3 mb-8 flex-wrap md:flex-nowrap'>
                                     <Input isDisabled={disabled}
@@ -421,7 +421,7 @@ const Page = () => {
                                     </Select>
                                 </div>
                                 <div className='flex w-full gap-8 lg:gap-4 mt-3 mb-8 flex-wrap md:flex-nowrap'>
-                                    {propertyListing.property_type === "Apartment" ?
+                                    {propertyListing?.property_type === "Apartment" ?
                                         <Input isDisabled={disabled}
                                             value={propertyDetails?.floor_number?.toString() || ""}
                                             onChange={(e: any) =>
@@ -535,7 +535,7 @@ const Page = () => {
                                 label="Landmark (Optional)" />
                         </div> */}
 
-                        {propertyListing.listing_type === "Rent" &&
+                        {propertyListing?.listing_type === "Rent" &&
                             <div className='flex w-full gap-8 lg:gap-4 mb-8 flex-wrap md:flex-nowrap'>
                                 <Input isDisabled={disabled}
                                     value={propertyDetails?.rental_amount?.toString() || ""}
@@ -573,7 +573,7 @@ const Page = () => {
                                     isRequired />
                             </div>
                         }
-                        {propertyListing.listing_type === "Sale" &&
+                        {propertyListing?.listing_type === "Sale" &&
                             <div className='flex w-full gap-8 lg:gap-4 mb-8 flex-wrap md:flex-nowrap'>
                                 <Input isDisabled={disabled}
                                     value={propertyDetails?.selling_amount?.toString() || ""}
@@ -594,7 +594,7 @@ const Page = () => {
                                     isRequired />
                             </div>
                         }
-                        {propertyListing.listing_type === "PG" &&
+                        {propertyListing?.listing_type === "PG" &&
                             <>
                                 <div className='mb-5 text-sm md:text-base'>Occupancy Based Rent Per Month</div>
                                 <div className='mb-8 flex flex-col md:gap-x-4 gap-y-10 md:gap-y-8'>
@@ -634,7 +634,7 @@ const Page = () => {
                                 label="Select your Area"
                                 onSelectionChange={onAreaChange}
                                 isDisabled={disabled}
-                                selectedKey={propertyListing.area}
+                                selectedKey={propertyListing?.area}
                                 classNames={{ listboxWrapper: "nextui-listbox" }}
                                 isRequired
                             >

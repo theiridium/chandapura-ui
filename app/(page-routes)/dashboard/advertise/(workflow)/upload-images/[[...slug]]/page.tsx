@@ -19,12 +19,21 @@ const Page = ({ params }: { params: { slug: string } }) => {
     const source = searchParams.get('source');
     const [isAdImageLoaded, setIsAdImageLoaded] = useState(false);
     const [keyAd, setKeyAd] = useState(0);
+    const [editMode, setEditMode] = useState(false);
     const [imageParamsAd, setImageParamsAd] = useState<ImageParams>({
         refId: source,
         ref: "api::advertisement.advertisement",
         field: "ad_image",
         imgData: null,
     });
+    const [apiPayload, setApiPayload] = useState<any>({
+        endpoint: Products.advertisement.api.base,
+        payload: {
+            step_number: ListingWorkflow.UploadImages,
+            publish_status: false
+        },
+        id: source
+    })
     const attr = Products.advertisement.api;
     const populateAdImage = useCallback(async () => {
         let apiUrl = `${attr.base}?filters[id][$eq]=${source}&populate=ad_image`;
@@ -53,20 +62,12 @@ const Page = ({ params }: { params: { slug: string } }) => {
                 router.push(`/dashboard/advertise/view-all`)
             }
             else if (type === "new" || type === "edit_back") {
-                let payload = {
-                    step_number: ListingWorkflow.UploadImages,
-                    publish_status: false
-                }
-                const endpoint = Products.advertisement.api.base;
-                const response = await putRequestApi(endpoint, payload, source);
-                if (response.data) {
-                    toast.success("Images saved successfully!");
-                    router.push(`/dashboard/advertise/payment?type=${type}&source=${response.data.id}`)
-                }
+                toast.success("Image saved successfully!");
+                router.push(`/dashboard/advertise/payment?type=${type}&source=${source}`)
             }
         } catch (error) {
             console.error("An error occurred during the process:", error);
-            toast.error("Failed to upload images.");
+            toast.error("Failed to upload image.");
         } finally {
             setIsSubmitLoading(false);
         }
@@ -82,14 +83,14 @@ const Page = ({ params }: { params: { slug: string } }) => {
                 <div className='grid grid-cols-1 gap-10 mx-2'>
                     <div className='listing-card border rounded-lg px-7 py-6 scroll-mt-36'>
                         <div className='card-header text-xl font-semibold mb-5'>Featured Image</div>
-                        {isAdImageLoaded ? <SingleImage key={keyAd} imageParams={imageParamsAd} uploadSuccess={reloadAdComp} /> :
+                        {isAdImageLoaded ? <SingleImage key={keyAd} imageParams={imageParamsAd} uploadSuccess={reloadAdComp} setEditMode={setEditMode} apiPayload={apiPayload} /> :
                             <ImgSingleUploadLoading />}
                     </div>
                     <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>
                         <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading} onPress={() => router.push(`/dashboard/advertise/add-details?type=edit_back&source=${source}`)}>
                             Back
                         </Button>
-                        <Button className='btn-primary text-base' color='primary' isDisabled={!imageParamsAd.imgData} isLoading={isSubmitLoading} onPress={onClickSave}>
+                        <Button className='btn-primary text-base' color='primary' isDisabled={!imageParamsAd.imgData || editMode} isLoading={isSubmitLoading} onPress={onClickSave}>
                             {!isSubmitLoading && ((type === "edit") ? "Save" : "Save and Continue")}
                         </Button>
                     </div>

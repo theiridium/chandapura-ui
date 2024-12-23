@@ -1,11 +1,11 @@
-import { deleteMediaFiles, uploadMediaFiles } from "@/lib/apiLibrary";
+import { deleteMediaFiles, putRequestApi, uploadMediaFiles } from "@/lib/apiLibrary";
 import { Button } from "@nextui-org/react";
 import { Plus, X } from "lucide-react";
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useDropzone } from 'react-dropzone';
 import { toast } from "react-toastify";
 
-const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery }: any) => {
+const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditMode, apiPayload }: any) => {
     const [files, setFiles] = useState<any[]>([]);
     const [existingFiles, setExistingFiles] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
@@ -53,15 +53,17 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery }: any) =
 
             // Upload files in parallel
             if (files.length > 0) {
-                const uploadPromises = files.map(file => {
+                let updateStep: any = null;
+                const uploadPromises = files.map(async file => {
                     const formData = new FormData();
                     Object.keys(imageParams).forEach(key => {
                         formData.append(key, imageParams[key]);
                     });
                     formData.append("files", file);
-                    return uploadMediaFiles(formData);
+                    const response = await uploadMediaFiles(formData);
+                    if(response) updateStep = await putRequestApi(apiPayload.endpoint, apiPayload.payload, apiPayload.id);
+                    return updateStep;
                 });
-
                 await Promise.all(uploadPromises);
             }
         } catch (error) {

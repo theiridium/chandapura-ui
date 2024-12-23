@@ -1,11 +1,11 @@
-import { deleteMediaFiles, postRequestApi, uploadMediaFiles } from "@/lib/apiLibrary";
+import { deleteMediaFiles, postRequestApi, putRequestApi, uploadMediaFiles } from "@/lib/apiLibrary";
 import { Button, CircularProgress, Spinner } from "@nextui-org/react";
-import { Pencil, Trash, Trash2, X } from "lucide-react";
+import { Pencil} from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDropzone } from 'react-dropzone';
 import { toast } from "react-toastify";
 
-const SingleImage = ({ imageParams, uploadSuccess }: any) => {
+const SingleImage = ({ imageParams, uploadSuccess, setEditMode, apiPayload }: any) => {
 
     const [files, setFiles] = useState<any>([]);
     const [loading, setLoading] = useState(false);
@@ -19,6 +19,7 @@ const SingleImage = ({ imageParams, uploadSuccess }: any) => {
             const newBlobUrls = acceptedFiles.map(file => URL.createObjectURL(file));
             setFiles(acceptedFiles);
             setBlobUrls(newBlobUrls);
+            imageParams.imgData = null;
             setIsEditing(false);
         }
     });
@@ -31,25 +32,32 @@ const SingleImage = ({ imageParams, uploadSuccess }: any) => {
                 formData.append(key, imageParams[key]);
             }
         }
+        let updateStep = null;
         formData.append("files", files[0]);
         const response = await uploadMediaFiles(formData);
-        if (response) uploadSuccess();
+        if(response) updateStep = await putRequestApi(apiPayload.endpoint, apiPayload.payload, apiPayload.id);
+        if (updateStep) uploadSuccess();
     }
 
-    const deleteImage = async (id: any) => {
-        const isConfirmed = confirm('Are you sure you want to delete this image?');
-        if (isConfirmed) {
-            setLoading(true);
-            try {
-                const response = await deleteMediaFiles(id);
-                if (response) uploadSuccess();
-            } catch (error) {
-                toast.error('Failed to delete image');
-            } finally {
-                setLoading(false);
-            }
-        }
-    }
+    useEffect(() => {
+      isEditing? setEditMode(true): setEditMode(false);
+    }, [isEditing])
+    
+
+    // const deleteImage = async (id: any) => {
+    //     const isConfirmed = confirm('Are you sure you want to delete this image?');
+    //     if (isConfirmed) {
+    //         setLoading(true);
+    //         try {
+    //             const response = await deleteMediaFiles(id);
+    //             if (response) uploadSuccess();
+    //         } catch (error) {
+    //             toast.error('Failed to delete image');
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     }
+    // }
 
     const newImage = files.map((file: any, index: number) => (
         <div className="flex justify-left gap-5 mb-6" key={file.name}>
@@ -60,7 +68,7 @@ const SingleImage = ({ imageParams, uploadSuccess }: any) => {
             </div>
             <div className="flex flex-col gap-5">
                 <button disabled={loading} className="w-14 h-14 border grid place-content-center rounded-md hover:bg-color2d/70" onClick={() => setIsEditing(true)}><Pencil /></button>
-                <button disabled={loading} className="w-14 h-14 border grid place-content-center rounded-md hover:bg-color2d/70" onClick={() => { setFiles([]); setBlobUrls([]); }}><Trash2 /></button>
+                {/* <button disabled={loading} className="w-14 h-14 border grid place-content-center rounded-md hover:bg-color2d/70" onClick={() => { setFiles([]); setBlobUrls([]); }}><Trash2 /></button> */}
             </div>
         </div>
     ));
@@ -71,9 +79,9 @@ const SingleImage = ({ imageParams, uploadSuccess }: any) => {
                 <img className="border object-cover w-full h-full lg:h-80 rounded-md" src={imageParams.imgData.url} />
             </div>
             <div className="flex flex-col gap-5">
-                <button disabled={loading} className="w-14 h-14 border grid place-content-center rounded-md hover:bg-color2d/70" onClick={() => deleteImage(imageParams.imgData.id)}>
+                <button disabled={loading} className="w-14 h-14 border grid place-content-center rounded-md hover:bg-color2d/70" onClick={() => setIsEditing(true)}>
                     {loading ? <Spinner size="md" /> :
-                        <Trash2 />}
+                        <Pencil />}
                 </button>
             </div>
         </div>
@@ -85,7 +93,6 @@ const SingleImage = ({ imageParams, uploadSuccess }: any) => {
     }
 
     useEffect(() => {
-        // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
         return () => {
             blobUrls.forEach((url: any) => URL.revokeObjectURL(url));
         };

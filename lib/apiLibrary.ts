@@ -51,7 +51,6 @@ export const putRequestApi = async (endpoint: string, payload: any, id: any) => 
                 "Content-Type": "application/json",
             },
         });
-        console.log(response)
         return response.data;
     } catch (err: any) {
         console.log(err)

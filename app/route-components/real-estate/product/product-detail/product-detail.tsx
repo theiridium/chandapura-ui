@@ -145,7 +145,7 @@ const ProductDetail = ({ data, product }: any) => {
                                         <div className='text-sm text-gray-500 font-semibold mb-5'>Occupancy Based Rent Per Month</div>
                                         <div className='grid grid-cols-2 md:grid-cols-4 content-center gap-y-5 md:gap-y-0 gap-x-5'>
                                             {SelectList.OccupancyType.map((x: any, i: any) =>
-                                                <div className={`p-5 border border-color1d/30 col-span-auto w-full h-full rounded-xl flex flex-col items-center justify-center
+                                                <div key={i} className={`p-5 border border-color1d/30 col-span-auto w-full h-full rounded-xl flex flex-col items-center justify-center
                                                          ${!!property_details?.occupancy_type?.[x.name]?.toString() && property_details?.occupancy_type?.[x.name] > 0 && ' bg-color1d/30'}`}>
                                                     <div>{x.label}</div>
                                                     <div>{(property_details?.occupancy_type?.[x.name] && (`₹ ${property_details?.occupancy_type?.[x.name]?.toString()}`)) || "Not Available"}</div>

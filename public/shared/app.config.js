@@ -193,8 +193,12 @@ module.exports = {
       api: {
         base: "classified-listings",
         sort: "desc",
-        populate:
-          "populate[0]=category&populate[1]=user&populate[2]=featured_image&populate[3]=area&populate[4]=gallery_images&populate[5]=contact",
+        populateList:
+          "featured_image,area,contact,category,details_by_category",
+        populateDetails:
+          "featured_image,area,gallery_images,contact,category,details_by_category",
+        populateForPayment:
+          "details_by_category,payment_history,payment_details",
         userFilter: "filters[author][email][$eq]",
         isPublishedFilter: `filters[publish_status][$eq]=true`,
         limit: 4,

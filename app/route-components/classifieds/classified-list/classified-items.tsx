@@ -15,7 +15,7 @@ const ClassifiedItems = async (props: any) => {
     isSearchHit = true;
   }
   else {
-    let apiUrl = `${attr.base}?sort=publishedAt%3A${attr.sort}&${attr.populate}&${attr.isPublishedFilter}`
+    let apiUrl = `${attr.base}?sort=publishedAt%3A${attr.sort}&populate=${attr.populateList}&${attr.isPublishedFilter}`
     apiUrl = props.category ? `${apiUrl}&filters[category][slug][$eq]=${props.category}` : apiUrl
     res = await getPublicApiResponse(apiUrl);
   }

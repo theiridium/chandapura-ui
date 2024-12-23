@@ -5,7 +5,7 @@ import { getPublicApiResponse } from "@/lib/apiLibrary";
 
 const ClassifiedList = async () => {
   const attr = Products.classifieds.api;
-  const classifiedList = await getPublicApiResponse(`${attr.base}?sort=publishedAt%3A${attr.sort}&${attr.isPublishedFilter}&${attr.populate}`);
+  const classifiedList = await getPublicApiResponse(`${attr.base}?sort=publishedAt%3A${attr.sort}&${attr.isPublishedFilter}&populate=${attr.populateList}`);
   return (
     <>
       <div className="card-list-row">

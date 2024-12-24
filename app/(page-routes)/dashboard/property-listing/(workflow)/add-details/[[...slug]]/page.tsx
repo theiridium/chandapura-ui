@@ -600,7 +600,7 @@ const Page = () => {
                         {propertyListing?.listing_type === "PG" &&
                             <>
                                 <div className='mb-5 text-sm md:text-base'>Occupancy Based Rent Per Month</div>
-                                <div className='mb-8 flex flex-col md:gap-x-4 gap-y-10 md:gap-y-8'>
+                                {/* <div className='mb-8 flex flex-col md:gap-x-4 gap-y-10 md:gap-y-8'>
                                     {SelectList.OccupancyType.map((x: any, i: any) =>
                                         <div className='grid grid-cols-7 content-center flex items-center gap-y-5 md:gap-y-0 gap-x-5' key={i}>
                                             <div
@@ -621,7 +621,30 @@ const Page = () => {
                                                 type="number"
                                                 variant="flat"
                                                 label="Amount"
+                                                placeholder={`Enter amount for ${x.label}`}
                                                 className='col-span-full md:col-span-5 max-w-xs' />
+                                        </div>
+                                    )}
+                                </div> */}
+                                <div className='grid grid-cols-2 md:grid-cols-4 content-center gap-y-5 md:gap-y-0 gap-x-5'>
+                                    {SelectList.OccupancyType.map((x: any, i: any) =>
+                                        <div key={i} className={`p-5 border border-color1d/30 col-span-auto w-full h-full rounded-xl flex flex-col items-center justify-center
+                                                         ${!!propertyDetails?.occupancy_type?.[x.name]?.toString() && propertyDetails?.occupancy_type?.[x.name] > 0 && ' bg-color1d/30'}`}>
+                                            <div>{x.label}</div>
+                                            <input disabled={disabled}
+                                            className='text-center bg-transparent'
+                                                value={propertyDetails?.occupancy_type?.[x.name]?.toString() || ""}
+                                                onChange={(e: any) =>
+                                                    setPropertyDetails((prev: any) => ({
+                                                        ...prev,
+                                                        occupancy_type: {
+                                                            ...prev.occupancy_type,
+                                                            [x.name]: e.target.value || null
+                                                        },
+                                                    }))
+                                                }
+                                                type="number"
+                                                placeholder={`Enter amount`} />
                                         </div>
                                     )}
                                 </div>

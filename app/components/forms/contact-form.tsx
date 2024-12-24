@@ -18,10 +18,10 @@ const ContactForm = ({ contactDetails, txtContactDisabled, defaultContact }: any
                 <Input type="text" isRequired={true} name="contact_name" variant="flat" label="Full Name" disabled={txtContactDisabled} value={defaultContact?.contact_name || ""} onChange={(e) => handleFormChange(e)} />
             </div>
             <div className='mb-6'>
-                <Input type="text" isRequired={true} name="contact_number" variant="flat" label="Phone Number" disabled={txtContactDisabled} value={defaultContact?.contact_number || ""} onChange={(e) => handleFormChange(e)} />
+                <Input type="text" minLength={10} maxLength={10} isRequired={true} name="contact_number" variant="flat" label="Phone Number" disabled={txtContactDisabled} value={defaultContact?.contact_number || ""} onChange={(e) => handleFormChange(e)} />
             </div>
             <div className='mb-6'>
-                <Input type="text" name="contact_email_id" variant="flat" label="Business Email ID" disabled={txtContactDisabled} value={defaultContact?.contact_email_id || ""} onChange={(e) => handleFormChange(e)} />
+                <Input type="email" name="contact_email_id" variant="flat" label="Business Email ID" disabled={txtContactDisabled} value={defaultContact?.contact_email_id || ""} onChange={(e) => handleFormChange(e)} />
             </div>
         </>
     )

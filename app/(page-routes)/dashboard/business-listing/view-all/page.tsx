@@ -118,7 +118,7 @@ const Page = () => {
                               {(x.payment_details && x.payment_details.expiry_date_timestamp <= new Date().getTime()) ?
                                 <a className='hover:bg-color2d/20' href={renewUrl}>Renew subscription<MoveRight size={15} /></a> :
                                 <>
-                                  <a className='hover:bg-color2d/20' href={Resource.BusinessListing.addDetailsLink + '?type=edit&source=' + x.id}>Ad Profile<Pencil size={15} /></a>
+                                  <a className='hover:bg-color2d/20' href={Resource.BusinessListing.addDetailsLink + '?type=edit&source=' + x.id}>Biz Profile<Pencil size={15} /></a>
                                   <a className='hover:bg-color2d/20' href={Resource.BusinessListing.uploadImagesLink + '?type=edit&source=' + x.id}>Image<Pencil size={15} /></a>
                                 </>
                               }

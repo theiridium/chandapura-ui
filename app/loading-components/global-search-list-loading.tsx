@@ -8,7 +8,7 @@ const GlobalSearchListLoading = () => {
                     {Array.from({ length: 5 }).map((_, index) => (
                         <div key={index} className="border border-gray-300 rounded-xl bg-white">
                             <div className="flex-none md:flex p-5 lg:p-7 gap-x-5 lg:gap-x-7">
-                                <Skeleton className="rounded-xl flex-none w-full h-[230px] md:w-[300px] md:h-[200px] mb-5 md:mb-0 *:object-fill">
+                                <Skeleton className="rounded-xl flex-none w-full h-[230px] md:w-[300px] md:h-[200px] mb-5 md:mb-0 *:object-cover">
                                     <div className="w-full h-full flex-none md:mb-0"></div>
                                 </Skeleton>
                                 <div className="w-full flex flex-col">

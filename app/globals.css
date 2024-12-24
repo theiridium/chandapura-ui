@@ -205,13 +205,13 @@ header {
     @apply border border-gray-300 border-b-0 h-40 w-64 md:w-72 lg:w-auto rounded-t-md;
   }
   .re-card-img > img {
-    @apply w-full h-full rounded-t-md;
+    @apply w-full h-full rounded-t-md object-cover;
   }
   .business-card-img {
     @apply h-40 lg:h-64 w-64 md:w-72 lg:w-auto;
   }
   .business-card-img > img {
-    @apply w-full h-full rounded-t-md;
+    @apply w-full h-full rounded-t-md object-cover;
   }
   .re-card-body {
     @apply border border-gray-300 border-t-0 rounded-b-md px-4 lg:px-6 h-40 md:h-40 grid content-center;

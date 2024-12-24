@@ -5,7 +5,7 @@ const BusinessItemsCard = ({ data, id, product }: any) => {
         <a className="card_link" href={`/${product.slug}/${data.category.slug}/${data.sub_category.slug}/${data.slug}?source=${id}`}>
             <div className="border border-gray-300 rounded-xl bg-white">
                 <div className="flex-none md:flex p-5 lg:p-7 gap-x-5 lg:gap-x-7">
-                    <div className="flex-none w-full h-[230px] md:w-[300px] md:h-[200px] mb-5 md:mb-0 *:object-fill">
+                    <div className="flex-none w-full h-[230px] md:w-[300px] md:h-[200px] mb-5 md:mb-0 *:object-cover">
                         {data.featured_image === null ?
                             <img src="/images/placeholder.png" className="w-full h-full rounded-xl" /> :
                             <img src={data.featured_image.url} className="w-full h-full rounded-xl" />}

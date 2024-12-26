@@ -85,44 +85,44 @@ export interface PropertyListing {
     details_by_listingtype: [RentComponent | SaleComponent | PGComponent | PlotComponent | any]
 }
 export interface RentComponent {
-    __component: string,
-    bathrooms: number,
-    direction: string,
-    floor_number: number,
-    total_floors: number,
-    carpet_area: number,
-    parking_type: string,
-    furnishing: string,
-    rental_amount: number,
-    deposit_amount: number,
+    __component: string
+    bathrooms: number
+    direction: string
+    floor_number: number
+    total_floors: number
+    carpet_area: number
+    parking_type: string
+    furnishing: string
+    rental_amount: number
+    deposit_amount: number
     amenities: any[],
     room_type: string
 }
 export interface SaleComponent {
-    __component: string,
-    bathrooms: number,
-    direction: string,
-    floor_number: number,
-    total_floors: number,
-    carpet_area: number,
-    parking_type: string,
-    furnishing: string,
-    selling_amount: number,
+    __component: string
+    bathrooms: number
+    direction: string
+    floor_number: number
+    total_floors: number
+    carpet_area: number
+    parking_type: string
+    furnishing: string
+    selling_amount: number
     amenities: any[],
     room_type: string
 }
 export interface PGComponent {
-    __component: string,
+    __component: string
     amenities: any[],
     room_type: OccupancyType
 }
 export interface PlotComponent {
-    __component: string,
-    dimension: number,
+    __component: string
+    dimension: number
     direction: string
 }
 export interface OccupancyType {
-    occupancy_type: string,
+    occupancy_type: string
     amount: number
 }
 export interface ClassifiedListing {
@@ -137,4 +137,13 @@ export interface ClassifiedListing {
     featured_image?: {}
     gallery_images?: any[]
     step_number: number
+    details_by_category: [VehicleDetailsComponent | any]
+}
+export interface VehicleDetailsComponent {
+    __component: string
+    fuel_type: string
+    model_name: string
+    transmission: string
+    kms_driven: string
+    year_of_manufacture: string
 }

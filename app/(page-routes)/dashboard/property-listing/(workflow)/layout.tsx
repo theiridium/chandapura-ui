@@ -12,17 +12,20 @@ export default async function BusinessListingLayout({
 }) {
     const attrRealEstateAmenities = DropdownList.RealEstateAmenities.api;
     const attrPgAmenities = DropdownList.PGAmenities.api;
+    const attrPlotAmenities = DropdownList.PlotAmenities.api;
     const attrArea = DropdownList.Area.api;
     let apiUrlRealEstateAmenities = `${attrRealEstateAmenities.base}?sort=${attrRealEstateAmenities.sort}`
     let apiUrlPgAmenities = `${attrPgAmenities.base}?sort=${attrPgAmenities.sort}`
+    let apiUrlPlotAmenities = `${attrPlotAmenities.base}?sort=${attrPlotAmenities.sort}`
     let apiUrlArea = `${attrArea.base}?sort=${attrArea.sort}`
     const resRealEstateAmenities = await getPublicApiResponse(apiUrlRealEstateAmenities);
     const resPgAmenities = await getPublicApiResponse(apiUrlPgAmenities);
+    const resPlotAmenities = await getPublicApiResponse(apiUrlPlotAmenities);
     const resArea = await getPublicApiResponse(apiUrlArea);
     return (
         <div className="max-w-screen-xl mx-auto">
             <Suspense fallback={<GlobalSearchListLoading />}>
-                <PropertyListingForm resRealEstateAmenities={resRealEstateAmenities} resPgAmenities={resPgAmenities} resArea={resArea}>
+                <PropertyListingForm resRealEstateAmenities={resRealEstateAmenities} resPgAmenities={resPgAmenities} resPlotAmenities={resPlotAmenities} resArea={resArea}>
                     {children}
                 </PropertyListingForm>
             </Suspense>

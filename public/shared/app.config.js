@@ -1,4 +1,6 @@
 const currentDate = new Date().getTime();
+const year = (new Date()).getFullYear();
+const years = Array.from(new Array(20),( val, index) => (year - index).toString());
 module.exports = {
   sm: 640,
   md: 768,
@@ -271,6 +273,13 @@ module.exports = {
         sort: "name:asc",
       },
     },
+    PlotAmenities: {
+      label: "plot amenities",
+      api: {
+        base: "plot-amenities",
+        sort: "name:asc",
+      },
+    },
     Category: {
       label: "category",
       api: {
@@ -370,9 +379,9 @@ module.exports = {
       { label: "Triple Sharing", name: "triple_sharing" },
       { label: "Four Sharing", name: "four_sharing" },
     ],
-    //PG - occupancy type -single, double, triple, quadraple
-    //attached bathroom
-    //plot - dim and dir amenities - bescom, water supply
+    FuelType: ["Petrol", "Diesel", "Electric", "CNG", "Hybrid"],
+    VehicleTransmission: ["Manual", "Automatic"],
+    YearList: years,
     //job title
   },
 };

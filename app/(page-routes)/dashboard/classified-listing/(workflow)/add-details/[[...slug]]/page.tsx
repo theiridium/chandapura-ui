@@ -10,7 +10,7 @@ import { areas, classifiedCategories } from '@/lib/atom';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { getPublicApiResponse, postRequestApi, putRequestApi } from '@/lib/apiLibrary';
-import { Products } from '@/public/shared/app.config';
+import { Products, SelectList } from '@/public/shared/app.config';
 import FormLoading from '@/app/loading-components/form-loading';
 import { toast } from 'react-toastify';
 import { ListingWorkflow } from '@/lib/typings/enums';
@@ -30,6 +30,7 @@ const Page = () => {
         contact_number: userData.phone,
         contact_email_id: userData.email
     });
+    const [classifiedDetails, setClassifiedDetails] = useState<any>(null);
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
     const [classifiedList, setClassifiedList] = useState<ClassifiedListing>({
         name: "",
@@ -42,10 +43,17 @@ const Page = () => {
         category: "",
         featured_image: {},
         gallery_images: [],
-        step_number: ListingWorkflow.Initial
+        step_number: ListingWorkflow.Initial,
+        details_by_category: classifiedDetails
     });
     const [apiRes, setApiRes] = useState<any>();
-    const onCategoryChange = (id: any) => setClassifiedList({ ...classifiedList, category: id });
+    const [subCategory, setSubCategory] = useState<any>("");
+    const onCategoryChange = (id: any, component: any) => {
+        const sub_category = categoryList.find((x: any) => id === x.id).sub_category;
+        setClassifiedList({ ...classifiedList, category: id });
+        setSubCategory(sub_category);
+        setClassifiedDetails(component?.find((x: any) => sub_category === x.__component));
+    }
     const onAreaChange = (id: any) => setClassifiedList({ ...classifiedList, area: id });
 
     //In View
@@ -57,8 +65,8 @@ const Page = () => {
 
     useEffect(() => {
         if (apiRes) {
-            onCategoryChange(apiRes?.category.id);
-            setContact(apiRes.contact)
+            onCategoryChange(apiRes?.category.id, apiRes.details_by_category);
+            setContact(apiRes.contact);
             setClassifiedList(prev => ({
                 ...prev,
                 category: apiRes.category.id.toString(),
@@ -108,7 +116,8 @@ const Page = () => {
             slug: formdata.slug,
             tags: formdata.tags,
             category: classifiedList.category,
-            step_number: ListingWorkflow.AddDetails
+            step_number: ListingWorkflow.AddDetails,
+            details_by_category: [classifiedDetails]
         }
         postClassifiedListing(payload);
     }
@@ -166,7 +175,7 @@ const Page = () => {
                                 variant="flat"
                                 defaultItems={categoryList || []}
                                 label="Select a Product Category"
-                                onSelectionChange={onCategoryChange}
+                                onSelectionChange={() => onCategoryChange}
                                 selectedKey={classifiedList.category}
                                 isDisabled={disabled}
                                 classNames={{ listboxWrapper: "nextui-listbox" }}
@@ -225,6 +234,85 @@ const Page = () => {
                             />
                         </div>
                     </InView>
+                    {subCategory === "classified.vehicle-details" && <InView threshold={1} as="div" onChange={onViewScroll} id='location' className='listing-card border rounded-lg px-4 lg:px-7 py-6 scroll-mt-36'>
+                        <div className='card-header text-xl font-semibold mb-5'>Vehicle Details</div>
+                        <div className='flex w-full gap-8 lg:gap-4 mt-3 mb-8 flex-wrap md:flex-nowrap'>
+                            <Input isDisabled={disabled}
+                                value={classifiedDetails?.model_name?.toString() || ""}
+                                onChange={(e: any) =>
+                                    setClassifiedDetails((prev: any) => ({
+                                        ...prev,
+                                        model_name: e.target.value,
+                                    }))
+                                }
+                                type="text"
+                                variant="flat"
+                                label="Vehicle Model"
+                                isRequired />
+                            <Select label="Fuel Type" selectedKeys={[classifiedDetails?.fuel_type]}
+                                isDisabled={disabled}
+                                classNames={{ listboxWrapper: "nextui-listbox" }}
+                                isRequired
+                                onChange={(e: any) =>
+                                    setClassifiedDetails((prev: any) => ({
+                                        ...prev,
+                                        fuel_type: e.target.value,
+                                    }))
+                                }>
+                                {SelectList.FuelType.map((item) => (
+                                    <SelectItem key={item}>
+                                        {item}
+                                    </SelectItem>
+                                ))}
+                            </Select>
+                            <Select label="Number of Bathrooms" selectedKeys={[(classifiedDetails?.transmission)?.toString()]}
+                                isDisabled={disabled}
+                                classNames={{ listboxWrapper: "nextui-listbox" }}
+                                isRequired
+                                onChange={(e: any) =>
+                                    setClassifiedDetails((prev: any) => ({
+                                        ...prev,
+                                        transmission: e.target.value,
+                                    }))
+                                }>
+                                {SelectList.VehicleTransmission.map((item) => (
+                                    <SelectItem key={item}>
+                                        {item}
+                                    </SelectItem>
+                                ))}
+                            </Select>
+                        </div>
+                        <div className='flex w-full gap-8 lg:gap-4 mt-3 mb-8 flex-wrap md:flex-nowrap'>
+                            <Select label="Year of Manufacture" selectedKeys={[classifiedDetails?.year_of_manufacture]}
+                                isDisabled={disabled}
+                                classNames={{ listboxWrapper: "nextui-listbox" }}
+                                isRequired
+                                onChange={(e: any) =>
+                                    setClassifiedDetails((prev: any) => ({
+                                        ...prev,
+                                        year_of_manufacture: e.target.value,
+                                    }))
+                                }>
+                                {SelectList.YearList.map((item) => (
+                                    <SelectItem key={item}>
+                                        {item}
+                                    </SelectItem>
+                                ))}
+                            </Select>
+                            <Input isDisabled={disabled}
+                                value={classifiedDetails?.kms_driven?.toString() || ""}
+                                onChange={(e: any) =>
+                                    setClassifiedDetails((prev: any) => ({
+                                        ...prev,
+                                        kms_driven: e.target.value,
+                                    }))
+                                }
+                                type="number"
+                                variant="flat"
+                                label="Kms Driven"
+                                isRequired />
+                        </div>
+                    </InView>}
                     <InView threshold={1} as="div" onChange={onViewScroll} id='location' className='listing-card border rounded-lg px-4 lg:px-7 py-6 scroll-mt-36'>
                         <div className='card-header text-xl font-semibold mb-5'>Location</div>
                         <div className="mb-8">

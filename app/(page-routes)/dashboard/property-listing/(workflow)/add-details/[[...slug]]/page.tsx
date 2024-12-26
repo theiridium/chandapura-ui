@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import ContactForm from '@/app/components/forms/contact-form';
 import { ContactComponent, PropertyListing } from '@/lib/typings/dto';
 import { useAtomValue } from 'jotai';
-import { areas, REamenities, PGamenities } from '@/lib/atom';
+import { areas, REAmenities, PGAmenities, PlotAmenities } from '@/lib/atom';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { getPublicApiResponse, postRequestApi, putRequestApi } from '@/lib/apiLibrary';
@@ -27,8 +27,9 @@ const Page = () => {
     const [disabled, setDisabled] = useState(true);
     const propertyTypeList = SelectList.PropertyType;
     const [propertyTypeDisabledKeys, setPropertyTypeDisabledKeys] = useState<any>([]);
-    const realEstateAmenityList = useAtomValue<any>(REamenities).data;
-    const pgAmenityList = useAtomValue<any>(PGamenities).data;
+    const realEstateAmenityList = useAtomValue<any>(REAmenities).data;
+    const pgAmenityList = useAtomValue<any>(PGAmenities).data;
+    const plotAmenityList = useAtomValue<any>(PlotAmenities).data;
     const [amenityList, setAmenityList] = useState<any>([]);
     const areaList = useAtomValue<any>(areas).data;
     const [propertyDetails, setPropertyDetails] = useState<any>(null);
@@ -110,24 +111,27 @@ const Page = () => {
                 break;
 
             case "Sale":
-                setAmenityList(realEstateAmenityList);
-                if (propertyListing.property_type !== "Plot")
+                if (propertyListing.property_type !== "Plot") {
+                    setAmenityList(realEstateAmenityList);
                     setPropertyDetails((prev: any) => ({
                         ...prev,
                         __component: Products.sale.api.component
                     }))
-                else
+                }
+                else {
+                    setAmenityList(plotAmenityList);
                     setPropertyDetails((prev: any) => ({
                         ...prev,
                         __component: Products.plot.api.component
                     }))
+                }
                 break;
 
             default:
                 setAmenityList(realEstateAmenityList);
                 break;
         }
-    }, [propertyListing.listing_type, propertyListing.property_type, realEstateAmenityList, pgAmenityList])
+    }, [propertyListing.listing_type, propertyListing.property_type, realEstateAmenityList, pgAmenityList, plotAmenityList])
 
     const getPropertyDetailsComp = (data: any) => {
         let property_details: any = null;
@@ -249,16 +253,16 @@ const Page = () => {
             default:
                 break;
         }
-        setPropertyListing((prev: any) => ({
+        source === "new" && setPropertyListing((prev: any) => ({
             ...prev,
             property_type: "",
             room_type: "",
         }))
     }, [propertyListing.listing_type])
 
-    // useEffect(() => {
-    //     console.log(propertyListing)
-    // }, [propertyListing])
+    useEffect(() => {
+        console.log(propertyListing)
+    }, [propertyListing])
     // useEffect(() => {
     //     console.log(propertyDetails)
     // }, [propertyDetails])
@@ -576,6 +580,43 @@ const Page = () => {
                                     isRequired />
                             </div>
                         }
+                        {propertyListing?.property_type === "Plot" &&
+                            <div className='flex w-full gap-8 lg:gap-4 mb-8 flex-wrap md:flex-nowrap'>
+                                <Input isDisabled={disabled}
+                                    value={propertyDetails?.dimension?.toString() || ""}
+                                    onChange={(e: any) =>
+                                        setPropertyDetails((prev: any) => ({
+                                            ...prev,
+                                            dimension: e.target.value,
+                                        }))
+                                    }
+                                    type="number"
+                                    variant="flat"
+                                    label="Plot Dimension"
+                                    endContent={
+                                        <div className="pointer-events-none flex items-center">
+                                            <span className="text-default-400 text-small">sqft</span>
+                                        </div>
+                                    }
+                                    isRequired />
+                                <Select label="Direction" selectedKeys={[propertyDetails?.direction]}
+                                    isDisabled={disabled}
+                                    classNames={{ listboxWrapper: "nextui-listbox" }}
+                                    isRequired
+                                    onChange={(e: any) =>
+                                        setPropertyDetails((prev: any) => ({
+                                            ...prev,
+                                            direction: e.target.value,
+                                        }))
+                                    }>
+                                    {SelectList.Direction.map((item) => (
+                                        <SelectItem key={item}>
+                                            {item}
+                                        </SelectItem>
+                                    ))}
+                                </Select>
+                            </div>
+                        }
                         {propertyListing?.listing_type === "Sale" &&
                             <div className='flex w-full gap-8 lg:gap-4 mb-8 flex-wrap md:flex-nowrap'>
                                 <Input isDisabled={disabled}
@@ -600,39 +641,13 @@ const Page = () => {
                         {propertyListing?.listing_type === "PG" &&
                             <>
                                 <div className='mb-5 text-sm md:text-base'>Occupancy Based Rent Per Month</div>
-                                {/* <div className='mb-8 flex flex-col md:gap-x-4 gap-y-10 md:gap-y-8'>
-                                    {SelectList.OccupancyType.map((x: any, i: any) =>
-                                        <div className='grid grid-cols-7 content-center flex items-center gap-y-5 md:gap-y-0 gap-x-5' key={i}>
-                                            <div
-                                                className={`col-span-full md:col-span-2 p-2 border w-full h-full rounded-xl flex items-center justify-center
-                                                 ${!!propertyDetails?.occupancy_type?.[x.name]?.toString() && propertyDetails?.occupancy_type?.[x.name] > 0 && ' bg-color2d/80 border-color2d/80'}`}>{x.label}</div>
-                                            <Input
-                                                isDisabled={disabled}
-                                                value={propertyDetails?.occupancy_type?.[x.name]?.toString() || ""}
-                                                onChange={(e: any) =>
-                                                    setPropertyDetails((prev: any) => ({
-                                                        ...prev,
-                                                        occupancy_type: {
-                                                            ...prev.occupancy_type,
-                                                            [x.name]: e.target.value || null
-                                                        },
-                                                    }))
-                                                }
-                                                type="number"
-                                                variant="flat"
-                                                label="Amount"
-                                                placeholder={`Enter amount for ${x.label}`}
-                                                className='col-span-full md:col-span-5 max-w-xs' />
-                                        </div>
-                                    )}
-                                </div> */}
                                 <div className='grid grid-cols-2 md:grid-cols-4 content-center gap-y-5 md:gap-y-0 gap-x-5'>
                                     {SelectList.OccupancyType.map((x: any, i: any) =>
                                         <div key={i} className={`p-5 border border-color1d/30 col-span-auto w-full h-full rounded-xl flex flex-col items-center justify-center
                                                          ${!!propertyDetails?.occupancy_type?.[x.name]?.toString() && propertyDetails?.occupancy_type?.[x.name] > 0 && ' bg-color1d/30'}`}>
                                             <div>{x.label}</div>
                                             <input disabled={disabled}
-                                            className='text-center bg-transparent'
+                                                className='text-center bg-transparent'
                                                 value={propertyDetails?.occupancy_type?.[x.name]?.toString() || ""}
                                                 onChange={(e: any) =>
                                                     setPropertyDetails((prev: any) => ({

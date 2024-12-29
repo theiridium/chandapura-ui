@@ -156,7 +156,7 @@ export interface JobListing {
     educational_qualification: string
     job_experience: string
     year_of_experience: string
-    job_location: string | undefined
+    job_location: string
     salary_range_min: string | undefined
     salary_range_max: string | undefined
     open_positions: number

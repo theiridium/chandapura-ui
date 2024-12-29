@@ -4,6 +4,7 @@ import Business from "../route-components/business/business"
 import Classifieds from "../route-components/classifieds/classifieds"
 import { MoveRight } from "lucide-react"
 import { Resource } from "@/public/shared/app.config"
+import Jobs from "../route-components/jobs/jobs"
 
 
 const MidSection = () => {
@@ -30,7 +31,7 @@ const MidSection = () => {
         </div>
       </div>
       <Classifieds />
-      {/* <Job /> */}
+      <Jobs />
     </div>
   )
 }

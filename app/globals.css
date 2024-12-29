@@ -187,16 +187,22 @@ header {
   .business-card-list-row {
     @apply flex overflow-x-auto gap-5 lg:gap-7 lg:snap-x pb-0 md:pb-1;
   }
-  .re-card-link {
+  .job-card-list-row {
+    @apply flex overflow-x-auto lg:overflow-visible lg:grid lg:grid-cols-3 gap-5 lg:gap-7;
+  }
+  .re-card-link, .job-card-link {
     @apply rounded-md;
   }
-  .re-card-link:hover {
+  .re-card-link:hover, .job-card-link:hover {
     box-shadow: 0 0 48px -33px rgb(34, 34, 34);
     /* @apply transition translate-y-1 duration-300 ease-in-out; */
   }
   .re-card,
   .business-card {
     @apply rounded-md bg-white lg:snap-start;
+  }
+  .job-card {
+    @apply rounded-md bg-color1d/10 lg:snap-start;
   }
   .business-card {
     @apply lg:w-[400px];
@@ -238,7 +244,10 @@ header {
     @apply text-sm text-gray-500;
   }
   .tags {
-    @apply flex flex-wrap gap-2 mb-5 overflow-x-auto;
+    @apply flex flex-wrap lg:flex-nowrap gap-2 lg:gap-x-2 mb-5 overflow-x-auto;
+  }
+  .job-card-tags {
+    @apply flex flex-nowrap gap-x-2 overflow-x-auto *:bg-white *:py-1 *:px-2 *:text-nowrap text-xs font-medium;
   }
   .card_link:hover h2 {
     @apply underline underline-offset-2;
@@ -303,7 +312,9 @@ header {
   }
   .card-list-row::-webkit-scrollbar,
   .business-card-list-row::-webkit-scrollbar,
+  .job-card-list-row::-webkit-scrollbar,
   .tags::-webkit-scrollbar,
+  .job-card-tags::-webkit-scrollbar,
   .search-cat-sec::-webkit-scrollbar {
     @apply hidden;
   }

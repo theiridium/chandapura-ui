@@ -107,13 +107,6 @@ const Page = () => {
         console.log(jobListing)
     }, [jobListing])
 
-    // useEffect(() => {
-    //     languageList && languageValues && setJobListing((prev: any) => ({
-    //         ...prev,
-    //         preferred_languages: languageList.filter((item: any) => languageValues.has(String(item.id)))
-    //     }))
-    // }, [languageValues])
-
     const handleContactDetails = (data: any) => setContact(data);
 
     const onSubmit: SubmitHandler<any> = (data) => {
@@ -125,12 +118,8 @@ const Page = () => {
             job_title: formdata.job_title,
             designation: formdata.designation,
             job_description: formdata.job_description,
-            job_type: formdata.job_type,
-            job_location: formdata.job_location,
-            educational_qualification: formdata.educational_qualification,
             salary_range_min: formdata.salary_range_min,
             salary_range_max: formdata.salary_range_max,
-            open_positions: formdata.open_positions,
             preferred_languages: languageValues,
             contact: contact,
             step_number: ListingWorkflow.Initial

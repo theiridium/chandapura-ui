@@ -15,7 +15,7 @@ const ProductItemsCard = ({ data, id, product }: any) => {
                             <img src="/images/placeholder.png" className="w-full h-full rounded-xl" /> :
                             <img src={data.featured_image.url} className="w-full h-full rounded-xl" />}
                     </div>
-                    <div className="w-full flex flex-col justify-between">
+                    <div className="w-full flex flex-col justify-between lg:overflow-auto">
                         <div>
                             <h2 className="md:text-lg font-medium mb-2">{property_details.room_type} {data.property_type} {data.listing_type !== "PG" && `for ${data.listing_type}`} in {data.area.name}</h2>
                             <h3 className="font-semibold mb-5 text-gray-500">{data.name}</h3>

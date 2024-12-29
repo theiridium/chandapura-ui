@@ -63,7 +63,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
             }
             else if (type === "new" || type === "edit_back") {
                 toast.success("Image saved successfully!");
-                router.push(`/dashboard/job-listing/payment?type=${type}&source=${source}`)
+                router.push(`/dashboard/job-listing/publish?type=${type}&source=${source}`)
             }
         } catch (error) {
             console.error("An error occurred during the process:", error);

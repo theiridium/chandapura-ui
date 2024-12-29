@@ -1,6 +1,8 @@
 const currentDate = new Date().getTime();
-const year = (new Date()).getFullYear();
-const years = Array.from(new Array(20),( val, index) => (year - index).toString());
+const year = new Date().getFullYear();
+const years = Array.from(new Array(20), (val, index) =>
+  (year - index).toString()
+);
 module.exports = {
   sm: 640,
   md: 768,
@@ -215,8 +217,9 @@ module.exports = {
       api: {
         base: "job-listings",
         sort: "desc",
-        populate:
-          "populate[0]=user&populate[1]=featured_image&populate[2]=area&populate[3]=contact",
+        populateList: "logo_image,area,contact,preferred_languages",
+        populateDetails: "logo_image,area,contact,preferred_languages",
+        populateForPayment: "payment_history,payment_details",
         userFilter: "filters[author][email][$eq]",
         isPublishedFilter: `filters[publish_status][$eq]=true`,
         limit: 4,
@@ -303,6 +306,13 @@ module.exports = {
         sort: "name:asc",
       },
     },
+    Language: {
+      label: "language",
+      api: {
+        base: "languages",
+        sort: "id:asc",
+      },
+    },
     ContactList: {
       label: "contactList",
       api: {
@@ -382,6 +392,38 @@ module.exports = {
     FuelType: ["Petrol", "Diesel", "Electric", "CNG", "Hybrid"],
     VehicleTransmission: ["Manual", "Automatic"],
     YearList: years,
-    //job title
+    JobType: [
+      "Full-Time",
+      "Part-Time",
+      "Contract-Based",
+      "Freelance",
+      "Internship",
+    ],
+    EducationalQualification: [
+      "Below 10th",
+      "SSC/10th",
+      "PUC/12th",
+      "Diploma",
+      "Graduate",
+      "Post Graduate",
+    ],
+    JobLocation: [
+      "Work from office (WFO)",
+      "Work from home (WFH)",
+      "Hybrid (WFO + WFH)",
+      "Field Job",
+    ],
+    Gender: ["Male only", "Female only", "Any gender"],
+    JobExperience: ["Fresher", "Experienced", "Any"],
+    InterviewMode: ["In-Person", "Telephonic / Online"],
+    YearOfExperience: [
+      "6 Months",
+      "1 Year",
+      "2 Years",
+      "3 Years",
+      "5 Years",
+      "10 Years",
+    ],
+    JobShift: ["General", "Morning", "Afternoon", "Night", "Rotational"],
   },
 };

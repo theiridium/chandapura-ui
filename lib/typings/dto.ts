@@ -147,3 +147,24 @@ export interface VehicleDetailsComponent {
     kms_driven: string
     year_of_manufacture: string
 }
+export interface JobListing {
+    name: string | undefined
+    job_title: string | undefined
+    designation: string | undefined
+    job_description: string | undefined
+    job_type: string
+    educational_qualification: string
+    job_experience: string
+    year_of_experience: string
+    job_location: string | undefined
+    salary_range_min: string | undefined
+    salary_range_max: string | undefined
+    open_positions: number
+    gender: string
+    job_shift: string
+    interview_mode: string
+    preferred_languages: any[]
+    area: any
+    contact: ContactComponent
+    step_number: number
+}

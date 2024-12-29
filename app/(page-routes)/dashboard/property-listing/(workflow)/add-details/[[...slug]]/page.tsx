@@ -260,9 +260,9 @@ const Page = () => {
         }))
     }, [propertyListing.listing_type])
 
-    useEffect(() => {
-        console.log(propertyListing)
-    }, [propertyListing])
+    // useEffect(() => {
+    //     console.log(propertyListing)
+    // }, [propertyListing])
     // useEffect(() => {
     //     console.log(propertyDetails)
     // }, [propertyDetails])

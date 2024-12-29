@@ -147,13 +147,7 @@ const Page = () => {
             }
         }
     }
-
-    const inputServiceRef: any = useRef(null);
-    const handleDivClick = () => {
-        if (inputServiceRef.current) {
-            inputServiceRef.current.focus();
-        }
-    };
+    
     const onKeyPress = (e: React.KeyboardEvent<HTMLFormElement>) => {
         if (e.key === 'Enter') {
             e.preventDefault();

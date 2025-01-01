@@ -90,6 +90,7 @@ module.exports = {
       label: "sale",
       productType: "real-estate-sale",
       searchIndex: "property-listing",
+      searchFacets: [],
       slug: "property-for-sale",
       url: "real-estate/property-for-sale",
       api: {
@@ -111,6 +112,7 @@ module.exports = {
       label: "rent",
       productType: "real-estate-rent",
       searchIndex: "property-listing",
+      searchFacets: [],
       slug: "property-for-rent",
       url: "real-estate/property-for-rent",
       api: {
@@ -137,6 +139,7 @@ module.exports = {
       label: "pg",
       productType: "real-estate-pg",
       searchIndex: "property-listing",
+      searchFacets: [],
       slug: "pg-accomodations",
       url: "real-estate/pg-accomodations",
       api: {
@@ -157,6 +160,7 @@ module.exports = {
       label: "real estate",
       productType: "real-estate",
       searchIndex: "property-listing",
+      searchFacets: [],
       url: "real-estate",
       api: {
         base: "property-listings",
@@ -176,6 +180,7 @@ module.exports = {
       label: "business",
       productType: "business-listing",
       searchIndex: "business-listing",
+      searchFacets: [],
       slug: "business-categories",
       url: "business-categories",
       api: {
@@ -192,6 +197,7 @@ module.exports = {
       label: "classified",
       productType: "classifieds",
       searchIndex: "classified-listing",
+      searchFacets: [],
       slug: "classifieds",
       url: "classifieds",
       api: {
@@ -212,6 +218,7 @@ module.exports = {
       label: "job",
       productType: "job-vacancy",
       searchIndex: "job-listing",
+      searchFacets: ["work_mode", "job_type", "area"],
       slug: "job-vacancy",
       url: "job-vacancy",
       api: {

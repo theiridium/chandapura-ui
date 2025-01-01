@@ -188,7 +188,7 @@ header {
     @apply flex overflow-x-auto gap-5 lg:gap-7 lg:snap-x pb-0 md:pb-1;
   }
   .job-card-list-row {
-    @apply flex overflow-x-auto lg:overflow-visible lg:grid lg:grid-cols-3 gap-5 lg:gap-7;
+    @apply flex items-stretch overflow-x-auto lg:overflow-visible lg:grid lg:grid-cols-3 gap-5 lg:gap-7;
   }
   .re-card-link, .job-card-link {
     @apply rounded-md;
@@ -202,7 +202,7 @@ header {
     @apply rounded-md bg-white lg:snap-start;
   }
   .job-card {
-    @apply rounded-md bg-color1d/10 lg:snap-start;
+    @apply rounded-md bg-color1d/10 lg:snap-start grid content-between h-full;
   }
   .business-card {
     @apply lg:w-[400px];

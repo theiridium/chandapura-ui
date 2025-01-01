@@ -163,7 +163,8 @@ export const getPublicSingleSearchResponse = async (payload: SearchPayload | und
             {
                 "indexUid": payload?.indexUid,
                 "q": payload?.q,
-                "filter": filters
+                "filter": filters,
+                "facets": payload?.searchFacets
             }
         ]
     });

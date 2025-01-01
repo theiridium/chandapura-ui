@@ -22,10 +22,11 @@ const SearchBar = ({ productType }: any) => {
     setPayload({
       indexUid: GetProductFromProductType(productType)?.searchIndex,
       q: text,
-      filter: ""
+      filter: "",
+      searchFacets: GetProductFromProductType(productType)?.searchFacets
     })
   }
-  
+
   return (
     <form className="search-container" onSubmit={onSearch}>
       <input className="search-input shrink w-full" placeholder="Start searching..." onChange={inputHandler} value={text} />

@@ -123,7 +123,7 @@ const Page = () => {
                                 </div>
                                 <div>
                                     <div className='text-sm mb-1 font-semibold'>Job Location</div>
-                                    <div>{apiRes.job_location}</div>
+                                    <div>{apiRes.work_mode}</div>
                                 </div>
                             </div>
                             <div className='mb-5'>

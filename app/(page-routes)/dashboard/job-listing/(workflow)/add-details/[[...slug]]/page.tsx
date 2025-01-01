@@ -39,7 +39,7 @@ const Page = () => {
         designation: "",
         job_description: "",
         job_type: "",
-        job_location: "",
+        work_mode: "",
         educational_qualification: "",
         job_experience: "",
         year_of_experience: "",
@@ -309,11 +309,11 @@ const Page = () => {
                         </div>}
                         <div className='flex w-full gap-8 lg:gap-4 mt-3 mb-8 flex-wrap md:flex-nowrap *:basis-full md:*:basis-1/2'>
                             <RadioGroup
-                                value={jobListing?.job_location}
+                                value={jobListing?.work_mode}
                                 onChange={(e: any) =>
                                     setJobListing({
                                         ...jobListing,
-                                        job_location: e.target.value
+                                        work_mode: e.target.value
                                     })
                                 }
                                 label="Job Location"

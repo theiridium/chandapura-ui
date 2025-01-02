@@ -42,14 +42,16 @@ const authOptions = {
             clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
             authorization: {
                 params: {
-                  prompt: "login",
-                  access_type: "online",
-                  response_type: "code"
+                    prompt: "login",
+                    access_type: "online",
+                    response_type: "code"
                 }
-              }
-        
+            }
         })
     ],
+    session: {
+        maxAge: 15 * 24 * 60 * 60
+    },
     callbacks: {
         async jwt({ user, token, account, trigger, session }: any) {
             if (user) {  // Note that this if condition is needed

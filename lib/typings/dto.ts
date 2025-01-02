@@ -39,7 +39,6 @@ export interface BusinessListing {
     full_address: string | undefined
     description: string | undefined
     contact: ContactComponent
-    slug: string | undefined
     tags: string | undefined
     sub_category: string | undefined
     gallery_images?: any[]

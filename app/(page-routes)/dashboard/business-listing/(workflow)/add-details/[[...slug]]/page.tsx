@@ -87,7 +87,7 @@ const Page = () => {
     const handleServiceChange = (e: any) => setTxtService(e.target.value);
     const onAddServices = () => {
         if (txtService) {
-            const list = [...businessList.services, txtService];
+            const list = [...businessList.services, ...txtService.split(",").map(item => item.trim())];
             setBusinessList({ ...businessList, services: list })
             setTxtService("");
             handleDivClick();

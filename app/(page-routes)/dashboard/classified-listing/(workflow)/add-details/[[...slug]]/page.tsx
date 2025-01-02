@@ -48,12 +48,13 @@ const Page = () => {
     });
     const [apiRes, setApiRes] = useState<any>();
     const [subCategory, setSubCategory] = useState<any>("");
-    const onCategoryChange = (id: any, component: any) => {
-        const sub_category = categoryList.find((x: any) => id === x.id).sub_category;
+    const updateComponents = (id: any, component: any) => {
+        const sub_category = categoryList.find((x: any) => x.id === (Number(id)))?.sub_category;
         setClassifiedList({ ...classifiedList, category: id });
         setSubCategory(sub_category);
         setClassifiedDetails(component?.find((x: any) => sub_category === x.__component));
     }
+    const onCategoryChange = (id: any) => updateComponents(id, null);
     const onAreaChange = (id: any) => setClassifiedList({ ...classifiedList, area: id });
 
     //In View
@@ -65,7 +66,7 @@ const Page = () => {
 
     useEffect(() => {
         if (apiRes) {
-            onCategoryChange(apiRes?.category.id, apiRes.details_by_category);
+            updateComponents(apiRes?.category.id, apiRes.details_by_category);
             setContact(apiRes.contact);
             setClassifiedList(prev => ({
                 ...prev,
@@ -169,7 +170,7 @@ const Page = () => {
                                 variant="flat"
                                 defaultItems={categoryList || []}
                                 label="Select a Product Category"
-                                onSelectionChange={() => onCategoryChange}
+                                onSelectionChange={onCategoryChange}
                                 selectedKey={classifiedList.category}
                                 isDisabled={disabled}
                                 classNames={{ listboxWrapper: "nextui-listbox" }}
@@ -259,7 +260,7 @@ const Page = () => {
                                     </SelectItem>
                                 ))}
                             </Select>
-                            <Select label="Number of Bathrooms" selectedKeys={[(classifiedDetails?.transmission)?.toString()]}
+                            <Select label="Transmission" selectedKeys={[(classifiedDetails?.transmission)?.toString()]}
                                 isDisabled={disabled}
                                 classNames={{ listboxWrapper: "nextui-listbox" }}
                                 isRequired

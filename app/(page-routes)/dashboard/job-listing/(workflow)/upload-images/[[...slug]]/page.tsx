@@ -72,6 +72,23 @@ const Page = ({ params }: { params: { slug: string } }) => {
             setIsSubmitLoading(false);
         }
     }
+    const onSkip = async () => {
+        try {
+            setIsSubmitLoading(true);
+            if (type === "new" || type === "edit_back") {
+                const response = await putRequestApi(apiPayload.endpoint, apiPayload.payload, source);
+                if (response.data) {
+                    toast.success("Taking you to review page!");
+                    router.push(`/dashboard/job-listing/publish?type=${type}&source=${source}`)
+                }
+            }
+        } catch (error) {
+            console.error("An error occurred during the process:", error);
+            toast.error("Failed to upload image.");
+        } finally {
+            setIsSubmitLoading(false);
+        }
+    }
 
     return (
         <>
@@ -82,7 +99,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
                 </div>
                 <div className='grid grid-cols-1 gap-10 mx-2'>
                     <div className='listing-card border rounded-lg px-7 py-6 scroll-mt-36'>
-                        <div className='card-header text-xl font-semibold mb-5'>Featured Image</div>
+                        <div className='card-header text-xl font-semibold mb-5'>Company Logo Image <span className='text-sm font-medium'>(Optional)</span></div>
                         {isImageLoaded ? <SingleImage key={keyJl} imageParams={imageParams} uploadSuccess={reloadAdComp} setEditMode={setEditMode} apiPayload={apiPayload} /> :
                             <ImgSingleUploadLoading />}
                     </div>
@@ -90,9 +107,14 @@ const Page = ({ params }: { params: { slug: string } }) => {
                         <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading} onPress={() => router.push(`/dashboard/job-listing/add-details?type=edit_back&source=${source}`)}>
                             Back
                         </Button>
+                        {(!imageParams.imgData || editMode) ? 
+                        <Button className='btn-primary text-base' color='primary' isLoading={isSubmitLoading} onPress={onSkip}>
+                            {!isSubmitLoading && ("Skip and Continue")}
+                        </Button>:
                         <Button className='btn-primary text-base' color='primary' isDisabled={!imageParams.imgData || editMode} isLoading={isSubmitLoading} onPress={onClickSave}>
                             {!isSubmitLoading && ((type === "edit") ? "Save" : "Save and Continue")}
                         </Button>
+                        }
                     </div>
                 </div>
             </div>

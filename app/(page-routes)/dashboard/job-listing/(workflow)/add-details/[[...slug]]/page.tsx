@@ -122,7 +122,7 @@ const Page = () => {
             salary_range_max: formdata.salary_range_max,
             preferred_languages: languageValues,
             contact: contact,
-            step_number: ListingWorkflow.Initial
+            step_number: ListingWorkflow.AddDetails
         }
         postJobListing(payload);
     }

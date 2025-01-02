@@ -29,7 +29,7 @@ const Page = () => {
                 const response = await getPublicApiResponse(apiUrl).then(res => res.data);
                 const data = response[0];
                 if (data) {
-                    if (data.step_number !== ListingWorkflow.UploadImages) router.push(`/dashboard/job-listing/view-all`);
+                    // if (data.step_number !== ListingWorkflow.UploadImages) router.push(`/dashboard/job-listing/view-all`);
                     setApiRes(data);
                     setIsLoading(false);
                     return data;

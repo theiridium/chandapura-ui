@@ -10,6 +10,7 @@ import Script from "next/script";
 import { createOrderId, putRequestApi } from "@/lib/apiLibrary";
 import { toast } from "react-toastify";
 import FormLoading from "../loading-components/form-loading";
+import { ListingWorkflow } from "@/lib/typings/enums";
 
 const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSubscribed, isOfferApplicable, endpoint }: any) => {
     const { data }: any = useSession();
@@ -139,6 +140,7 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
             let payload = {
                 payment_details: payment_details,
                 payment_history: [...paymentData.payment_history, payment_details],
+                step_number: ListingWorkflow.Payment,
                 publish_status: false
             }
             const response = await putRequestApi(endpoint, payload, source);

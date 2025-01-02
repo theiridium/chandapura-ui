@@ -83,16 +83,8 @@ const Page = () => {
                 router.push(`/dashboard/business-listing/view-all`)
             }
             else if (type === "new" || type === "renew") {
-                let payload = {
-                    step_number: ListingWorkflow.Payment
-                }
-                console.log("payload", payload)
-                const endpoint = Products.business.api.base;
-                const response = await putRequestApi(endpoint, payload, source);
-                if (response.data) {
-                    toast.success("Payment details saved successfully!");
-                    router.push(`/dashboard/business-listing/publish?type=${type}&source=${response.data.id}`)
-                }
+                toast.success("Payment details saved successfully!");
+                router.push(`/dashboard/business-listing/publish?type=${type}&source=${source}`)
             }
         } catch (error) {
             console.error("An error occurred during the process:", error);

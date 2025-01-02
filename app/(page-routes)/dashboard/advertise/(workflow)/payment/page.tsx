@@ -77,15 +77,8 @@ const Page = () => {
                 router.push(`/dashboard/advertise/view-all`)
             }
             else if (type === "new" || type === "renew") {
-                let payload = {
-                    step_number: ListingWorkflow.Payment
-                }
-                const endpoint = Products.advertisement.api.base;
-                const response = await putRequestApi(endpoint, payload, source);
-                if (response.data) {
-                    toast.success("Payment details saved successfully!");
-                    router.push(`/dashboard/advertise/publish?type=${type}&source=${response.data.id}`)
-                }
+                toast.success("Payment details saved successfully!");
+                router.push(`/dashboard/advertise/publish?type=${type}&source=${source}`)
             }
         } catch (error) {
             console.error("An error occurred during the process:", error);

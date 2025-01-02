@@ -77,7 +77,7 @@ const Page = () => {
             case "Plot":
                 planData = pricingPlan.find((x: any) => x.type === data.property_type);
                 break;
-        
+
             default:
                 planData = pricingPlan.find((x: any) => x.type === data.details_by_listingtype[0].room_type);
                 break;
@@ -99,15 +99,8 @@ const Page = () => {
                 router.push(`/dashboard/property-listing/view-all`)
             }
             else if (type === "new" || type === "renew") {
-                let payload = {
-                    step_number: ListingWorkflow.Payment
-                }
-                const endpoint = Products.realEstate.api.base;
-                const response = await putRequestApi(endpoint, payload, source);
-                if (response.data) {
-                    toast.success("Payment details saved successfully!");
-                    router.push(`/dashboard/property-listing/publish?type=${type}&source=${response.data.id}`)
-                }
+                toast.success("Payment details saved successfully!");
+                router.push(`/dashboard/property-listing/publish?type=${type}&source=${source}`)
             }
         } catch (error) {
             console.error("An error occurred during the process:", error);

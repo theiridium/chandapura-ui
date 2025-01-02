@@ -112,7 +112,10 @@ const Page = () => {
                               <a className='hover:bg-color2d/20' href={Resource.JobListing.addDetailsLink + '?type=edit&source=' + x.id}>Job Profile<Pencil size={15} /></a>
                               <a className='hover:bg-color2d/20' href={Resource.JobListing.uploadImagesLink + '?type=edit&source=' + x.id}>Image<Pencil size={15} /></a>
                             </> :
-                              <a className='hover:bg-color2d/20' href={continueUrl}>Continue to complete listing<MoveRight size={15} /></a>}
+                              <>
+                                {!x.publish_status && x.step_number === 4 ? <div>Pending Approval from Admin</div> : <a className='hover:bg-color2d/20' href={continueUrl}>Continue to complete listing<MoveRight size={15} /></a>}
+                              </>
+                            }
                           </div>
                         </>
                       </div>

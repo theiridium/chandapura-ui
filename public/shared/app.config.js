@@ -180,6 +180,7 @@ module.exports = {
       label: "business",
       productType: "business-listing",
       searchIndex: "business-listing",
+      searchSuggestIndex: "sub-category",
       searchFacets: [],
       slug: "business-categories",
       url: "business-categories",

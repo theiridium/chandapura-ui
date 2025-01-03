@@ -6,8 +6,8 @@ export interface ApiFilter {
 }
 export interface SearchPayload {
     indexUid: string
-    q: string
-    filter: string
+    q: string | any
+    filter?: string
     noExpFilter?: boolean
     searchFacets?: any[]
 }

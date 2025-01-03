@@ -91,6 +91,18 @@ header {
   scroll-padding-top: 1.5rem;
   scroll-padding-bottom: 1.5rem;
 }
+.search-list::-webkit-scrollbar {
+  width: 6px;
+}
+.search-list::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  border-radius: 12px;
+}
+.search-list::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.09);
+  border-radius: 12px;
+}
 
 @layer components {
   html {
@@ -149,11 +161,15 @@ header {
     @apply !h-auto !py-1 text-sm font-semibold;
   }
   .search-container {
-    @apply flex bg-white w-full rounded-full h-14 md:h-16;
+    @apply flex items-center bg-white w-full rounded-full h-14 md:h-16;
     border: 2px solid rgb(170, 170, 170);
   }
+  .search-list {
+    @apply absolute w-full bg-white z-30 border rounded-md p-2 text-base text-default-500 w-full max-h-96 overflow-auto;
+    top: calc(100% + 5px);
+  }
   .search-container .search-input {
-    @apply bg-transparent text-base lg:text-lg text-gray-900 placeholder:text-gray-400 py-3 lg:py-4 px-8;
+    @apply bg-transparent text-base lg:text-lg text-gray-900 placeholder:text-gray-400 py-3 lg:py-4 px-8 shrink w-full relative;
   }
   .search-container .search-select {
     @apply w-48 m-2 text-base justify-center lg:text-lg text-gray-900 placeholder:text-gray-400 py-3 lg:py-4 pr-6 lg:px-1;
@@ -190,10 +206,12 @@ header {
   .job-card-list-row {
     @apply flex items-stretch overflow-x-auto lg:overflow-visible lg:grid lg:grid-cols-3 gap-5 lg:gap-7;
   }
-  .re-card-link, .job-card-link {
+  .re-card-link,
+  .job-card-link {
     @apply rounded-md;
   }
-  .re-card-link:hover, .job-card-link:hover {
+  .re-card-link:hover,
+  .job-card-link:hover {
     box-shadow: 0 0 48px -33px rgb(34, 34, 34);
     /* @apply transition translate-y-1 duration-300 ease-in-out; */
   }

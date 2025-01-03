@@ -67,9 +67,8 @@ const SearchBar = ({ productType }: any) => {
     <form className="search-container" onSubmit={onSearch}>
       <div className="search-input" role="combobox" aria-haspopup="listbox" >
         <input className="w-full" aria-controls="suggest-box" placeholder="Start searching..." onChange={inputHandler} value={text} onFocus={() => setIsFocused(true)} onBlur={() => setTimeout(() => setIsFocused(false), 200)} />
-        {suggest.length > 0 && <div id="suggest-box" role="listbox" className="search-list">
-          {isFocused &&
-            suggest.map((x: any, i: any) =>
+        {isFocused && suggest.length > 0 && <div id="suggest-box" role="listbox" className="search-list">
+          {suggest.map((x: any, i: any) =>
               <div onClick={() => onSuggestClick(x.name)} className="py-3 px-5 hover:bg-default-100 rounded-md cursor-pointer flex items-start gap-x-3 font-semibold" key={i}>
                 <Search className="mt-1" size={20} />
                 <div>

@@ -165,7 +165,7 @@ header {
     border: 2px solid rgb(170, 170, 170);
   }
   .search-list {
-    @apply absolute w-full bg-white z-30 border rounded-md p-2 text-base text-default-500 w-full max-h-96 overflow-auto;
+    @apply absolute w-full bg-white z-30 border rounded-md p-2 text-base text-default-600 w-full max-h-96 overflow-auto;
     top: calc(100% + 5px);
   }
   .search-container .search-input {

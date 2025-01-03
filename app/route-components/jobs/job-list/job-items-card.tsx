@@ -9,7 +9,7 @@ const JobItemsCard = ({ data, id, product }: any) => {
                     <div className='flex flex-row gap-5 items-center'>
                         <div className="*:h-16 *:aspect-square">
                             {data.logo_image === null ?
-                                <img src="/images/placeholder.png" /> :
+                                <img src="/images/icons/company.png" /> :
                                 <img src={data.logo_image.url} />}
                         </div>
                         <div className=''>

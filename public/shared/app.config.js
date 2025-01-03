@@ -431,6 +431,6 @@ module.exports = {
       "5 Years",
       "10 Years",
     ],
-    JobShift: ["General", "Morning", "Afternoon", "Night", "Rotational"],
+    JobShift: ["General Shift", "Morning Shift", "Afternoon Shift", "Night Shift", "Rotational Shift"],
   },
 };

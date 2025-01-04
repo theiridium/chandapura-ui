@@ -19,7 +19,7 @@ const SearchBar = ({ productType }: any) => {
   const router = useRouter();
   const onSearch = async (e: any) => {
     e.preventDefault();
-    router.push(`/${GetProductFromProductType(productType)?.url}?index=${payload?.indexUid}&q=${payload?.q}` as string);
+    router.push(`/${GetProductFromProductType(productType)?.url}?index=${encodeURIComponent(payload?.indexUid as string)}&q=${encodeURIComponent(payload?.q)}` as string);
   }
   let inputHandler = (e: any) => {
     var text = e.target.value.toLowerCase();
@@ -28,7 +28,9 @@ const SearchBar = ({ productType }: any) => {
       indexUid: GetProductFromProductType(productType)?.searchIndex,
       q: text,
       filter: "",
-      searchFacets: GetProductFromProductType(productType)?.searchFacets
+      searchFacets: GetProductFromProductType(productType)?.searchFacets,
+      page: 1,
+      hitsPerPage: Number(GetProductFromProductType(productType)?.searchPageLimit),
     })
   }
 
@@ -36,9 +38,11 @@ const SearchBar = ({ productType }: any) => {
     setSearchText(name);
     const suggestSearchPayload: SearchPayload = {
       indexUid: GetProductFromProductType(productType)?.searchIndex,
-      q: name
+      q: name,
+      page: 1,
+      hitsPerPage: Number(GetProductFromProductType(productType)?.searchPageLimit),
     };
-    router.push(`/${GetProductFromProductType(productType)?.url}?index=${suggestSearchPayload?.indexUid}&q=${suggestSearchPayload?.q}` as string);
+    router.push(`/${GetProductFromProductType(productType)?.url}?index=${encodeURIComponent(suggestSearchPayload?.indexUid)}&q=${encodeURIComponent(suggestSearchPayload?.q)}` as string);
   }
 
   useEffect(() => {
@@ -50,7 +54,6 @@ const SearchBar = ({ productType }: any) => {
           indexUid: GetProductFromProductType(productType)?.searchSuggestIndex,
           q: debouncedSearchTerm
         });
-        console.log(data)
         results = data.results[0]?.hits || [];
       }
 

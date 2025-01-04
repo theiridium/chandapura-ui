@@ -165,7 +165,10 @@ export const getPublicSingleSearchResponse = async (payload: SearchPayload | und
                 "indexUid": payload?.indexUid,
                 "q": payload?.q,
                 "filter": filters,
-                "facets": payload?.searchFacets
+                "facets": payload?.searchFacets,
+                "sort": payload?.sort,
+                "page": payload?.page,
+                "hitsPerPage": payload?.hitsPerPage
             }
         ]
     });

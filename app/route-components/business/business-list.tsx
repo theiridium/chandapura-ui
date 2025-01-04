@@ -5,7 +5,7 @@ import { getPublicApiResponse } from "@/lib/apiLibrary";
 
 const BusinessList = async () => {
   const attr = Products.business.api;
-  const businessList = await getPublicApiResponse(`${attr.base}?sort=publishedAt%3A${attr.sort}&${attr.isPublishedFilter}&${attr.populate}`);
+  const businessList = await getPublicApiResponse(`${attr.base}?sort=publishedAt%3A${attr.sort}&${attr.isPublishedFilter}&${attr.populate}&pagination%5Blimit%5D=15`);
   return (
     <>
       <div className="business-card-list-row">

@@ -10,6 +10,9 @@ export interface SearchPayload {
     filter?: string
     noExpFilter?: boolean
     searchFacets?: any[]
+    sort?: any[]
+    page?: number
+    hitsPerPage?: number
 }
 export interface SingleItemData {
     id: any

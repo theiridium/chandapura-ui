@@ -182,6 +182,7 @@ module.exports = {
       searchIndex: "business-listing",
       searchSuggestIndex: "sub-category",
       searchFacets: [],
+      searchPageLimit: 10,
       slug: "business-categories",
       url: "business-categories",
       api: {

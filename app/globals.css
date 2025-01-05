@@ -181,7 +181,7 @@ header {
     @apply lg:text-lg text-white font-semibold !important;
   }
   .search-container-btn {
-    @apply bg-color1d text-white m-1 md:m-2 py-2 px-3 md:px-8 rounded-full font-semibold text-xl;
+    @apply bg-color1d text-white m-1 md:m-2 p-3 md:px-8 md:py-2 rounded-full font-semibold text-xl;
   }
   /* .search-container-btn {
     @apply hidden lg:block bg-color1d text-white m-2 py-2 px-8 rounded-full font-semibold text-xl;
@@ -333,7 +333,8 @@ header {
   .job-card-list-row::-webkit-scrollbar,
   .tags::-webkit-scrollbar,
   .job-card-tags::-webkit-scrollbar,
-  .search-cat-sec::-webkit-scrollbar {
+  .search-cat-sec::-webkit-scrollbar,
+  .tags::-webkit-scrollbar {
     @apply hidden;
   }
   .dark-background .bg-content3 {

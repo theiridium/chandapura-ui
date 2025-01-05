@@ -16,7 +16,7 @@ const PgItemsCard = ({ data, id, product }: any) => {
                     </div>
                     <div className="w-full flex flex-col justify-between lg:overflow-auto">
                         <div>
-                            <h2 className="md:text-lg font-medium mb-2">{property_details.room_type} {data.property_type} {data.listing_type !== "PG" && `for ${data.listing_type}`} in {data.area.name}</h2>
+                            <h2 className="md:text-lg font-medium mb-2">{data.property_type} in {data.area.name}</h2>
                             <h3 className="font-semibold mb-5 md:mb-3 text-gray-500">{data.name}</h3>
                             <div className='mb-5 md:mb-3 flex content-center text-xs  border border-color1d/30 divide-x divide-color1d/30 *:min-w-32 overflow-auto'>
                                 {SelectList.OccupancyType.map((x: any, i: any) =>
@@ -34,7 +34,7 @@ const PgItemsCard = ({ data, id, product }: any) => {
                             </div>
                         </div>
                         <div className="w-full flex justify-between lg:justify-normal gap-x-6">
-                            <button className="border-2 border-color1d bg-color1d text-white px-5 py-1 rounded-full h-fit text-center text-sm md:text-base">Contact Owner</button>
+                            <button className="border-2 border-color1d bg-color1d text-white px-5 py-1 rounded-full h-fit text-center text-sm">Contact Owner</button>
                         </div>
                     </div>
                 </div>

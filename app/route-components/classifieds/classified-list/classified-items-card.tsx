@@ -24,7 +24,7 @@ const ClassifiedItemsCard = ({ data, id, product }: any) => {
                         </div>
                         <div className="w-full flex justify-between lg:justify-normal gap-x-6">
                             <div className="text-xl font-semibold text-gray-600 flex items-center"><IndianRupee size={20} />{ConvertCurrencyToWords(data.sale_amount)}</div>
-                            <button className="border-2 border-color1d bg-color1d text-white px-5 py-1 rounded-full h-fit text-center text-sm md:text-base">Contact Owner</button>
+                            <button className="border-2 border-color1d bg-color1d text-white px-5 py-1 rounded-full h-fit text-center text-sm">Contact Owner</button>
                         </div>
                     </div>
                 </div>

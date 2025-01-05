@@ -10,7 +10,8 @@ const SaleList = async () => {
     <>
       <div className="card-list-row">
         {res.data.map((property: any, i: any) => (
-          <SaleCard key={i} list={property} id={property.id} apiComponent={attr.component} />
+          property.property_type === "Plot" ? <SaleCard key={i} list={property} id={property.id} apiComponent={Products.plot.api.component} /> :
+            <SaleCard key={i} list={property} id={property.id} apiComponent={attr.component} />
         ))}
       </div>
       <ListArrow size={293} row="card-list-row" />

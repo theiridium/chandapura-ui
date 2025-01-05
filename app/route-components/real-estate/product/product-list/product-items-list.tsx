@@ -2,6 +2,7 @@
 import React from 'react'
 import ProductItemsCard from './product-items-card'
 import Breadcrumb from '@/app/sub-components/breadcrumb'
+import PgItemsCard from './pg-items-card'
 
 const ProductItemsList = (props: any) => {
     const propertyData = props.isSearchHit ? props.result.results[0].hits : props.result.data;
@@ -16,7 +17,8 @@ const ProductItemsList = (props: any) => {
                 <div className="col-span-3">
                     <div className="grid grid-cols-1 gap-4 lg:gap-8 mb-4 lg:mb-10">
                         {propertyData.map((data: any, i: any) => (
-                            <ProductItemsCard key={i} data={data} id={data.id} product={props.product} />
+                            data.property_type === "PG" ? <PgItemsCard key={i} data={data} id={data.id} product={props.product} /> :
+                                <ProductItemsCard key={i} data={data} id={data.id} product={props.product} />
                         ))}
                     </div>
                 </div>

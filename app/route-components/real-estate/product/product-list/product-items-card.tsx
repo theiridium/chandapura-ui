@@ -5,7 +5,8 @@ import { IndianRupee } from "lucide-react"
 const ProductItemsCard = ({ data, id, product }: any) => {
     let productSlug = data.listing_type === "Rent" ? Products.rent.url : Products.sale.url;
     let property_details = data.details_by_listingtype[0];
-    if (product.productType !== "real-estate") property_details = data.details_by_listingtype.find((x: any) => x.__component == product.api.component);
+    if (product.productType !== "real-estate" && data.property_type !== "Plot") property_details = data.details_by_listingtype.find((x: any) => x.__component == product.api.component);
+    else property_details = data.details_by_listingtype.find((x: any) => x.__component == Products.plot.api.component);
     return (
         <a className="card_link" href={`/${productSlug}/${data.slug}?source=${id}`}>
             <div className="border border-gray-300 rounded-xl bg-white">
@@ -36,13 +37,13 @@ const ProductItemsCard = ({ data, id, product }: any) => {
                                 </div>
                             }
                             <div className="tags">
-                                {property_details.amenities.map((x: any, i: any) =>
+                                {property_details?.amenities.map((x: any, i: any) =>
                                     <div className="px-3 py-1 bg-color2d/70 font-semibold rounded-xl text-xs text-nowrap text-gray-600" key={i}>{x.name}</div>
                                 )}
                             </div>
                         </div>
                         <div className="w-full flex justify-between lg:justify-normal gap-x-6">
-                            <div className="text-xl font-semibold text-gray-600 flex items-center"><IndianRupee size={20} />{data.listing_type === "Sale" ? ConvertCurrencyToWords(property_details.selling_amount) : ConvertCurrencyToWords(property_details.rental_amount)}</div>
+                            <div className="text-xl font-semibold text-gray-600 flex items-center"><IndianRupee size={20} />{data.listing_type === "Sale" ? ConvertCurrencyToWords(property_details?.selling_amount) : ConvertCurrencyToWords(property_details.rental_amount)}</div>
                             <button className="border-2 border-color1d bg-color1d text-white px-5 py-1 rounded-full h-fit text-center text-sm">Contact Owner</button>
                         </div>
                     </div>

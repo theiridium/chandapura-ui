@@ -4,9 +4,19 @@ import { IndianRupee } from "lucide-react"
 
 const ProductItemsCard = ({ data, id, product }: any) => {
     let productSlug = data.listing_type === "Rent" ? Products.rent.url : Products.sale.url;
-    let property_details = data.details_by_listingtype[0];
-    if (product.productType !== "real-estate" && data.property_type !== "Plot") property_details = data.details_by_listingtype.find((x: any) => x.__component == product.api.component);
-    else property_details = data.details_by_listingtype.find((x: any) => x.__component == Products.plot.api.component);
+    let detailsComp = "";
+    switch (data.listing_type) {
+        case "Rent":
+            detailsComp = Products.rent.api.component;
+            break;
+        case "Sale":
+            data.property_type === "Plot" ? detailsComp = Products.plot.api.component :
+                detailsComp = Products.sale.api.component;;
+            break;
+        default:
+            break;
+    }
+    let property_details = data.details_by_listingtype.find((x: any) => x.__component == detailsComp);
     return (
         <a className="card_link" href={`/${productSlug}/${data.slug}?source=${id}`}>
             <div className="border border-gray-300 rounded-xl bg-white">
@@ -18,7 +28,7 @@ const ProductItemsCard = ({ data, id, product }: any) => {
                     </div>
                     <div className="w-full flex flex-col justify-between lg:overflow-auto">
                         <div>
-                            <h2 className="md:text-lg font-medium mb-2">{data.property_type !== "Plot" && property_details.room_type}{data.property_type} for {data.listing_type} in {data.area.name}</h2>
+                            <h2 className="md:text-lg font-medium mb-2">{data.property_type !== "Plot" && property_details.room_type + " "}{data.property_type} for {data.listing_type} in {data.area.name}</h2>
                             <h3 className="font-semibold mb-5 text-gray-500">{data.name}</h3>
                             {data.property_type !== "Plot" &&
                                 <div className="flex flex-wrap gap-x-3 md:gap-x-5 text-xs md:text-sm mb-3 text-gray-500 font-medium">

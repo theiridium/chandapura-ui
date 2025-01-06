@@ -3,7 +3,7 @@ import { Products } from "@/public/shared/app.config";
 import Image from "next/image"
 import { it } from "node:test";
 import { useEffect, useState } from "react";
-import ListArrow from "../route-components/business/list-arrow";
+import ListArrow from "./list-arrow";
 
 const SearchCategorySection = ({ productType }: any) => {
     const [categories, SetCategories] = useState([]);
@@ -29,7 +29,7 @@ const SearchCategorySection = ({ productType }: any) => {
                             </a>
                         )}
                     </div>
-                    <ListArrow size={400} row="search-cat-sec" infinite={false} minirow={"top-1/3"} displayInMobile={true} />
+                    <ListArrow size={400} row="search-cat-sec" infinite={false} minirow={"top-1/3"} displayInMobile={true} displayArrowLg={true} />
                 </div>
             }
             {(productType === Products.realEstate.productType) &&

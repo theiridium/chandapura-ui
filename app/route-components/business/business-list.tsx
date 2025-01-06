@@ -1,7 +1,7 @@
 import { Products } from "@/public/shared/app.config";
 import BusinessCard from "./business-card";
-import ListArrow from "./list-arrow";
 import { getPublicApiResponse } from "@/lib/apiLibrary";
+import ListArrow from "@/app/sub-components/list-arrow";
 
 const BusinessList = async () => {
   const attr = Products.business.api;
@@ -13,7 +13,7 @@ const BusinessList = async () => {
           <BusinessCard key={i} list={bus} id={bus.id} />
         ))}
       </div>
-      <ListArrow size={400} row="business-card-list-row" infinite={true} />
+      <ListArrow size={400} row="business-card-list-row" infinite={true} displayArrowLg={businessList.data.length > 3} />
     </>
   )
 }

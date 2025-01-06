@@ -1,11 +1,11 @@
 import { Products } from "@/public/shared/app.config";
-import ListArrow from "../../business/list-arrow";
 import SaleCard from "./sale-card"
 import { getPublicApiResponse } from "@/lib/apiLibrary";
+import ListArrow from "@/app/sub-components/list-arrow";
 
 const SaleList = async () => {
   const attr = Products.sale.api;
-  const res = await getPublicApiResponse(`${attr.base}?sort=updatedAt%3Adesc&pagination%5Blimit%5D=4&populate=${attr.populateList}&${attr.listingTypeFilter}&${attr.isPublishedFilter}`);
+  const res = await getPublicApiResponse(`${attr.base}?sort=updatedAt%3Adesc&pagination%5Blimit%5D=10&populate=${attr.populateList}&${attr.listingTypeFilter}&${attr.isPublishedFilter}`);
   return (
     <>
       <div className="card-list-row">
@@ -14,7 +14,7 @@ const SaleList = async () => {
             <SaleCard key={i} list={property} id={property.id} apiComponent={attr.component} />
         ))}
       </div>
-      <ListArrow size={293} row="card-list-row" />
+      <ListArrow size={293} row="card-list-row" infinite={true} displayArrowLg={res.data.length > 4} />
     </>
   )
 }

@@ -1,7 +1,7 @@
 import { Products } from "@/public/shared/app.config";
 import JobCard from "./job-card";
-import ListArrow from "./list-arrow";
 import { getPublicApiResponse } from "@/lib/apiLibrary";
+import ListArrow from "@/app/sub-components/list-arrow";
 
 const JobList = async () => {
   const attr = Products.job.api;
@@ -13,7 +13,7 @@ const JobList = async () => {
           <JobCard key={i} list={item} id={item.id} />
         ))}
       </div>
-      <ListArrow size={400} row="job-card-list-row" infinite={true} />
+      <ListArrow size={400} row="job-card-list-row" infinite={true} displayArrowLg={jobList.data.length > 3} />
     </>
   )
 }

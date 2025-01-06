@@ -198,10 +198,10 @@ header {
     @apply bg-color2d/10 py-10 mb-20;
   }
   .card-list-row {
-    @apply flex overflow-x-auto lg:overflow-visible lg:grid lg:grid-cols-4 gap-5 lg:gap-7;
+    @apply flex overflow-x-auto gap-5 lg:gap-7 lg:snap-x;
   }
   .business-card-list-row {
-    @apply flex overflow-x-auto gap-5 lg:gap-7 lg:snap-x pb-0 md:pb-1;
+    @apply flex overflow-x-auto gap-5 lg:gap-7 lg:snap-x;
   }
   .job-card-list-row {
     @apply flex items-stretch overflow-x-auto lg:overflow-visible lg:grid lg:grid-cols-3 gap-5 lg:gap-7;
@@ -221,6 +221,9 @@ header {
   }
   .job-card {
     @apply rounded-md bg-color1d/10 lg:snap-start grid content-between h-full;
+  }
+  .re-card {
+    @apply lg:w-[293px];
   }
   .business-card {
     @apply lg:w-[400px];

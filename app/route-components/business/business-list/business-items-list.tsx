@@ -32,7 +32,7 @@ const BusinessItemsList = (props: any) => {
     }, [props.result.results]);
 
     useEffect(() => {
-        if (totalPages === page) {
+        if (totalPages === page || totalPages === 0) {
             setDisplayLoader(false)
         }
         else inView && loadMore();

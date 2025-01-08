@@ -22,7 +22,7 @@ const UserItemList = (props: any) => {
         const response = await getPublicApiResponse(apiUrl);
         const filteredData = response.data.filter((x: any) => x.id.toString() === source)[0];
         setList(response);
-        (filteredData && source) && setName(filteredData.name)
+        (filteredData && source) && setName(filteredData?.name ?? filteredData?.job_title);
         setIsLoading(false);
     }
     const { isOpen, onOpen, onOpenChange } = useDisclosure();

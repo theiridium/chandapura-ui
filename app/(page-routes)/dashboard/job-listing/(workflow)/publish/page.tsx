@@ -118,7 +118,7 @@ const Page = () => {
                                     <div className='text-sm mb-1 font-semibold'>Job Experience</div>
                                     <div>{apiRes.job_experience}</div>
                                     {apiRes?.job_experience === "Experienced" &&
-                                        <div>{apiRes.year_of_experience}</div>
+                                        <div>{apiRes.experience_in_years}</div>
                                     }
                                 </div>
                                 <div>

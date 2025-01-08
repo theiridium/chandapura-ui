@@ -160,6 +160,7 @@ module.exports = {
       label: "real estate",
       productType: "real-estate",
       searchIndex: "property-listing",
+      searchSuggestIndex: "area",
       searchFacets: [],
       url: "real-estate",
       api: {
@@ -199,6 +200,7 @@ module.exports = {
       label: "classified",
       productType: "classifieds",
       searchIndex: "classified-listing",
+      searchSuggestIndex: "classified-category",
       searchFacets: [],
       slug: "classifieds",
       url: "classifieds",
@@ -220,18 +222,21 @@ module.exports = {
       label: "job",
       productType: "job-vacancy",
       searchIndex: "job-listing",
+      searchSuggestIndex: "job-title",
       searchFacets: ["work_mode", "job_type", "area"],
       slug: "job-vacancy",
       url: "job-vacancy",
       api: {
         base: "job-listings",
         sort: "desc",
-        populateList: "logo_image,area,contact,preferred_languages",
-        populateDetails: "logo_image,area,contact,preferred_languages",
+        populateList: "logo_image,area,contact,preferred_languages,details_by_jobCategory",
+        populateDetails: "logo_image,area,contact,preferred_languages,details_by_jobCategory",
         populateForPayment: "payment_history,payment_details",
         userFilter: "filters[author][email][$eq]",
         isPublishedFilter: `filters[publish_status][$eq]=true`,
         limit: 4,
+        component_companyJob: "job.company-job-posting",
+        component_personalJob: "job.personal-job-posting"
       },
     },
     advertisement: {
@@ -361,7 +366,7 @@ module.exports = {
       label: "jobList",
       api: {
         base: "job-listings",
-        sortByName: "name:asc",
+        sortByName: "job_title:asc",
         sortByDate: "updatedAt:desc",
         filter: "filters[author][email][$eq]",
       },

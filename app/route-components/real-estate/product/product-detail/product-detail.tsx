@@ -18,16 +18,16 @@ const ProductDetail = ({ data, product }: any) => {
         onOpen: onOpen,
         property_details: property_details
     }
-    switch (data.property_type) {
+    switch (data.listing_type) {
         case "Sale":
-            detailsComp = <Sale {...props} />
+            if (data.property_type === "Plot") {
+                property_details = data.details_by_listingtype.find((x: any) => x.__component == Products.plot.api.component);
+                detailsComp = <Plot {...{ ...props, property_details: property_details }} />
+            }
+            else detailsComp = <Sale {...props} />
             break;
         case "Rent":
             detailsComp = <Rent {...props} />
-            break;
-        case "Plot":
-            property_details = data.details_by_listingtype.find((x: any) => x.__component == Products.plot.api.component);
-            detailsComp = <Plot {...{ ...props, property_details: property_details }} />
             break;
         case "PG":
             detailsComp = <PG {...props} />

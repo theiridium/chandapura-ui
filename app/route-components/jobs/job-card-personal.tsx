@@ -6,6 +6,7 @@ import { ConvertCurrencyToWords } from '@/lib/helpers';
 const JobCard = (p: any) => {
     const item = p.list;
     const id = p.id;
+    const job_details = item.details_by_jobCategory.find((x: any) => x.__component == Products.job.api.component_personalJob);
     return (
         <a href={`${Products.job.url}/${item.slug}?source=${id}`} className="re-card-link">
             <div className="job-card p-5 w-80 md:w-auto">
@@ -26,7 +27,7 @@ const JobCard = (p: any) => {
                     <div className='job-card-tags'>
                         <div>{item.job_type}</div>
                         <div>{item.work_mode}</div>
-                        {item.year_of_experience && <div>Min. {item.year_of_experience} of exp</div>}
+                        {item.experience_in_years && <div>Min. {item.experience_in_years} of exp</div>}
                         <div>{item.job_shift}</div>
                     </div>
                 </div>

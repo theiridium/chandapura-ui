@@ -1,25 +1,17 @@
 import { getPublicApiResponse, getPublicSingleSearchResponse } from "@/lib/apiLibrary";
 import ClassifiedItemsList from "./classified-items-list";
+import { getSearchResult } from "@/app/actions";
 
 const ClassifiedItems = async (props: any) => {
-  const attr = props.product.api;
-  let isSearchHit = false;
+  let searchFilter = props.category && `category.slug = ${props.category}`
   let res = null;
   if (props.searchParams && props.searchParams.q) {
-    res = await getPublicSingleSearchResponse({
-      indexUid: props.searchParams.index,
-      q: props.searchParams.q,
-      filter: "",
-      noExpFilter: true
-    });
-    isSearchHit = true;
+    props.searchParams.filter = searchFilter;
+    props.searchParams.noExpFilter = true;
+    let search = { searchParams: props.searchParams, page: 1 };
+    res = await getSearchResult(search);
   }
-  else {
-    let apiUrl = `${attr.base}?sort=publishedAt%3A${attr.sort}&populate=${attr.populateList}&${attr.isPublishedFilter}`
-    apiUrl = props.category ? `${apiUrl}&filters[category][slug][$eq]=${props.category}` : apiUrl
-    res = await getPublicApiResponse(apiUrl);
-  }
-  return <ClassifiedItemsList result={res} product={props.product} isSearchHit={isSearchHit} />
+  return <ClassifiedItemsList result={res} product={props.product} />
 }
 
 export default ClassifiedItems

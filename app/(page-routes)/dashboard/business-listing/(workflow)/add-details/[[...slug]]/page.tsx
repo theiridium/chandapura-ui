@@ -11,7 +11,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { getPublicApiResponse, postRequestApi, putRequestApi } from '@/lib/apiLibrary';
 import { Products } from '@/public/shared/app.config';
-import timeList from "@/lib/data/time-list.json";
+import TimeList from "@/lib/data/time-list.json";
 import { X } from 'lucide-react';
 import FormLoading from '@/app/loading-components/form-loading';
 import { toast } from 'react-toastify';
@@ -402,7 +402,7 @@ const Page = () => {
                                         {x.isOpen ? "Open" : "Closed"}
                                     </Switch>
                                     <Select
-                                        items={timeList}
+                                        items={TimeList}
                                         label="Opening Time"
                                         variant="flat"
                                         selectedKeys={x.open_time}
@@ -419,7 +419,7 @@ const Page = () => {
                                     </Select>
                                     <div className='col-span-2 md:col-span-1 justify-self-center'>TO</div>
                                     <Select
-                                        items={timeList}
+                                        items={TimeList}
                                         label="Closing Time"
                                         variant="flat"
                                         selectedKeys={x.close_time}

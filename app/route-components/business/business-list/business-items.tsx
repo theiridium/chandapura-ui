@@ -1,6 +1,5 @@
-import { getPublicApiResponse, getPublicSingleSearchResponse } from "@/lib/apiLibrary";
+import { getSearchResult } from "@/app/actions";
 import BusinessItemsList from "./business-items-list";
-import { getSearchResult } from "../actions";
 
 const BusinessItems = async (props: any) => {
   let res = null;

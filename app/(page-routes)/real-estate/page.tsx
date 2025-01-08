@@ -8,23 +8,27 @@ import { Suspense } from "react"
 export const dynamic = 'force-dynamic'
 
 const Page = ({ searchParams }: any) => {
-    return (
-      <div className="max-w-screen-xl mx-auto px-3 mt-3 lg:my-6">
-        <div className="grid lg:grid-cols-4 lg:gap-10 mb-6">
-          <div className="col-span-3">
-            <SearchBar productType={Products.realEstate.productType} />
-          </div>
+  if (!searchParams?.q) {
+    searchParams.index = Products.realEstate.searchIndex;
+    searchParams.q = "*";
+  }
+  return (
+    <div className="max-w-screen-xl mx-auto px-3 mt-3 lg:my-6">
+      <div className="grid lg:grid-cols-4 lg:gap-10 mb-6">
+        <div className="col-span-3">
+          <SearchBar productType={Products.realEstate.productType} />
         </div>
-        <div className="col-span-1 lg:col-span-full">
-          <Suspense fallback={<AdLoading />}>
-            <AdBanner placement="grid grid-cols-1 gap-x-10 mb-5" />
-          </Suspense>
-        </div>
-        <Suspense fallback={<GlobalSearchListLoading />}>
-          <ProductItems product={Products.realEstate} sub_category={null} searchParams={searchParams}  />
+      </div>
+      <div className="col-span-1 lg:col-span-full">
+        <Suspense fallback={<AdLoading />}>
+          <AdBanner placement="grid grid-cols-1 gap-x-10 mb-5" />
         </Suspense>
       </div>
-    )
-  }
-  
-  export default Page
+      <Suspense fallback={<GlobalSearchListLoading />}>
+        <ProductItems product={Products.realEstate} sub_category={null} searchParams={searchParams} />
+      </Suspense>
+    </div>
+  )
+}
+
+export default Page

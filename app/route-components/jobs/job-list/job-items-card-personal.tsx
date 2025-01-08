@@ -1,7 +1,8 @@
 import { ConvertCurrencyToWords } from "@/lib/helpers"
 import { Banknote, IndianRupee, MapPin, Phone } from "lucide-react"
 
-const JobItemsCard = ({ data, id, product }: any) => {
+const JobItemsCardPersonal = ({ data, id, product }: any) => {
+    const job_details = data.details_by_jobCategory.find((x: any) => x.__component == product.api.component_personalJob);
     return (
         <a className="card_link" href={`/${product.slug}/${data.slug}?source=${id}`}>
             <div className="border border-gray-300 rounded-xl bg-white">
@@ -23,7 +24,7 @@ const JobItemsCard = ({ data, id, product }: any) => {
                         <div className='job-card-tags'>
                             <div>{data.job_type}</div>
                             <div>{data.work_mode}</div>
-                            {data.year_of_experience && <div>Min. {data.year_of_experience} of exp</div>}
+                            {data.experience_in_years && <div>Min. {data.experience_in_years} of exp</div>}
                             <div>{data.job_shift}</div>
                         </div>
                     </div>
@@ -34,4 +35,4 @@ const JobItemsCard = ({ data, id, product }: any) => {
     )
 }
 
-export default JobItemsCard
+export default JobItemsCardPersonal

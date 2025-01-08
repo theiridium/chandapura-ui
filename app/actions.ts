@@ -9,6 +9,7 @@ export async function getSearchResult({ searchParams, page = 1 }: { searchParams
         indexUid: searchParams.index,
         q: searchParams.q,
         filter: searchParams?.filter,
+        noExpFilter: searchParams?.noExpFilter,
         sort: sort,
         page: page,
         hitsPerPage: 10,

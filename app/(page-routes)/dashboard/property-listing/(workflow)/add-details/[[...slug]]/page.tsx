@@ -69,7 +69,6 @@ const Page = () => {
         if (inView) setActiveEl(entry.target.id)
     }, [activeEl]);
 
-
     useEffect(() => {
         if (apiRes) {
             const property_details = getPropertyDetailsComp(apiRes);

@@ -24,7 +24,7 @@ const ProductListModal = (props: any) => {
                         </ModalHeader>
                         <ModalBody className='px-8 gap-0 p-0 pb-5 divide-y'>
                             {props.list.length > 0 ? props.list.map((x: any, i: any) =>
-                                <a className='py-5 px-8 hover:bg-slate-100' href={`${pathname}?type=edit&source=${x.id}`} key={i}>{x.name}</a>
+                                <a className='py-5 px-8 hover:bg-slate-100' href={`${pathname}?type=edit&source=${x.id}`} key={i}>{x?.name ?? x?.job_title}</a>
                             ) :
                                 <p className='py-5 px-8'>No items in list</p>}
                         </ModalBody>

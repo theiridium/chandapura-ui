@@ -28,7 +28,7 @@ const PgItemsCard = ({ data, id, product }: any) => {
                                 )}
                             </div>
                             <div className="tags mb-5 md:mb-2">
-                                {property_details.amenities.map((x: any, i: any) =>
+                                {property_details?.amenities.map((x: any, i: any) =>
                                     <div className="px-3 py-1 bg-color2d/70 font-semibold rounded-xl text-xs text-nowrap text-gray-600" key={i}>{x.name}</div>
                                 )}
                             </div>

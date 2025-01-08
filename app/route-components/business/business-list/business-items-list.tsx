@@ -2,10 +2,9 @@
 import React, { useEffect, useState } from 'react'
 import BusinessItemsCard from './business-items-card'
 import Breadcrumb from '@/app/sub-components/breadcrumb';
-import { Spinner } from '@nextui-org/react';
-import { getSearchResult } from '../actions';
 import { useInView } from 'react-intersection-observer';
 import GlobalSearchListLoading from '@/app/loading-components/global-search-list-loading';
+import { getSearchResult } from '@/app/actions';
 
 const BusinessItemsList = (props: any) => {
     const searchedData = props.result.results[0];

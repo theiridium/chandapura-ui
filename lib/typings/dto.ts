@@ -151,23 +151,35 @@ export interface VehicleDetailsComponent {
     year_of_manufacture: string
 }
 export interface JobListing {
-    name: string | undefined
     job_title: string | undefined
-    designation: string | undefined
+    category: string | undefined
     job_description: string | undefined
+    preferred_languages: any[]
+    area: any
+    full_address: string
+    gender: string
+    contact: ContactComponent
+    step_number: number
+    details_by_jobCategory: [CompanyJobDetailsComponent | PersonalJobDetailsComponent | any]
+}
+export interface CompanyJobDetailsComponent {
+    __component: string
+    company_name: string | undefined
+    designation: string | undefined
     job_type: string
     educational_qualification: string
     job_experience: string
-    year_of_experience: string
+    experience_in_years: string
     work_mode: string
     salary_range_min: string | undefined
     salary_range_max: string | undefined
     open_positions: number
-    gender: string
     job_shift: string
     interview_mode: string
-    preferred_languages: any[]
-    area: any
-    contact: ContactComponent
-    step_number: number
+}
+export interface PersonalJobDetailsComponent {
+    __component: string
+    job_timing_from: string | undefined
+    job_timing_to: string | undefined
+    salary: string | undefined
 }

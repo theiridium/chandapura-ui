@@ -8,6 +8,10 @@ import React, { Suspense } from 'react'
 export const dynamic = 'force-dynamic'
 
 const Page = ({ searchParams }: any) => {
+  if (!searchParams?.q) {
+    searchParams.index = Products.job.searchIndex;
+    searchParams.q = "*";
+  }
   return (
     <div className="max-w-screen-xl mx-auto px-3 mt-3 lg:my-6">
       <div className="grid lg:grid-cols-4 lg:gap-10 mb-6">

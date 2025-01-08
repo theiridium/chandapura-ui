@@ -15,6 +15,7 @@ import FormLoading from '@/app/loading-components/form-loading';
 import { toast } from 'react-toastify';
 import { ListingWorkflow } from '@/lib/typings/enums';
 import { RadioBox } from '@/app/sub-components/radio-box';
+import TimeList from "@/lib/data/time-list.json";
 
 const Page = () => {
     const { data }: any = useSession();
@@ -33,26 +34,18 @@ const Page = () => {
         contact_email_id: userData.email
     });
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
+    const [jobDetails, setJobDetails] = useState<any>(null);
     const [jobListing, setJobListing] = useState<JobListing>({
-        name: "",
         job_title: "",
-        designation: "",
-        job_description: "",
-        job_type: "",
-        work_mode: "",
-        educational_qualification: "",
-        job_experience: "",
-        year_of_experience: "",
-        salary_range_min: "",
-        salary_range_max: "",
+        category: "Personal",
         gender: "",
-        job_shift: "",
-        interview_mode: "",
-        open_positions: 1,
+        job_description: "",
         preferred_languages: languageValues,
         area: "",
+        full_address: "",
         contact: contact,
-        step_number: ListingWorkflow.Initial
+        step_number: ListingWorkflow.Initial,
+        details_by_jobCategory: jobDetails
     });
     const [apiRes, setApiRes] = useState<any>();
     const onAreaChange = (id: any) => setJobListing({ ...jobListing, area: id });
@@ -63,10 +56,28 @@ const Page = () => {
         if (inView) setActiveEl(entry.target.id)
     }, [activeEl]);
 
+    const getJobDetailsComp = (data: any) => {
+        let job_details: any = null;
+        switch (data.category) {
+            case "Personal":
+                job_details = data.details_by_jobCategory.find((x: any) => x.__component === Products.job.api.component_personalJob);
+                break;
+
+            case "Company":
+                job_details = data.details_by_jobCategory.find((x: any) => x.__component === Products.job.api.component_companyJob);
+                break;
+
+            default:
+                break;
+        }
+        return job_details;
+    }
 
     useEffect(() => {
         if (apiRes) {
-            setContact(apiRes.contact)
+            const job_details = getJobDetailsComp(apiRes);
+            setContact(apiRes.contact);
+            setJobDetails(job_details);
             setLanguageValues(new Set(apiRes.preferred_languages.map((item: any) => String(item.id))))
             setJobListing(prev => ({
                 ...prev,
@@ -76,6 +87,28 @@ const Page = () => {
             }));
         }
     }, [apiRes])
+
+    useEffect(() => {
+        switch (jobListing.category) {
+            case "Personal":
+                // setAmenityList(pgAmenityList);
+                setJobDetails((prev: any) => ({
+                    ...prev,
+                    __component: Products.job.api.component_personalJob
+                }));
+                break;
+
+            case "Company":
+                // setAmenityList(realEstateAmenityList);
+                setJobDetails((prev: any) => ({
+                    ...prev,
+                    __component: Products.job.api.component_companyJob
+                }));
+                break;
+            default:
+                break;
+        }
+    }, [jobListing.category])
 
     const populateJobDetails = useCallback(async () => {
         if (source) {
@@ -103,10 +136,6 @@ const Page = () => {
         defaultValues: async () => populateJobDetails()
     });
 
-    useEffect(() => {
-        console.log(jobListing)
-    }, [jobListing])
-
     const handleContactDetails = (data: any) => setContact(data);
 
     const onSubmit: SubmitHandler<any> = (data) => {
@@ -114,15 +143,13 @@ const Page = () => {
         let formdata = { ...data, jobListing }
         const payload: JobListing = {
             ...jobListing,
-            name: formdata.name,
             job_title: formdata.job_title,
-            designation: formdata.designation,
             job_description: formdata.job_description,
-            salary_range_min: formdata.salary_range_min,
-            salary_range_max: formdata.salary_range_max,
+            full_address: formdata.full_address,
             preferred_languages: languageValues,
             contact: contact,
-            step_number: ListingWorkflow.AddDetails
+            step_number: ListingWorkflow.AddDetails,
+            details_by_jobCategory: [jobDetails]
         }
         postJobListing(payload);
     }
@@ -159,6 +186,13 @@ const Page = () => {
         }
     };
 
+    // useEffect(() => {
+    //     console.log(jobListing)
+    // }, [jobListing])
+    // useEffect(() => {
+    //     console.log(jobDetails)
+    // }, [jobDetails])
+
     return (
         <>
             {isSubmitLoading && <FormLoading text={"Uploading your Job..."} />}
@@ -169,21 +203,31 @@ const Page = () => {
                 <form onKeyPress={onKeyPress} className='grid grid-cols-1 gap-10 mx-2' onSubmit={handleSubmit(onSubmit)}>
                     <InView threshold={1} as="div" onChange={onViewScroll} id='general' className='listing-card border rounded-lg px-4 lg:px-7 py-6 scroll-mt-36'>
                         <div className='card-header text-xl font-semibold mb-5'>General</div>
-                        <div className="mb-8">
-                            <Controller
-                                control={control}
-                                name='name'
-                                render={({ field: { value } }) => (
-                                    <Input isDisabled={disabled}
-                                        {...register("name")}
-                                        value={value}
-                                        type="text"
-                                        variant="flat"
-                                        label="Company Name"
-                                        isRequired />
-                                )}
-                            />
+                        <div className='mb-8'>
+                            <RadioGroup
+                                value={jobListing?.category}
+                                onChange={(e: any) => {
+                                    // setAmenitiesValues(new Set([]))
+                                    setJobListing({
+                                        ...jobListing,
+                                        category: e.target.value
+                                    })
+                                }}
+                                size='sm'
+                                orientation="horizontal"
+                                label="Job posting for"
+                                description="Job category cannot be changed once its published."
+                                isDisabled={!!source || disabled}
+                                isRequired>
+                                <RadioBox value="Personal">
+                                    Personal
+                                </RadioBox>
+                                <RadioBox value="Company">
+                                    Company
+                                </RadioBox>
+                            </RadioGroup>
                         </div>
+
                         <div className='mb-8'>
                             <Controller
                                 control={control}
@@ -199,6 +243,9 @@ const Page = () => {
                                 )}
                             />
                         </div>
+                    </InView>
+                    {jobListing?.category === "Personal" && <InView as="div" threshold={1} onChange={onViewScroll} id='jobDetails' className='listing-card border rounded-lg px-4 lg:px-7 py-6 scroll-mt-36'>
+                        <div className='card-header text-xl font-semibold mb-5'>Job Details</div>
                         <div className='mb-8'>
                             <Controller
                                 control={control}
@@ -212,16 +259,149 @@ const Page = () => {
                                 )}
                             />
                         </div>
-                    </InView>
-                    <InView as="div" threshold={1} onChange={onViewScroll} id='jobDetails' className='listing-card border rounded-lg px-4 lg:px-7 py-6 scroll-mt-36'>
-                        <div className='card-header text-xl font-semibold mb-5'>Job Details</div>
-                        <div className='flex w-full gap-8 lg:gap-4 mt-3 mb-8 flex-wrap md:flex-nowrap'>
-                            <Select label="Job Type" selectedKeys={[jobListing?.job_type]}
+                        <div className={`relative text-foreground-500 after:content-['*'] after:text-danger after:ml-0.5`}>Preferred Work Timings</div>
+                        <div className='flex w-full mt-3 mb-8 flex-nowrap'>
+                            <Select
+                                items={TimeList}
+                                label="From"
+                                variant="bordered"
+                                selectedKeys={jobDetails?.job_timing_from}
+                                className="col-span-5 md:col-span-3 w-full"
+                                classNames={{
+                                    trigger: 'rounded-r-none'
+                                }}
+                                onChange={(e: any) =>
+                                    setJobDetails((prev: any) => ({
+                                        ...prev,
+                                        job_timing_from: new Set([e.target.value]),
+                                    }))
+                                }
+                                name={"job_timing_from"}
+                                isDisabled={disabled}
+                            >
+                                {(time) => (
+                                    <SelectItem key={time.key}>
+                                        {time.label}
+                                    </SelectItem>
+                                )}
+                            </Select>
+                            <div className='bg-default-200 border-default-200 flex items-center px-5 min-10 h-14'>To</div>
+                            <Select
+                                items={TimeList}
+                                label="To"
+                                variant="bordered"
+                                selectedKeys={jobDetails?.job_timing_to}
+                                className="col-span-5 md:col-span-3 w-full"
+                                classNames={{
+                                    trigger: 'rounded-l-none'
+                                }}
+                                onChange={(e: any) =>
+                                    setJobDetails((prev: any) => ({
+                                        ...prev,
+                                        job_timing_to: new Set([e.target.value]),
+                                    }))
+                                }
+                                name={"job_timing_to"}
+                                isDisabled={disabled}
+                            >
+                                {(time) => (
+                                    <SelectItem key={time.key}>
+                                        {time.label}
+                                    </SelectItem>
+                                )}
+                            </Select>
+                        </div>
+                        <div className='mb-8'>
+                            <Select
+                                items={languageList || []}
+                                variant="flat"
+                                label="Language Preference"
+                                isMultiline={true}
+                                selectionMode="multiple"
+                                placeholder="Select language(s)"
+                                classNames={{
+                                    base: "w-full",
+                                    trigger: "min-h-12 py-2",
+                                    listboxWrapper: "nextui-listbox relative"
+                                }}
+                                selectedKeys={languageValues}
+                                isDisabled={disabled}
+                                onSelectionChange={setLanguageValues}
+                                renderValue={(items: SelectedItems<any>) => {
+                                    return (
+                                        <div className="flex flex-wrap gap-2">
+                                            {items.map((item) => (
+                                                <Chip key={item.key}>{item.data.name}</Chip>
+                                            ))}
+                                        </div>
+                                    );
+                                }}
+                            >
+                                {(item) => (
+                                    <SelectItem key={item.id}>
+                                        <div className=''>
+                                            {item.name}
+                                            <span className='border border-slate-500 absolute right-1 w-5 h-5'></span>
+                                        </div>
+                                    </SelectItem>
+                                )}
+                            </Select>
+                        </div>
+                        <div className='mb-8'>
+                            <Select label="Gender" selectedKeys={[jobListing?.gender]}
                                 isDisabled={disabled}
                                 classNames={{ listboxWrapper: "nextui-listbox" }}
                                 isRequired
                                 onChange={(e: any) =>
                                     setJobListing((prev: any) => ({
+                                        ...prev,
+                                        gender: e.target.value,
+                                    }))
+                                }>
+                                {SelectList.Gender.map((item) => (
+                                    <SelectItem key={item}>
+                                        {item}
+                                    </SelectItem>
+                                ))}
+                            </Select>
+                        </div>
+                    </InView>}
+                    {jobListing?.category === "Company" && <InView as="div" threshold={1} onChange={onViewScroll} id='jobDetails' className='listing-card border rounded-lg px-4 lg:px-7 py-6 scroll-mt-36'>
+                        <div className='card-header text-xl font-semibold mb-5'>Job Details</div>
+                        <div className="mb-8">
+                            <Input isDisabled={disabled}
+                                value={jobDetails?.company_name?.toString() || ""}
+                                onChange={(e: any) =>
+                                    setJobDetails((prev: any) => ({
+                                        ...prev,
+                                        company_name: e.target.value,
+                                    }))
+                                }
+                                type="text"
+                                variant="flat"
+                                label="Company Name"
+                                isRequired />
+                        </div>
+                        <div className='mb-8'>
+                            <Controller
+                                control={control}
+                                name='job_description'
+                                render={({ field: { value } }) => (
+                                    <Textarea isDisabled={disabled}
+                                        {...register("job_description")}
+                                        value={value}
+                                        variant="flat"
+                                        label="Job Description" />
+                                )}
+                            />
+                        </div>
+                        <div className='flex w-full gap-8 lg:gap-4 mt-3 mb-8 flex-wrap md:flex-nowrap'>
+                            <Select label="Job Type" selectedKeys={[jobDetails?.job_type]}
+                                isDisabled={disabled}
+                                classNames={{ listboxWrapper: "nextui-listbox" }}
+                                isRequired
+                                onChange={(e: any) =>
+                                    setJobDetails((prev: any) => ({
                                         ...prev,
                                         job_type: e.target.value,
                                     }))
@@ -232,12 +412,12 @@ const Page = () => {
                                     </SelectItem>
                                 ))}
                             </Select>
-                            <Select label="Number of Vacancies" selectedKeys={[(jobListing.open_positions)?.toString()]}
+                            <Select label="Number of Vacancies" selectedKeys={[(jobDetails.open_positions)?.toString()]}
                                 isDisabled={disabled}
                                 classNames={{ listboxWrapper: "nextui-listbox" }}
                                 isRequired
                                 onChange={(e: any) =>
-                                    setJobListing((prev: any) => ({
+                                    setJobDetails((prev: any) => ({
                                         ...prev,
                                         open_positions: e.target.value,
                                     }))
@@ -250,12 +430,12 @@ const Page = () => {
                             </Select>
                         </div>
                         <div className='flex w-full gap-8 lg:gap-4 mt-3 mb-8 flex-wrap md:flex-nowrap'>
-                            <Select label="Educational Qualification" selectedKeys={[jobListing?.educational_qualification]}
+                            <Select label="Educational Qualification" selectedKeys={[jobDetails?.educational_qualification]}
                                 isDisabled={disabled}
                                 classNames={{ listboxWrapper: "nextui-listbox" }}
                                 isRequired
                                 onChange={(e: any) =>
-                                    setJobListing((prev: any) => ({
+                                    setJobDetails((prev: any) => ({
                                         ...prev,
                                         educational_qualification: e.target.value,
                                     }))
@@ -269,12 +449,12 @@ const Page = () => {
                         </div>
                         <div className='mb-8'>
                             <RadioGroup
-                                value={jobListing?.job_experience}
+                                value={jobDetails?.job_experience}
                                 onChange={(e: any) =>
-                                    setJobListing({
-                                        ...jobListing,
-                                        job_experience: e.target.value
-                                    })
+                                    setJobDetails((prev: any) => ({
+                                        ...prev,
+                                        job_experience: e.target.value,
+                                    }))
                                 }
                                 label="Job Experience"
                                 size='sm'
@@ -288,14 +468,14 @@ const Page = () => {
                                 )}
                             </RadioGroup>
                         </div>
-                        {jobListing?.job_experience === "Experienced" && <div className='mb-8'>
+                        {jobDetails?.job_experience === "Experienced" && <div className='mb-8'>
                             <RadioGroup
-                                value={jobListing?.year_of_experience}
+                                value={jobDetails?.experience_in_years}
                                 onChange={(e: any) =>
-                                    setJobListing({
-                                        ...jobListing,
-                                        year_of_experience: e.target.value
-                                    })
+                                    setJobDetails((prev: any) => ({
+                                        ...prev,
+                                        experience_in_years: e.target.value,
+                                    }))
                                 }
                                 label="Choose a minimum experience"
                                 size='sm'
@@ -309,12 +489,12 @@ const Page = () => {
                         </div>}
                         <div className='flex w-full gap-8 lg:gap-4 mt-3 mb-8 flex-wrap md:flex-nowrap *:basis-full md:*:basis-1/2'>
                             <RadioGroup
-                                value={jobListing?.work_mode}
+                                value={jobDetails?.work_mode}
                                 onChange={(e: any) =>
-                                    setJobListing({
-                                        ...jobListing,
-                                        work_mode: e.target.value
-                                    })
+                                    setJobDetails((prev: any) => ({
+                                        ...prev,
+                                        work_mode: e.target.value,
+                                    }))
                                 }
                                 label="Job Location"
                                 size='sm'
@@ -330,49 +510,47 @@ const Page = () => {
                         </div>
                         <div className={`relative text-foreground-500 after:content-['*'] after:text-danger after:ml-0.5`}>Salary / month</div>
                         <div className='flex w-full mt-3 mb-8 flex-nowrap'>
-                            <Controller
-                                control={control}
-                                name='salary_range_min'
-                                render={({ field: { value } }) => (
-                                    <Input isDisabled={disabled}
-                                        {...register("salary_range_min")}
-                                        value={value}
-                                        type="text"
-                                        classNames={{
-                                            inputWrapper: 'rounded-r-none'
-                                        }}
-                                        startContent={
-                                            <div className="pointer-events-none flex items-center">
-                                                <span className="text-default-400 text-small">₹</span>
-                                            </div>
-                                        }
-                                        variant="bordered"
-                                        label="Minimum Salary"
-                                        isRequired />
-                                )}
-                            />
+                            <Input isDisabled={disabled}
+                                value={jobDetails?.salary_range_min?.toString() || ""}
+                                onChange={(e: any) =>
+                                    setJobDetails((prev: any) => ({
+                                        ...prev,
+                                        salary_range_min: e.target.value,
+                                    }))
+                                }
+                                type="text"
+                                classNames={{
+                                    inputWrapper: 'rounded-r-none'
+                                }}
+                                startContent={
+                                    <div className="pointer-events-none flex items-center">
+                                        <span className="text-default-400 text-small">₹</span>
+                                    </div>
+                                }
+                                variant="bordered"
+                                label="Minimum Salary"
+                                isRequired />
                             <div className='bg-default-200 border-default-200 flex items-center px-5 min-10 h-14'>To</div>
-                            <Controller
-                                control={control}
-                                name='salary_range_max'
-                                render={({ field: { value } }) => (
-                                    <Input isDisabled={disabled}
-                                        {...register("salary_range_max")}
-                                        value={value}
-                                        type="text"
-                                        classNames={{
-                                            inputWrapper: 'rounded-l-none'
-                                        }}
-                                        startContent={
-                                            <div className="pointer-events-none flex items-center">
-                                                <span className="text-default-400 text-small">₹</span>
-                                            </div>
-                                        }
-                                        variant="bordered"
-                                        label="Maximum Salary"
-                                        isRequired />
-                                )}
-                            />
+                            <Input isDisabled={disabled}
+                                value={jobDetails?.salary_range_max?.toString() || ""}
+                                onChange={(e: any) =>
+                                    setJobDetails((prev: any) => ({
+                                        ...prev,
+                                        salary_range_max: e.target.value,
+                                    }))
+                                }
+                                type="text"
+                                classNames={{
+                                    inputWrapper: 'rounded-l-none'
+                                }}
+                                startContent={
+                                    <div className="pointer-events-none flex items-center">
+                                        <span className="text-default-400 text-small">₹</span>
+                                    </div>
+                                }
+                                variant="bordered"
+                                label="Minimum Salary"
+                                isRequired />
                         </div>
                         <div className='mb-8'>
                             <Select
@@ -427,12 +605,12 @@ const Page = () => {
                                     </SelectItem>
                                 ))}
                             </Select>
-                            <Select label="Job Shift" selectedKeys={[jobListing?.job_shift]}
+                            <Select label="Job Shift" selectedKeys={[jobDetails?.job_shift]}
                                 isDisabled={disabled}
                                 classNames={{ listboxWrapper: "nextui-listbox" }}
                                 isRequired
                                 onChange={(e: any) =>
-                                    setJobListing((prev: any) => ({
+                                    setJobDetails((prev: any) => ({
                                         ...prev,
                                         job_shift: e.target.value,
                                     }))
@@ -443,12 +621,12 @@ const Page = () => {
                                     </SelectItem>
                                 ))}
                             </Select>
-                            <Select label="Mode of Interview" selectedKeys={[jobListing?.interview_mode]}
+                            <Select label="Mode of Interview" selectedKeys={[jobDetails?.interview_mode]}
                                 isDisabled={disabled}
                                 classNames={{ listboxWrapper: "nextui-listbox" }}
                                 isRequired
                                 onChange={(e: any) =>
-                                    setJobListing((prev: any) => ({
+                                    setJobDetails((prev: any) => ({
                                         ...prev,
                                         interview_mode: e.target.value,
                                     }))
@@ -460,7 +638,7 @@ const Page = () => {
                                 ))}
                             </Select>
                         </div>
-                    </InView>
+                    </InView>}
                     <InView threshold={1} as="div" onChange={onViewScroll} id='location' className='listing-card border rounded-lg px-4 lg:px-7 py-6 scroll-mt-36'>
                         <div className='card-header text-xl font-semibold mb-5'>Location</div>
                         <div className="mb-8">
@@ -476,6 +654,20 @@ const Page = () => {
                             >
                                 {(item: any) => <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>}
                             </Autocomplete>
+                        </div>
+                        <div className='mb-8'>
+                            <Controller
+                                control={control}
+                                name='full_address'
+                                render={({ field: { value } }) => (
+                                    <Textarea isDisabled={disabled}
+                                        {...register("full_address")}
+                                        value={value || ""}
+                                        variant="flat"
+                                        label="Full Address"
+                                        isRequired />
+                                )}
+                            />
                         </div>
                     </InView>
                     <InView as="div" threshold={1} onChange={onViewScroll} id='contact' className='listing-card border rounded-lg px-4 lg:px-7 py-6 scroll-mt-36'>

@@ -29,7 +29,7 @@ const steps = [
     //     nextPath: "publish"
     // },
     {
-        number: 4,
+        number: 3,
         title: "Review & Publish",
         currentPath: "publish",
         nextPath: "completed"

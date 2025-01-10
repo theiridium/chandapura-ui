@@ -16,6 +16,7 @@ import { toast } from 'react-toastify';
 import { ListingWorkflow } from '@/lib/typings/enums';
 import { RadioBox } from '@/app/sub-components/radio-box';
 import TimeList from "@/lib/data/time-list.json";
+import moment from 'moment';
 
 const Page = () => {
     const { data }: any = useSession();
@@ -76,9 +77,14 @@ const Page = () => {
     useEffect(() => {
         if (apiRes) {
             const job_details = getJobDetailsComp(apiRes);
+            let jobDetailsFormatted = {
+                ...job_details,
+                job_timing_from: new Set([moment(job_details.job_timing_from, "HH:mm:ss").format("hh:mm A")]),
+                job_timing_to: new Set([moment(job_details.job_timing_to, "HH:mm:ss").format("hh:mm A")])
+            }
             setContact(apiRes.contact);
-            setJobDetails(job_details);
-            setLanguageValues(new Set(apiRes.preferred_languages.map((item: any) => String(item.id))))
+            setJobDetails(jobDetailsFormatted);
+            setLanguageValues(new Set(apiRes.preferred_languages.map((item: any) => String(item.id))));
             setJobListing(prev => ({
                 ...prev,
                 ...apiRes,
@@ -138,18 +144,30 @@ const Page = () => {
 
     const handleContactDetails = (data: any) => setContact(data);
 
+    useEffect(() => {
+        !!languageList && languageValues.length > 0 && setJobListing((prev: any) => ({
+            ...prev,
+            preferred_languages: languageList.filter((item: any) => languageValues.has(String(item.id)))
+        }))
+    }, [languageValues])
+
     const onSubmit: SubmitHandler<any> = (data) => {
         setIsSubmitLoading(true);
         let formdata = { ...data, jobListing }
+        let jobDetailsFormatted =
+        {
+            ...jobDetails,
+            job_timing_from: moment(Array.from(jobDetails.job_timing_from)[0] as string, "hh:mm A").format("HH:mm:ss.SSS"),
+            job_timing_to: moment(Array.from(jobDetails.job_timing_to)[0] as string, "hh:mm A").format("HH:mm:ss.SSS")
+        }
         const payload: JobListing = {
             ...jobListing,
             job_title: formdata.job_title,
             job_description: formdata.job_description,
             full_address: formdata.full_address,
-            preferred_languages: languageValues,
             contact: contact,
             step_number: ListingWorkflow.AddDetails,
-            details_by_jobCategory: [jobDetails]
+            details_by_jobCategory: [jobDetailsFormatted]
         }
         postJobListing(payload);
     }
@@ -311,6 +329,50 @@ const Page = () => {
                                 )}
                             </Select>
                         </div>
+                        <div className={`relative text-foreground-500 after:content-['*'] after:text-danger after:ml-0.5`}>Salary / month</div>
+                        <div className='flex w-full mt-3 mb-8 flex-nowrap'>
+                            <Input isDisabled={disabled}
+                                value={jobDetails?.salary_range_min?.toString() || ""}
+                                onChange={(e: any) =>
+                                    setJobDetails((prev: any) => ({
+                                        ...prev,
+                                        salary_range_min: e.target.value,
+                                    }))
+                                }
+                                type="text"
+                                classNames={{
+                                    inputWrapper: 'rounded-r-none'
+                                }}
+                                startContent={
+                                    <div className="pointer-events-none flex items-center">
+                                        <span className="text-default-400 text-small">₹</span>
+                                    </div>
+                                }
+                                variant="bordered"
+                                label="Minimum Salary"
+                                isRequired />
+                            <div className='bg-default-200 border-default-200 flex items-center px-5 min-10 h-14'>To</div>
+                            <Input isDisabled={disabled}
+                                value={jobDetails?.salary_range_max?.toString() || ""}
+                                onChange={(e: any) =>
+                                    setJobDetails((prev: any) => ({
+                                        ...prev,
+                                        salary_range_max: e.target.value,
+                                    }))
+                                }
+                                type="text"
+                                classNames={{
+                                    inputWrapper: 'rounded-l-none'
+                                }}
+                                startContent={
+                                    <div className="pointer-events-none flex items-center">
+                                        <span className="text-default-400 text-small">₹</span>
+                                    </div>
+                                }
+                                variant="bordered"
+                                label="Maximum Salary"
+                                isRequired />
+                        </div>
                         <div className='mb-8'>
                             <Select
                                 items={languageList || []}
@@ -366,6 +428,9 @@ const Page = () => {
                             </Select>
                         </div>
                     </InView>}
+
+
+
                     {jobListing?.category === "Corporate" && <InView as="div" threshold={1} onChange={onViewScroll} id='jobDetails' className='listing-card border rounded-lg px-4 lg:px-7 py-6 scroll-mt-36'>
                         <div className='card-header text-xl font-semibold mb-5'>Job Details</div>
                         <div className="mb-8">
@@ -508,7 +573,7 @@ const Page = () => {
                                 )}
                             </RadioGroup>
                         </div>
-                        <div className={`relative text-foreground-500 after:content-['*'] after:text-danger after:ml-0.5`}>Salary / month</div>
+                        <div className={`relative text-foreground-500 after:content-['*'] after:text-danger after:ml-0.5`}>Salary / annum</div>
                         <div className='flex w-full mt-3 mb-8 flex-nowrap'>
                             <Input isDisabled={disabled}
                                 value={jobDetails?.salary_range_min?.toString() || ""}
@@ -549,7 +614,7 @@ const Page = () => {
                                     </div>
                                 }
                                 variant="bordered"
-                                label="Minimum Salary"
+                                label="Maximum Salary"
                                 isRequired />
                         </div>
                         <div className='mb-8'>

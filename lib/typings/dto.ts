@@ -181,5 +181,6 @@ export interface PersonalJobDetailsComponent {
     __component: string
     job_timing_from: string | undefined
     job_timing_to: string | undefined
-    salary: string | undefined
+    salary_range_min: string | undefined
+    salary_range_max: string | undefined
 }

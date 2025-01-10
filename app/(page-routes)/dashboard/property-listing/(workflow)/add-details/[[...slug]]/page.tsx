@@ -228,7 +228,7 @@ const Page = () => {
         }
     }
     useEffect(() => {
-        amenityList && amenitiesValues && setPropertyDetails((prev: any) => ({
+        !!amenityList && amenitiesValues.length > 0 && setPropertyDetails((prev: any) => ({
             ...prev,
             amenities: amenityList.filter((item: any) => amenitiesValues.has(String(item.id)))
         }))

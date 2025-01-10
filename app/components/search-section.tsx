@@ -5,15 +5,29 @@ import { Tab, Tabs } from "@nextui-org/react"
 import SearchBar from "../sub-components/search-bar"
 import { useEffect, useState } from "react"
 import { useSetAtom } from "jotai"
-import { searchText } from "@/lib/atom"
+import { categories, classifiedCategories, searchText } from "@/lib/atom"
 import SearchCategorySection from "../sub-components/search-category-section"
+import { getPublicApiResponse } from "@/lib/apiLibrary"
 
 const SearchSection = () => {
   const [productType, setProductType] = useState<any>(ProductSelect[0].value);
   const setSearchText = useSetAtom(searchText);
   const clearSearchBox = () => setSearchText("");
+  const setBizCategories = useSetAtom(categories);
+  const setClassifiedCategories = useSetAtom(classifiedCategories);
   useEffect(() => {
     clearSearchBox();
+  }, [])
+  const getAllCategoriesList = async () => {
+    const [bizCategoriesResponse, classifiedCategoriesResponse] = await Promise.all([
+      getPublicApiResponse(`categories?populate=image&sort=name`),
+      getPublicApiResponse(`classified-categories?populate=image&sort=name`)
+    ]);
+    setBizCategories(bizCategoriesResponse.data);
+    setClassifiedCategories(classifiedCategoriesResponse.data);
+  }
+  useEffect(() => {
+    getAllCategoriesList();
   }, [])
 
   return (
@@ -47,11 +61,9 @@ const SearchSection = () => {
         </div>
       </div>
       <div className="max-w-screen-xl mx-auto px-3 mb-12 md:mb-20">
-        {(productType === Products.business.productType || productType === Products.realEstate.productType) &&
-          <div className="col-span-1 lg:col-span-12">
-            <SearchCategorySection productType={productType} />
-          </div>
-        }
+        <div className="col-span-1 lg:col-span-12">
+          <SearchCategorySection productType={productType} />
+        </div>
       </div>
     </>
   )

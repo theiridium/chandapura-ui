@@ -63,8 +63,8 @@ const Page = () => {
                 job_details = data.details_by_jobCategory.find((x: any) => x.__component === Products.job.api.component_personalJob);
                 break;
 
-            case "Company":
-                job_details = data.details_by_jobCategory.find((x: any) => x.__component === Products.job.api.component_companyJob);
+            case "Corporate":
+                job_details = data.details_by_jobCategory.find((x: any) => x.__component === Products.job.api.component_corporateJob);
                 break;
 
             default:
@@ -98,11 +98,11 @@ const Page = () => {
                 }));
                 break;
 
-            case "Company":
+            case "Corporate":
                 // setAmenityList(realEstateAmenityList);
                 setJobDetails((prev: any) => ({
                     ...prev,
-                    __component: Products.job.api.component_companyJob
+                    __component: Products.job.api.component_corporateJob
                 }));
                 break;
             default:
@@ -220,10 +220,10 @@ const Page = () => {
                                 isDisabled={!!source || disabled}
                                 isRequired>
                                 <RadioBox value="Personal">
-                                    Personal
+                                    Personal Service
                                 </RadioBox>
-                                <RadioBox value="Company">
-                                    Company
+                                <RadioBox value="Corporate">
+                                    Corporate Job
                                 </RadioBox>
                             </RadioGroup>
                         </div>
@@ -366,7 +366,7 @@ const Page = () => {
                             </Select>
                         </div>
                     </InView>}
-                    {jobListing?.category === "Company" && <InView as="div" threshold={1} onChange={onViewScroll} id='jobDetails' className='listing-card border rounded-lg px-4 lg:px-7 py-6 scroll-mt-36'>
+                    {jobListing?.category === "Corporate" && <InView as="div" threshold={1} onChange={onViewScroll} id='jobDetails' className='listing-card border rounded-lg px-4 lg:px-7 py-6 scroll-mt-36'>
                         <div className='card-header text-xl font-semibold mb-5'>Job Details</div>
                         <div className="mb-8">
                             <Input isDisabled={disabled}

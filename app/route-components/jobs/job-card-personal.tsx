@@ -13,7 +13,7 @@ const JobCard = (p: any) => {
                 <div className='flex flex-row gap-5 items-center'>
                     <div className="basis-1/5 *:aspect-square">
                         {item.logo_image === null ?
-                            <img src="/images/icons/company.png" /> :
+                            <img src="/images/icons/company-logo-placeholder.png" /> :
                             <img src={item.logo_image.url} />}
                     </div>
                     <div className='basis-4/5'>

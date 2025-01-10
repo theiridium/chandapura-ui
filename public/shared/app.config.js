@@ -235,9 +235,11 @@ module.exports = {
         userFilter: "filters[author][email][$eq]",
         isPublishedFilter: `filters[publish_status][$eq]=true`,
         limit: 4,
-        component_companyJob: "job.company-job-posting",
-        component_personalJob: "job.personal-job-posting"
+        component_corporateJob: "job.corporate-job-details",
+        component_personalJob: "job.personal-job-details"
       },
+      personalJobUrl: 'personal',
+      corporateJobUrl: 'corporate',
     },
     advertisement: {
       label: "advertisement",
@@ -439,6 +441,6 @@ module.exports = {
       "10 Years",
     ],
     JobShift: ["General Shift", "Morning Shift", "Afternoon Shift", "Night Shift", "Rotational Shift"],
-    JobCategory: ["Company", "Personal"],
+    JobCategory: ["Corporate", "Personal"],
   },
 };

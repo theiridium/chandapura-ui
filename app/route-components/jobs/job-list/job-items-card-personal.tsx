@@ -1,5 +1,5 @@
 import { ConvertCurrencyToWords } from "@/lib/helpers"
-import { Banknote, IndianRupee, MapPin, Phone } from "lucide-react"
+import { Banknote, IndianRupee, MapPin } from "lucide-react"
 
 const JobItemsCardPersonal = ({ data, id, product }: any) => {
     const job_details = data.details_by_jobCategory.find((x: any) => x.__component == product.api.component_personalJob);
@@ -10,7 +10,7 @@ const JobItemsCardPersonal = ({ data, id, product }: any) => {
                     <div className='flex flex-row gap-5 items-center'>
                         <div className="*:h-16 *:aspect-square">
                             {data.logo_image === null ?
-                                <img src="/images/icons/company.png" /> :
+                                <img src="/images/icons/company-logo-placeholder.png" /> :
                                 <img src={data.logo_image.url} />}
                         </div>
                         <div className=''>

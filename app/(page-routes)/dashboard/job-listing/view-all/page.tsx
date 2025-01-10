@@ -96,7 +96,7 @@ const Page = () => {
                     </div>
                     <div className='flex *:basis-24 *:w-[145px] *:h-[150px] *:object-cover *:rounded-lg'>
                       {x.logo_image === null ?
-                        <img src="/images/icons/company.png" /> :
+                        <img src="/images/icons/company-logo-placeholder.png" /> :
                         <img src={x.logo_image.url} />}
                     </div>
                     <div className='w-full grow'>

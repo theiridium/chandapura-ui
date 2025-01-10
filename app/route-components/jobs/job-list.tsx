@@ -1,5 +1,5 @@
 import { Products } from "@/public/shared/app.config";
-import JobCardCompany from "./job-card-company";
+import JobCardCorporate from "./job-card-corporate";
 import { getPublicApiResponse } from "@/lib/apiLibrary";
 import ListArrow from "@/app/sub-components/list-arrow";
 import JobItemsCardPersonal from "./job-list/job-items-card-personal";
@@ -11,8 +11,8 @@ const JobList = async () => {
     <>
       <div className="job-card-list-row">
         {jobList.data.map((item: any, i: any) => (
-          item.category === "Company"?
-          <JobCardCompany key={i} list={item} id={item.id} />:
+          item.category === "Corporate"?
+          <JobCardCorporate key={i} list={item} id={item.id} />:
           <JobItemsCardPersonal key={i} list={item} id={item.id} />
         ))}
       </div>

@@ -1,8 +1,8 @@
 import { ConvertCurrencyToWords } from "@/lib/helpers"
 import { Banknote, IndianRupee, MapPin, Phone } from "lucide-react"
 
-const JobItemsCardCompany = ({ data, id, product }: any) => {
-    const job_details = data.details_by_jobCategory.find((x: any) => x.__component == product.api.component_companyJob);
+const JobItemsCardCorporate = ({ data, id, product }: any) => {
+    const job_details = data.details_by_jobCategory.find((x: any) => x.__component == product.api.component_corporateJob);
     return (
         <a className="card_link" href={`/${product.slug}/${data.slug}?source=${id}`}>
             <div className="border border-gray-300 rounded-xl bg-white">
@@ -10,7 +10,7 @@ const JobItemsCardCompany = ({ data, id, product }: any) => {
                     <div className='flex flex-row gap-5 items-center'>
                         <div className="*:h-16 *:aspect-square">
                             {data.logo_image === null ?
-                                <img src="/images/icons/company.png" /> :
+                                <img src="/images/icons/company-logo-placeholder.png" /> :
                                 <img src={data.logo_image.url} />}
                         </div>
                         <div className=''>
@@ -35,4 +35,4 @@ const JobItemsCardCompany = ({ data, id, product }: any) => {
     )
 }
 
-export default JobItemsCardCompany
+export default JobItemsCardCorporate

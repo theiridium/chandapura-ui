@@ -4,7 +4,7 @@ import { Banknote, IndianRupee, MapPin, Phone } from "lucide-react"
 const JobItemsCardCorporate = ({ data, id, product }: any) => {
     const job_details = data.details_by_jobCategory.find((x: any) => x.__component == product.api.component_corporateJob);
     return (
-        <a className="card_link" href={`/${product.slug}/${data.slug}?source=${id}`}>
+        <a className="card_link" href={`/${product.slug}/${data.category}/${data.slug}?source=${id}`}>
             <div className="border border-gray-300 rounded-xl bg-white">
                 <div className="job-card p-5 w-auto">
                     <div className='flex flex-row gap-5 items-center'>

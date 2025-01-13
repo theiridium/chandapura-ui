@@ -9,7 +9,7 @@ const JobCardCorporate = (p: any) => {
     const job_details = item.details_by_jobCategory.find((x: any) => x.__component == Products.job.api.component_corporateJob);
     return (
         <>
-            {!!job_details && <a href={`${Products.job.url}/${item.slug}?source=${id}`} className="re-card-link">
+            {!!job_details && <a href={`${Products.job.url}/${item.category}/${item.slug}?source=${id}`} className="re-card-link">
                 <div className="job-card p-5 w-80 md:w-auto">
                     <div className='flex flex-row gap-5 items-center'>
                         <div className="basis-1/5 *:aspect-square">

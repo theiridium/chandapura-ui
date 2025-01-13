@@ -154,11 +154,8 @@ export const getPublicSingleSearchResponse = async (payload: SearchPayload | und
         Authorization: "Bearer " + process.env.MEILISEARCH_TOKEN,
         "Content-Type": "application/json"
     }
-    let filters = (!!payload?.filter) ? payload?.noExpFilter ?
-        ["publish_status = true"] :
-        ["publish_status = true", `payment_details.expiry_date_timestamp > ${currentDate}`, 'payment_details.isPaymentSuccess = true'] :
-        [];
-    if (payload?.filter) filters.push(payload.filter);
+    let filters = payload?.filter;
+    (!!filters) && !payload?.noExpFilter && (filters = [...filters, "publish_status = true", `payment_details.expiry_date_timestamp > ${currentDate}`, 'payment_details.isPaymentSuccess = true']);
     let bodyContent = JSON.stringify({
         "queries": [
             {

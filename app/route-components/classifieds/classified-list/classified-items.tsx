@@ -1,4 +1,3 @@
-import { getPublicApiResponse, getPublicSingleSearchResponse } from "@/lib/apiLibrary";
 import ClassifiedItemsList from "./classified-items-list";
 import { getSearchResult } from "@/app/actions";
 

@@ -15,7 +15,7 @@ const BusinessDetail = ({ data }: any) => {
         <div className="lg:col-span-3">
           <div className="lg:border border-gray-300 rounded-xl bg-white lg:p-7 gap-x-5 lg:gap-x-7">
             <div>
-              <div className='grid lg:grid-rows-2 lg:grid-cols-7 gap-5 lg:gap-7 lg:mb-12'>
+              <div className='grid lg:grid-rows-2 lg:grid-cols-7 gap-5 lg:gap-7 lg:mb-12 h-[250px] lg:h-[380px]'>
                 <div className={`${data.gallery_images ? 'row-span-2 col-span-4 lg:col-span-5' : 'row-span-2 col-span-4 lg:col-span-full'}`}>
                   {data.featured_image &&
                     <div className='relative'>

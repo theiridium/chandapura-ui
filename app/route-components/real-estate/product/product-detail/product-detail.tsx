@@ -4,10 +4,10 @@ import React from 'react'
 import ImageGallery from '@/app/components/modals/image-gallery';
 import { useDisclosure } from '@nextui-org/react';
 import { Products } from '@/public/shared/app.config';
-import Sale from './components/sale';
-import Rent from './components/rent';
-import Plot from './components/plot';
-import PG from './components/pg';
+import PropertyDetailSale from './components/property-detail-sale';
+import PropertyDetailRent from './components/property-detail-rent';
+import PropertyDetailPlot from './components/property-detail-plot';
+import PropertyDetailPG from './components/property-detail-pg';
 
 const ProductDetail = ({ data, product }: any) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -22,15 +22,15 @@ const ProductDetail = ({ data, product }: any) => {
         case "Sale":
             if (data.property_type === "Plot") {
                 property_details = data.details_by_listingtype.find((x: any) => x.__component == Products.plot.api.component);
-                detailsComp = <Plot {...{ ...props, property_details: property_details }} />
+                detailsComp = <PropertyDetailPlot {...{ ...props, property_details: property_details }} />
             }
-            else detailsComp = <Sale {...props} />
+            else detailsComp = <PropertyDetailSale {...props} />
             break;
         case "Rent":
-            detailsComp = <Rent {...props} />
+            detailsComp = <PropertyDetailRent {...props} />
             break;
         case "PG":
-            detailsComp = <PG {...props} />
+            detailsComp = <PropertyDetailPG {...props} />
             break;
         default:
             <></>

@@ -28,7 +28,7 @@ const SearchBar = ({ productType }: any) => {
     setPayload({
       indexUid: GetProductFromProductType(productType)?.searchIndex,
       q: text,
-      filter: "",
+      filter: [],
       searchFacets: GetProductFromProductType(productType)?.searchFacets,
       page: 1,
       hitsPerPage: Number(GetProductFromProductType(productType)?.searchPageLimit),

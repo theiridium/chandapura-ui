@@ -12,7 +12,7 @@ const Categories = async ({ slug }: any) => {
                     const searchPayload: SearchPayload = {
                         indexUid: encodeURIComponent(Products.business.searchIndex),
                         q: "*",
-                        filter: encodeURIComponent(`sub_category.name = '${x.name}'`),
+                        filter: [encodeURIComponent(`sub_category.name = '${x.name}'`)],
                         page: 1,
                         hitsPerPage: Products.business.searchPageLimit,
                     };

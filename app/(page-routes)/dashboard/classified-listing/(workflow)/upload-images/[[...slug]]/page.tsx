@@ -26,7 +26,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
     const [keyGa, setKeyGa] = useState(0);
     const [editMode, setEditMode] = useState(false);
     const [apiPayload, setApiPayload] = useState<any>({
-        endpoint: Products.business.api.base,
+        endpoint: Products.classifieds.api.base,
         payload: {
             step_number: ListingWorkflow.UploadImages,
             publish_status: false

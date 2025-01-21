@@ -118,7 +118,7 @@ const Page = () => {
             tags: formdata.tags,
             category: classifiedList.category,
             step_number: ListingWorkflow.AddDetails,
-            details_by_category: [classifiedDetails]
+            details_by_category: classifiedDetails ? [classifiedDetails]: []
         }
         postClassifiedListing(payload);
     }

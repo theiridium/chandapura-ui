@@ -140,7 +140,7 @@ export interface ClassifiedListing {
     featured_image?: {}
     gallery_images?: any[]
     step_number: number
-    details_by_category: [VehicleDetailsComponent | any]
+    details_by_category: [VehicleDetailsComponent] | any[]
 }
 export interface VehicleDetailsComponent {
     __component: string

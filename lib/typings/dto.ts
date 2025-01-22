@@ -137,6 +137,8 @@ export interface ClassifiedListing {
     slug: string | undefined
     tags: string | undefined
     category: string | undefined
+    ownership_history: string
+    year_of_purchase: string | any
     featured_image?: {}
     gallery_images?: any[]
     step_number: number

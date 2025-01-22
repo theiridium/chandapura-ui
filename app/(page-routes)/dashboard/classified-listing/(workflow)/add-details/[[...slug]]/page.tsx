@@ -41,6 +41,8 @@ const Page = () => {
         slug: "",
         tags: "",
         category: "",
+        ownership_history: "",
+        year_of_purchase: "",
         featured_image: {},
         gallery_images: [],
         step_number: ListingWorkflow.Initial,
@@ -52,7 +54,11 @@ const Page = () => {
         const sub_category = categoryList.find((x: any) => x.id === (Number(id)))?.sub_category;
         setClassifiedList({ ...classifiedList, category: id });
         setSubCategory(sub_category);
-        setClassifiedDetails(component?.find((x: any) => sub_category === x.__component));
+        !!component ? setClassifiedDetails(component?.find((x: any) => sub_category === x.__component)) :
+            setClassifiedDetails((prev: any) => ({
+                ...prev,
+                __component: sub_category
+            }));
     }
     const onCategoryChange = (id: any) => updateComponents(id, null);
     const onAreaChange = (id: any) => setClassifiedList({ ...classifiedList, area: id });
@@ -109,16 +115,11 @@ const Page = () => {
         setIsSubmitLoading(true);
         let formdata = { ...data, classifiedList }
         const payload: ClassifiedListing = {
-            name: formdata.name,
-            area: classifiedList.area,
-            sale_amount: formdata.sale_amount,
-            description: formdata.description,
+            ...classifiedList,
+            ...formdata,
             contact: contact,
-            slug: formdata.slug,
-            tags: formdata.tags,
-            category: classifiedList.category,
             step_number: ListingWorkflow.AddDetails,
-            details_by_category: classifiedDetails ? [classifiedDetails]: []
+            details_by_category: classifiedDetails ? [classifiedDetails] : []
         }
         postClassifiedListing(payload);
     }
@@ -148,12 +149,17 @@ const Page = () => {
             }
         }
     }
-    
+
     const onKeyPress = (e: React.KeyboardEvent<HTMLFormElement>) => {
         if (e.key === 'Enter') {
             e.preventDefault();
         }
     };
+
+    // useEffect(() => {
+
+    //     console.log(classifiedList)
+    // }, [classifiedList])
 
     return (
         <>
@@ -214,6 +220,40 @@ const Page = () => {
 
                                 )}
                             />
+                        </div>
+                        <div className='flex w-full gap-8 lg:gap-4 mt-3 mb-8 flex-wrap md:flex-nowrap'>
+                            <Select label="Ownership History" selectedKeys={[classifiedList?.ownership_history]}
+                                isDisabled={disabled}
+                                classNames={{ listboxWrapper: "nextui-listbox" }}
+                                isRequired
+                                onChange={(e: any) =>
+                                    setClassifiedList((prev: any) => ({
+                                        ...prev,
+                                        ownership_history: e.target.value,
+                                    }))
+                                }>
+                                {SelectList.Ordinals.map((item) => (
+                                    <SelectItem key={item.number}>
+                                        {item.label + " Owner"}
+                                    </SelectItem>
+                                ))}
+                            </Select>
+                            <Select label="Year of Purchase" selectedKeys={[classifiedList?.year_of_purchase]}
+                                isDisabled={disabled}
+                                classNames={{ listboxWrapper: "nextui-listbox" }}
+                                isRequired
+                                onChange={(e: any) =>
+                                    setClassifiedList((prev: any) => ({
+                                        ...prev,
+                                        year_of_purchase: e.target.value,
+                                    }))
+                                }>
+                                {SelectList.YearList.map((item) => (
+                                    <SelectItem key={item}>
+                                        {item}
+                                    </SelectItem>
+                                ))}
+                            </Select>
                         </div>
                         <div className='mb-8'>
                             <Controller

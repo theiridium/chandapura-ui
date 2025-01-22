@@ -229,17 +229,19 @@ module.exports = {
       api: {
         base: "job-listings",
         sort: "desc",
-        populateList: "logo_image,area,contact,preferred_languages,details_by_jobCategory",
-        populateDetails: "logo_image,area,contact,preferred_languages,details_by_jobCategory",
+        populateList:
+          "logo_image,area,contact,preferred_languages,details_by_jobCategory",
+        populateDetails:
+          "logo_image,area,contact,preferred_languages,details_by_jobCategory",
         populateForPayment: "payment_history,payment_details",
         userFilter: "filters[author][email][$eq]",
         isPublishedFilter: `filters[publish_status][$eq]=true`,
         limit: 4,
         component_corporateJob: "job.corporate-job-details",
-        component_personalJob: "job.personal-job-details"
+        component_personalJob: "job.personal-job-details",
       },
-      personalJobUrl: 'personal',
-      corporateJobUrl: 'corporate',
+      personalJobUrl: "personal",
+      corporateJobUrl: "corporate",
     },
     advertisement: {
       label: "advertisement",
@@ -440,7 +442,20 @@ module.exports = {
       "5 Years",
       "10 Years",
     ],
-    JobShift: ["General Shift", "Morning Shift", "Afternoon Shift", "Night Shift", "Rotational Shift"],
+    JobShift: [
+      "General Shift",
+      "Morning Shift",
+      "Afternoon Shift",
+      "Night Shift",
+      "Rotational Shift",
+    ],
     JobCategory: ["Corporate", "Personal"],
+    Ordinals: [
+      { number: "1", label: "First" },
+      { number: "2", label: "Second" },
+      { number: "3", label: "Third" },
+      { number: "4", label: "Fourth" },
+      { number: "5", label: "Fifth" },
+    ],
   },
 };

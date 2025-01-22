@@ -331,6 +331,13 @@ module.exports = {
         sort: "id:asc",
       },
     },
+    JobTitles: {
+      label: "jobTitles",
+      api: {
+        base: "job-titles",
+        sort: "name:asc",
+      },
+    },
     ContactList: {
       label: "contactList",
       api: {

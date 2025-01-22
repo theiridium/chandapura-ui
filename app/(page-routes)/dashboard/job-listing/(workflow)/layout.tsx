@@ -12,14 +12,17 @@ export default async function JobListingLayout({
 }) {
     const attrLang = DropdownList.Language.api;
     const attrArea = DropdownList.Area.api;
+    const attrJobTitles = DropdownList.JobTitles.api;
     let apiUrlLang = `${attrLang.base}?sort=${attrLang.sort}`
     let apiUrlArea = `${attrArea.base}?sort=${attrArea.sort}`
+    let apiUrlJobTitles = `${attrJobTitles.base}?sort=${attrJobTitles.sort}`
     const resLang = await getPublicApiResponse(apiUrlLang);
     const resArea = await getPublicApiResponse(apiUrlArea);
+    const resJobTitles = await getPublicApiResponse(apiUrlJobTitles);
     return (
         <div className="max-w-screen-xl mx-auto">
             <Suspense fallback={<GlobalSearchListLoading />}>
-                <JobListingForm resLang={resLang} resArea={resArea}>
+                <JobListingForm resLang={resLang} resArea={resArea} resJobTitles={resJobTitles}>
                     {children}
                 </JobListingForm>
             </Suspense>

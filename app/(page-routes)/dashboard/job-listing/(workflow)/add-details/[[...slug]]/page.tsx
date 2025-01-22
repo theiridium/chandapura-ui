@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import ContactForm from '@/app/components/forms/contact-form';
 import { ContactComponent, JobListing } from '@/lib/typings/dto';
 import { useAtomValue } from 'jotai';
-import { areas, languages } from '@/lib/atom';
+import { areas, jobTitles, languages } from '@/lib/atom';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { getPublicApiResponse, postRequestApi, putRequestApi } from '@/lib/apiLibrary';
@@ -28,6 +28,8 @@ const Page = () => {
     const [disabled, setDisabled] = useState(true);
     const areaList = useAtomValue<any>(areas).data;
     const languageList = useAtomValue<any>(languages).data;
+    const jobTitleList = useAtomValue<any>(jobTitles).data;
+    const [jobTitleListByCat, setJobTitlesListByCat] = useState<any>([])
     const [languageValues, setLanguageValues] = useState<Selection | any>([]);
     const [contact, setContact] = useState<ContactComponent>({
         contact_name: userData.name,
@@ -97,24 +99,24 @@ const Page = () => {
     useEffect(() => {
         switch (jobListing.category) {
             case "Personal":
-                // setAmenityList(pgAmenityList);
                 setJobDetails((prev: any) => ({
                     ...prev,
                     __component: Products.job.api.component_personalJob
                 }));
+                setJobTitlesListByCat(jobTitleList?.filter((x: any) => x.personal === true))
                 break;
 
             case "Corporate":
-                // setAmenityList(realEstateAmenityList);
                 setJobDetails((prev: any) => ({
                     ...prev,
                     __component: Products.job.api.component_corporateJob
                 }));
+                setJobTitlesListByCat(jobTitleList?.filter((x: any) => x.corporate === true))
                 break;
             default:
                 break;
         }
-    }, [jobListing.category])
+    }, [jobListing.category, jobTitleList])
 
     const populateJobDetails = useCallback(async () => {
         if (source) {
@@ -162,9 +164,8 @@ const Page = () => {
         }
         const payload: JobListing = {
             ...jobListing,
+            ...formdata,
             job_title: formdata.job_title,
-            job_description: formdata.job_description,
-            full_address: formdata.full_address,
             contact: contact,
             step_number: ListingWorkflow.AddDetails,
             details_by_jobCategory: [jobDetailsFormatted]
@@ -247,19 +248,27 @@ const Page = () => {
                         </div>
 
                         <div className='mb-8'>
-                            <Controller
-                                control={control}
-                                name='job_title'
-                                render={({ field: { value } }) => (
-                                    <Input isDisabled={disabled}
-                                        {...register("job_title")}
-                                        value={value}
-                                        type="text"
-                                        variant="flat"
-                                        label="Job Title / Job Role"
-                                        isRequired />
-                                )}
-                            />
+                            <Autocomplete
+                                allowsCustomValue
+                                classNames={{ listboxWrapper: "nextui-listbox" }}
+                                label="Job Title / Job Role"
+                                variant="flat"
+                                inputValue={jobListing?.job_title || ""}
+                                onInputChange={(e: any) =>
+                                    setJobListing((prev: any) => ({
+                                        ...prev,
+                                        job_title: e,
+                                    }))
+                                }
+                                isDisabled={disabled}
+                                isRequired
+                            >
+                                {jobTitleListByCat?.map((item: any) => (
+                                    <SelectItem key={item.name}>
+                                        {item.name}
+                                    </SelectItem>
+                                ))}
+                            </Autocomplete>
                         </div>
                     </InView>
                     {jobListing?.category === "Personal" && <InView as="div" threshold={1} onChange={onViewScroll} id='jobDetails' className='listing-card border rounded-lg px-4 lg:px-7 py-6 scroll-mt-36'>

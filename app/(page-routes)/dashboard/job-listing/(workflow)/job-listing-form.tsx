@@ -3,7 +3,7 @@
 import FormStep from "@/app/components/stepper/form-step";
 import UserItemList from "@/app/route-components/user-specific/user-item-list";
 import MainMenuBtn from "@/app/sub-components/main-menu-btn";
-import { areas, languages } from "@/lib/atom";
+import { areas, jobTitles, languages } from "@/lib/atom";
 import { DropdownList } from "@/public/shared/app.config";
 import { useSetAtom } from "jotai";
 import { useSearchParams } from "next/navigation";
@@ -36,15 +36,17 @@ const steps = [
     }
 ]
 
-const JobListingForm = ({ children, resLang, resArea }: { children: React.ReactNode, resLang: any, resArea: any }) => {
+const JobListingForm = ({ children, resLang, resArea, resJobTitles }: { children: React.ReactNode, resLang: any, resArea: any, resJobTitles: any }) => {
     const setLanguages = useSetAtom(languages);
     const setLocations = useSetAtom(areas);
+    const setJobTitles = useSetAtom(jobTitles);
     const searchParams = useSearchParams();
     const type = searchParams.get('type');
     useEffect(() => {
         setLanguages(resLang);
         setLocations(resArea);
-    }, [resLang, resArea]);
+        setJobTitles(resJobTitles);
+    }, [resLang, resArea, resJobTitles]);
 
     return (
         <div className='grid grid-cols-10 gap-5 relative'>

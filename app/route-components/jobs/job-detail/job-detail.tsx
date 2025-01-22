@@ -28,7 +28,7 @@ const JobDetail = ({ data }: any) => {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-5 lg:gap-10 text-gray-700">
         {detailsComp}
         <div className='lg:col-span-1 relative m-5 lg:m-0'>
-          <ContactCard heading="Owner Contact Details" name={data.contact.contact_name} contact={data.contact.contact_number} />
+          <ContactCard heading="Contact Details" name={data.contact.contact_name} contact={data.contact.contact_number} />
         </div>
       </div>
     </div>

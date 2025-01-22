@@ -338,7 +338,7 @@ const Page = () => {
                                 )}
                             </Select>
                         </div>
-                        <div className={`relative text-foreground-500 after:content-['*'] after:text-danger after:ml-0.5`}>Salary / month</div>
+                        <div className={`relative text-foreground-500 after:content-['*'] after:text-danger after:ml-0.5`}>Salary per month</div>
                         <div className='flex w-full mt-3 mb-8 flex-nowrap'>
                             <Input isDisabled={disabled}
                                 value={jobDetails?.salary_range_min?.toString() || ""}
@@ -582,7 +582,7 @@ const Page = () => {
                                 )}
                             </RadioGroup>
                         </div>
-                        <div className={`relative text-foreground-500 after:content-['*'] after:text-danger after:ml-0.5`}>Salary / annum</div>
+                        <div className={`relative text-foreground-500 after:content-['*'] after:text-danger after:ml-0.5`}>Salary per annum</div>
                         <div className='flex w-full mt-3 mb-8 flex-nowrap'>
                             <Input isDisabled={disabled}
                                 value={jobDetails?.salary_range_min?.toString() || ""}

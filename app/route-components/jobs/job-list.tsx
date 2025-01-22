@@ -2,7 +2,7 @@ import { Products } from "@/public/shared/app.config";
 import JobCardCorporate from "./job-card-corporate";
 import { getPublicApiResponse } from "@/lib/apiLibrary";
 import ListArrow from "@/app/sub-components/list-arrow";
-import JobItemsCardPersonal from "./job-list/job-items-card-personal";
+import JobCardPersonal from "./job-card-personal";
 
 const JobList = async () => {
   const attr = Products.job.api;
@@ -13,7 +13,7 @@ const JobList = async () => {
         {jobList.data.map((item: any, i: any) => (
           item.category === "Corporate"?
           <JobCardCorporate key={i} list={item} id={item.id} />:
-          <JobItemsCardPersonal key={i} list={item} id={item.id} />
+          <JobCardPersonal key={i} list={item} id={item.id} />
         ))}
       </div>
       <ListArrow size={400} row="job-card-list-row" infinite={true} displayArrowLg={jobList.data.length > 3} />

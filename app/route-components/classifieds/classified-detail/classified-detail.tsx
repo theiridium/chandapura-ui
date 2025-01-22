@@ -72,7 +72,7 @@ const ClassifiedDetail = ({ data }: any) => {
           </div>
         </div>
         <div className='lg:col-span-1 relative m-5 lg:m-0'>
-          <ContactCard heading="Owner Contact Details" name={data.contact.contact_name} contact={data.contact.contact_number} />
+          <ContactCard heading="Seller Contact Details" name={data.contact.contact_name} contact={data.contact.contact_number} />
         </div>
       </div>
     </div>

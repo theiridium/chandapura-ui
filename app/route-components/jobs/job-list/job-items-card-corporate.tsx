@@ -5,7 +5,7 @@ const JobItemsCardCorporate = ({ data, id, product }: any) => {
     const job_details = data.details_by_jobCategory.find((x: any) => x.__component == product.api.component_corporateJob);
     return (
         <a className="card_link" href={`/${product.slug}/${data.category}/${data.slug}?source=${id}`}>
-            <div className="border border-gray-300 rounded-xl bg-white">
+            <div className="rounded-xl bg-white">
                 <div className="job-card p-5 w-auto">
                     <div className='flex flex-row gap-5 items-center'>
                         <div className="*:h-16 *:aspect-square">
@@ -14,7 +14,7 @@ const JobItemsCardCorporate = ({ data, id, product }: any) => {
                                 <img src={data.logo_image.url} />}
                         </div>
                         <div className=''>
-                            <div className='text-md lg:text-lg font-semibold text-slate-700'>{data.job_title}</div>
+                            <h2 className='text-md lg:text-lg font-semibold text-slate-700'>{data.job_title}</h2>
                             <div className='text-xs md:text-sm text-slate-600'>{job_details.company_name}</div>
                         </div>
                     </div>

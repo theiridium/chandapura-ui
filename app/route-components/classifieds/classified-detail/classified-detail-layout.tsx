@@ -9,7 +9,7 @@ const ClassifiedDetailLayout = async ({ id }: any) => {
     const item = data[0];
     return (
         <>
-            <div className="hidden lg:block"><Breadcrumb blockSecondLast={true} /></div>
+            <div className="hidden lg:block"><Breadcrumb /></div>
             <ClassifiedsDetail data={item} />
         </>
     )

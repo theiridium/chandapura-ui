@@ -27,7 +27,7 @@ const JobDetailPersonal = ({ data, job_details }: any) => {
                     <div className='mb-12'>
                         <div className='flex flex-col md:flex-row justify-between mb-12 *:text-sm *:lg:text-base *:text-slate-600 gap-5'>
                             <div className="flex items-center"><MapPin size={15} className='mr-1' /><span>{data.area.name}, Bengaluru</span></div>
-                            <div className="flex items-center"><Banknote size={18} className='mr-2' /><IndianRupee className='h-4' /> {ConvertCurrencyToWords(job_details.salary_range_min)} - <IndianRupee className='h-4' /> {ConvertCurrencyToWords(job_details.salary_range_max)} yearly</div>
+                            <div className="flex items-center"><Banknote size={18} className='mr-2' /><IndianRupee className='h-4' /> {ConvertCurrencyToWords(job_details.salary_range_min)} - <IndianRupee className='h-4' /> {ConvertCurrencyToWords(job_details.salary_range_max)} monthly</div>
                         </div>
                     </div>
                     {data.full_address && <>
@@ -122,13 +122,11 @@ const JobDetailPersonal = ({ data, job_details }: any) => {
                             </div>
                         </div>
                     </>}
-                    {data.location.coordinates && <>
-                        <hr className='mb-12' />
-                        <div className='mb-12'>
-                            <h5 className='text-sm text-gray-500 font-semibold mb-5'>Map Location</h5>
-                            <ViewLocationMap coordinates={data.location.coordinates} />
-                        </div>
-                    </>}
+                    {/* <hr className='mb-12' />
+                    <div className='mb-12'>
+                        <h5 className='text-sm text-gray-500 font-semibold mb-5'>Map Location</h5>
+                        <ViewLocationMap coordinates={data.location.coordinates} />
+                    </div> */}
                 </div>
             </div>
         </div>

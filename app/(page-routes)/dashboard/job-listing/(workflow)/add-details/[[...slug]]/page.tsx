@@ -165,7 +165,6 @@ const Page = () => {
         const payload: JobListing = {
             ...jobListing,
             ...formdata,
-            job_title: formdata.job_title,
             contact: contact,
             step_number: ListingWorkflow.AddDetails,
             details_by_jobCategory: [jobDetailsFormatted]

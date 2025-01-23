@@ -30,9 +30,9 @@ const Menubar = (props: any) => {
                                         <li className='mb-10'>
                                             <a className='hover-underline' href={Resource.MyProfile.link}>{Resource.MyProfile.label}</a>
                                         </li>
-                                        <li className='mb-10'>
+                                        {/* <li className='mb-10'>
                                             <a className='hover-underline' href={Resource.Dashboard.link}>{Resource.Dashboard.label}</a>
-                                        </li>
+                                        </li> */}
                                     </>
                                 }
                                 <li className='mb-10'>

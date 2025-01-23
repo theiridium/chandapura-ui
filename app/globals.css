@@ -204,8 +204,11 @@ header {
     @apply flex overflow-x-auto gap-5 lg:gap-7 lg:snap-x;
   }
   .job-card-list-row {
-    @apply flex items-stretch overflow-x-auto lg:overflow-visible lg:grid lg:grid-cols-3 gap-5 lg:gap-7;
+    @apply flex overflow-x-auto gap-5 lg:gap-7 lg:snap-x;
   }
+  /* .job-card-list-row {
+    @apply flex items-stretch overflow-x-auto lg:overflow-visible lg:grid lg:grid-cols-3 gap-5 lg:gap-7;
+  } */
   .re-card-link,
   .job-card-link {
     @apply rounded-md;
@@ -227,6 +230,9 @@ header {
   }
   .business-card {
     @apply lg:w-[400px];
+  }
+  .job-card {
+    @apply w-80 lg:w-[400px];
   }
   .re-card-img {
     @apply border border-gray-300 border-b-0 h-40 w-64 md:w-72 lg:w-auto rounded-t-md;

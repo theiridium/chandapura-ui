@@ -10,7 +10,7 @@ const JobCardPersonal = (p: any) => {
     return (
         <>
             {!!job_details && <a href={`${Products.job.url}/${item.category}/${item.slug}?source=${id}`} className="re-card-link">
-                <div className="job-card p-5 w-80 md:w-auto">
+                <div className="job-card p-5">
                     <div className='flex flex-row gap-5 items-center'>
                         <div className="basis-1/5 *:aspect-square">
                             {item.logo_image === null ?

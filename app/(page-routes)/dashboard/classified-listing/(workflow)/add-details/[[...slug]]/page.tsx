@@ -113,9 +113,8 @@ const Page = () => {
 
     const onSubmit: SubmitHandler<any> = (data) => {
         setIsSubmitLoading(true);
-        let formdata = { ...data, classifiedList }
+        let formdata = { ...data, ...classifiedList }
         const payload: ClassifiedListing = {
-            ...classifiedList,
             ...formdata,
             contact: contact,
             step_number: ListingWorkflow.AddDetails,

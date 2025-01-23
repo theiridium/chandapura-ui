@@ -43,7 +43,7 @@ const Page = () => {
         category: "Personal",
         gender: "",
         job_description: "",
-        preferred_languages: languageValues,
+        preferred_languages: [],
         area: "",
         full_address: "",
         contact: contact,
@@ -147,7 +147,7 @@ const Page = () => {
     const handleContactDetails = (data: any) => setContact(data);
 
     useEffect(() => {
-        !!languageList && languageValues.length > 0 && setJobListing((prev: any) => ({
+        !!languageList && languageValues.size > 0 && setJobListing((prev: any) => ({
             ...prev,
             preferred_languages: languageList.filter((item: any) => languageValues.has(String(item.id)))
         }))
@@ -155,7 +155,7 @@ const Page = () => {
 
     const onSubmit: SubmitHandler<any> = (data) => {
         setIsSubmitLoading(true);
-        let formdata = { ...data, jobListing }
+        let formdata = { ...data, ...jobListing }
         let jobDetailsFormatted =
         {
             ...jobDetails,
@@ -163,7 +163,6 @@ const Page = () => {
             job_timing_to: moment(Array.from(jobDetails.job_timing_to)[0] as string, "hh:mm A").format("HH:mm:ss.SSS")
         }
         const payload: JobListing = {
-            ...jobListing,
             ...formdata,
             contact: contact,
             step_number: ListingWorkflow.AddDetails,

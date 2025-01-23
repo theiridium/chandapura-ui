@@ -191,18 +191,10 @@ const Page = () => {
 
     const onSubmit: SubmitHandler<any> = (data) => {
         setIsSubmitLoading(true);
-        let formdata = { ...data, businessList }
+        let formdata = { ...data, ...businessList }
         const payload: BusinessListing = {
-            area: businessList.area,
-            name: formdata.name,
-            full_address: formdata.full_address,
-            description: formdata.description,
+            ...formdata,
             contact: contact,
-            tags: formdata.tags,
-            sub_category: businessList.sub_category,
-            category: businessList.category,
-            website: formdata.website,
-            services: businessList.services,
             bus_hours: stringifyBusHours(businessList.bus_hours),
             step_number: ListingWorkflow.AddDetails,
             location: location

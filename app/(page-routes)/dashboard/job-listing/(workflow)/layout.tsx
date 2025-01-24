@@ -13,9 +13,9 @@ export default async function JobListingLayout({
     const attrLang = DropdownList.Language.api;
     const attrArea = DropdownList.Area.api;
     const attrJobTitles = DropdownList.JobTitles.api;
-    let apiUrlLang = `${attrLang.base}?sort=${attrLang.sort}`
-    let apiUrlArea = `${attrArea.base}?sort=${attrArea.sort}`
-    let apiUrlJobTitles = `${attrJobTitles.base}?sort=${attrJobTitles.sort}`
+    let apiUrlLang = `${attrLang.base}?sort=${attrLang.sort}&pagination[pageSize]=100`
+    let apiUrlArea = `${attrArea.base}?sort=${attrArea.sort}&pagination[pageSize]=100`
+    let apiUrlJobTitles = `${attrJobTitles.base}?sort=${attrJobTitles.sort}&pagination[pageSize]=100`
     const resLang = await getPublicApiResponse(apiUrlLang);
     const resArea = await getPublicApiResponse(apiUrlArea);
     const resJobTitles = await getPublicApiResponse(apiUrlJobTitles);

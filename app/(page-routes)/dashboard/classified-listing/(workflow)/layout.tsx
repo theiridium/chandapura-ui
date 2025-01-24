@@ -12,8 +12,8 @@ export default async function ClassifiedListingLayout({
 }) {
     const attrCat = DropdownList.ClassifiedCategory.api;
     const attrArea = DropdownList.Area.api;
-    let apiUrlCat = `${attrCat.base}?sort=${attrCat.sort}&populate=${attrCat.populate}`
-    let apiUrlArea = `${attrArea.base}?sort=${attrArea.sort}`
+    let apiUrlCat = `${attrCat.base}?sort=${attrCat.sort}&populate=${attrCat.populate}&pagination[pageSize]=100`
+    let apiUrlArea = `${attrArea.base}?sort=${attrArea.sort}&pagination[pageSize]=100`
     const resCat = await getPublicApiResponse(apiUrlCat);
     const resArea = await getPublicApiResponse(apiUrlArea);
     return (

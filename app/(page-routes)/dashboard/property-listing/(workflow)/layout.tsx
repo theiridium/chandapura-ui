@@ -14,10 +14,10 @@ export default async function BusinessListingLayout({
     const attrPgAmenities = DropdownList.PGAmenities.api;
     const attrPlotAmenities = DropdownList.PlotAmenities.api;
     const attrArea = DropdownList.Area.api;
-    let apiUrlRealEstateAmenities = `${attrRealEstateAmenities.base}?sort=${attrRealEstateAmenities.sort}`
-    let apiUrlPgAmenities = `${attrPgAmenities.base}?sort=${attrPgAmenities.sort}`
-    let apiUrlPlotAmenities = `${attrPlotAmenities.base}?sort=${attrPlotAmenities.sort}`
-    let apiUrlArea = `${attrArea.base}?sort=${attrArea.sort}`
+    let apiUrlRealEstateAmenities = `${attrRealEstateAmenities.base}?sort=${attrRealEstateAmenities.sort}&pagination[pageSize]=100`
+    let apiUrlPgAmenities = `${attrPgAmenities.base}?sort=${attrPgAmenities.sort}&pagination[pageSize]=100`
+    let apiUrlPlotAmenities = `${attrPlotAmenities.base}?sort=${attrPlotAmenities.sort}&pagination[pageSize]=100`
+    let apiUrlArea = `${attrArea.base}?sort=${attrArea.sort}&pagination[pageSize]=100`
     const resRealEstateAmenities = await getPublicApiResponse(apiUrlRealEstateAmenities);
     const resPgAmenities = await getPublicApiResponse(apiUrlPgAmenities);
     const resPlotAmenities = await getPublicApiResponse(apiUrlPlotAmenities);

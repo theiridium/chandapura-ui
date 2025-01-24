@@ -10,7 +10,7 @@ const JobItems = async (props: any) => {
     let search = { searchParams: props.searchParams, page: 1 };
     res = await getSearchResult(search);
   }
-  return <JobItemsList result={res} product={props.product} />
+  return <JobItemsList result={res} product={props.product} searchParams={props.searchParams} />
 }
 
 export default JobItems

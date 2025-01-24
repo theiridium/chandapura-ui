@@ -89,7 +89,7 @@ const Page = () => {
             name: formdata.name,
             contact: contact,
             user: userData.strapiUserId,
-            website: formdata.website,
+            website: "https://" + formdata.website,
             step_number: ListingWorkflow.AddDetails
         }
         postAdListing(payload);
@@ -160,7 +160,16 @@ const Page = () => {
                                 control={control}
                                 name='website'
                                 render={({ field: { value } }) => (
-                                    <Input isDisabled={disabled} {...register("website")} value={value} type="text" variant="flat" label="Business Website (optional)" />
+                                    <Input isDisabled={disabled} {...register("website")} value={value?.replace("https://","")}
+                                        startContent={
+                                            <div className="pointer-events-none flex items-center">
+                                                <span className="text-default-400 text-small">https://</span>
+                                            </div>
+                                        }
+                                        type="text"
+                                        variant="flat"
+                                        placeholder='yourdomain.com'
+                                        label="Business Website (optional)" />
                                 )}
                             />
                         </div>

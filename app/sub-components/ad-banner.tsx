@@ -10,7 +10,7 @@ const OPTIONS: EmblaOptionsType = { loop: true }
 const AdBanner = async ({ placement }: any) => {
   const currentDate = new Date();
   const attr = Products.advertisement.api;
-  const res = await getPublicApiResponse(`${attr.base}?sort=updatedAt%3A${attr.sort}&${attr.populate}&${attr.isPublishedFilter}&${attr.filter}=${currentDate.toISOString()}`);
+  const res = await getPublicApiResponse(`${attr.base}?sort=updatedAt%3A${attr.sort}&${attr.populate}&${attr.isPublishedFilter}`);
   let adBannerList: any = []
   let urls: any = []
   res.data.forEach((x: any) => {

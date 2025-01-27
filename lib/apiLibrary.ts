@@ -127,9 +127,7 @@ export const userRegistration = async (payload: User.Register) => {
 export const userEmailConfirmation = async (email: string) => {
     const endpoint = "auth/send-email-confirmation";
     let bodyContent = JSON.stringify({
-        "data": {
-            "email": email
-        }
+        "email": email
     });
     try {
         const response = await axiosInstance.post(endpoint, bodyContent, {

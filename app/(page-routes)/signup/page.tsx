@@ -16,7 +16,7 @@ const Page = () => {
     const [infoText, setInfoText] = useState("");
     const [rePasswordTxt, setRePasswordTxt] = useState("");
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const alertMsg = "A verification link is sent to your Email ID with instructions. Please visit your inbox and complete verification to register your account successfully.";
+    const alertMsg = "A verification link has been sent to your Email ID with instructions. Please visit your inbox and complete the verification to register your account successfully.";
     useEffect(() => {
         (paramType && (paramType.toLowerCase() === "newregistration") && setInfoText("Your email is not registered."));
     }, []);

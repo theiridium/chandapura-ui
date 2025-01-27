@@ -39,7 +39,7 @@ const Page = () => {
         const username = data.email.split("@")[0];
         let payload = { ...data, username: username, role: "Authenticated" };
         const response = await userRegistration(payload);
-        if (response) {
+        if (!!response?.user) {
             const confirmRes = await userEmailConfirmation(payload.email);
             if (confirmRes && confirmRes.sent) {
                 onOpen();
@@ -47,7 +47,8 @@ const Page = () => {
                 reset();
             }
         }
-        else toast.error("Something went wrong! Please try again later or contact support.")
+        else if (!!response?.error?.message) toast.error(response?.error?.message);
+        else toast.error("Something went wrong! Please try again later or contact support.");
     }
 
     return (

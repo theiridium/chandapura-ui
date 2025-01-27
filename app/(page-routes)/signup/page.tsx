@@ -41,8 +41,11 @@ const Page = () => {
         const response = await userRegistration(payload);
         if (response) {
             const confirmRes = await userEmailConfirmation(payload.email);
-            confirmRes && confirmRes.sent && onOpen();
-            reset();
+            if (confirmRes && confirmRes.sent) {
+                onOpen();
+                setRePasswordTxt("");
+                reset();
+            }
         }
         else toast.error("Something went wrong! Please try again later or contact support.")
     }

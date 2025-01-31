@@ -48,7 +48,7 @@ const ClassifiedListingForm = ({ children, resCat, resArea }: { children: React.
 
     return (
         <div className='grid grid-cols-10 gap-5 relative'>
-            <div className='col-span-full lg:col-span-2 my-8'>
+            <div className='col-span-full lg:col-span-2 my-8 order-first'>
                 <div className="sticky top-28 px-5 lg:px-7">
                     <div className='mb-5'><MainMenuBtn url='/dashboard/classified-listing/view-all' /></div>
                     <UserItemList attr={DropdownList.ClassifiedList.api} title={"Select a Classified"} />

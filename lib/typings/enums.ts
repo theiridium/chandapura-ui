@@ -5,3 +5,7 @@ export enum ListingWorkflow {
     Payment,
     Publish
 }
+export enum JobCategory {
+    Personal = "Personal",
+    Corporate = "Corporate"
+}

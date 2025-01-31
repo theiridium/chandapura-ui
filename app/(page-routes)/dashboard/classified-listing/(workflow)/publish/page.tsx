@@ -1,10 +1,10 @@
 "use client"
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Button, Input } from '@nextui-org/react';
+import { Button, Input, Link } from '@nextui-org/react';
 import { useCallback, useEffect, useState } from 'react';
 import FormLoading from '@/app/loading-components/form-loading';
 import { useSession } from 'next-auth/react';
-import { Products } from '@/public/shared/app.config';
+import { Products, Resource } from '@/public/shared/app.config';
 import { getPublicApiResponse, putRequestApi } from '@/lib/apiLibrary';
 import { toast } from 'react-toastify';
 import { ListingWorkflow } from '@/lib/typings/enums';
@@ -19,6 +19,7 @@ const Page = () => {
     const type = searchParams.get('type');
     const source = searchParams.get('source');
     const [apiRes, setApiRes] = useState<any>();
+    const [classifiedDetails, setClassifiedDetails] = useState<any>();
 
     const fetchData = useCallback(async () => {
         try {
@@ -76,7 +77,7 @@ const Page = () => {
     return (
         <>
             {isSubmitLoading && <FormLoading text={"Publishing your classified product..."} />}
-            <div className='col-span-full lg:col-span-6 mt-3 lg:my-8'>
+            <div className='col-span-full lg:col-span-6 mt-3 lg:my-8 order-3 lg:order-2'>
                 <div className='listing-header mb-8'>
                     <div className='text-xl lg:text-4xl font-semibold text-gray-700 px-7'>Review & Publish</div>
                 </div>
@@ -145,9 +146,10 @@ const Page = () => {
                     </div>
                 }
             </div>
-            <div className='col-span-2 mt-3 lg:my-8'>
-                <div className='form-nav'>
-
+            <div className='col-span-full lg:col-span-2 mt-3 lg:my-8 mx-5 lg:mx-2 order-2 lg:order-3'>
+                <div className='flex flex-row lg:flex-col gap-5'>
+                    <Button className='btn-primary text-base' isDisabled={isLoading} radius='sm' variant='flat' href={Resource.ClassifiedListing.addDetailsLink + '?type=edit&source=' + apiRes?.id} color='primary' as={Link}>Edit Details</Button>
+                    <Button className='btn-primary text-base' isDisabled={isLoading} radius='sm' variant='ghost' href={Resource.ClassifiedListing.uploadImagesLink + '?type=edit&source=' + apiRes?.id} color='primary' as={Link}>Edit Images</Button>
                 </div>
             </div>
         </>

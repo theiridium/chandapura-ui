@@ -84,9 +84,9 @@ const Page = () => {
 
     const onSubmit: SubmitHandler<any> = (data) => {
         setIsSubmitLoading(true);
-        let formdata = { ...data, adList }
+        let formdata = { ...adList, ...data }
         const payload: AdListing = {
-            name: formdata.name,
+            ...formdata,
             contact: contact,
             user: userData.strapiUserId,
             website: "https://" + formdata.website,

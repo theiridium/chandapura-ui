@@ -184,7 +184,7 @@ const Page = () => {
 
     const onSubmit: SubmitHandler<any> = (data) => {
         setIsSubmitLoading(true);
-        let formdata = { ...data, ...propertyListing }
+        let formdata = { ...propertyListing, ...data }
         const payload: PropertyListing = {
             ...formdata,
             contact: contact,

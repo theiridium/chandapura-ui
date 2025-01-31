@@ -50,7 +50,7 @@ const JobListingForm = ({ children, resLang, resArea, resJobTitles }: { children
 
     return (
         <div className='grid grid-cols-10 gap-5 relative'>
-            <div className='col-span-full lg:col-span-2 my-8'>
+            <div className='col-span-full lg:col-span-2 my-8 order-first'>
                 <div className="sticky top-28 px-5 lg:px-7">
                     <div className='mb-5'><MainMenuBtn url='/dashboard/job-listing/view-all' /></div>
                     <UserItemList attr={DropdownList.JobList.api} title={"Select a job profile"} />

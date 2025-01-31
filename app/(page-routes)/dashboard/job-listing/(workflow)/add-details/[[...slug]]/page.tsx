@@ -155,7 +155,7 @@ const Page = () => {
 
     const onSubmit: SubmitHandler<any> = (data) => {
         setIsSubmitLoading(true);
-        let formdata = { ...data, ...jobListing }
+        let formdata = { ...jobListing, ...data }
         let jobDetailsFormatted =
         {
             ...jobDetails,

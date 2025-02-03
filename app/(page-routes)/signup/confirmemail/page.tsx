@@ -26,8 +26,8 @@ const Page = () => {
                     <div className='text-2xl font-medium my-5 text-gray-600'>Didn&prime;t receive an email?</div>
                     <p className='text-sm mb-3'>You should get the email within a few minutes. If you don&apos;t there could be a few reasons why.</p>
                     <ul className='text-sm list-disc leading-relaxed'>
-                        <li>It could have made its way into your spam folder</li>
-                        <li>You may have accidentally mistyped your email</li>
+                        <li>It could have made its way into your spam folder.</li>
+                        <li>You may have accidentally mistyped your email.</li>
                         <li>It might have been held by a company firewall or filter. Check with your administrator.</li>
                         <li>Not recieved the email? <button className='text-color1d hover:underline' onClick={() => sendEmail()}>Resend link</button></li>
                     </ul>

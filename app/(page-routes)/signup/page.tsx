@@ -1,12 +1,11 @@
 "use client"
-import { Button, Input, useDisclosure } from '@nextui-org/react'
+import { Button, Input } from '@nextui-org/react'
 import { useEffect, useMemo, useState } from 'react'
 import { signIn } from 'next-auth/react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { userEmailConfirmation, userRegistration } from '@/lib/apiLibrary';
+import { userRegistration } from '@/lib/apiLibrary';
 import { toast } from 'react-toastify';
-import AlertModal from '@/app/components/modals/alert-modal';
 import ReCAPTCHA from "react-google-recaptcha";
 
 const Page = () => {
@@ -14,12 +13,11 @@ const Page = () => {
     const callbackUrl: any = searchParams.get('redirect');
     const paramType: any = searchParams.get('type');
     const paramEmail: any = searchParams.get('email');
+    const router = useRouter();
     const [infoText, setInfoText] = useState("");
     const [capVal, setCapVal] = useState(false);
     const [isloading, setIsLoading] = useState(false);
     const [rePasswordTxt, setRePasswordTxt] = useState("");
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const alertMsg = "A verification link has been sent to your Email ID with instructions. Please visit your inbox and complete the verification to register your account successfully.";
     useEffect(() => {
         (paramType && (paramType.toLowerCase() === "newregistration") && setInfoText("Your email is not registered."));
     }, []);
@@ -44,14 +42,7 @@ const Page = () => {
         let payload = { ...data, username: username, role: "Authenticated" };
         const response = await userRegistration(payload);
         if (!!response?.user) {
-            const confirmRes = await userEmailConfirmation(payload.email);
-            if (confirmRes && confirmRes.sent) {
-                onOpen();
-                setRePasswordTxt("");
-                reset();
-                setCapVal(false);
-                setIsLoading(false);
-            }
+            router.push(`/signup/confirmemail?email=${payload.email}`)
         }
         else if (!!response?.error) {
             toast.error(response?.error);
@@ -67,7 +58,6 @@ const Page = () => {
 
     return (
         <>
-            <AlertModal isOpen={isOpen} onClose={onClose} text={alertMsg} />
             <div className="grid lg:grid-cols-2 h-auto md:min-h-[90vh] md:overflow-auto">
                 <div className='grid grid-cols-1 place-content-center my-8'>
                     <div className='px-3 md:px-0 w-full md:w-4/5 mx-auto text-center'>

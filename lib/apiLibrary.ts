@@ -119,8 +119,7 @@ export const userRegistration = async (payload: User.Register) => {
         });
         return response.data;
     } catch (err: any) {
-        console.log(err)
-        return err.response?.data || { error: 'An error occurred' };
+        return { error: err.response?.data?.error?.message };
     }
 }
 

@@ -1,3 +1,4 @@
+import { Products } from "@/public/shared/app.config"
 
 const Footer = () => {
   return (
@@ -11,19 +12,19 @@ const Footer = () => {
           </div>
           <div className="">
             <div>
-              <h2 className="mb-4 text-sm font-semibold uppercase">Categories</h2>
+              {/* <h2 className="mb-4 text-sm font-semibold uppercase">Categories</h2> */}
               <ul className="font-medium *:mb-4">
                 <li>
-                  <a href="https://github.com/themesberg/flowbite" className="hover:underline ">Local Business</a>
+                  <a href={Products.business.url} className="hover:underline ">Local Business</a>
                 </li>
                 <li>
-                  <a href="https://discord.gg/4eeurUVvTy" className="hover:underline">Properties</a>
+                  <a href={Products.realEstate.url} className="hover:underline">Properties</a>
                 </li>
                 <li>
-                  <a href="https://discord.gg/4eeurUVvTy" className="hover:underline">Resale Marketplace</a>
+                  <a href={Products.classifieds.url} className="hover:underline">Resale Marketplace</a>
                 </li>
                 <li className="!mb-0">
-                  <a href="https://discord.gg/4eeurUVvTy" className="hover:underline">Job Vacancy</a>
+                  <a href={Products.job.url} className="hover:underline">Job Vacancy</a>
                 </li>
               </ul>
             </div>

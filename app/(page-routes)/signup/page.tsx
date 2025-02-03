@@ -7,6 +7,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { userEmailConfirmation, userRegistration } from '@/lib/apiLibrary';
 import { toast } from 'react-toastify';
 import AlertModal from '@/app/components/modals/alert-modal';
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Page = () => {
     const searchParams = useSearchParams();
@@ -14,6 +15,8 @@ const Page = () => {
     const paramType: any = searchParams.get('type');
     const paramEmail: any = searchParams.get('email');
     const [infoText, setInfoText] = useState("");
+    const [capVal, setCapVal] = useState(false);
+    const [isloading, setIsLoading] = useState(false);
     const [rePasswordTxt, setRePasswordTxt] = useState("");
     const { isOpen, onOpen, onClose } = useDisclosure();
     const alertMsg = "A verification link has been sent to your Email ID with instructions. Please visit your inbox and complete the verification to register your account successfully.";
@@ -36,6 +39,7 @@ const Page = () => {
         return (rePasswordTxt === password) ? true : false;
     }, [rePasswordTxt]);
     const onSubmit: SubmitHandler<any> = async (data) => {
+        setIsLoading(true);
         const username = data.email.split("@")[0];
         let payload = { ...data, username: username, role: "Authenticated" };
         const response = await userRegistration(payload);
@@ -45,10 +49,20 @@ const Page = () => {
                 onOpen();
                 setRePasswordTxt("");
                 reset();
+                setCapVal(false);
+                setIsLoading(false);
             }
         }
-        else if (!!response?.error?.message) toast.error(response?.error?.message);
-        else toast.error("Something went wrong! Please try again later or contact support.");
+        else if (!!response?.error) {
+            toast.error(response?.error);
+            setRePasswordTxt("");
+            setIsLoading(false);
+        }
+        else {
+            toast.error("Something went wrong! Please try again later or contact support.");
+            setRePasswordTxt("");
+            setIsLoading(false);
+        }
     }
 
     return (
@@ -77,7 +91,12 @@ const Page = () => {
                             <Input isRequired {...register("phone")} className='text-login-form mb-5' radius='sm' type="text" variant="flat" label="Mobile Number" />
                             <Input isRequired {...register("password")} className='text-login-form mb-5' radius='sm' type="password" variant="flat" label="Enter Password" />
                             <Input isRequired isInvalid={!isPasswordMatch} className='text-login-form mb-5' radius='sm' type="password" variant="flat" label="Re-enter Password" errorMessage="Password does not match" value={rePasswordTxt} onChange={(e: any) => setRePasswordTxt(e.target.value)} />
-                            <Button className='btn-login-form' color='primary' type='submit'>CONTINUE</Button>
+                            <ReCAPTCHA
+                                className='!w-full md:!w-3/4 !font-semibold !text-gray-500 !mx-auto mb-5'
+                                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_KEY as string}
+                                onChange={(capVal: any) => setCapVal(capVal)}
+                            />
+                            <Button className='btn-login-form' color='primary' type='submit' isDisabled={!capVal} isLoading={isloading}>CONTINUE</Button>
                             <p className='my-5'>Already have an account? <a className='text-color1d hover:underline cursor-pointer' href='/login'>Sign In</a></p>
                         </form>
                         <div className='text-tnc'>

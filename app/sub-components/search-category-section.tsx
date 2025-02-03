@@ -52,7 +52,7 @@ const SearchCategorySection = ({ productType }: any) => {
                 </div>
             }
             {(productType === Products.job.productType) &&
-                <div className="search-cat-sec md:justify-center">
+                <div className="search-cat-sec justify-center">
                     <a href={`${Products.job.url}/${Products.job.personalJobUrl}`} className='mini-card'>
                         <Image src={'/images/icons/personal-job.png'} width={50} height={50} alt="" />
                         <div className='text'>Personal Services</div>

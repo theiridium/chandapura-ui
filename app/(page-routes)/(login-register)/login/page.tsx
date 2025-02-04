@@ -17,7 +17,7 @@ const Page = () => {
     const [isRegisteredUser, setIsRegisteredUser] = useState(false);
     const ValidateLogin = async (e: any) => {
         const callBackUrlStr = callbackUrl ? `&callbackUrl=${callbackUrl}` : "";
-        e.preventDefault()
+        e.preventDefault();
         if (isRegisteredUser) {
             signIn("credentials", {
                 email: email,
@@ -36,6 +36,10 @@ const Page = () => {
             else router.push(`/signup?type=NewRegistration&email=${email}${callBackUrlStr}`)
         }
     };
+    const forgotPassword = (e: any) => {
+        e.preventDefault();
+        router.push(`/forgot-password`);
+    }
     useEffect(() => {
         isRegistered && toast.success("Your account registered successfully! Please continue login with Email ID and Password.", { autoClose: false, theme: "colored" });
     }, [])
@@ -66,13 +70,16 @@ const Page = () => {
                     <form className='login-form' onSubmit={ValidateLogin}>
                         <Input className='text-login-form mb-5' radius='sm' type="email" variant="flat" label="Enter your Email ID" onChange={(e) => { setEmail(e.target.value) }} value={email} />
                         {isRegisteredUser &&
-                            <Input className='text-login-form mb-5' radius='sm' type="password" variant="flat" label="Enter your Password" onChange={(e) => { setPassword(e.target.value) }} value={password} />
+                            <div className='mb-5'>
+                                <Input className='text-login-form' radius='sm' type="password" variant="flat" label="Enter your Password" onChange={(e) => { setPassword(e.target.value) }} value={password} />
+                                <div className='text-forgot-pass mt-2'><button className='hover:underline' onClick={(e: any) => forgotPassword(e)}>I&apos;ve forgotton my password</button></div>
+                            </div>
                         }
                         <Button className='btn-login-form' color='primary' type='submit' isDisabled={!email}>Sign in with Credentials</Button>
                         <p className='my-5'>Don&apos;t have an account? <a className='text-color1d hover:underline cursor-pointer' href='/signup'>Sign Up</a></p>
                     </form>
                     <div className='text-tnc'>
-                        <p>By creating an account or logging in, you agree with Chandapura.com&apos;s Terms and Conditions and Privacy Policy.</p>
+                        <p>By creating an account or logging in, you agree with Chandapura.com&apos;s <a href='#' className='text-color1d hover:underline'>Terms and Conditions</a> and <a href='#' className='text-color1d hover:underline'>Privacy Policy</a>.</p>
                     </div>
                 </div>
             </div>

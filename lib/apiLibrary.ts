@@ -141,6 +141,24 @@ export const userEmailConfirmation = async (email: string) => {
     }
 }
 
+export const userForgotPassword = async (email: string) => {
+    const endpoint = "auth/forgot-password";
+    let bodyContent = JSON.stringify({
+        "email": email
+    });
+    try {
+        const response = await axiosInstance.post(endpoint, bodyContent, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+        });
+        return response.data;
+    } catch (err: any) {
+        return { error: err.response?.data?.error?.message };
+    }
+}
+
 const searchHost: any = process.env.NEXT_PUBLIC_MEILISEARCH_URL
 export const getPublicSingleSearchResponse = async (payload: SearchPayload | undefined) => {
     // await new Promise(resolve => setTimeout(resolve, 3000))

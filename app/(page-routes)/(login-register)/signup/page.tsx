@@ -42,7 +42,7 @@ const Page = () => {
         let payload = { ...data, username: username, role: "Authenticated" };
         const response = await userRegistration(payload);
         if (!!response?.user) {
-            router.push(`/signup/confirmemail?email=${payload.email}`)
+            router.push(`/signup/confirm-email?email=${payload.email}`)
         }
         else if (!!response?.error) {
             toast.error(response?.error);
@@ -90,7 +90,7 @@ const Page = () => {
                             <p className='my-5'>Already have an account? <a className='text-color1d hover:underline cursor-pointer' href='/login'>Sign In</a></p>
                         </form>
                         <div className='text-tnc'>
-                            <p>By creating an account or logging in, you agree with Chandapura.com&apos;s Terms and Conditions and Privacy Policy.</p>
+                            <p>By creating an account or logging in, you agree with Chandapura.com&apos;s <a href='#' className='text-color1d hover:underline'>Terms and Conditions</a> and <a href='#' className='text-color1d hover:underline'>Privacy Policy</a>.</p>
                         </div>
                     </div>
                 </div>

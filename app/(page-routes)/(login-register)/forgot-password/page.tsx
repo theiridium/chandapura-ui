@@ -22,7 +22,7 @@ const Page = () => {
             <div className='text-xl md:text-3xl mb-5 text-center'>Forgotten your password?</div>
             <div className='px-5 pt-10 pb-12 md:px-3 mt-3 lg:my-6 bg-color2d/30'>
                 <div className='login-form text-center'>
-                    <p className='w-full md:w-3/4 mx-auto text-left mb-5'>We've got you covered. Enter your email address and we'll send you instructions on how to reset it.</p>
+                    <p className='w-full md:w-3/4 mx-auto text-left mb-5'>We&apos;ve got you covered. Enter your email address and we&apos;ll send you instructions on how to reset it.</p>
                     <Input className='text-login-form mb-5' radius='sm' type="email" variant="flat" label="Enter your Email ID" onChange={(e) => { setEmail(e.target.value) }} value={email} />
                     <div >
                         <Button onPress={() => forgotPassword()} isLoading={isLoading} className='btn-login-form !mx-auto' color='primary' type='submit' isDisabled={!email}>Request Password Reset</Button>

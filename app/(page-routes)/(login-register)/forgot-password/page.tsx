@@ -27,6 +27,7 @@ const Page = () => {
                     <div >
                         <Button onPress={() => forgotPassword()} isLoading={isLoading} className='btn-login-form !mx-auto' color='primary' type='submit' isDisabled={!email}>Request Password Reset</Button>
                     </div>
+                    <div className='text-remember-pass mt-5'>Remembered your password? <a href='/login' className='text-color1d cursor-pointer hover:underline'>Log in here</a></div>
                 </div>
             </div>
         </div>

@@ -6,7 +6,7 @@ import JobCardPersonal from "./job-card-personal";
 
 const JobList = async () => {
   const attr = Products.job.api;
-  const jobList = await getPublicApiResponse(`${attr.base}?sort=publishedAt%3A${attr.sort}&${attr.isPublishedFilter}&populate=${attr.populateList}`);
+  const jobList = await getPublicApiResponse(`${attr.base}?sort=publishedAt%3A${attr.sort}&${attr.isPublishedFilter}&populate=${attr.populateList}&pagination%5Blimit%5D=15`);
   return (
     <>
       <div className="job-card-list-row">

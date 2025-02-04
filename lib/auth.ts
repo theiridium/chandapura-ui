@@ -25,7 +25,7 @@ const authOptions = {
                     // return res.user
                     return {
                         firstname: res.user.firstname,
-                        name: res.user.firstname + res.user.lastname,
+                        name: `${res.user.firstname} ${res.user.lastname}`,
                         email: res.user.email,
                         phone: res.user.phone,
                         id: res.user.id.toString(),

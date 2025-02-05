@@ -10,15 +10,22 @@ const Page = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const callbackUrl: any = searchParams.get('callbackUrl');
+    const redirectUrl: any = searchParams.get('redirect');
     const error: any = searchParams.get('error');
     const isRegistered: any = searchParams.get('registered');
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isRegisteredUser, setIsRegisteredUser] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [domain, setDomain] = useState("");
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+          setDomain(window.location.origin);
+        }
+      }, []);
     const ValidateLogin = async (e: any) => {
         setIsLoading(true);
-        const callBackUrlStr = callbackUrl ? `&callbackUrl=${callbackUrl}` : "";
+        const callBackUrlStr = (callbackUrl || redirectUrl) ? `&callbackUrl=${callbackUrl || domain + redirectUrl}` : "/";
         e.preventDefault();
         if (isRegisteredUser) {
             setIsLoading(true);
@@ -26,7 +33,7 @@ const Page = () => {
                 email: email,
                 password: password,
                 redirect: true,
-                callbackUrl: callbackUrl || "/"
+                callbackUrl: callbackUrl || domain + redirectUrl
             })
         }
         else {

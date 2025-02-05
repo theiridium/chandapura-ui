@@ -22,6 +22,16 @@ const nextConfig = {
         destination: "/dashboard/advertise/view-all",
         permanent: true,
       },
+      {
+        source: "/dashboard/classified-listing",
+        destination: "/dashboard/classified-listing/view-all",
+        permanent: true,
+      },
+      {
+        source: "/dashboard/job-listing",
+        destination: "/dashboard/job-listing/view-all",
+        permanent: true,
+      },
     ];
   },
 };

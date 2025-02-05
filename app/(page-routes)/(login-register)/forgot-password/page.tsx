@@ -11,10 +11,10 @@ const Page = () => {
         setIsLoading(true);
         const res = await userForgotPassword(email);
         if (!!res && res.ok) {
-            toast.success("Email Sent Successfully!");
+            toast.success("Email Sent Successfully!", { autoClose: false, theme: "colored" });
             setEmail("");
         }
-        else toast.error(res?.error);
+        else toast.error(res?.error, { autoClose: false, theme: "colored" });
         setIsLoading(false);
     }
     return (

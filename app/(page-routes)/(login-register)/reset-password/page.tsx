@@ -23,10 +23,10 @@ const Page = () => {
   const resetPassword = async () => {
     setIsLoading(true);
     const res = await userResetPassword(payload);
-    if (!!res && res.ok) {
+    if (!!res && res.user) {
       setIsResetSuccess(true);
     }
-    else toast.error(res?.error);
+    else toast.error(res?.error, { autoClose: false, theme: "colored" });
     setIsLoading(false);
   }
   return (

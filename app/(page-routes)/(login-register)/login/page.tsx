@@ -15,10 +15,13 @@ const Page = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isRegisteredUser, setIsRegisteredUser] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const ValidateLogin = async (e: any) => {
+        setIsLoading(true);
         const callBackUrlStr = callbackUrl ? `&callbackUrl=${callbackUrl}` : "";
         e.preventDefault();
         if (isRegisteredUser) {
+            setIsLoading(true);
             signIn("credentials", {
                 email: email,
                 password: password,
@@ -33,7 +36,8 @@ const Page = () => {
             if (user && user.provider === "local") setIsRegisteredUser(true);
             else if (user && user.provider === "google")
                 toast.warn("You have an existing account with Google. Please continue with Google.", { autoClose: false });
-            else router.push(`/signup?type=NewRegistration&email=${email}${callBackUrlStr}`)
+            else router.push(`/signup?type=NewRegistration&email=${email}${callBackUrlStr}`);
+            setIsLoading(false);
         }
     };
     const forgotPassword = (e: any) => {
@@ -75,7 +79,7 @@ const Page = () => {
                                 <div className='text-forgot-pass mt-2'><button className='hover:underline' onClick={(e: any) => forgotPassword(e)}>I&apos;ve forgotton my password</button></div>
                             </div>
                         }
-                        <Button className='btn-login-form' color='primary' type='submit' isDisabled={!email}>Sign in with Credentials</Button>
+                        <Button isLoading={isLoading} className='btn-login-form' color='primary' type='submit' isDisabled={!email}>Sign in with Credentials</Button>
                         <p className='my-5'>Don&apos;t have an account? <a className='text-color1d hover:underline cursor-pointer' href='/signup'>Sign Up</a></p>
                     </form>
                     <div className='text-tnc'>

@@ -159,6 +159,22 @@ export const userForgotPassword = async (email: string) => {
     }
 }
 
+export const userResetPassword = async (payload: User.PasswordReset) => {
+    const endpoint = "auth/reset-password";
+    let bodyContent = JSON.stringify(payload);
+    try {
+        const response = await axiosInstance.post(endpoint, bodyContent, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+        });
+        return response.data;
+    } catch (err: any) {
+        return { error: err.response?.data?.error?.message };
+    }
+}
+
 const searchHost: any = process.env.NEXT_PUBLIC_MEILISEARCH_URL
 export const getPublicSingleSearchResponse = async (payload: SearchPayload | undefined) => {
     // await new Promise(resolve => setTimeout(resolve, 3000))

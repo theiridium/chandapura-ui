@@ -12,4 +12,9 @@ namespace User {
         lastname: string | undefined;
         phone: string | undefined;
     }
+    export interface PasswordReset {
+        password: string
+        passwordConfirmation: string
+        code: string
+    }
 }

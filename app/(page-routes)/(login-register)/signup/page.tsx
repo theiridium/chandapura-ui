@@ -79,8 +79,19 @@ const Page = () => {
                             </div>
                             <Input isRequired {...register("email")} className='text-login-form mb-5' radius='sm' type="text" variant="flat" label="Email ID" isClearable />
                             <Input isRequired {...register("phone")} className='text-login-form mb-5' radius='sm' type="text" variant="flat" label="Mobile Number" />
-                            <Input isRequired {...register("password")} className='text-login-form mb-5' radius='sm' type="password" variant="flat" label="Enter Password" />
-                            <Input isRequired isInvalid={!isPasswordMatch} className='text-login-form mb-5' radius='sm' type="password" variant="flat" label="Re-enter Password" errorMessage="Password does not match" value={rePasswordTxt} onChange={(e: any) => setRePasswordTxt(e.target.value)} />
+                            <Input isRequired {...register("password")} className='text-login-form mb-5' radius='sm' type="password" variant="flat" label="Enter Password"
+                                validate={(val) => {
+                                    if (!val) return "Password is required.";
+                                    if (val.length < 8) return "Password must be at least 8 characters.";
+                                    if (val.length > 15) return "Password must not exceed 15 characters.";
+                                    return null; // No error
+                                }} />
+                            <Input isRequired
+                                validate={() => {
+                                    if (!isPasswordMatch) return "Password does not match.";
+                                    return null; // No error
+                                }}
+                                className='text-login-form mb-5' radius='sm' type="password" variant="flat" label="Re-enter Password" errorMessage="Password does not match" value={rePasswordTxt} onChange={(e: any) => setRePasswordTxt(e.target.value)} />
                             <ReCAPTCHA
                                 className='!w-full md:!w-3/4 !font-semibold !text-gray-500 !mx-auto mb-5'
                                 sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_KEY as string}

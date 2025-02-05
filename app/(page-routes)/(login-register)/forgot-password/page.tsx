@@ -14,7 +14,7 @@ const Page = () => {
             toast.success("Email Sent Successfully!");
             setEmail("");
         }
-        else toast.warn(res?.error);
+        else toast.error(res?.error);
         setIsLoading(false);
     }
     return (

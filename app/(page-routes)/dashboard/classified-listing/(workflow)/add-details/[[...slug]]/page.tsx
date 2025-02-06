@@ -43,8 +43,6 @@ const Page = () => {
         category: "",
         ownership_history: "",
         year_of_purchase: "",
-        featured_image: {},
-        gallery_images: [],
         step_number: ListingWorkflow.Initial,
         details_by_category: classifiedDetails
     });
@@ -76,6 +74,7 @@ const Page = () => {
             setContact(apiRes.contact);
             setClassifiedList(prev => ({
                 ...prev,
+                ...apiRes,
                 category: apiRes.category.id.toString(),
                 area: apiRes.area.id.toString(),
                 contact: apiRes.contact
@@ -113,7 +112,7 @@ const Page = () => {
 
     const onSubmit: SubmitHandler<any> = (data) => {
         setIsSubmitLoading(true);
-        let formdata = { ...data, ...classifiedList }
+        let formdata = { ...classifiedList, ...data }
         const payload: ClassifiedListing = {
             ...formdata,
             contact: contact,
@@ -156,7 +155,6 @@ const Page = () => {
     };
 
     // useEffect(() => {
-
     //     console.log(classifiedList)
     // }, [classifiedList])
 
@@ -221,7 +219,7 @@ const Page = () => {
                             />
                         </div>
                         <div className='flex w-full gap-8 lg:gap-4 mt-3 mb-8 flex-wrap md:flex-nowrap'>
-                            <Select label="Ownership History" selectedKeys={[classifiedList?.ownership_history]}
+                            <Select label="Ownership History" selectedKeys={[classifiedList?.ownership_history.toString()]}
                                 isDisabled={disabled}
                                 classNames={{ listboxWrapper: "nextui-listbox" }}
                                 isRequired

@@ -25,25 +25,23 @@ const Page = ({ params }: { params: { slug: string } }) => {
     const [keyFt, setKeyFt] = useState(0);
     const [keyGa, setKeyGa] = useState(0);
     const [editMode, setEditMode] = useState(false);
-    const [apiPayload, setApiPayload] = useState<any>({
-        endpoint: Products.business.api.base,
-        payload: {
-            step_number: ListingWorkflow.UploadImages,
-            publish_status: false
-        },
-        id: source
-    })
     const [imageParamsFeatured, setImageParamsFeatured] = useState<ImageParams>({
         refId: source,
         ref: "api::business-listing.business-listing",
         field: "featured_image",
         imgData: null,
+        step_number: ListingWorkflow.UploadImages,
+        publish_status: false,
+        endpoint: Products.business.api.base,
     });
     const [imageParamsGallery, setImageParamsGallery] = useState<ImageParams>({
         refId: source,
         ref: "api::business-listing.business-listing",
         field: "gallery_images",
         imgData: null,
+        step_number: ListingWorkflow.UploadImages,
+        publish_status: false,
+        endpoint: Products.business.api.base,
     });
     const attr = Products.business.api;
     const populateFeaturedImage = useCallback(async () => {
@@ -51,7 +49,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
         const response = await getPublicApiResponse(apiUrl).then(res => res.data);
         if (response) {
             const data = response[0];
-            setImageParamsFeatured({ ...imageParamsFeatured, imgData: data.featured_image });
+            setImageParamsFeatured({ ...imageParamsFeatured, imgData: data.featured_image, step_number: data.step_number });
         }
         setIsFeaturedImageLoaded(true);
         return response;
@@ -62,7 +60,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
             const response = await getPublicApiResponse(apiUrl).then(res => res.data);
             if (response) {
                 const data = response[0];
-                setImageParamsGallery({ ...imageParamsGallery, imgData: data.gallery_images });
+                setImageParamsGallery({ ...imageParamsGallery, imgData: data.gallery_images, step_number: data.step_number });
             }
             setIsGalleryImagesLoaded(true);
             return response;
@@ -112,12 +110,12 @@ const Page = ({ params }: { params: { slug: string } }) => {
                 <div className='grid grid-cols-1 gap-10 mx-2'>
                     <div className='listing-card border rounded-lg px-7 py-6 scroll-mt-36'>
                         <div className='card-header text-xl font-semibold mb-5'>Featured Image</div>
-                        {isFeaturedImageLoaded ? <SingleImage key={keyFt} imageParams={imageParamsFeatured} uploadSuccess={reloadFeaturedComp} setEditMode={setEditMode} apiPayload={apiPayload} /> :
+                        {isFeaturedImageLoaded ? <SingleImage key={keyFt} imageParams={imageParamsFeatured} uploadSuccess={reloadFeaturedComp} setEditMode={setEditMode} /> :
                             <ImgSingleUploadLoading />}
                     </div>
                     <div className='listing-card border rounded-lg px-7 py-6 scroll-mt-36'>
                         <div className='card-header text-xl font-semibold mb-5'>Gallery Images</div>
-                        {isGalleryImagesLoaded ? <MultiImage key={keyGa} imageParams={imageParamsGallery} setIsImagesInGallery={setIsImagesInGallery} uploadSuccess={reloadGalleryComp} setEditMode={setEditMode} apiPayload={apiPayload} /> :
+                        {isGalleryImagesLoaded ? <MultiImage key={keyGa} imageParams={imageParamsGallery} setIsImagesInGallery={setIsImagesInGallery} uploadSuccess={reloadGalleryComp} setEditMode={setEditMode} /> :
                             <ImgMultiUploadLoading />}
                     </div>
                     <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>

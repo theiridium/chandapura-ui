@@ -25,15 +25,10 @@ const Page = ({ params }: { params: { slug: string } }) => {
         ref: "api::job-listing.job-listing",
         field: "logo_image",
         imgData: null,
-    });
-    const [apiPayload, setApiPayload] = useState<any>({
+        step_number: ListingWorkflow.UploadImages,
+        publish_status: false,
         endpoint: Products.job.api.base,
-        payload: {
-            step_number: ListingWorkflow.UploadImages,
-            publish_status: false
-        },
-        id: source
-    })
+    });
     const attr = Products.job.api;
     const populateImage = useCallback(async () => {
         let apiUrl = `${attr.base}?filters[id][$eq]=${source}&populate=logo_image`;
@@ -76,7 +71,11 @@ const Page = ({ params }: { params: { slug: string } }) => {
         try {
             setIsSubmitLoading(true);
             if (type === "new" || type === "edit_back") {
-                const response = await putRequestApi(apiPayload.endpoint, apiPayload.payload, source);
+                let payload = {
+                    step_number: imageParams.step_number === ListingWorkflow.Publish ? ListingWorkflow.Publish : ListingWorkflow.UploadImages,
+                    publish_status: imageParams.publish_status
+                }
+                const response = await putRequestApi(imageParams.endpoint, payload, imageParams.refId);
                 if (response.data) {
                     toast.success("Taking you to review page!");
                     router.push(`/dashboard/job-listing/publish?type=${type}&source=${source}`)
@@ -100,7 +99,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
                 <div className='grid grid-cols-1 gap-10 mx-2'>
                     <div className='listing-card border rounded-lg px-7 py-6 scroll-mt-36'>
                         <div className='card-header text-xl font-semibold mb-5'>Company Logo Image <span className='text-sm font-medium'>(Optional)</span></div>
-                        {isImageLoaded ? <SingleImage key={keyJl} imageParams={imageParams} uploadSuccess={reloadAdComp} setEditMode={setEditMode} apiPayload={apiPayload} /> :
+                        {isImageLoaded ? <SingleImage key={keyJl} imageParams={imageParams} uploadSuccess={reloadAdComp} setEditMode={setEditMode} /> :
                             <ImgSingleUploadLoading />}
                     </div>
                     <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>

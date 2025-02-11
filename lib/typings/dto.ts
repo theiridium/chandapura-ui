@@ -66,6 +66,9 @@ export interface ImageParams {
     ref: string
     field: string
     imgData: any
+    step_number: number
+    publish_status: boolean
+    endpoint: string
 }
 export interface ContactComponent {
     contact_name: string

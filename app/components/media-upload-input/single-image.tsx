@@ -1,11 +1,12 @@
 import { deleteMediaFiles, postRequestApi, putRequestApi, uploadMediaFiles } from "@/lib/apiLibrary";
+import { ListingWorkflow } from "@/lib/typings/enums";
 import { Button, CircularProgress, Spinner } from "@nextui-org/react";
-import { Pencil} from "lucide-react";
+import { Pencil } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDropzone } from 'react-dropzone';
 import { toast } from "react-toastify";
 
-const SingleImage = ({ imageParams, uploadSuccess, setEditMode, apiPayload }: any) => {
+const SingleImage = ({ imageParams, uploadSuccess, setEditMode }: any) => {
 
     const [files, setFiles] = useState<any>([]);
     const [loading, setLoading] = useState(false);
@@ -35,14 +36,18 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode, apiPayload }: an
         let updateStep = null;
         formData.append("files", files[0]);
         const response = await uploadMediaFiles(formData);
-        if(response) updateStep = await putRequestApi(apiPayload.endpoint, apiPayload.payload, apiPayload.id);
+        let payload = {
+            step_number: imageParams.step_number === ListingWorkflow.Publish ? ListingWorkflow.Publish : ListingWorkflow.UploadImages,
+            publish_status: imageParams.publish_status
+        }
+        if (response) updateStep = await putRequestApi(imageParams.endpoint, payload, imageParams.refId);
         if (updateStep) uploadSuccess();
     }
 
     useEffect(() => {
-      isEditing? setEditMode(true): setEditMode(false);
+        isEditing ? setEditMode(true) : setEditMode(false);
     }, [isEditing])
-    
+
 
     // const deleteImage = async (id: any) => {
     //     const isConfirmed = confirm('Are you sure you want to delete this image?');

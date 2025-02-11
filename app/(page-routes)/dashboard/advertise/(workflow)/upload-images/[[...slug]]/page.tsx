@@ -25,22 +25,17 @@ const Page = ({ params }: { params: { slug: string } }) => {
         ref: "api::advertisement.advertisement",
         field: "ad_image",
         imgData: null,
-    });
-    const [apiPayload, setApiPayload] = useState<any>({
+        step_number: ListingWorkflow.UploadImages,
+        publish_status: false,
         endpoint: Products.advertisement.api.base,
-        payload: {
-            step_number: ListingWorkflow.UploadImages,
-            publish_status: false
-        },
-        id: source
-    })
+    });
     const attr = Products.advertisement.api;
     const populateAdImage = useCallback(async () => {
         let apiUrl = `${attr.base}?filters[id][$eq]=${source}&populate=ad_image`;
         const response = await getPublicApiResponse(apiUrl).then(res => res.data);
         if (response) {
             const data = response[0];
-            setImageParamsAd({ ...imageParamsAd, imgData: data.ad_image });
+            setImageParamsAd({ ...imageParamsAd, imgData: data.ad_image, step_number: data.step_number });
         }
         setIsAdImageLoaded(true);
         return response;
@@ -83,7 +78,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
                 <div className='grid grid-cols-1 gap-10 mx-2'>
                     <div className='listing-card border rounded-lg px-7 py-6 scroll-mt-36'>
                         <div className='card-header text-xl font-semibold mb-5'>Featured Image</div>
-                        {isAdImageLoaded ? <SingleImage key={keyAd} imageParams={imageParamsAd} uploadSuccess={reloadAdComp} setEditMode={setEditMode} apiPayload={apiPayload} /> :
+                        {isAdImageLoaded ? <SingleImage key={keyAd} imageParams={imageParamsAd} uploadSuccess={reloadAdComp} setEditMode={setEditMode} /> :
                             <ImgSingleUploadLoading />}
                     </div>
                     <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>

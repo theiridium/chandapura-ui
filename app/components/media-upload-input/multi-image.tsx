@@ -1,11 +1,12 @@
 import { deleteMediaFiles, putRequestApi, uploadMediaFiles } from "@/lib/apiLibrary";
+import { ListingWorkflow } from "@/lib/typings/enums";
 import { Button } from "@nextui-org/react";
 import { Plus, X } from "lucide-react";
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useDropzone } from 'react-dropzone';
 import { toast } from "react-toastify";
 
-const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditMode, apiPayload }: any) => {
+const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditMode }: any) => {
     const [files, setFiles] = useState<any[]>([]);
     const [existingFiles, setExistingFiles] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
@@ -61,7 +62,11 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditM
                     });
                     formData.append("files", file);
                     const response = await uploadMediaFiles(formData);
-                    if(response) updateStep = await putRequestApi(apiPayload.endpoint, apiPayload.payload, apiPayload.id);
+                    let payload = {
+                        step_number: imageParams.step_number === ListingWorkflow.Publish ? ListingWorkflow.Publish : ListingWorkflow.UploadImages,
+                        publish_status: imageParams.publish_status
+                    }
+                    if (response) updateStep = await putRequestApi(imageParams.endpoint, payload, imageParams.refId);
                     return updateStep;
                 });
                 await Promise.all(uploadPromises);

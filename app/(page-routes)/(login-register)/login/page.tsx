@@ -18,11 +18,16 @@ const Page = () => {
     const [isRegisteredUser, setIsRegisteredUser] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [domain, setDomain] = useState("");
+    const [_callbaclUrl, setCallbackUrl] = useState<string>();
     useEffect(() => {
         if (typeof window !== "undefined") {
-          setDomain(window.location.origin);
+            setDomain(window.location.origin);
         }
-      }, []);
+    }, []);
+    useEffect(() => {
+        setCallbackUrl(callbackUrl || domain + redirectUrl)
+    }, [callbackUrl, redirectUrl])
+
     const ValidateLogin = async (e: any) => {
         setIsLoading(true);
         const callBackUrlStr = (callbackUrl || redirectUrl) ? `&callbackUrl=${callbackUrl || domain + redirectUrl}` : "/";
@@ -33,7 +38,7 @@ const Page = () => {
                 email: email,
                 password: password,
                 redirect: true,
-                callbackUrl: callbackUrl || domain + redirectUrl
+                callbackUrl: _callbaclUrl
             })
         }
         else {
@@ -69,7 +74,7 @@ const Page = () => {
                         <h1 className='text-4xl font-bold mb-8'>Log in / Sign up</h1>
                         <p className='text-xl font-semibold color text-gray-400 mb-10'>Login to access your resources</p>
                         <div className='soc-login mb-8'>
-                            <button className='btn-soclogin-form' onClick={() => signIn('google', { callbackUrl: callbackUrl || "/" })}>
+                            <button className='btn-soclogin-form' onClick={() => signIn('google', { callbackUrl: _callbaclUrl })}>
                                 <span className='flex gap-3'><img src='/images/icons/google-logo.svg' />Continue with Google</span>
                             </button>
                         </div>

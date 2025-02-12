@@ -78,7 +78,12 @@ const Page = () => {
                                 <Input isRequired {...register("lastname")} className='text-login-form mb-5' radius='sm' type="text" variant="flat" label="Last Name" />
                             </div>
                             <Input isRequired {...register("email")} className='text-login-form mb-5' radius='sm' type="text" variant="flat" label="Email ID" isClearable />
-                            <Input isRequired {...register("phone")} className='text-login-form mb-5' radius='sm' type="text" variant="flat" label="Mobile Number" />
+                            <Input isRequired {...register("phone")} className='text-login-form mb-5' radius='sm' type="tel" variant="flat" label="Mobile Number" isClearable
+                                validate={(val) => {
+                                    if (!val) return "Phone number is required.";
+                                    if (!/^\d{10}$/.test(val)) return "Enter a valid 10-digit phone number.";
+                                    return null;
+                                }} />
                             <Input isRequired {...register("password")} className='text-login-form mb-5' radius='sm' type="password" variant="flat" label="Enter Password"
                                 validate={(val) => {
                                     if (!val) return "Password is required.";

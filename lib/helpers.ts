@@ -19,6 +19,16 @@ export function isEmptyObject(obj: Object) {
   return Object.keys(obj).length === 0;
 }
 
+export const GetDaysToExpire = (futureDate: any) => {
+  const currentDate: any = new Date();
+  const targetDate: any = new Date(futureDate);
+
+  const timeDiff = targetDate - currentDate;
+  const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+  return Math.max(daysLeft, 0);
+};
+
 export function ConvertCurrencyToWords(x: number) {
   if (x) {
     const num = x.toString();
@@ -43,19 +53,19 @@ export function ConvertCurrencyToWords(x: number) {
   }
 }
 
-export function calculateExpiryDate(date: any, months: number) {
+export function CalculateExpiryDate(date: any, months: number) {
   const expiryDate = new Date(date);
   expiryDate.setMonth(expiryDate.getMonth() + months);
   return expiryDate.toISOString();
 }
 
-export function convertToReadableDate(date: any) {
+export function ConvertToReadableDate(date: any) {
   const options: any = { day: '2-digit', month: 'short', year: 'numeric' };
   const dateStr = date.toLocaleDateString('en-US', options)
   return dateStr;
 }
 
-export function hashCode(str: string) {
+export function HashCode(str: string) {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     const char = str.charCodeAt(i);
@@ -65,7 +75,7 @@ export function hashCode(str: string) {
   return hash.toString(36);
 }
 
-export function checkSubscriptionValidity(expiryDateTmestamp: any, isPaymentSuccess: boolean) {
+export function CheckSubscriptionValidity(expiryDateTmestamp: any, isPaymentSuccess: boolean) {
   const currentDateTimestamp = new Date().getTime();
   if (expiryDateTmestamp >= currentDateTimestamp && isPaymentSuccess) {
     return true;
@@ -73,7 +83,7 @@ export function checkSubscriptionValidity(expiryDateTmestamp: any, isPaymentSucc
   else return false;
 }
 
-export function calculateDiscountPercentage(originalPrice: number, discountedPrice: number) {
+export function CalculateDiscountPercentage(originalPrice: number, discountedPrice: number) {
   let discount = originalPrice - discountedPrice;
   let discountPercentage = (discount / originalPrice) * 100;
   return Math.floor(discountPercentage);

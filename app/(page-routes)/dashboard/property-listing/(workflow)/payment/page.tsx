@@ -10,7 +10,7 @@ import TextLoading from '@/app/loading-components/text-loading';
 import { IndianRupee } from 'lucide-react';
 import { toast } from 'react-toastify';
 import PaymentCard from '@/app/sub-components/payment-card';
-import { calculateDiscountPercentage, checkSubscriptionValidity } from '@/lib/helpers';
+import { CalculateDiscountPercentage, CheckSubscriptionValidity } from '@/lib/helpers';
 import { ListingWorkflow } from '@/lib/typings/enums';
 
 const Page = () => {
@@ -51,7 +51,7 @@ const Page = () => {
                     else if (pricingPlanRes.data.PG) amount = findPriceByRoomType(pricingPlanRes.data.PG, data);
                     setPricingPlan({ monthly: amount });
                     setListingPrice({ type: 'Monthly', amount: amount });
-                    data.payment_details && setHasSubscribed(checkSubscriptionValidity(data.payment_details.expiry_date, data.payment_details.isPaymentSuccess));
+                    data.payment_details && setHasSubscribed(CheckSubscriptionValidity(data.payment_details.expiry_date, data.payment_details.isPaymentSuccess));
                     setApiRes(data);
                     setPaymentData({
                         payment_details: data.payment_details,

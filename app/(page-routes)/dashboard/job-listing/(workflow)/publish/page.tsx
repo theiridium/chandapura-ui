@@ -92,7 +92,7 @@ const Page = () => {
                             </div>
                             {apiRes.category === JobCategory.Corporate && <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Company Name</div>
-                                <div>{jobDetails.name}</div>
+                                <div>{jobDetails.company_name}</div>
                             </div>}
                             <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Job Title</div>

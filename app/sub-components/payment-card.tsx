@@ -5,7 +5,7 @@ import TextLoading from "../loading-components/text-loading";
 import { useEffect, useState } from "react";
 import { Button, Link } from "@nextui-org/react";
 import { CircleCheckBig, CircleX, IndianRupee } from "lucide-react";
-import { convertToReadableDate, hashCode } from "@/lib/helpers";
+import { ConvertToReadableDate, HashCode } from "@/lib/helpers";
 import Script from "next/script";
 import { createOrderId, putRequestApi } from "@/lib/apiLibrary";
 import { toast } from "react-toastify";
@@ -58,7 +58,7 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
         try {
             setIsLoading(true);
             if (totalAmount > 0) {
-                const hash = hashCode(currentDate.toString())
+                const hash = HashCode(currentDate.toString())
                 const receiptId = `rcp_${currentDate.getTime().toString(36)}${hash}`;
                 const orderId: string = await createOrderId(totalAmount, receiptId);
                 const options = {
@@ -115,7 +115,7 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
                 isPaymentSuccess = await savePaymentDetails(data);
                 if (isPaymentSuccess) {
                     setHasSubscribed(true);
-                    toast.success(`You have unlocked free listing untill ${convertToReadableDate(new Date(expiryDate))}. Please continue to Preview.`);
+                    toast.success(`You have unlocked free listing untill ${ConvertToReadableDate(new Date(expiryDate))}. Please continue to Preview.`);
                 }
             }
         } catch (error) {
@@ -135,7 +135,8 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
                 raz_order_id: data.razorpayOrderId,
                 raz_payment_id: data.razorpayPaymentId,
                 isPaymentSuccess: true,
-                isOfferApplied: isOfferApplied
+                isOfferApplied: isOfferApplied,
+                subscription_type: pricing.type
             }
             let payload = {
                 payment_details: payment_details,
@@ -177,7 +178,7 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
                     </div>
                     <div>
                         <div className='text-sm mb-1 font-semibold'>Billing Date</div>
-                        <div className='text-lg'>{convertToReadableDate(currentDate)}</div>
+                        <div className='text-lg'>{ConvertToReadableDate(currentDate)}</div>
                     </div>
                 </div>
                 {/* <div className="mb-8 border-2 border-transparent hover:border-color1d bg-color1d/10 p-3"> */}
@@ -185,7 +186,7 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
                     <div className="flex justify-between items-center">
                         <div>
                             <div className="text-sm">Promotional Offer</div>
-                            <div className="text-xs font-semibold">Free listing until {convertToReadableDate(new Date(expiryDate))}</div>
+                            <div className="text-xs font-semibold">Free listing until {ConvertToReadableDate(new Date(expiryDate))}</div>
                         </div>
                         <Button className="pointer-cursor" radius="sm" size="sm" color={!isOfferApplied ? "primary" : "success"} variant="flat" onPress={() => onClickApplyPromo()}>{!isOfferApplied ? "Apply" : "Applied"}</Button>
                     </div>
@@ -195,7 +196,7 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
                         <div>
                             <div className='text-sm mb-1 font-semibold'>Business Listing Plan</div>
                             {!isOfferApplied ? <div>{pricing.type}</div> : <div>Promotional</div>}
-                            {listingAmount > 0 && <div className="text-xs font-semi-bold">Expires on {convertToReadableDate(new Date(expiryDate))}</div>}
+                            {listingAmount > 0 && <div className="text-xs font-semi-bold">Expires on {ConvertToReadableDate(new Date(expiryDate))}</div>}
                         </div>
                         <div className="flex">
                             {isOfferApplied && <div className="text-xl flex items-center mr-2"><IndianRupee size={18} /><span className="line-through decoration-slate-500/60">{pricing.amount}</span></div>}

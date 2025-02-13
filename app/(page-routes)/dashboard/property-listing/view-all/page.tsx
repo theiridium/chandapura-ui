@@ -1,14 +1,17 @@
 "use client"
+import AlertModal from '@/app/components/modals/alert-modal';
 import FormLoading from '@/app/loading-components/form-loading';
 import Breadcrumb from '@/app/sub-components/breadcrumb';
-import { getPublicApiResponse } from '@/lib/apiLibrary';
+import { getPublicApiResponse, putRequestApi } from '@/lib/apiLibrary';
+import { ConvertToReadableDate, GetDaysToExpire } from '@/lib/helpers';
 import { ListingWorkflow } from '@/lib/typings/enums';
-import { DropdownList, Resource } from '@/public/shared/app.config';
-import { Button } from '@nextui-org/react';
-import { MoveRight, Pencil, Plus } from 'lucide-react';
+import { DropdownList, Products, Resource } from '@/public/shared/app.config';
+import { Button, useDisclosure } from '@nextui-org/react';
+import { CalendarCheck, Clock3, MapPin, MoveRight, Pencil, Plus } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
+import { toast } from 'react-toastify';
 
 const steps = [
   {
@@ -45,15 +48,38 @@ const Page = () => {
   const [list, setList] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isRedirecting, setIsRedirecting] = useState(false);
+  const [itemId, setItemId] = useState<any>(0);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const getPropertyList = async () => {
-    let apiUrl = `${attr.base}?sort=${attr.sortByDate}&${attr.filter}=${user?.email}&populate=featured_image,payment_details`
+    let apiUrl = `${attr.base}?sort=${attr.sortByDate}&${attr.filter}=${user?.email}&populate=featured_image,payment_details,area`
     const response = await getPublicApiResponse(apiUrl);
     setList(response.data);
     setIsLoading(false);
   }
   useEffect(() => {
     getPropertyList();
-  }, [])
+  }, [isLoading])
+  const onClickBtnSold = (id: any) => {
+    onOpen();
+    setItemId(id);
+  }
+  const markAsSold = async () => {
+    try {
+      let payload = {
+        publish_status: false,
+        isSold: true
+      }
+      const endpoint = Products.realEstate.api.base;
+      const response = await putRequestApi(endpoint, payload, itemId);
+      if (response.data) {
+        getPropertyList();
+        return true;
+      }
+    } catch (error) {
+      console.error("An error occurred during the process:", error);
+      toast.error("An error occurred. Please contact our support team.");
+    }
+  }
 
   return (
     <div className='max-w-screen-xl min-h-screen mx-auto px-3 my-8 md:mt-8 md:mb-10'>
@@ -83,10 +109,10 @@ const Page = () => {
               }
               const renewUrl = `${Resource.PropertyListing.baseLink}/payment?type=renew&source=${x.id}`;
               return (
-                <div key={i} className={`py-10 md:px-5 border-b-1 md:border md:rounded-lg ${i === 0 && 'border-t-1'}`}>
+                <div key={i} className={`relative overflow-hidden py-10 md:px-5 border-b-1 md:border md:rounded-lg ${x.isSold && x.listing_type === "Sale" && 'md:bg-overlay/10'} ${i === 0 && 'border-t-1'}`}>
                   <div className="flex gap-5 md:gap-10 relative">
                     <div className='absolute -top-6 right-0'>
-                      {x.publish_status ?
+                      {!x.isSold && (x.publish_status ?
                         <>
                           {x.payment_details && x.payment_details.expiry_date_timestamp <= new Date().getTime() ?
                             <div className='border rounded-full text-xs md:text-sm px-3 border-red-500 text-red-500 font-medium'>Expired</div> :
@@ -96,7 +122,8 @@ const Page = () => {
                           {(x.step_number === ListingWorkflow.Publish && !x.publish_status) ? <div className='border rounded-full text-xs md:text-sm px-3 border-amber-600 text-amber-600 font-medium'>Pending Approval</div> :
                             <div className='border rounded-full text-xs md:text-sm px-3 border-sky-500 text-sky-500 font-medium'>Draft</div>
                           }
-                        </>}
+                        </>
+                      )}
                     </div>
                     <div className='flex *:basis-24 *:w-[145px] *:h-[150px] *:object-cover *:rounded-lg'>
                       {x.featured_image === null ?
@@ -107,32 +134,59 @@ const Page = () => {
                       <div className='grid grid-cols-1 h-full content-between'>
                         <div>
                           <div className='font-semibold md:text-2xl mb-1'>{x.name}</div>
-                          <div className='text-sm font-light'>{x.area}</div>
-                        </div>
-                        <>
-                          <div className='flex text-sm border-y-1 divide-x *:px-2 *:py-1 *:flex *:items-center *:grow *:justify-center *:gap-x-1 text-color1d'>
-                            {x.publish_status ? <>
-                              {(x.payment_details && x.payment_details.expiry_date_timestamp <= new Date().getTime()) ?
-                                <a className='hover:bg-color2d/20' href={renewUrl}>Renew subscription<MoveRight size={15} /></a> :
-                                <>
-                                  <a className='hover:bg-color2d/20' href={Resource.PropertyListing.addDetailsLink + '?type=edit&source=' + x.id}>Property Details<Pencil size={15} /></a>
-                                  <a className='hover:bg-color2d/20' href={Resource.PropertyListing.uploadImagesLink + '?type=edit&source=' + x.id}>Image<Pencil size={15} /></a>
-                                </>
-                              }
-                            </> :
-                              <>
-                                {!x.publish_status && x.step_number === 4 ? <div>Pending Approval from Admin</div> : <a className='hover:bg-color2d/20' href={continueUrl}>Continue to complete listing<MoveRight size={15} /></a>}
-                              </>
-                            }
+                          <div className='text-xs flex flex-col md:flex-row md:items-center gap-1 md:gap-5 *:flex *:items-center'>
+                            <div><MapPin size={10} className='mr-1' />{x.area.name}</div>
+                            <div><CalendarCheck size={10} className='mr-1' />Posted on {ConvertToReadableDate(new Date(x.publishedAt))}</div>
                           </div>
-                        </>
+                        </div>
+                        {x.isSold && x.listing_type === "Sale" && <div className='text-md mt-4 flex items-center'>Sold on {ConvertToReadableDate(new Date(x.updatedAt))}</div>}
+                        {!x.isSold && !!x.payment_details?.subscription_type &&
+                          <div className='text-xs md:text-sm font-medium text-gray-400 flex'>
+                            {x.payment_details.subscription_type} Plan -
+                            <span className={`ml-1 flex items-center ${GetDaysToExpire(x.payment_details.expiry_date) <= 10 && 'text-red-400'}`}>{GetDaysToExpire(x.payment_details.expiry_date)} days left<Clock3 className='ml-1' size={14} /></span>
+                          </div>
+                        }
+                        {!x.isSold &&
+                          <>
+                            {x.listing_type === "Sale" && <div className='flex mb-2'>
+                              <Button className='w-full md:w-auto h-6' color='success' variant='flat' size='sm' onPress={() => onClickBtnSold(x.id)}>Mark as Sold</Button>
+                            </div>
+                            }
+                            <>
+                              <div className='flex text-sm border-y-1 divide-x *:px-2 *:py-1 *:flex *:items-center *:grow *:justify-center *:gap-x-1 text-color1d'>
+                                {x.publish_status ? <>
+                                  {(x.payment_details && x.payment_details.expiry_date_timestamp <= new Date().getTime()) ?
+                                    <a className='hover:bg-color2d/20' href={renewUrl}>Renew subscription<MoveRight size={15} /></a> :
+                                    <>
+                                      <a className='hover:bg-color2d/20' href={Resource.PropertyListing.addDetailsLink + '?type=edit&source=' + x.id}>Property Details<Pencil size={15} /></a>
+                                      <a className='hover:bg-color2d/20' href={Resource.PropertyListing.uploadImagesLink + '?type=edit&source=' + x.id}>Image<Pencil size={15} /></a>
+                                    </>
+                                  }
+                                </> :
+                                  <>
+                                    {!x.publish_status && x.step_number === 4 ? <div>Pending Approval from Admin</div> : <a className='hover:bg-color2d/20' href={continueUrl}>Continue to complete listing<MoveRight size={15} /></a>}
+                                  </>
+                                }
+                              </div>
+                            </>
+                          </>
+                        }
                       </div>
                     </div>
                   </div>
-                </div>)
+                  {x.isSold && x.listing_type === "Sale" &&
+                    <div className='ribbon-sold'>SOLD</div>
+                  }
+                  {!!x.listing_type &&
+                    <div className='ribbon-listing_type'>{x.listing_type}</div>
+                  }
+                </div>
+              )
             }) :
             <p className='text-lg'>Your list is empty, click on <a className='link-text' href={addNewUrl}>Add New</a> to start listing your property today.</p>}
       </div>
+      <AlertModal isOpen={isOpen} onOpenChange={onOpenChange} updateItemStatus={markAsSold}
+        bodyContent="Are you sure you want to mark this property as sold?" />
     </div>
   )
 }

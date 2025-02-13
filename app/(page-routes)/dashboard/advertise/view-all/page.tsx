@@ -2,10 +2,11 @@
 import FormLoading from '@/app/loading-components/form-loading';
 import Breadcrumb from '@/app/sub-components/breadcrumb';
 import { getPublicApiResponse } from '@/lib/apiLibrary';
+import { ConvertToReadableDate, GetDaysToExpire } from '@/lib/helpers';
 import { ListingWorkflow } from '@/lib/typings/enums';
 import { DropdownList, Resource } from '@/public/shared/app.config';
 import { Button } from '@nextui-org/react';
-import { MoveRight, Pencil, Plus } from 'lucide-react';
+import { CalendarCheck, Clock3, MoveRight, Pencil, Plus } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
@@ -106,8 +107,16 @@ const Page = () => {
                     <div className='w-full grow'>
                       <div className='grid grid-cols-1 h-full content-between'>
                         <div>
-                          <div className='font-semibold md:text-2xl mb-1'>{x.name}</div>
-                          <div className='text-sm font-light'>{x.area}</div>
+                          <div className='font-semibold md:text-2xl mb-2'>{x.name}</div>
+                          <div className='text-xs mb-1 flex flex-col md:flex-row md:items-center gap-2 md:gap-5 *:flex *:items-center'>
+                            <div><CalendarCheck size={10} className='mr-1' />Posted on {ConvertToReadableDate(new Date(x.publishedAt))}</div>
+                          </div>
+                          {!!x.payment_details?.subscription_type &&
+                            <div className='text-xs md:text-sm font-medium text-gray-400 flex mt-2'>
+                              {x.payment_details.subscription_type} Plan -
+                              <span className={`ml-1 flex items-center ${GetDaysToExpire(x.payment_details.expiry_date) <= 10 && 'text-red-400'}`}>{GetDaysToExpire(x.payment_details.expiry_date)} days left<Clock3 className='ml-1' size={14} /></span>
+                            </div>
+                          }
                         </div>
                         <>
                           <div className='flex text-sm border-y-1 divide-x *:px-2 *:py-1 *:flex *:items-center *:grow *:justify-center *:gap-x-1 text-color1d'>

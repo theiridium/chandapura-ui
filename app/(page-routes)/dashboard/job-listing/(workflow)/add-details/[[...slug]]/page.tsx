@@ -156,12 +156,13 @@ const Page = () => {
     const onSubmit: SubmitHandler<any> = (data) => {
         setIsSubmitLoading(true);
         let formdata = { ...jobListing, ...data }
-        let jobDetailsFormatted =
-        {
-            ...jobDetails,
-            job_timing_from: moment(Array.from(jobDetails.job_timing_from)[0] as string, "hh:mm A").format("HH:mm:ss.SSS"),
-            job_timing_to: moment(Array.from(jobDetails.job_timing_to)[0] as string, "hh:mm A").format("HH:mm:ss.SSS")
-        }
+        let jobDetailsFormatted = { ...jobDetails };
+        (jobDetails.category === "Personal") &&
+            (jobDetailsFormatted = {
+                ...jobDetails,
+                job_timing_from: moment(Array.from(jobDetails.job_timing_from)[0] as string, "hh:mm A").format("HH:mm:ss.SSS"),
+                job_timing_to: moment(Array.from(jobDetails.job_timing_to)[0] as string, "hh:mm A").format("HH:mm:ss.SSS")
+            })
         const payload: JobListing = {
             ...formdata,
             contact: contact,

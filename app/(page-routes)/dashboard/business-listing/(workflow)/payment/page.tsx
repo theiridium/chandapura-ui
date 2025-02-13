@@ -10,7 +10,7 @@ import TextLoading from '@/app/loading-components/text-loading';
 import { IndianRupee } from 'lucide-react';
 import { toast } from 'react-toastify';
 import PaymentCard from '@/app/sub-components/payment-card';
-import { calculateDiscountPercentage, checkSubscriptionValidity } from '@/lib/helpers';
+import { CalculateDiscountPercentage, CheckSubscriptionValidity } from '@/lib/helpers';
 import { ListingWorkflow } from '@/lib/typings/enums';
 
 const Page = () => {
@@ -47,7 +47,7 @@ const Page = () => {
                 const data = response[0];
                 if (data) {
                     if (data.step_number !== ListingWorkflow.UploadImages && type !== "renew") router.push(`/dashboard/business-listing/view-all`);
-                    data.payment_details && setHasSubscribed(checkSubscriptionValidity(data.payment_details.expiry_date_timestamp, data.payment_details.isPaymentSuccess));
+                    data.payment_details && setHasSubscribed(CheckSubscriptionValidity(data.payment_details.expiry_date_timestamp, data.payment_details.isPaymentSuccess));
                     setApiRes(data);
                     setPaymentData({
                         payment_details: data.payment_details,
@@ -152,7 +152,7 @@ const Page = () => {
                                                 <>
                                                     <div className='flex items-end justify-center text-md mb-5'>
                                                         <div className='flex items-center line-through decoration-slate-500/60'><IndianRupee size={15} />{pricingPlan.monthly * 12}</div><span className='text-xs'>/year</span>
-                                                        <div className='ml-2 bg-color1d/10 rounded-full px-5'>Save {calculateDiscountPercentage(pricingPlan.monthly * 12, pricingPlan.yearly)}%</div>
+                                                        <div className='ml-2 bg-color1d/10 rounded-full px-5'>Save {CalculateDiscountPercentage(pricingPlan.monthly * 12, pricingPlan.yearly)}%</div>
                                                     </div>
                                                     <div className='flex items-end justify-center mb-10'><div className='text-5xl font-semibold flex items-center'><IndianRupee strokeWidth={3} size={30} />{pricingPlan.yearly}</div><span className='font-semibold'>/year</span></div>
                                                     {!hasSubscribed &&

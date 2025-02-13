@@ -2,10 +2,11 @@
 import FormLoading from '@/app/loading-components/form-loading';
 import Breadcrumb from '@/app/sub-components/breadcrumb';
 import { getPublicApiResponse } from '@/lib/apiLibrary';
+import { GetDaysToExpire } from '@/lib/helpers';
 import { ListingWorkflow } from '@/lib/typings/enums';
 import { DropdownList, Resource } from '@/public/shared/app.config';
 import { Button } from '@nextui-org/react';
-import { MoveRight, Pencil, Plus } from 'lucide-react';
+import { Clock3, MapPin, MoveRight, Pencil, Plus } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
@@ -46,7 +47,7 @@ const Page = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const getBusinessList = async () => {
-    let apiUrl = `${attr.base}?sort=${attr.sortByDate}&${attr.filter}=${user?.email}&populate=featured_image,payment_details`
+    let apiUrl = `${attr.base}?sort=${attr.sortByDate}&${attr.filter}=${user?.email}&populate=featured_image,payment_details,area`
     const response = await getPublicApiResponse(apiUrl);
     setList(response.data);
     setIsLoading(false);
@@ -107,10 +108,16 @@ const Page = () => {
                       <div className='grid grid-cols-1 h-full content-between'>
                         <div>
                           <div className='font-semibold md:text-2xl mb-1'>{x.name}</div>
-                          <div className='text-sm font-light'>{x.area}</div>
+                          <div className='text-xs mb-1 flex items-center'><MapPin size={10} className='mr-1' />{x.area.name}</div>
+                          {!!x.payment_details?.subscription_type &&
+                            <div className='text-sm font-medium text-gray-400 flex'>
+                              {x.payment_details.subscription_type} Plan -
+                              <span className={`ml-1 flex items-center ${GetDaysToExpire(x.payment_details.expiry_date) <= 10 && 'text-red-400'}`}>{GetDaysToExpire(x.payment_details.expiry_date)} days left<Clock3 className='ml-1' size={16} /></span>
+                            </div>
+                          }
                         </div>
                         {!x.advertise && <div className='flex'>
-                          <Button className='w-full md:w-auto' color='primary' variant='flat' size='sm'>Advertise Now</Button>
+                          <Button className='w-full md:w-auto h-6' color='primary' variant='flat' size='sm'>Advertise Now</Button>
                         </div>}
                         <>
                           <div className='flex text-sm border-y-1 divide-x *:px-2 *:py-1 *:flex *:items-center *:grow *:justify-center *:gap-x-1 text-color1d'>

@@ -356,6 +356,15 @@ header {
     --tw-bg-opacity: 1;
     background-color: rgb(228 228 231 / 53%) !important;
   }
+  .ribbon-sold {
+    @apply absolute top-[43px] -right-[85px] w-[300px] rotate-[40deg] bg-red-500 text-white text-center font-bold shadow-lg text-xl tracking-widest;
+  }
+  .ribbon-listing_type {
+    @apply absolute top-0 px-5 md:px-0 md:top-[25px] md:-left-[111px] md:w-[300px] md:rotate-[-45deg] bg-color1d/90 text-white text-center font-bold shadow-lg text-base tracking-widest;
+  }
+  .ribbon-job_category {
+    @apply absolute top-0 px-5 md:px-0 md:top-[38px] md:-left-[100px] md:w-[300px] md:rotate-[-45deg] bg-color1d/90 text-white text-center font-bold shadow-lg text-sm tracking-widest;
+  }
 }
 
 @layer utilities {

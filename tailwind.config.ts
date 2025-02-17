@@ -15,6 +15,9 @@ const config: Config = {
         color1d: '#650081',
         color1l: '#ffc901',
         color2d: '#ffc901',
+      },
+      maxWidth: {
+        'screen-xl': '1350px'
       }
     },
   },

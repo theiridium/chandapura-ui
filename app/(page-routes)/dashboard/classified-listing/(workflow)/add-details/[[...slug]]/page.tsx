@@ -219,7 +219,7 @@ const Page = () => {
                             />
                         </div>
                         <div className='flex w-full gap-8 lg:gap-4 mt-3 mb-8 flex-wrap md:flex-nowrap'>
-                            <Select label="Ownership History" selectedKeys={[classifiedList?.ownership_history.toString()]}
+                            <Select label="Ownership History" selectedKeys={[classifiedList?.ownership_history?.toString()]}
                                 isDisabled={disabled}
                                 classNames={{ listboxWrapper: "nextui-listbox" }}
                                 isRequired

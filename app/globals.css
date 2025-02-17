@@ -60,7 +60,7 @@ input:focus-visible {
 }
 
 .main-header,
-footer {
+.footer-main {
   /* background-color: rgb(26, 26, 26) !important; */
   background-color: rgb(80, 2, 102) !important;
   color: white !important;
@@ -109,12 +109,14 @@ header {
     @apply scroll-smooth;
   }
   button:hover:not(.embla *, .google-map *, .sidemenubar *),
-  a:hover:not(.embla *, .google-map *, .sidemenubar *) {
+  a:hover:not(.embla *, .google-map *, .sidemenubar *),
+  .re-card-link:hover {
     @apply transition duration-300 ease-in-out;
   }
 
   button:not(.embla *, .google-map *, .sidemenubar *),
-  a:not(.embla *, .google-map *, .sidemenubar *) {
+  a:not(.embla *, .google-map *, .sidemenubar *),
+  .re-card-link {
     @apply transition duration-300 ease-in-out;
   }
   .link-pill {
@@ -195,16 +197,16 @@ header {
   }
   #section-4 {
     /* @apply bg-color2d/80 pt-10 pb-14 mb-20; */
-    @apply bg-color2d/10 py-10 mb-20;
+    @apply bg-color2d/10 py-5 mb-20;
   }
   .card-list-row {
-    @apply flex overflow-x-auto gap-5 lg:gap-7 lg:snap-x;
+    @apply flex overflow-x-auto gap-5 lg:gap-0 lg:snap-x lg:*:m-3 lg:scroll-p-3;
   }
   .business-card-list-row {
-    @apply flex overflow-x-auto gap-5 lg:gap-7 lg:snap-x;
+    @apply flex overflow-x-auto gap-5 lg:gap-0 lg:snap-x lg:*:m-3 lg:scroll-p-3;
   }
   .job-card-list-row {
-    @apply flex overflow-x-auto gap-5 lg:gap-7 lg:snap-x;
+    @apply flex overflow-x-auto gap-5 lg:gap-0 lg:snap-x lg:*:m-3 lg:scroll-p-3;
   }
   /* .job-card-list-row {
     @apply flex items-stretch overflow-x-auto lg:overflow-visible lg:grid lg:grid-cols-3 gap-5 lg:gap-7;
@@ -215,7 +217,8 @@ header {
   }
   .re-card-link:hover,
   .job-card-link:hover {
-    box-shadow: 0 0 48px -33px rgb(34, 34, 34);
+    /* box-shadow: 0 0 48px -33px rgb(34, 34, 34); */
+    box-shadow: 0px 4px 8px rgba(34, 34, 34, 0.1), 0px 6px 12px rgba(34, 34, 34, 0.15);
     /* @apply transition translate-y-1 duration-300 ease-in-out; */
   }
   .re-card,
@@ -295,7 +298,7 @@ header {
     @apply flex gap-5 overflow-x-auto;
   }
   .search-cat-sec .mini-card {
-    @apply border rounded-lg aspect-square grid place-items-center text-center p-0 md:p-2 min-w-[110px] max-w-[110px] md:min-w-[120px] md:max-w-[120px] hover:bg-color2d/10;
+    @apply border rounded-lg aspect-square grid place-items-center text-center p-0 md:p-2 min-w-[120px] max-w-[120px] md:min-w-[130px] md:max-w-[130px] hover:bg-color2d/10;
   }
   .mini-card .text {
     @apply text-xs md:text-sm text-gray-600 font-medium w-24 lg:w-auto;

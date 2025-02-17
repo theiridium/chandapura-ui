@@ -8,7 +8,7 @@ export default function Home() {
     <>
       {/* <Test /> */}
       {/* <div className="lg:max-w-screen-xl lg:mx-auto lg:px-3"> */}
-      <div>
+      <div className="max-w-screen-xl mx-auto">
         <Hero />
       </div>
       <div className="max-w-screen-xl mx-auto px-3 mb-12 md:mb-20">

@@ -3,7 +3,7 @@ import React from 'react'
 const BusinessListLoading = () => {
     return (
         <div className='business-card-list-row'>
-            {Array.from({ length: 3 }).map((_, index) => (
+            {Array.from({ length: 4 }).map((_, index) => (
                 <div key={index} className="re-card-link">
                     <div className="business-card">
                         <div className="business-card-img">

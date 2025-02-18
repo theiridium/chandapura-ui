@@ -4,8 +4,8 @@ const ItemListLoading = () => {
     return (
         <div className="card-list-row">
             {Array.from({ length: 5 }).map((_, index) => (
-                <div className='re-card-link'>
-                    <div key={index} className="re-card">
+                <div key={index} className='re-card-link'>
+                    <div className="re-card">
                         <div className="re-card-img">
                             <img src="/images/placeholder.png" className="w-full h-full" />
                         </div>

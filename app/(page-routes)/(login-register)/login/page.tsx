@@ -18,14 +18,16 @@ const Page = () => {
     const [isRegisteredUser, setIsRegisteredUser] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [domain, setDomain] = useState("");
-    const [_callbaclUrl, setCallbackUrl] = useState<string>();
+    const [_callbackUrl, setCallbackUrl] = useState<string>("");
     useEffect(() => {
         if (typeof window !== "undefined") {
             setDomain(window.location.origin);
         }
     }, []);
     useEffect(() => {
-        setCallbackUrl(callbackUrl || domain + redirectUrl)
+        if (callbackUrl || redirectUrl)
+            setCallbackUrl(callbackUrl || domain + redirectUrl)
+        else setCallbackUrl("")
     }, [callbackUrl, redirectUrl])
 
     const ValidateLogin = async (e: any) => {
@@ -38,7 +40,7 @@ const Page = () => {
                 email: email,
                 password: password,
                 redirect: true,
-                callbackUrl: _callbaclUrl
+                callbackUrl: _callbackUrl
             })
         }
         else {
@@ -56,6 +58,7 @@ const Page = () => {
         e.preventDefault();
         router.push(`/forgot-password`);
     }
+
     useEffect(() => {
         isRegistered && toast.success("Your account registered successfully! Please continue login with Email ID and Password.", { autoClose: false, theme: "colored" });
     }, [])
@@ -74,7 +77,7 @@ const Page = () => {
                         <h1 className='text-4xl font-bold mb-8'>Log in / Sign up</h1>
                         <p className='text-xl font-semibold color text-gray-400 mb-10'>Login to access your resources</p>
                         <div className='soc-login mb-8'>
-                            <button className='btn-soclogin-form' onClick={() => signIn('google', { callbackUrl: _callbaclUrl })}>
+                            <button className='btn-soclogin-form' onClick={() => signIn('google', { callbackUrl: _callbackUrl })}>
                                 <span className='flex gap-3'><img src='/images/icons/google-logo.svg' />Continue with Google</span>
                             </button>
                         </div>

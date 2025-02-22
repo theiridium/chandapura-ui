@@ -6,7 +6,7 @@ import { getPublicApiResponse, putRequestApi } from '@/lib/apiLibrary';
 import { ConvertToReadableDate, GetDaysToExpire } from '@/lib/helpers';
 import { ListingWorkflow } from '@/lib/typings/enums';
 import { DropdownList, Products, Resource } from '@/public/shared/app.config';
-import { Button, useDisclosure } from '@nextui-org/react';
+import { Button, Link, useDisclosure } from '@nextui-org/react';
 import { CalendarCheck, Clock3, MapPin, MoveRight, Pencil, Plus } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -51,7 +51,7 @@ const Page = () => {
   const [itemId, setItemId] = useState<any>(0);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const getClassifiedList = async () => {
-    let apiUrl = `${attr.base}?sort=${attr.sortByDate}&${attr.filter}=${user?.email}&populate=featured_image,payment_details,area`
+    let apiUrl = `${attr.base}?sort=${attr.sortByDate}&${attr.filter}=${user?.email}&${attr.populate}`
     const response = await getPublicApiResponse(apiUrl);
     setList(response.data);
     setIsLoading(false);
@@ -67,7 +67,7 @@ const Page = () => {
     try {
       let payload = {
         publish_status: false,
-        isSold: true
+        isUnlisted: true
       }
       const endpoint = Products.classifieds.api.base;
       const response = await putRequestApi(endpoint, payload, itemId);
@@ -84,7 +84,7 @@ const Page = () => {
   return (
     <div className='max-w-screen-xl min-h-screen mx-auto px-3 my-8 md:mt-8 md:mb-10'>
       <div className='flex gap-8 justify-between md:justify-normal'>
-        <h1 className="text-3xl font-semibold md:font-bold text-gray-600 mb-8 md:mb-12">My Classifieds</h1>
+        <h1 className="dash-heading">My Classifieds</h1>
         <Button color="primary" variant="ghost" radius="sm" className='hover:color-white'
           onPress={() => {
             setIsRedirecting(true);
@@ -109,14 +109,17 @@ const Page = () => {
               }
               // const renewUrl = `${Resource.ClassifiedListing.baseLink}/payment?type=renew&source=${x.id}`;
               return (
-                <div key={i} className={`relative overflow-hidden py-10 md:px-5 border-b-1 md:border md:rounded-lg ${x.isSold && 'md:bg-overlay/10'} ${i === 0 && 'border-t-1'}`}>
+                <div key={i} className={`relative overflow-hidden py-10 md:px-5 border-b-1 md:border md:rounded-lg ${x.isUnlisted && 'md:bg-overlay/10'} ${i === 0 && 'border-t-1'}`}>
                   <div className="flex gap-5 md:gap-10 relative">
-                    <div className='absolute -top-6 right-0'>
+                    <div className='dash-card-top'>
                       {x.publish_status ?
-                        <div className='border rounded-full text-xs md:text-sm px-3 border-emerald-500 text-emerald-500 font-medium'>Active</div> :
+                        <div className='flex items-center gap-3'>
+                          <Button as={Link} className='btn-vis' color='secondary' variant='flat' size='sm' href={`/${Products.classifieds.slug}/${x.category.slug}/${x.slug}?source=${x.id}`} endContent={<MoveRight size={15} />}>View in Site</Button>
+                          <div className='pill-active'>Active</div>
+                        </div> :
                         <>
-                          {!x.isSold && ((x.step_number === ListingWorkflow.Publish && !x.publish_status) ? <div className='border rounded-full text-xs md:text-sm px-3 border-amber-600 text-amber-600 font-medium'>Pending Approval</div> :
-                            <div className='border rounded-full text-xs md:text-sm px-3 border-sky-500 text-sky-500 font-medium'>Draft</div>
+                          {!x.isUnlisted && ((x.step_number === ListingWorkflow.Publish && !x.publish_status) ? <div className='pill-pendingApproval'>Pending Approval</div> :
+                            <div className='pill-draft'>Draft</div>
                           )}
                         </>
                       }
@@ -135,18 +138,18 @@ const Page = () => {
                             <div><CalendarCheck size={10} className='mr-1' />Posted on {ConvertToReadableDate(new Date(x.publishedAt))}</div>
                           </div>
                         </div>
-                        {x.isSold && <div className='text-md mt-4 flex items-center'>Sold on {ConvertToReadableDate(new Date(x.updatedAt))}</div>}
+                        {x.isUnlisted && <div className='text-md mt-4 flex items-center'>Sold on {ConvertToReadableDate(new Date(x.updatedAt))}</div>}
                         {!!x.payment_details?.subscription_type &&
                           <div className='text-sm font-medium text-gray-400 flex'>
                             {x.payment_details.subscription_type} Plan -
                             <span className={`ml-1 flex items-center ${GetDaysToExpire(x.payment_details.expiry_date) <= 10 && 'text-red-400'}`}>{GetDaysToExpire(x.payment_details.expiry_date)} days left<Clock3 className='ml-1' size={16} /></span>
                           </div>
                         }
-                        {!x.isSold &&
+                        {!x.isUnlisted &&
                           <>
-                            <div className='flex'>
+                            {x.publish_status && <div className='flex'>
                               <Button className='w-full md:w-auto h-6' color='success' variant='flat' size='sm' onPress={() => onClickBtnSold(x.id)}>Mark as Sold</Button>
-                            </div>
+                            </div>}
                             <>
                               <div className='flex text-sm border-y-1 divide-x *:px-2 *:py-1 *:flex *:items-center *:grow *:justify-center *:gap-x-1 text-color1d'>
                                 {x.publish_status ? <>
@@ -164,7 +167,7 @@ const Page = () => {
                       </div>
                     </div>
                   </div>
-                  {x.isSold &&
+                  {x.isUnlisted &&
                     <div className='ribbon-sold'>SOLD</div>
                   }
                 </div>

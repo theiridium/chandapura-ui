@@ -77,7 +77,7 @@ const PropertyDetailPlot = ({ data, onOpen, property_details }: any) => {
                         </div> */}
                         <div className='mb-5 lg:mb-0'>
                             <div className='text-sm text-gray-500 font-semibold'>Direction</div>
-                            <div className='text-sm md:text-lg font-medium'>{property_details.facing} Facing</div>
+                            <div className='text-sm md:text-lg font-medium'>{property_details.direction} Facing</div>
                         </div>
                         {/* <div className='mb-5 lg:mb-0'>
                             <div className='text-sm text-gray-500 font-semibold'>Furnishing</div>

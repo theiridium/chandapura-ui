@@ -29,7 +29,6 @@ const Page = () => {
                 let apiUrl = `${attr.base}?${attr.userFilter}=${userData?.email}&filters[id][$eq]=${source}&populate=${attr.populateDetails}`;
                 const response = await getPublicApiResponse(apiUrl).then(res => res.data);
                 const data = response[0];
-                console.log(data)
                 if (data) {
                     if (data.step_number !== ListingWorkflow.Payment) router.push(`/dashboard/property-listing/view-all`);
                     setApiRes(data);

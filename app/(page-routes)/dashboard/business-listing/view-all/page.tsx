@@ -2,11 +2,11 @@
 import FormLoading from '@/app/loading-components/form-loading';
 import Breadcrumb from '@/app/sub-components/breadcrumb';
 import { getPublicApiResponse } from '@/lib/apiLibrary';
-import { GetDaysToExpire } from '@/lib/helpers';
+import { ConvertToReadableDate, GetDaysToExpire } from '@/lib/helpers';
 import { ListingWorkflow } from '@/lib/typings/enums';
-import { DropdownList, Resource } from '@/public/shared/app.config';
-import { Button } from '@nextui-org/react';
-import { Clock3, MapPin, MoveRight, Pencil, Plus } from 'lucide-react';
+import { DropdownList, Products, Resource } from '@/public/shared/app.config';
+import { Button, Link } from '@nextui-org/react';
+import { CalendarCheck, Clock3, MapPin, MoveRight, Pencil, Plus } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
@@ -47,7 +47,7 @@ const Page = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const getBusinessList = async () => {
-    let apiUrl = `${attr.base}?sort=${attr.sortByDate}&${attr.filter}=${user?.email}&populate=featured_image,payment_details,area`
+    let apiUrl = `${attr.base}?sort=${attr.sortByDate}&${attr.filter}=${user?.email}&${attr.populate}`
     const response = await getPublicApiResponse(apiUrl);
     setList(response.data);
     setIsLoading(false);
@@ -59,7 +59,7 @@ const Page = () => {
   return (
     <div className='max-w-screen-xl min-h-screen mx-auto px-3 my-8 md:mt-8 md:mb-10'>
       <div className='flex gap-8 justify-between md:justify-normal'>
-        <h1 className="text-3xl font-semibold md:font-bold text-gray-600 mb-8 md:mb-12">My Business</h1>
+        <h1 className="dash-heading">My Business</h1>
         <Button color="primary" variant="ghost" radius="sm" className='hover:color-white'
           onPress={() => {
             setIsRedirecting(true);
@@ -86,16 +86,20 @@ const Page = () => {
               return (
                 <div key={i} className={`py-10 md:px-5 border-b-1 md:border md:rounded-lg ${i === 0 && 'border-t-1'}`}>
                   <div className="flex gap-5 md:gap-10 relative">
-                    <div className='absolute -top-6 right-0'>
+                    <div className='dash-card-top'>
                       {x.publish_status ?
                         <>
                           {x.payment_details && x.payment_details.expiry_date_timestamp <= new Date().getTime() ?
-                            <div className='border rounded-full text-xs md:text-sm px-3 border-red-500 text-red-500 font-medium'>Expired</div> :
-                            <div className='border rounded-full text-xs md:text-sm px-3 border-emerald-500 text-emerald-500 font-medium'>Active</div>}
+                            <div className='pill-expired'>Expired</div> :
+                            <div className='flex items-center gap-3'>
+                              <Button as={Link} className='btn-vis' color='secondary' variant='flat' size='sm' href={`/${Products.business.slug}/${x.category.slug}/${x.sub_category.slug}/${x.slug}?source=${x.id}`} endContent={<MoveRight size={15} />}>View in Site</Button>
+                              <div className='pill-active'>Active</div>
+                            </div>
+                          }
                         </> :
                         <>
-                          {(x.step_number === ListingWorkflow.Publish && !x.publish_status) ? <div className='border rounded-full text-xs md:text-sm px-3 border-amber-600 text-amber-600 font-medium'>Pending Approval</div> :
-                            <div className='border rounded-full text-xs md:text-sm px-3 border-sky-500 text-sky-500 font-medium'>Draft</div>
+                          {(x.step_number === ListingWorkflow.Publish && !x.publish_status) ? <div className='pill-pendingApproval'>Pending Approval</div> :
+                            <div className='pill-draft'>Draft</div>
                           }
                         </>}
                     </div>
@@ -108,7 +112,10 @@ const Page = () => {
                       <div className='grid grid-cols-1 h-full content-between'>
                         <div>
                           <div className='font-semibold md:text-2xl mb-1'>{x.name}</div>
-                          <div className='text-xs mb-1 flex items-center'><MapPin size={10} className='mr-1' />{x.area.name}</div>
+                          <div className='text-xs flex flex-col md:flex-row md:items-center gap-1 md:gap-5 *:flex *:items-center mb-1'>
+                            <div><MapPin size={10} className='mr-1' />{x.area.name}</div>
+                            <div><CalendarCheck size={10} className='mr-1' />Posted on {ConvertToReadableDate(new Date(x.publishedAt))}</div>
+                          </div>
                           {!!x.payment_details?.subscription_type &&
                             <div className='text-sm font-medium text-gray-400 flex'>
                               {x.payment_details.subscription_type} Plan -

@@ -3,10 +3,10 @@ import AlertModal from '@/app/components/modals/alert-modal';
 import FormLoading from '@/app/loading-components/form-loading';
 import Breadcrumb from '@/app/sub-components/breadcrumb';
 import { getPublicApiResponse, putRequestApi } from '@/lib/apiLibrary';
-import { ConvertToReadableDate, GetDaysToExpire } from '@/lib/helpers';
+import { ConvertToReadableDate, GetDaysToExpire, GetProductFromLabel } from '@/lib/helpers';
 import { ListingWorkflow } from '@/lib/typings/enums';
 import { DropdownList, Products, Resource } from '@/public/shared/app.config';
-import { Button, useDisclosure } from '@nextui-org/react';
+import { Button, Link, useDisclosure } from '@nextui-org/react';
 import { CalendarCheck, Clock3, MapPin, MoveRight, Pencil, Plus } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -49,9 +49,10 @@ const Page = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [itemId, setItemId] = useState<any>(0);
+  const [unListLabelModal, setUnlistLabelModal] = useState<any>("");
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const getPropertyList = async () => {
-    let apiUrl = `${attr.base}?sort=${attr.sortByDate}&${attr.filter}=${user?.email}&populate=featured_image,payment_details,area`
+    let apiUrl = `${attr.base}?sort=${attr.sortByDate}&${attr.filter}=${user?.email}&${attr.populate}`
     const response = await getPublicApiResponse(apiUrl);
     setList(response.data);
     setIsLoading(false);
@@ -59,15 +60,16 @@ const Page = () => {
   useEffect(() => {
     getPropertyList();
   }, [isLoading])
-  const onClickBtnSold = (id: any) => {
+  const onClickBtnUnlist = (id: any, unListLabel: string) => {
+    setUnlistLabelModal(unListLabel);
     onOpen();
     setItemId(id);
   }
-  const markAsSold = async () => {
+  const markAsUnlisted = async () => {
     try {
       let payload = {
         publish_status: false,
-        isSold: true
+        isUnlisted: true
       }
       const endpoint = Products.realEstate.api.base;
       const response = await putRequestApi(endpoint, payload, itemId);
@@ -84,7 +86,7 @@ const Page = () => {
   return (
     <div className='max-w-screen-xl min-h-screen mx-auto px-3 my-8 md:mt-8 md:mb-10'>
       <div className='flex gap-8 justify-between md:justify-normal'>
-        <h1 className="text-3xl font-semibold md:font-bold text-gray-600 mb-8 md:mb-12">My Properties</h1>
+        <h1 className="dash-heading">My Properties</h1>
         <Button color="primary" variant="ghost" radius="sm" className='hover:color-white'
           onPress={() => {
             setIsRedirecting(true);
@@ -102,25 +104,30 @@ const Page = () => {
           ) :
           list.length > 0 ?
             !isLoading && list.map((x: any, i: any) => {
-              let continueUrl = "";
+              let unListLabel = x.listing_type !== "PG" ? (x.listing_type === "Rent" ? "Rented" : "Sold") : "";
+              let continueUrl = ""; ``
               if (!x.publish_status) {
                 let baseUrl = steps.find(({ number }) => number === x.step_number)?.nextPath;
                 continueUrl = `${Resource.PropertyListing.baseLink}/${baseUrl}?type=new&source=${x.id}`
               }
               const renewUrl = `${Resource.PropertyListing.baseLink}/payment?type=renew&source=${x.id}`;
               return (
-                <div key={i} className={`relative overflow-hidden py-10 md:px-5 border-b-1 md:border md:rounded-lg ${x.isSold && x.listing_type === "Sale" && 'md:bg-overlay/10'} ${i === 0 && 'border-t-1'}`}>
+                <div key={i} className={`relative overflow-hidden py-10 md:px-5 border-b-1 md:border md:rounded-lg ${x.isUnlisted && x.listing_type === "Sale" && 'md:bg-overlay/10'} ${i === 0 && 'border-t-1'}`}>
                   <div className="flex gap-5 md:gap-10 relative">
-                    <div className='absolute -top-6 right-0'>
-                      {!x.isSold && (x.publish_status ?
+                    <div className='dash-card-top'>
+                      {!x.isUnlisted && (x.publish_status ?
                         <>
                           {x.payment_details && x.payment_details.expiry_date_timestamp <= new Date().getTime() ?
                             <div className='border rounded-full text-xs md:text-sm px-3 border-red-500 text-red-500 font-medium'>Expired</div> :
-                            <div className='border rounded-full text-xs md:text-sm px-3 border-emerald-500 text-emerald-500 font-medium'>Active</div>}
+                            <div className='flex items-center gap-3'>
+                              <Button as={Link} className='btn-vis' color='secondary' variant='flat' size='sm' href={`/${GetProductFromLabel(x.listing_type).url}/${x.slug}?source=${x.id}`} endContent={<MoveRight size={15} />}>View in Site</Button>
+                              <div className='pill-active'>Active</div>
+                            </div>
+                          }
                         </> :
                         <>
-                          {(x.step_number === ListingWorkflow.Publish && !x.publish_status) ? <div className='border rounded-full text-xs md:text-sm px-3 border-amber-600 text-amber-600 font-medium'>Pending Approval</div> :
-                            <div className='border rounded-full text-xs md:text-sm px-3 border-sky-500 text-sky-500 font-medium'>Draft</div>
+                          {(x.step_number === ListingWorkflow.Publish && !x.publish_status) ? <div className='pill-pendingApproval'>Pending Approval</div> :
+                            <div className='pill-draft'>Draft</div>
                           }
                         </>
                       )}
@@ -134,22 +141,22 @@ const Page = () => {
                       <div className='grid grid-cols-1 h-full content-between'>
                         <div>
                           <div className='font-semibold md:text-2xl mb-1'>{x.name}</div>
-                          <div className='text-xs flex flex-col md:flex-row md:items-center gap-1 md:gap-5 *:flex *:items-center'>
+                          <div className='text-xs flex flex-col md:flex-row md:items-center gap-1 md:gap-5 *:flex *:items-center mb-1'>
                             <div><MapPin size={10} className='mr-1' />{x.area.name}</div>
                             <div><CalendarCheck size={10} className='mr-1' />Posted on {ConvertToReadableDate(new Date(x.publishedAt))}</div>
                           </div>
+                          {!x.isUnlisted && !!x.payment_details?.subscription_type &&
+                            <div className='text-xs md:text-sm font-medium text-gray-400 flex'>
+                              {x.payment_details.subscription_type} Plan -
+                              <span className={`ml-1 flex items-center ${GetDaysToExpire(x.payment_details.expiry_date) <= 10 && 'text-red-400'}`}>{GetDaysToExpire(x.payment_details.expiry_date)} days left<Clock3 className='ml-1' size={14} /></span>
+                            </div>
+                          }
                         </div>
-                        {x.isSold && x.listing_type === "Sale" && <div className='text-md mt-4 flex items-center'>Sold on {ConvertToReadableDate(new Date(x.updatedAt))}</div>}
-                        {!x.isSold && !!x.payment_details?.subscription_type &&
-                          <div className='text-xs md:text-sm font-medium text-gray-400 flex'>
-                            {x.payment_details.subscription_type} Plan -
-                            <span className={`ml-1 flex items-center ${GetDaysToExpire(x.payment_details.expiry_date) <= 10 && 'text-red-400'}`}>{GetDaysToExpire(x.payment_details.expiry_date)} days left<Clock3 className='ml-1' size={14} /></span>
-                          </div>
-                        }
-                        {!x.isSold &&
+                        {x.isUnlisted && x.listing_type !== "PG" && <div className='text-md mt-4 flex items-center'>{unListLabel} on {ConvertToReadableDate(new Date(x.updatedAt))}</div>}
+                        {!x.isUnlisted &&
                           <>
-                            {x.listing_type === "Sale" && <div className='flex mb-2'>
-                              <Button className='w-full md:w-auto h-6' color='success' variant='flat' size='sm' onPress={() => onClickBtnSold(x.id)}>Mark as Sold</Button>
+                            {x.publish_status && x.listing_type !== "PG" && <div className='flex mb-2'>
+                              <Button className='w-full md:w-auto h-6' color='success' variant='flat' size='sm' onPress={() => onClickBtnUnlist(x.id, unListLabel)}>Mark as {unListLabel}</Button>
                             </div>
                             }
                             <>
@@ -174,8 +181,8 @@ const Page = () => {
                       </div>
                     </div>
                   </div>
-                  {x.isSold && x.listing_type === "Sale" &&
-                    <div className='ribbon-sold'>SOLD</div>
+                  {x.isUnlisted && x.listing_type !== "PG" &&
+                    <div className='ribbon-sold'>{unListLabel.toUpperCase()}</div>
                   }
                   {!!x.listing_type &&
                     <div className='ribbon-listing_type'>{x.listing_type}</div>
@@ -185,8 +192,8 @@ const Page = () => {
             }) :
             <p className='text-lg'>Your list is empty, click on <a className='link-text' href={addNewUrl}>Add New</a> to start listing your property today.</p>}
       </div>
-      <AlertModal isOpen={isOpen} onOpenChange={onOpenChange} updateItemStatus={markAsSold}
-        bodyContent="Are you sure you want to mark this property as sold?" />
+      <AlertModal isOpen={isOpen} onOpenChange={onOpenChange} updateItemStatus={markAsUnlisted}
+        bodyContent={`Are you sure you want to mark this property as ${unListLabelModal}?`} />
     </div>
   )
 }

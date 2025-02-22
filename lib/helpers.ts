@@ -14,6 +14,9 @@ export function GetProductFromParam(val: string) {
 export function GetProductFromProductType(val: string): any {
   return Object.values(Products).find((x: any) => x.productType === val);
 }
+export function GetProductFromLabel(val: string): any {
+  return Object.values(Products).find((x: any) => x.label === val.toLocaleLowerCase());
+}
 
 export function isEmptyObject(obj: Object) {
   return Object.keys(obj).length === 0;

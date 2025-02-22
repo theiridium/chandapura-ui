@@ -210,6 +210,10 @@ const Page = () => {
                     router.push(`/dashboard/property-listing/view-all`)
                 }
             }
+            else {
+                toast.error("An error occurred. Please contact the support.");
+                setIsSubmitLoading(false);
+            }
         }
         else {
             const response = await postRequestApi(endpoint, payload);

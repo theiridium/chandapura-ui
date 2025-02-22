@@ -157,7 +157,7 @@ const Page = () => {
         setIsSubmitLoading(true);
         let formdata = { ...jobListing, ...data }
         let jobDetailsFormatted = { ...jobDetails };
-        (jobDetails.category === "Personal") &&
+        (jobListing.category === "Personal") &&
             (jobDetailsFormatted = {
                 ...jobDetails,
                 job_timing_from: moment(Array.from(jobDetails.job_timing_from)[0] as string, "hh:mm A").format("HH:mm:ss.SSS"),
@@ -187,6 +187,10 @@ const Page = () => {
                     router.push(`/dashboard/job-listing/view-all`)
                 }
             }
+            else {
+                toast.error("An error occurred. Please contact the support.");
+                setIsSubmitLoading(false);
+            }
         }
         else {
             const response = await postRequestApi(endpoint, payload);
@@ -194,6 +198,10 @@ const Page = () => {
             if (response.data) {
                 toast.success("Job details saved successfully!");
                 router.push(`/dashboard/job-listing/upload-images?type=${type}&source=${response.data.id}`);
+            }
+            else {
+                toast.error("An error occurred. Please contact the support.");
+                setIsSubmitLoading(false);
             }
         }
     }

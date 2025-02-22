@@ -137,6 +137,10 @@ const Page = () => {
                     router.push(`/dashboard/classified-listing/view-all`)
                 }
             }
+            else {
+                toast.error("An error occurred. Please contact the support.");
+                setIsSubmitLoading(false);
+            }
         }
         else {
             const response = await postRequestApi(endpoint, payload);
@@ -144,6 +148,10 @@ const Page = () => {
             if (response.data) {
                 toast.success("Classified details saved successfully!");
                 router.push(`/dashboard/classified-listing/upload-images?type=${type}&source=${response.data.id}`);
+            }
+            else {
+                toast.error("An error occurred. Please contact the support.");
+                setIsSubmitLoading(false);
             }
         }
     }

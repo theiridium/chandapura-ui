@@ -217,6 +217,10 @@ const Page = () => {
                     router.push(`/dashboard/business-listing/view-all`)
                 }
             }
+            else {
+                toast.error("An error occurred. Please contact the support.");
+                setIsSubmitLoading(false);
+            }
         }
         else {
             const response = await postRequestApi(endpoint, payload);
@@ -224,6 +228,10 @@ const Page = () => {
             if (response.data) {
                 toast.success("Business profile saved successfully!");
                 router.push(`/dashboard/business-listing/upload-images?type=${type}&source=${response.data.id}`);
+            }
+            else {
+                toast.error("An error occurred. Please contact the support.");
+                setIsSubmitLoading(false);
             }
         }
     }
@@ -262,7 +270,7 @@ const Page = () => {
                                     onSelectionChange={onCategoryChange}
                                     selectedKey={businessList.category}
                                     isDisabled={!!source || disabled}
-                                    classNames={{ listboxWrapper: "nextui-listbox"}}
+                                    classNames={{ listboxWrapper: "nextui-listbox" }}
                                     isRequired
                                 >
                                     {(item: any) => <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>}
@@ -274,7 +282,7 @@ const Page = () => {
                                     onSelectionChange={onSubCategoryChange}
                                     selectedKey={businessList.sub_category}
                                     isDisabled={!!source || disabled}
-                                    classNames={{ listboxWrapper: "nextui-listbox"}}
+                                    classNames={{ listboxWrapper: "nextui-listbox" }}
                                     isRequired
                                 >
                                     {(item: any) => <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>}
@@ -329,7 +337,7 @@ const Page = () => {
                                 onSelectionChange={onAreaChange}
                                 isDisabled={disabled}
                                 selectedKey={businessList.area}
-                                classNames={{ listboxWrapper: "nextui-listbox"}}
+                                classNames={{ listboxWrapper: "nextui-listbox" }}
                                 isRequired
                             >
                                 {(item: any) => <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>}

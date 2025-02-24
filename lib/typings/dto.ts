@@ -189,3 +189,16 @@ export interface PersonalJobDetailsComponent {
     salary_range_min: string | undefined
     salary_range_max: string | undefined
 }
+export interface RazOrderPayload {
+    planAmount: any
+    totalAmount: any
+    receiptId: string
+    planLabel: string
+    propertyData?: string
+    subscriptionType: string
+    expiry: string
+    gst: string
+    customerName: string
+    customerEmail: string
+    customerPhone: string
+}

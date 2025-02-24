@@ -30,9 +30,11 @@ const Page = () => {
     const [paymentData, setPaymentData] = useState<any>({});
     const [hasSubscribed, setHasSubscribed] = useState(false);
     const [pricingPlan, setPricingPlan] = useState<any>({});
-    const [listingPrice, setListingPrice] = useState<any>({
+    const [planDetails, setPlanDetails] = useState<any>({
         type: "",
-        amount: 0
+        label: "Business Listing Plan",
+        amount: 0,
+        endpoint: Products.business.api.base
     });
 
     const fetchData = useCallback(async () => {
@@ -68,7 +70,7 @@ const Page = () => {
     }, [fetchData]);
 
     const onPlanSelect = useCallback((type: string, amount: number) => {
-        setListingPrice({ type: type, amount: amount });
+        setPlanDetails({ ...planDetails, type: type, amount: amount });
         if (type === "Monthly") setExpiryDate(monthSpan);
         else setExpiryDate(yearSpan);
     }, [])
@@ -203,13 +205,12 @@ const Page = () => {
             </div>
             <div className='col-span-full lg:col-span-3 mt-3 lg:my-8 mx-2 lg:mx-0 relative'>
                 <PaymentCard
-                    pricing={listingPrice}
+                    planDetails={planDetails}
                     expiryDate={expiryDate}
                     paymentData={paymentData}
                     hasSubscribed={hasSubscribed}
                     setHasSubscribed={setHasSubscribed}
-                    isOfferApplicable={false}
-                    endpoint={Products.business.api.base} />
+                    isOfferApplicable={false} />
             </div>
             <div className='col-span-full lg:col-start-3 lg:col-span-5 mt-3 lg:mt-0 mb-8 mx-2 lg:mx-0'>
                 <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>

@@ -11,8 +11,9 @@ import { createOrderId, putRequestApi } from "@/lib/apiLibrary";
 import { toast } from "react-toastify";
 import FormLoading from "../loading-components/form-loading";
 import { ListingWorkflow } from "@/lib/typings/enums";
+import { RazOrderPayload } from "@/lib/typings/dto";
 
-const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSubscribed, isOfferApplicable, endpoint }: any) => {
+const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setHasSubscribed, isOfferApplicable, endpoint }: any) => {
     const { data }: any = useSession();
     const userData = data?.user;
     const router = useRouter();
@@ -24,7 +25,7 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
     const [isLoading, setIsLoading] = useState(false);
     const options: any = { day: '2-digit', month: 'short', year: 'numeric' };
     const currentDate = new Date();
-    const [listingAmount, setListingAmount] = useState<number>(pricing.amount);
+    const [listingAmount, setListingAmount] = useState<number>(planDetails.amount);
     const [taxAmount, setTaxAmount] = useState<any>(0);
     const [isOfferApplied, setIsOfferApplied] = useState<boolean>(false);
     const [expiryTimestamp, setExpiryTimestamp] = useState(new Date(expiryDate).getTime());
@@ -34,9 +35,9 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
         return (listingAmount * 18) / 100;
     };
     useEffect(() => {
-        setListingAmount(pricing.amount);
+        setListingAmount(planDetails.amount);
         setIsOfferApplied(false);
-    }, [pricing])
+    }, [planDetails])
 
     useEffect(() => {
         const tax = calculateTax();
@@ -60,7 +61,20 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
             if (totalAmount > 0) {
                 const hash = HashCode(currentDate.toString())
                 const receiptId = `rcp_${currentDate.getTime().toString(36)}${hash}`;
-                const orderId: string = await createOrderId(totalAmount, receiptId);
+                const razOrderPayload: RazOrderPayload = {
+                    planAmount: planDetails.amount,
+                    totalAmount: totalAmount,
+                    receiptId: receiptId,
+                    planLabel: planDetails.label,
+                    propertyData: planDetails.propertyData,
+                    subscriptionType: planDetails.type,
+                    expiry: ConvertToReadableDate(new Date(expiryDate)),
+                    gst: taxAmount,
+                    customerName: userData.name,
+                    customerEmail: userData.email,
+                    customerPhone: userData.phone
+                }
+                const orderId: string = await createOrderId(razOrderPayload);
                 const options = {
                     key: process.env.RAZORPAY_API_KEY_ID,
                     amount: Math.round(parseFloat(totalAmount) * 100),
@@ -136,7 +150,7 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
                 raz_payment_id: data.razorpayPaymentId,
                 isPaymentSuccess: true,
                 isOfferApplied: isOfferApplied,
-                subscription_type: pricing.type
+                subscription_type: planDetails.type
             }
             let payload = {
                 payment_details: payment_details,
@@ -144,7 +158,7 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
                 step_number: ListingWorkflow.Payment,
                 publish_status: false
             }
-            const response = await putRequestApi(endpoint, payload, source);
+            const response = await putRequestApi(planDetails.endpoint, payload, source);
             if (response.data) {
                 console.log(response.data)
                 toast.success("Payment details saved successfully!");
@@ -194,12 +208,12 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
                 <div className='divide-y *:py-4'>
                     <div className='flex justify-between items-center'>
                         <div>
-                            <div className='text-sm mb-1 font-semibold'>Business Listing Plan</div>
-                            {!isOfferApplied ? <div>{pricing.type}</div> : <div>Promotional</div>}
+                            <div className='text-sm mb-1 font-semibold'>{}</div>
+                            {!isOfferApplied ? <div>{planDetails.type || "Plan Details"}</div> : <div>Promotional</div>}
                             {listingAmount > 0 && <div className="text-xs font-semi-bold">Expires on {ConvertToReadableDate(new Date(expiryDate))}</div>}
                         </div>
                         <div className="flex">
-                            {isOfferApplied && <div className="text-xl flex items-center mr-2"><IndianRupee size={18} /><span className="line-through decoration-slate-500/60">{pricing.amount}</span></div>}
+                            {isOfferApplied && <div className="text-xl flex items-center mr-2"><IndianRupee size={18} /><span className="line-through decoration-slate-500/60">{planDetails.amount}</span></div>}
                             <div className="text-xl flex items-center"><IndianRupee size={18} />{listingAmount}</div>
                         </div>
                     </div>
@@ -226,7 +240,7 @@ const PaymentCard = ({ pricing, expiryDate, paymentData, hasSubscribed, setHasSu
                     </div>
                 </div>
                 <div className="flex justify-end mt-5">
-                    <Button isLoading={isLoading} radius="none" isDisabled={hasSubscribed || !pricing.type || isLoading} size="md" color={`${hasSubscribed ? 'success' : 'primary'}`} variant={`${hasSubscribed ? 'solid' : 'ghost'}`} onPress={(e: any) => processPayment(e)}>{hasSubscribed ? 'Paid' : 'Checkout'}</Button>
+                    <Button isLoading={isLoading} radius="none" isDisabled={hasSubscribed || !planDetails.type || isLoading} size="md" color={`${hasSubscribed ? 'success' : 'primary'}`} variant={`${hasSubscribed ? 'solid' : 'ghost'}`} onPress={(e: any) => processPayment(e)}>{hasSubscribed ? 'Paid' : 'Checkout'}</Button>
                     {/* <Button as={Link} href="https://rzp.io/l/8IapPlGi" radius="none" size="md" color="primary" variant="ghost">Checkout</Button> */}
                     {/* <RazorpayButton /> */}
                 </div>

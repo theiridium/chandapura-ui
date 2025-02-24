@@ -1,6 +1,6 @@
 "use server"
 import axios from "axios";
-import { SearchPayload } from "./typings/dto";
+import { RazOrderPayload, SearchPayload } from "./typings/dto";
 import axiosInstance from "./axiosInstance";
 
 const currentDate = new Date().getTime();
@@ -210,7 +210,7 @@ export const getPublicSingleSearchResponse = async (payload: SearchPayload | und
 }
 
 // const paymentHost: any = process.env.NEXT_PUBLIC_MEILISEARCH_URL
-export const createOrderId = async (amount: any, receiptId: string) => {
+export const createOrderId = async (razOrderPayload: RazOrderPayload) => {
     try {
         const response = await fetch(`${process.env.NEXTAUTH_URL}api/order`, {
             method: 'POST',
@@ -218,9 +218,10 @@ export const createOrderId = async (amount: any, receiptId: string) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                amount: Math.round(parseFloat(amount) * 100),
+                amount: Math.round(parseFloat(razOrderPayload.totalAmount) * 100),
                 currency: "INR",
-                receipt: receiptId
+                receipt: razOrderPayload.receiptId,
+                notes: { ...razOrderPayload }
             })
         });
 

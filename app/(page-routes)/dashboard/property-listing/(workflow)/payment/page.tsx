@@ -29,9 +29,12 @@ const Page = () => {
     const [paymentData, setPaymentData] = useState<any>({});
     const [hasSubscribed, setHasSubscribed] = useState(false);
     const [pricingPlan, setPricingPlan] = useState<any>({});
-    const [listingPrice, setListingPrice] = useState<any>({
+    const [planDetails, setPlanDetails] = useState<any>({
         type: "",
-        amount: 0
+        label: "Property Listing Plan",
+        amount: 0,
+        endpoint: Products.realEstate.api.base,
+        propertyData: ""
     });
 
     const fetchData = useCallback(async () => {
@@ -45,12 +48,17 @@ const Page = () => {
                 if (data) {
                     if (data.step_number !== ListingWorkflow.UploadImages && type !== "renew") router.push(`/dashboard/property-listing/view-all`);
                     const pricingPlanRes = await getPublicApiResponse(`${Products.realEstatePricingPlan.api.base}?populate=${data.listing_type}`);
-                    let amount = 0;
-                    if (pricingPlanRes.data.Rent) amount = findPriceByRoomType(pricingPlanRes.data.Rent, data);
-                    else if (pricingPlanRes.data.Sale) amount = findPriceByRoomType(pricingPlanRes.data.Sale, data);
-                    else if (pricingPlanRes.data.PG) amount = findPriceByRoomType(pricingPlanRes.data.PG, data);
-                    setPricingPlan({ monthly: amount });
-                    setListingPrice({ type: 'Monthly', amount: amount });
+                    // let amount = 0;
+                    // let planLabel = "";
+                    let priceDetails: any = {
+                        amount: 0,
+                        label: ""
+                    }
+                    if (pricingPlanRes.data.Rent) priceDetails = findPriceDetailsByRoomType(pricingPlanRes.data.Rent, data);
+                    else if (pricingPlanRes.data.Sale) priceDetails = findPriceDetailsByRoomType(pricingPlanRes.data.Sale, data);
+                    else if (pricingPlanRes.data.PG) priceDetails = findPriceDetailsByRoomType(pricingPlanRes.data.PG, data);
+                    setPricingPlan({ monthly: priceDetails.amount });
+                    setPlanDetails({ ...planDetails, type: 'Monthly', amount: priceDetails.amount, propertyData: priceDetails.label });
                     data.payment_details && setHasSubscribed(CheckSubscriptionValidity(data.payment_details.expiry_date, data.payment_details.isPaymentSuccess));
                     setApiRes(data);
                     setPaymentData({
@@ -67,22 +75,29 @@ const Page = () => {
         }
     }, []);
 
-    const findPriceByRoomType = (pricingPlan: any, data: any) => {
+    const findPriceDetailsByRoomType = (pricingPlan: any, data: any) => {
         let planData: any = 0;
+        let planLabel: string = "";
         switch (data.property_type) {
             case "PG":
                 planData = pricingPlan.find((x: any) => x.type === data.property_type);
+                planLabel = "PG";
                 break;
 
             case "Plot":
                 planData = pricingPlan.find((x: any) => x.type === data.property_type);
+                planLabel = "Plot for Sale";
                 break;
 
             default:
                 planData = pricingPlan.find((x: any) => x.type === data.details_by_listingtype[0].room_type);
+                planLabel = `${data.details_by_listingtype[0].room_type} ${data.property_type} for ${data.listing_type}`
                 break;
         }
-        return planData.amount;
+        return {
+            amount: planData.amount,
+            label: planLabel
+        }
     }
 
     useEffect(() => {
@@ -161,13 +176,12 @@ const Page = () => {
             </div>
             <div className='col-span-full lg:col-span-3 mt-3 lg:my-8 mx-2 lg:mx-0 relative'>
                 <PaymentCard
-                    pricing={listingPrice}
+                    planDetails={planDetails}
                     expiryDate={expiryDate}
                     paymentData={paymentData}
                     hasSubscribed={hasSubscribed}
                     setHasSubscribed={setHasSubscribed}
-                    isOfferApplicable={false}
-                    endpoint={Products.realEstate.api.base} />
+                    isOfferApplicable={false} />
             </div>
             <div className='col-span-full lg:col-start-3 lg:col-span-5 mt-3 lg:mt-0 mb-8 mx-2 lg:mx-0'>
                 <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>

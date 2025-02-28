@@ -34,7 +34,8 @@ const Page = () => {
         label: "Property Listing Plan",
         amount: 0,
         endpoint: Products.realEstate.api.base,
-        propertyData: ""
+        propertyData: "",
+        productName: ""
     });
 
     const fetchData = useCallback(async () => {
@@ -58,7 +59,7 @@ const Page = () => {
                     else if (pricingPlanRes.data.Sale) priceDetails = findPriceDetailsByRoomType(pricingPlanRes.data.Sale, data);
                     else if (pricingPlanRes.data.PG) priceDetails = findPriceDetailsByRoomType(pricingPlanRes.data.PG, data);
                     setPricingPlan({ monthly: priceDetails.amount });
-                    setPlanDetails({ ...planDetails, type: 'Monthly', amount: priceDetails.amount, propertyData: priceDetails.label });
+                    setPlanDetails({ ...planDetails, type: 'Monthly', amount: priceDetails.amount, propertyData: priceDetails.label, productName: data.name });
                     data.payment_details && setHasSubscribed(CheckSubscriptionValidity(data.payment_details.expiry_date, data.payment_details.isPaymentSuccess));
                     setApiRes(data);
                     setPaymentData({

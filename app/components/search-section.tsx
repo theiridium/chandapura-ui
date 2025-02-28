@@ -32,14 +32,14 @@ const SearchSection = () => {
 
   return (
     <>
-      <div className="max-w-screen-xl mx-auto px-3">
+      <div className="max-w-screen-xl mx-auto xs:px-3">
         <div className="grid grid-cols-1 lg:grid-cols-12 lg:mt-10 relative gap-5 lg:gap-10">
           <div className="col-span-1 lg:col-start-3 lg:col-span-8">
             <Tabs color="secondary" aria-label="Tabs colors" radius="full"
               classNames={{
                 base: "mb-5 flex justify-center",
                 tabList: "bg-color2d/30 p-2 gap-0 w-full md:w-auto",
-                tab: "*:font-medium text-xs md:text-base px-2 md:px-5 md:py-5 data-[hover-unselected=true]:opacity-100 data-[hover-unselected=true]:bg-color2d/50 *:!text-secondary-foreground"
+                tab: "*:font-medium text-[0.65rem] xs:text-xs md:text-base px-2 md:px-5 md:py-5 data-[hover-unselected=true]:opacity-100 data-[hover-unselected=true]:bg-color2d/50 *:!text-secondary-foreground"
               }}
               selectedKey={productType}
               onSelectionChange={setProductType}>

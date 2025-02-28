@@ -196,7 +196,9 @@ export interface RazOrderPayload {
     planLabel: string
     propertyData?: string
     subscriptionType: string
-    expiry: string
+    productName: string
+    planStartDate: string
+    planExpiryDate: string
     gst: string
     customerName: string
     customerEmail: string

@@ -18,6 +18,9 @@ const config: Config = {
       },
       maxWidth: {
         'screen-xl': '1350px'
+      },
+      screens: {
+        'xs': '400px'
       }
     },
   },

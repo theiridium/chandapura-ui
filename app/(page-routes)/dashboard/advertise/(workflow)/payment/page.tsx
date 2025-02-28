@@ -34,7 +34,8 @@ const Page = () => {
         type: "",
         label: "Advertisement Plan",
         amount: 0,
-        endpoint: Products.advertisement.api.base
+        endpoint: Products.advertisement.api.base,
+        productName: ""
     });
 
     const fetchData = useCallback(async () => {
@@ -51,6 +52,7 @@ const Page = () => {
                     if (data.step_number !== ListingWorkflow.UploadImages && type !== "renew") router.push(`/dashboard/advertise/view-all`);
                     data.payment_details && setHasSubscribed(CheckSubscriptionValidity(data.payment_details.expiry_date, data.payment_details.isPaymentSuccess));
                     setApiRes(data);
+                    setPlanDetails({ ...planDetails, productName: data.name });
                     setPaymentData({
                         payment_details: data.payment_details,
                         payment_history: data.payment_history
@@ -94,7 +96,7 @@ const Page = () => {
         setPlanDetails({ ...planDetails, type: type, amount: amount });
         if (type === "Monthly") setExpiryDate(monthSpan);
         else setExpiryDate(yearSpan);
-    }, [])
+    }, [planDetails])
 
     return (
         <>

@@ -34,7 +34,8 @@ const Page = () => {
         type: "",
         label: "Business Listing Plan",
         amount: 0,
-        endpoint: Products.business.api.base
+        endpoint: Products.business.api.base,
+        productName: ""
     });
 
     const fetchData = useCallback(async () => {
@@ -51,6 +52,7 @@ const Page = () => {
                     if (data.step_number !== ListingWorkflow.UploadImages && type !== "renew") router.push(`/dashboard/business-listing/view-all`);
                     data.payment_details && setHasSubscribed(CheckSubscriptionValidity(data.payment_details.expiry_date_timestamp, data.payment_details.isPaymentSuccess));
                     setApiRes(data);
+                    setPlanDetails({ ...planDetails, productName: data.name });
                     setPaymentData({
                         payment_details: data.payment_details,
                         payment_history: data.payment_history
@@ -73,7 +75,7 @@ const Page = () => {
         setPlanDetails({ ...planDetails, type: type, amount: amount });
         if (type === "Monthly") setExpiryDate(monthSpan);
         else setExpiryDate(yearSpan);
-    }, [])
+    }, [planDetails])
 
     const onClickSave = async () => {
         try {

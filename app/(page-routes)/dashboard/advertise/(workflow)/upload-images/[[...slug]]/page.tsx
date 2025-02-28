@@ -86,7 +86,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
                             Back
                         </Button>
                         <Button className='btn-primary text-base' color='primary' isDisabled={!imageParamsAd.imgData || editMode} isLoading={isSubmitLoading} onPress={onClickSave}>
-                            {!isSubmitLoading && ((type === "edit") ? "Save" : "Save and Continue")}
+                            {!isSubmitLoading && ((type === "edit") ? "Save" : "Next")}
                         </Button>
                     </div>
                 </div>

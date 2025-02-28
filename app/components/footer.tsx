@@ -21,7 +21,7 @@ const Footer = () => {
                 <img src="/images/logo.png" className="h-[70px]" alt="Chandapura.com" />
               </a>
             </div>
-            <div className="flex flex-wrap gap-5 font-medium items-center">
+            <div className="flex flex-wrap gap-5 font-medium justify-center">
               <div>
                 <a href={Products.business.url} className="hover:underline ">Local Business</a>
               </div>
@@ -38,11 +38,13 @@ const Footer = () => {
           </div>
           <hr className="my-6 border-gray-200 sm:mx-auto lg:my-8" />
           <div className="sm:flex sm:items-center sm:justify-between">
-            <div className="flex flex-wrap *:px-3 gap-y-2">
-              <span className="flex-none md:flex-auto text-sm sm:text-center !pl-0">© {new Date().getFullYear()} <a href="https://flowbite.com/" className="hover:underline">Chandapura.com</a>. All Rights Reserved.</span>
-              <a href="#" className="text-sm sm:text-center hover:underline md:border md:border-y-0 md:border-r-0">Privacy Policy</a>
-              <a href="#" className="text-sm sm:text-center hover:underline border border-y-0 border-r-0">Terms &amp; Conditions</a>
-              <a href="/sitemap.xml" className="text-sm sm:text-center hover:underline border border-y-0 border-r-0">Sitemap</a>
+            <div className="flex flex-col md:flex-row gap-y-2 text-xs xs:text-sm">
+              <span className="flex-none text-center md:flex-auto sm:text-center !pl-0 px-3">© {new Date().getFullYear()} <a href="https://flowbite.com/" className="hover:underline">Chandapura.com</a>. All Rights Reserved.</span>
+              <div className="*:px-3 text-center flex flex-col sm:flex-row">
+                <a href="#" className="sm:text-center hover:underline md:border md:border-y-0 md:border-r-0">Privacy Policy</a>
+                <a href="#" className="sm:text-center hover:underline md:border md:border-y-0 md:border-r-0">Terms &amp; Conditions</a>
+                <a href="/sitemap.xml" className="sm:text-center hover:underline md:border md:border-y-0 md:border-r-0">Sitemap</a>
+              </div>
             </div>
             <div className="flex mt-4 justify-center sm:mt-0">
               <a href="#" className="">

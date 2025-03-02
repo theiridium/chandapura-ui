@@ -12,6 +12,8 @@ import { Button } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 import FormLoading from '@/app/loading-components/form-loading';
 import { ListingWorkflow } from '@/lib/typings/enums';
+import { useSetAtom } from 'jotai';
+import { listingFormBtnEl } from '@/lib/atom';
 
 const Page = ({ params }: { params: { slug: string } }) => {
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
@@ -19,6 +21,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
     const searchParams = useSearchParams();
     const type = searchParams.get('type');
     const source = searchParams.get('source');
+    const setListingFormBtnEl = useSetAtom(listingFormBtnEl);
     const [isFeaturedImageLoaded, setIsFeaturedImageLoaded] = useState(false);
     const [isGalleryImagesLoaded, setIsGalleryImagesLoaded] = useState(false);
     const [isImagesInGallery, setIsImagesInGallery] = useState(false);
@@ -100,6 +103,21 @@ const Page = ({ params }: { params: { slug: string } }) => {
         }
     }
 
+    const setFormBtnEl = () => (
+        <div key={1} className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg p-2 *:py-2 *:px-5 *:block font-semibold'>
+            <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading} onPress={() => router.push(`/dashboard/classified-listing/add-details?type=edit_back&source=${source}`)}>
+                Back
+            </Button>
+            <Button className='btn-primary text-base' color='primary' isDisabled={isImagesInGallery || !imageParamsFeatured.imgData || editMode} isLoading={isSubmitLoading} onPress={onClickSave}>
+                {!isSubmitLoading && ((type === "edit") ? "Save" : "Save and Continue")}
+            </Button>
+        </div>
+    );
+
+    useEffect(() => {
+        setListingFormBtnEl([setFormBtnEl()]);
+    }, [isSubmitLoading, imageParamsFeatured, imageParamsGallery])
+
     return (
         <>
             {isSubmitLoading && <FormLoading text={"Saving Images for Classified..."} />}
@@ -117,14 +135,6 @@ const Page = ({ params }: { params: { slug: string } }) => {
                         <div className='card-header text-xl font-semibold mb-5'>Gallery Images</div>
                         {isGalleryImagesLoaded ? <MultiImage key={keyGa} imageParams={imageParamsGallery} setIsImagesInGallery={setIsImagesInGallery} uploadSuccess={reloadGalleryComp} setEditMode={setEditMode} /> :
                             <ImgMultiUploadLoading />}
-                    </div>
-                    <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>
-                        <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading} onPress={() => router.push(`/dashboard/classified-listing/add-details?type=edit_back&source=${source}`)}>
-                            Back
-                        </Button>
-                        <Button className='btn-primary text-base' color='primary' isDisabled={isImagesInGallery || !imageParamsFeatured.imgData || editMode} isLoading={isSubmitLoading} onPress={onClickSave}>
-                            {!isSubmitLoading && ((type === "edit") ? "Save" : "Save and Continue")}
-                        </Button>
                     </div>
                 </div>
             </div>

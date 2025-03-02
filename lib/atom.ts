@@ -11,3 +11,4 @@ export const jobTitles = atom<any>([]);
 export const classifiedCategories = atom<any>([]);
 export const languages = atom<any>([]);
 export const IsUserLogged = atom(false);
+export const listingFormBtnEl = atom<React.ReactNode>([]);

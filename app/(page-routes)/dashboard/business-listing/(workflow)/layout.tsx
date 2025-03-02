@@ -17,12 +17,10 @@ export default async function BusinessListingLayout({
     const resCat = await getPublicApiResponse(apiUrlCat);
     const resArea = await getPublicApiResponse(apiUrlArea);
     return (
-        <div className="max-w-screen-xl mx-auto">
-            <Suspense fallback={<GlobalSearchListLoading />}>
-                <BusinessListingForm resCat={resCat} resArea={resArea}>
-                    {children}
-                </BusinessListingForm>
-            </Suspense>
-        </div>
+        <Suspense fallback={<GlobalSearchListLoading />}>
+            <BusinessListingForm resCat={resCat} resArea={resArea}>
+                {children}
+            </BusinessListingForm>
+        </Suspense>
     )
 }

@@ -1,9 +1,9 @@
 "use client"
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Accordion, AccordionItem, Button, Input, Tab, Tabs } from '@nextui-org/react';
+import { Accordion, AccordionItem, Button, Input, Link, Tab, Tabs } from '@nextui-org/react';
 import { useCallback, useEffect, useState } from 'react';
 import FormLoading from '@/app/loading-components/form-loading';
-import { Products } from '@/public/shared/app.config';
+import { Products, Resource } from '@/public/shared/app.config';
 import { useSession } from 'next-auth/react';
 import { getPublicApiResponse, putRequestApi } from '@/lib/apiLibrary';
 import TextLoading from '@/app/loading-components/text-loading';
@@ -12,6 +12,8 @@ import { toast } from 'react-toastify';
 import PaymentCard from '@/app/sub-components/payment-card';
 import { CalculateDiscountPercentage, CheckSubscriptionValidity } from '@/lib/helpers';
 import { ListingWorkflow } from '@/lib/typings/enums';
+import { useSetAtom } from 'jotai';
+import { listingFormBtnEl } from '@/lib/atom';
 
 const Page = () => {
     const currentDate = new Date();
@@ -26,6 +28,7 @@ const Page = () => {
     const searchParams = useSearchParams();
     const type = searchParams.get('type');
     const source = searchParams.get('source');
+    const setListingFormBtnEl = useSetAtom(listingFormBtnEl);
     const [apiRes, setApiRes] = useState<any>();
     const [paymentData, setPaymentData] = useState<any>({});
     const [hasSubscribed, setHasSubscribed] = useState(false);
@@ -37,6 +40,10 @@ const Page = () => {
         endpoint: Products.business.api.base,
         productName: ""
     });
+
+    useEffect(() => {
+        setListingFormBtnEl(null);
+    }, [isSubmitLoading])
 
     const fetchData = useCallback(async () => {
         try {
@@ -79,23 +86,36 @@ const Page = () => {
 
     const onClickSave = async () => {
         try {
-            setIsSubmitLoading(true);
-
             if (type === "edit") {
                 toast.info("Redirecting to listing menu...")
                 await new Promise(resolve => setTimeout(resolve, 3000));
                 router.push(`/dashboard/business-listing/view-all`)
             }
             else if (type === "new" || type === "renew") {
-                toast.success("Payment details saved successfully!");
                 router.push(`/dashboard/business-listing/publish?type=${type}&source=${source}`)
             }
         } catch (error) {
             console.error("An error occurred during the process:", error);
             toast.error("Failed to upload images.");
-        } finally {
-            setIsSubmitLoading(false);
         }
+    }
+
+    const PlanSelectBtn = ({ planType, pricingPlan_type }: any) => {
+        return (
+            <>
+                <div className='flex justify-center'>
+                    <Button radius="none" size="lg"
+                        color={planDetails.type === planType ? 'success' : 'primary'}
+                        variant={planDetails.type === planType ? 'solid' : 'ghost'}
+                        disabled={planDetails.type === planType}
+                        onPress={() => onPlanSelect(planType, pricingPlan_type)}
+                        className={`${planDetails.type === planType ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
+                        {planDetails.type === planType ? 'Selected' : `Choose ${planType} Plan`}
+                    </Button>
+                </div>
+                {planDetails.type === planType && <p className='text-color1d text-sm mt-5 px-0 md:px-5 text-center'>Please review the order summary and proceed with checkout to complete the payment.</p>}
+            </>
+        )
     }
 
     return (
@@ -143,9 +163,7 @@ const Page = () => {
                                             {isLoading ? <TextLoading /> :
                                                 <>
                                                     <div className='flex items-end justify-center mb-10'><div className='text-5xl font-semibold flex items-center'><IndianRupee strokeWidth={3} size={30} />{pricingPlan.monthly}</div><span className='font-semibold'>/month</span></div>
-                                                    {!hasSubscribed &&
-                                                        <div className='flex justify-center'><Button radius="none" size="lg" color="primary" variant="bordered" onPress={() => onPlanSelect("Monthly", pricingPlan.monthly)}>Choose Monthly Plan</Button></div>
-                                                    }
+                                                    {!hasSubscribed && <PlanSelectBtn planType="Monthly" pricingPlan_type={pricingPlan.monthly} />}
                                                 </>
                                             }
                                         </div>
@@ -159,9 +177,7 @@ const Page = () => {
                                                         <div className='ml-2 bg-color1d/10 rounded-full px-5'>Save {CalculateDiscountPercentage(pricingPlan.monthly * 12, pricingPlan.yearly)}%</div>
                                                     </div>
                                                     <div className='flex items-end justify-center mb-10'><div className='text-5xl font-semibold flex items-center'><IndianRupee strokeWidth={3} size={30} />{pricingPlan.yearly}</div><span className='font-semibold'>/year</span></div>
-                                                    {!hasSubscribed &&
-                                                        <div className='flex justify-center'><Button radius="none" size="lg" color="primary" variant="bordered" onPress={() => onPlanSelect("Yearly", pricingPlan.yearly)}>Choose Yearly Plan</Button></div>
-                                                    }
+                                                    {!hasSubscribed && <PlanSelectBtn planType="Yearly" pricingPlan_type={pricingPlan.yearly} />}
                                                 </>
                                             }
                                         </div>
@@ -206,23 +222,18 @@ const Page = () => {
                 </div>
             </div>
             <div className='col-span-full lg:col-span-3 mt-3 lg:my-8 mx-2 lg:mx-0 relative'>
+                <div className='flex flex-row lg:flex-col gap-5 mb-7'>
+                    <Button className='btn-primary text-base' isDisabled={isLoading} radius='sm' variant='flat' href={Resource.BusinessListing.addDetailsLink + '?type=edit&source=' + apiRes?.id} color='primary' as={Link}>Edit Details</Button>
+                    <Button className='btn-primary text-base' isDisabled={isLoading} radius='sm' variant='ghost' href={Resource.BusinessListing.uploadImagesLink + '?type=edit&source=' + apiRes?.id} color='primary' as={Link}>Edit Images</Button>
+                </div>
                 <PaymentCard
                     planDetails={planDetails}
                     expiryDate={expiryDate}
                     paymentData={paymentData}
                     hasSubscribed={hasSubscribed}
                     setHasSubscribed={setHasSubscribed}
+                    onClickSave={onClickSave}
                     isOfferApplicable={false} />
-            </div>
-            <div className='col-span-full lg:col-start-3 lg:col-span-5 mt-3 lg:mt-0 mb-8 mx-2 lg:mx-0'>
-                <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>
-                    <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading} onPress={() => router.push(`/dashboard/business-listing/upload-images?type=edit_back&source=${source}`)}>
-                        Back
-                    </Button>
-                    <Button className='btn-primary text-base' color='primary' isDisabled={!hasSubscribed} isLoading={isSubmitLoading} onPress={onClickSave}>
-                        {!isSubmitLoading && "Continue to Preview"}
-                    </Button>
-                </div>
             </div>
         </>
     )

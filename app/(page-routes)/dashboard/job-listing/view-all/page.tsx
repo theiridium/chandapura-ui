@@ -85,13 +85,13 @@ const Page = () => {
     <div className='max-w-screen-xl min-h-screen mx-auto px-3 my-8 md:mt-8 md:mb-10'>
       <div className='flex gap-8 justify-between md:justify-normal'>
         <h1 className="dash-heading">My Job Listings</h1>
-        <Button color="primary" variant="ghost" radius="sm" className='hover:color-white'
+        <Button color="primary" variant="ghost" size='sm' radius="sm" className='hover:color-white'
           onPress={() => {
             setIsRedirecting(true);
             router.push(addNewUrl)
           }}
           startContent={<Plus size={20} />}>
-          Add New
+          <span className='hidden md:block'>Add New</span>
         </Button>
       </div>
       <Breadcrumb blockSecondLast={false} />
@@ -147,7 +147,7 @@ const Page = () => {
                             </div>
                             }
                             <>
-                              <div className='flex text-sm border-y-1 divide-x *:px-2 *:py-1 *:flex *:items-center *:grow *:justify-center *:gap-x-1 text-color1d'>
+                              <div className='flex text-[0.6rem] xs:text-sm border-y-1 divide-x *:px-2 *:py-1 *:flex *:items-center *:grow *:justify-center *:gap-x-1 text-color1d'>
                                 {x.publish_status ? <>
                                   <a className='hover:bg-color2d/20' href={Resource.JobListing.addDetailsLink + '?type=edit&source=' + x.id}>Job Profile<Pencil size={15} /></a>
                                   <a className='hover:bg-color2d/20' href={Resource.JobListing.uploadImagesLink + '?type=edit&source=' + x.id}>Image<Pencil size={15} /></a>

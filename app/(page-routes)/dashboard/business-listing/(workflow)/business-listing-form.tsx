@@ -3,9 +3,9 @@
 import FormStep from "@/app/components/stepper/form-step";
 import UserItemList from "@/app/route-components/user-specific/user-item-list";
 import MainMenuBtn from "@/app/sub-components/main-menu-btn";
-import { areas, categories } from "@/lib/atom";
+import { areas, categories, listingFormBtnEl } from "@/lib/atom";
 import { DropdownList } from "@/public/shared/app.config";
-import { useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
@@ -41,22 +41,34 @@ const BusinessListingForm = ({ children, resCat, resArea }: { children: React.Re
     const setLocations = useSetAtom(areas);
     const searchParams = useSearchParams();
     const type = searchParams.get('type');
+    const formButton = useAtomValue<React.ReactNode>(listingFormBtnEl);
     useEffect(() => {
         setCategories(resCat);
         setLocations(resArea);
     }, [resCat, resArea]);
 
     return (
-        <div className='grid grid-cols-10 gap-5 relative'>
-            <div className='col-span-full lg:col-span-2 my-8'>
-                <div className="sticky top-28 px-5 lg:px-7">
-                    <div className='mb-5'><MainMenuBtn url='/dashboard/business-listing/view-all' /></div>
-                    <UserItemList attr={DropdownList.BusinessList.api} title={"Select a Business"} />
-                    {(type !== "edit") && <FormStep steps={steps} />}
+        <>
+            <div className="max-w-screen-xl mx-auto">
+                <div className='grid grid-cols-10 gap-5 relative'>
+                    <div className='col-span-full lg:col-span-2 my-8'>
+                        <div className="sticky top-28 px-5 lg:px-7">
+                            <div className='mb-5'><MainMenuBtn url='/dashboard/business-listing/view-all' /></div>
+                            <UserItemList attr={DropdownList.BusinessList.api} title={"Select a Business"} />
+                            {(type !== "edit") && <FormStep steps={steps} />}
+                        </div>
+                    </div>
+                    <>{children}</>
                 </div>
             </div>
-            <>{children}</>
-        </div>
+            {!!formButton && <div className="footer-sticky h-14 z-10 bottom-0 mt-5">
+                <div className="max-w-screen-xl mx-auto">
+                    <div className='grid grid-cols-10 gap-5'>
+                        <div className="col-start-0 col-span-full lg:col-start-3 lg:col-span-6">{formButton}</div>
+                    </div>
+                </div>
+            </div>}
+        </>
     )
 }
 

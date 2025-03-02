@@ -8,6 +8,8 @@ import { Products, SelectList } from '@/public/shared/app.config';
 import { getPublicApiResponse, putRequestApi } from '@/lib/apiLibrary';
 import { toast } from 'react-toastify';
 import { ListingWorkflow } from '@/lib/typings/enums';
+import { useSetAtom } from 'jotai';
+import { listingFormBtnEl } from '@/lib/atom';
 
 const Page = () => {
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
@@ -18,6 +20,7 @@ const Page = () => {
     const searchParams = useSearchParams();
     const type = searchParams.get('type');
     const source = searchParams.get('source');
+    const setListingFormBtnEl = useSetAtom(listingFormBtnEl);
     const [apiRes, setApiRes] = useState<any>();
     const [propertyDetails, setPropertyDetails] = useState<any>();
 
@@ -74,6 +77,18 @@ const Page = () => {
             setIsSubmitLoading(false);
         }
     }
+
+    const setFormBtnEl = () => (
+        <div key={1} className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg p-2 *:py-2 *:px-5 *:block font-semibold'>
+            <Button className='btn-primary text-base' color='primary' isDisabled={isLoading} isLoading={isSubmitLoading} onPress={onClickSave}>
+                {!isSubmitLoading && "Submit"}
+            </Button>
+        </div>
+    );
+
+    useEffect(() => {
+        setListingFormBtnEl([setFormBtnEl()]);
+    }, [isSubmitLoading, isLoading])
 
     return (
         <>
@@ -240,11 +255,6 @@ const Page = () => {
                                     apiRes.gallery_images.map((img: any, i: any) => <img key={i} src={img.url} />) :
                                     "No gallery image uploaded"}
                             </div>
-                        </div>
-                        <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>
-                            <Button className='btn-primary text-base' color='primary' isLoading={isSubmitLoading} onPress={onClickSave}>
-                                {!isSubmitLoading && "Publish"}
-                            </Button>
                         </div>
                     </div>
                 }

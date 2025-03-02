@@ -3,9 +3,9 @@
 import FormStep from "@/app/components/stepper/form-step";
 import UserItemList from "@/app/route-components/user-specific/user-item-list";
 import MainMenuBtn from "@/app/sub-components/main-menu-btn";
-import { areas, REAmenities, PGAmenities, PlotAmenities } from "@/lib/atom";
+import { areas, REAmenities, PGAmenities, PlotAmenities, listingFormBtnEl } from "@/lib/atom";
 import { DropdownList } from "@/public/shared/app.config";
-import { useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
@@ -43,6 +43,7 @@ const PropertyListingForm = ({ children, resRealEstateAmenities, resPgAmenities,
     const setAreas = useSetAtom(areas);
     const searchParams = useSearchParams();
     const type = searchParams.get('type');
+    const formButton = useAtomValue<React.ReactNode>(listingFormBtnEl);
     useEffect(() => {
         setRealEstateAmenities(resRealEstateAmenities);
         setPgAmenities(resPgAmenities);
@@ -51,16 +52,25 @@ const PropertyListingForm = ({ children, resRealEstateAmenities, resPgAmenities,
     }, [resRealEstateAmenities, resPgAmenities, resPlotAmenities, resArea]);
 
     return (
-        <div className='grid grid-cols-10 gap-5 relative'>
-            <div className='col-span-full lg:col-span-2 my-8'>
-                <div className="sticky top-28 px-5 lg:px-7">
-                    <div className='mb-5'><MainMenuBtn url='/dashboard/property-listing/view-all' /></div>
-                    <UserItemList attr={DropdownList.PropertyList.api} title={"Select a Property"} />
-                    {(type !== "edit") && <FormStep steps={steps} />}
+        <>
+            <div className='grid grid-cols-10 gap-5 relative'>
+                <div className='col-span-full lg:col-span-2 my-8'>
+                    <div className="sticky top-28 px-5 lg:px-7">
+                        <div className='mb-5'><MainMenuBtn url='/dashboard/property-listing/view-all' /></div>
+                        <UserItemList attr={DropdownList.PropertyList.api} title={"Select a Property"} />
+                        {(type !== "edit") && <FormStep steps={steps} />}
+                    </div>
                 </div>
+                <>{children}</>
             </div>
-            <>{children}</>
-        </div>
+            {!!formButton && <div className="footer-sticky h-14 z-10 bottom-0 mt-5">
+                <div className="max-w-screen-xl mx-auto">
+                    <div className='grid grid-cols-10 gap-5'>
+                        <div className="col-start-0 col-span-full lg:col-start-3 lg:col-span-6">{formButton}</div>
+                    </div>
+                </div>
+            </div>}
+        </>
     )
 }
 

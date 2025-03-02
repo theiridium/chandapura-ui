@@ -17,12 +17,10 @@ export default async function ClassifiedListingLayout({
     const resCat = await getPublicApiResponse(apiUrlCat);
     const resArea = await getPublicApiResponse(apiUrlArea);
     return (
-        <div className="max-w-screen-xl mx-auto">
-            <Suspense fallback={<GlobalSearchListLoading />}>
-                <ClassifiedListingForm resCat={resCat} resArea={resArea}>
-                    {children}
-                </ClassifiedListingForm>
-            </Suspense>
-        </div>
+        <Suspense fallback={<GlobalSearchListLoading />}>
+            <ClassifiedListingForm resCat={resCat} resArea={resArea}>
+                {children}
+            </ClassifiedListingForm>
+        </Suspense>
     )
 }

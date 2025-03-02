@@ -35,7 +35,7 @@ const Wrapper = ({
           <Header />
           <div>{children}</div>
           {/* WhatsApp Icon */}
-          <div className="w-fit sticky bottom-1 mb-5 right-0 ml-auto">
+          <div className="w-fit fixed bottom-1 mb-1 right-0 ml-auto">
             <a aria-label="Chat on WhatsApp" target="_blank" href="https://wa.me/9739004545"> <img className="h-12 w-12 md:h-16 md:w-16 mr-1 mb-1" alt="Chat on WhatsApp" src="/images/icons/WhatsApp.svg" /></a>
           </div>
           <Footer />

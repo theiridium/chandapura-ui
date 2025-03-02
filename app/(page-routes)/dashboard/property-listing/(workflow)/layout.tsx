@@ -23,12 +23,10 @@ export default async function BusinessListingLayout({
     const resPlotAmenities = await getPublicApiResponse(apiUrlPlotAmenities);
     const resArea = await getPublicApiResponse(apiUrlArea);
     return (
-        <div className="max-w-screen-xl mx-auto">
-            <Suspense fallback={<GlobalSearchListLoading />}>
-                <PropertyListingForm resRealEstateAmenities={resRealEstateAmenities} resPgAmenities={resPgAmenities} resPlotAmenities={resPlotAmenities} resArea={resArea}>
-                    {children}
-                </PropertyListingForm>
-            </Suspense>
-        </div>
+        <Suspense fallback={<GlobalSearchListLoading />}>
+            <PropertyListingForm resRealEstateAmenities={resRealEstateAmenities} resPgAmenities={resPgAmenities} resPlotAmenities={resPlotAmenities} resArea={resArea}>
+                {children}
+            </PropertyListingForm>
+        </Suspense>
     )
 }

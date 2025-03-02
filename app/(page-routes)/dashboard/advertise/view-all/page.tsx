@@ -60,14 +60,21 @@ const Page = () => {
     <div className='max-w-screen-xl min-h-screen mx-auto px-3 my-8 md:mt-8 md:mb-10'>
       <div className='flex gap-8 justify-between md:justify-normal'>
         <h1 className="dash-heading">My Advertisements</h1>
-        <Button color="primary" variant="ghost" radius="sm" className='hover:color-white'
+        <Button color="primary" variant="ghost" size='sm' radius="sm" className='hover:color-white'
           onPress={() => {
             setIsRedirecting(true);
             router.push(addNewUrl)
           }}
           startContent={<Plus size={20} />}>
-          Add New
+          <span className='hidden md:block'>Add New</span>
         </Button>
+        {/* <button className='btn-addNew'
+          onClick={() => {
+            setIsRedirecting(true);
+            router.push(addNewUrl)
+          }}>
+            <Plus size={20} /> <span></span>Add New
+        </button> */}
       </div>
       <Breadcrumb blockSecondLast={false} />
       <div className='grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-10'>
@@ -119,7 +126,7 @@ const Page = () => {
                           }
                         </div>
                         <>
-                          <div className='flex text-sm border-y-1 divide-x *:px-2 *:py-1 *:flex *:items-center *:grow *:justify-center *:gap-x-1 text-color1d'>
+                          <div className='flex text-[0.6rem] xs:text-sm border-y-1 divide-x *:px-2 *:py-1 *:flex *:items-center *:grow *:justify-center *:gap-x-1 text-color1d'>
                             {x.publish_status ? <>
                               {(x.payment_details && x.payment_details.expiry_date_timestamp <= new Date().getTime()) ?
                                 <a className='hover:bg-color2d/20' href={renewUrl}>Renew subscription<MoveRight size={15} /></a> :

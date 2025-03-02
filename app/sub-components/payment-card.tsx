@@ -13,7 +13,7 @@ import FormLoading from "../loading-components/form-loading";
 import { ListingWorkflow } from "@/lib/typings/enums";
 import { RazOrderPayload } from "@/lib/typings/dto";
 
-const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setHasSubscribed, isOfferApplicable, endpoint }: any) => {
+const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setHasSubscribed, isOfferApplicable, onClickSave }: any) => {
     const { data }: any = useSession();
     const userData = data?.user;
     const router = useRouter();
@@ -164,6 +164,7 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
             if (response.data) {
                 console.log(response.data)
                 toast.success("Payment details saved successfully!");
+                onClickSave();
                 return true;
             }
             else {
@@ -210,7 +211,7 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
                 <div className='divide-y *:py-4'>
                     <div className='flex justify-between items-center'>
                         <div>
-                            <div className='text-sm mb-1 font-semibold'>{}</div>
+                            <div className='text-sm mb-1 font-semibold'>{ }</div>
                             {!isOfferApplied ? <div>{planDetails.type || "Plan Details"}</div> : <div>Promotional</div>}
                             {listingAmount > 0 && <div className="text-xs font-semi-bold">Expires on {ConvertToReadableDate(new Date(expiryDate))}</div>}
                         </div>
@@ -242,7 +243,7 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
                     </div>
                 </div>
                 <div className="flex justify-end mt-5">
-                    <Button isLoading={isLoading} radius="none" isDisabled={hasSubscribed || !planDetails.type || isLoading} size="md" color={`${hasSubscribed ? 'success' : 'primary'}`} variant={`${hasSubscribed ? 'solid' : 'ghost'}`} onPress={(e: any) => processPayment(e)}>{hasSubscribed ? 'Paid' : 'Checkout'}</Button>
+                    <Button isLoading={isLoading} radius="none" isDisabled={hasSubscribed || !planDetails.type || isLoading} size="md" color={hasSubscribed ? 'success' : 'primary'} variant='solid' onPress={(e: any) => processPayment(e)}>{hasSubscribed ? 'Paid' : 'Checkout'}</Button>
                     {/* <Button as={Link} href="https://rzp.io/l/8IapPlGi" radius="none" size="md" color="primary" variant="ghost">Checkout</Button> */}
                     {/* <RazorpayButton /> */}
                 </div>

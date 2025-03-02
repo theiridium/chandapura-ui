@@ -16,6 +16,8 @@ import { toast } from 'react-toastify';
 import AddLocationMap from '@/app/components/maps/add-location-map';
 import { RadioBox } from '@/app/sub-components/radio-box';
 import { ListingWorkflow } from '@/lib/typings/enums';
+import { useSetAtom } from 'jotai';
+import { listingFormBtnEl } from '@/lib/atom';
 
 const Page = () => {
     const { data }: any = useSession();
@@ -24,6 +26,8 @@ const Page = () => {
     const searchParams = useSearchParams();
     const type = searchParams.get('type');
     const source = searchParams.get('source');
+    const formRef = useRef<HTMLFormElement>(null);
+    const setListingFormBtnEl = useSetAtom(listingFormBtnEl);
     const [disabled, setDisabled] = useState(true);
     const propertyTypeList = SelectList.PropertyType;
     const [propertyTypeDisabledKeys, setPropertyTypeDisabledKeys] = useState<any>([]);
@@ -273,6 +277,22 @@ const Page = () => {
         }
     };
 
+    const submitForm = () => {
+        !!formRef.current && formRef.current.requestSubmit();
+    }
+
+    const setFormBtnEl = () => (
+        <div key={1} className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg p-2 *:py-2 *:px-5 *:block font-semibold'>
+            <Button className='btn-primary text-base' color='primary' type='submit' isLoading={isSubmitLoading}
+                onPress={() => submitForm()}>
+                {!isSubmitLoading && ((type === "edit") ? "Save" : "Save and Continue")}
+            </Button>
+        </div>
+    );
+    useEffect(() => {
+        setListingFormBtnEl([setFormBtnEl()]);
+    }, [isSubmitLoading])
+
     return (
         <>
             {isSubmitLoading && <FormLoading text={"Uploading your Property Details..."} />}
@@ -280,7 +300,7 @@ const Page = () => {
                 <div className='listing-header mb-8'>
                     <div className='text-xl lg:text-4xl font-semibold text-gray-700 px-7'>{source ? "Modify Property Details" : "Add New Property"}</div>
                 </div>
-                <form onKeyPress={onKeyPress} className='grid grid-cols-1 gap-10 mx-2' onSubmit={handleSubmit(onSubmit)}>
+                <form ref={formRef} onKeyPress={onKeyPress} className='grid grid-cols-1 gap-10 mx-2' onSubmit={handleSubmit(onSubmit)}>
                     <InView threshold={1} as="div" onChange={onViewScroll} id='general' className='listing-card border rounded-lg px-4 lg:px-7 py-6 scroll-mt-36'>
                         <div className='card-header text-xl font-semibold mb-5'>General</div>
                         <div className='mb-8'>
@@ -704,11 +724,6 @@ const Page = () => {
                         <div className='card-header text-xl font-semibold mb-5'>Property Contact Details</div>
                         <ContactForm txtContactDisabled={disabled} defaultContact={contact} contactDetails={handleContactDetails} />
                     </InView>
-                    <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>
-                        <Button className='btn-primary text-base' color='primary' type='submit' isLoading={isSubmitLoading}>
-                            {!isSubmitLoading && ((type === "edit") ? "Save" : "Save and Continue")}
-                        </Button>
-                    </div>
                 </form>
             </div>
             <div className='hidden lg:block col-span-2 mt-3 lg:my-8'>

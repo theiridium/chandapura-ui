@@ -20,12 +20,10 @@ export default async function JobListingLayout({
     const resArea = await getPublicApiResponse(apiUrlArea);
     const resJobTitles = await getPublicApiResponse(apiUrlJobTitles);
     return (
-        <div className="max-w-screen-xl mx-auto">
-            <Suspense fallback={<GlobalSearchListLoading />}>
-                <JobListingForm resLang={resLang} resArea={resArea} resJobTitles={resJobTitles}>
-                    {children}
-                </JobListingForm>
-            </Suspense>
-        </div>
+        <Suspense fallback={<GlobalSearchListLoading />}>
+            <JobListingForm resLang={resLang} resArea={resArea} resJobTitles={resJobTitles}>
+                {children}
+            </JobListingForm>
+        </Suspense>
     )
 }

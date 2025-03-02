@@ -1,9 +1,9 @@
 "use client"
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Accordion, AccordionItem, Button, Input, Tab, Tabs } from '@nextui-org/react';
+import { Accordion, AccordionItem, Button, Input, Link, Tab, Tabs } from '@nextui-org/react';
 import { useCallback, useEffect, useState } from 'react';
 import FormLoading from '@/app/loading-components/form-loading';
-import { Products } from '@/public/shared/app.config';
+import { Products, Resource } from '@/public/shared/app.config';
 import { useSession } from 'next-auth/react';
 import { getPublicApiResponse, putRequestApi } from '@/lib/apiLibrary';
 import TextLoading from '@/app/loading-components/text-loading';
@@ -12,6 +12,8 @@ import { toast } from 'react-toastify';
 import PaymentCard from '@/app/sub-components/payment-card';
 import { CalculateDiscountPercentage, CheckSubscriptionValidity } from '@/lib/helpers';
 import { ListingWorkflow } from '@/lib/typings/enums';
+import { useSetAtom } from 'jotai';
+import { listingFormBtnEl } from '@/lib/atom';
 
 const Page = () => {
     const currentDate = new Date();
@@ -25,6 +27,7 @@ const Page = () => {
     const searchParams = useSearchParams();
     const type = searchParams.get('type');
     const source = searchParams.get('source');
+    const setListingFormBtnEl = useSetAtom(listingFormBtnEl);
     const [apiRes, setApiRes] = useState<any>();
     const [paymentData, setPaymentData] = useState<any>({});
     const [hasSubscribed, setHasSubscribed] = useState(false);
@@ -37,6 +40,10 @@ const Page = () => {
         propertyData: "",
         productName: ""
     });
+
+    useEffect(() => {
+        setListingFormBtnEl(null);
+    }, [isSubmitLoading])
 
     const fetchData = useCallback(async () => {
         try {
@@ -107,22 +114,17 @@ const Page = () => {
 
     const onClickSave = async () => {
         try {
-            setIsSubmitLoading(true);
-
             if (type === "edit") {
                 toast.info("Redirecting to listing menu...")
                 await new Promise(resolve => setTimeout(resolve, 3000));
                 router.push(`/dashboard/property-listing/view-all`)
             }
             else if (type === "new" || type === "renew") {
-                toast.success("Payment details saved successfully!");
                 router.push(`/dashboard/property-listing/publish?type=${type}&source=${source}`)
             }
         } catch (error) {
             console.error("An error occurred during the process:", error);
             toast.error("Failed to upload images.");
-        } finally {
-            setIsSubmitLoading(false);
         }
     }
 
@@ -176,23 +178,18 @@ const Page = () => {
                 </div>
             </div>
             <div className='col-span-full lg:col-span-3 mt-3 lg:my-8 mx-2 lg:mx-0 relative'>
+                <div className='flex flex-row lg:flex-col gap-5 mb-7'>
+                    <Button className='btn-primary text-base' isDisabled={isLoading} radius='sm' variant='flat' href={Resource.PropertyListing.addDetailsLink + '?type=edit&source=' + apiRes?.id} color='primary' as={Link}>Edit Details</Button>
+                    <Button className='btn-primary text-base' isDisabled={isLoading} radius='sm' variant='ghost' href={Resource.PropertyListing.uploadImagesLink + '?type=edit&source=' + apiRes?.id} color='primary' as={Link}>Edit Images</Button>
+                </div>
                 <PaymentCard
                     planDetails={planDetails}
                     expiryDate={expiryDate}
                     paymentData={paymentData}
                     hasSubscribed={hasSubscribed}
                     setHasSubscribed={setHasSubscribed}
+                    onClickSave={onClickSave}
                     isOfferApplicable={false} />
-            </div>
-            <div className='col-span-full lg:col-start-3 lg:col-span-5 mt-3 lg:mt-0 mb-8 mx-2 lg:mx-0'>
-                <div className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg *:mb-5 *:py-2 *:px-5 *:block font-semibold'>
-                    <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading} onPress={() => router.push(`/dashboard/property-listing/upload-images?type=edit_back&source=${source}`)}>
-                        Back
-                    </Button>
-                    <Button className='btn-primary text-base' color='primary' isDisabled={!hasSubscribed} isLoading={isSubmitLoading} onPress={onClickSave}>
-                        {!isSubmitLoading && "Continue to Preview"}
-                    </Button>
-                </div>
             </div>
         </>
     )

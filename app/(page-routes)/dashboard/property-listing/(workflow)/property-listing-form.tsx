@@ -53,15 +53,17 @@ const PropertyListingForm = ({ children, resRealEstateAmenities, resPgAmenities,
 
     return (
         <>
-            <div className='grid grid-cols-10 gap-5 relative'>
-                <div className='col-span-full lg:col-span-2 my-8'>
-                    <div className="sticky top-28 px-5 lg:px-7">
-                        <div className='mb-5'><MainMenuBtn url='/dashboard/property-listing/view-all' /></div>
-                        <UserItemList attr={DropdownList.PropertyList.api} title={"Select a Property"} />
-                        {(type !== "edit") && <FormStep steps={steps} />}
+            <div className="max-w-screen-xl mx-auto">
+                <div className='grid grid-cols-10 gap-5 relative'>
+                    <div className='col-span-full lg:col-span-2 my-8'>
+                        <div className="sticky top-28 px-5 lg:px-7">
+                            <div className='mb-5'><MainMenuBtn url='/dashboard/property-listing/view-all' /></div>
+                            <UserItemList attr={DropdownList.PropertyList.api} title={"Select a Property"} />
+                            {(type !== "edit") && <FormStep steps={steps} />}
+                        </div>
                     </div>
+                    <>{children}</>
                 </div>
-                <>{children}</>
             </div>
             {!!formButton && <div className="footer-sticky h-14 z-10 bottom-0 mt-5">
                 <div className="max-w-screen-xl mx-auto">

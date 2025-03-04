@@ -36,6 +36,7 @@ const ListArrow = ({ size, row, infinite, minirow, displayInMobile, displayArrow
     useEffect(() => {
         setScreenWidth(window.screen.width);
         const wrapper: any = document.querySelector('.' + row);
+        const arrows = document.querySelectorAll('.btn-list-arrow');
         const updateButtons = () => {
             if (displayArrowLg) {
                 const maxScrollLeft = wrapper.scrollWidth - wrapper.clientWidth;
@@ -57,10 +58,20 @@ const ListArrow = ({ size, row, infinite, minirow, displayInMobile, displayArrow
         wrapper.addEventListener('mouseenter', handleMouseEnter);
         wrapper.addEventListener('mouseleave', handleMouseLeave);
 
+        arrows.forEach(arrow => {
+            arrow.addEventListener('mouseenter', handleMouseEnter);
+            arrow.addEventListener('mouseleave', handleMouseLeave);
+        });
+
         return () => {
             wrapper.removeEventListener('scroll', updateButtons);
             wrapper.removeEventListener('mouseenter', handleMouseEnter);
             wrapper.removeEventListener('mouseleave', handleMouseLeave);
+
+            arrows.forEach(arrow => {
+                arrow.removeEventListener('mouseenter', handleMouseEnter);
+                arrow.removeEventListener('mouseleave', handleMouseLeave);
+            });
         };
     }, [canScrollLeft, canScrollRight]);
     useEffect(() => {

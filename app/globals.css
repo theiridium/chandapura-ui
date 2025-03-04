@@ -213,20 +213,21 @@ header {
   } */
   .re-card-link,
   .job-card-link {
-    @apply rounded-md;
+    @apply rounded-2xl;
   }
   .re-card-link:hover,
   .job-card-link:hover {
     /* box-shadow: 0 0 48px -33px rgb(34, 34, 34); */
-    box-shadow: 0px 0px 14px 1px rgba(34, 34, 34, 0.3);
+    /* box-shadow: 0px 0px 14px 1px rgba(34, 34, 34, 0.3); */
     /* @apply transition translate-y-1 duration-300 ease-in-out; */
+    @apply xl:scale-105;
   }
   .re-card,
   .business-card {
-    @apply rounded-md bg-white lg:snap-start;
+    @apply rounded-2xl bg-white lg:snap-start;
   }
   .job-card {
-    @apply rounded-md bg-color1d/10 lg:snap-start grid content-between h-full;
+    @apply rounded-2xl bg-color1d/10 lg:snap-start grid content-between h-full;
   }
   .re-card {
     @apply lg:w-[293px];
@@ -238,22 +239,22 @@ header {
     @apply w-80 lg:w-[400px];
   }
   .re-card-img {
-    @apply border border-gray-300 border-b-0 h-40 w-64 md:w-72 lg:w-auto rounded-t-md;
+    @apply border border-gray-300 border-b-0 h-40 w-64 md:w-72 lg:w-auto rounded-t-2xl;
   }
   .re-card-img > img {
-    @apply w-full h-full rounded-t-md object-cover;
+    @apply w-full h-full rounded-t-2xl object-cover;
   }
   .business-card-img {
     @apply h-40 lg:h-64 w-64 md:w-72 lg:w-auto;
   }
   .business-card-img > img {
-    @apply w-full h-full rounded-t-md object-cover;
+    @apply w-full h-full rounded-t-2xl object-cover;
   }
   .re-card-body {
-    @apply border border-gray-300 border-t-0 rounded-b-md px-4 lg:px-6 h-40 md:h-40 grid content-center;
+    @apply border border-gray-300 border-t-0 rounded-b-2xl px-4 lg:px-6 h-40 md:h-40 grid content-center;
   }
   .business-card-body {
-    @apply border border-gray-300 border-t-0 rounded-b-md px-4 lg:px-6 h-40 md:h-48 grid content-center;
+    @apply border border-gray-300 border-t-0 rounded-b-2xl px-4 lg:px-6 h-40 md:h-48 grid content-center;
   }
   .text-login-form {
     @apply !w-full md:!w-3/4 !font-semibold !text-gray-500 !mx-auto;

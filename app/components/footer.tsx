@@ -2,7 +2,7 @@ import { Products } from "@/public/shared/app.config"
 
 const Footer = () => {
   return (
-    <footer className="">
+    <footer className="mt-5">
       <div className="border border-gray-300 border-t-1">
         <div className="max-w-screen-xl mx-auto px-5 py-6 lg:py-8 text-justify">
           <h2 className="font-medium text-center md:text-justify">Chandapura.com – Your All-in-One Platform for Local Businesses, Jobs, Real Estate, and Buy/Sell in Chandapura and Nearby Areas</h2>

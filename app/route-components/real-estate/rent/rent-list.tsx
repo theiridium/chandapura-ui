@@ -13,7 +13,7 @@ const RentList = async () => {
           <RentCard key={i} list={property} id={property.id} apiComponent={attr.component} />
         ))}
       </div>
-      <ListArrow size={293} row="rent-card" infinite={true} displayArrowLg={res.data.length > 4} />
+      <ListArrow size={317} row="rent-card" infinite={true} displayArrowLg={res.data.length > 4} />
     </>
   )
 }

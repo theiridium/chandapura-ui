@@ -13,7 +13,7 @@ const BusinessList = async () => {
           <BusinessCard key={i} list={bus} id={bus.id} />
         ))}
       </div>
-      <ListArrow size={400} row="business-card-list-row" infinite={true} displayArrowLg={businessList.data.length > 3} />
+      <ListArrow size={424} row="business-card-list-row" infinite={true} displayArrowLg={businessList.data.length > 3} />
     </>
   )
 }

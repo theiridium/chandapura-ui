@@ -14,7 +14,7 @@ const SaleList = async () => {
             <SaleCard key={i} list={property} id={property.id} apiComponent={attr.component} />
         ))}
       </div>
-      <ListArrow size={293} row="sale-card" infinite={true} displayArrowLg={res.data.length > 4} />
+      <ListArrow size={317} row="sale-card" infinite={true} displayArrowLg={res.data.length > 4} />
     </>
   )
 }

@@ -16,7 +16,7 @@ const JobList = async () => {
           <JobCardPersonal key={i} list={item} id={item.id} />
         ))}
       </div>
-      <ListArrow size={400} row="job-card-list-row" infinite={true} displayArrowLg={jobList.data.length > 3} />
+      <ListArrow size={424} row="job-card-list-row" infinite={true} displayArrowLg={jobList.data.length > 3} />
     </>
   )
 }

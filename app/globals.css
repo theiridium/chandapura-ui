@@ -117,7 +117,7 @@ header {
   button:not(.embla *, .google-map *, .sidemenubar *),
   a:not(.embla *, .google-map *, .sidemenubar *),
   .re-card-link {
-    @apply transition duration-300 ease-in-out;
+    @apply transition duration-300 ease-in-out will-change-transform;
   }
   .link-pill {
     /* @apply px-4 py-2 rounded-full hover:bg-color2d/50; */
@@ -200,20 +200,20 @@ header {
     @apply bg-color2d/10 py-5 mb-20;
   }
   .card-list-row {
-    @apply flex overflow-x-auto gap-5 lg:gap-0 lg:snap-x lg:*:m-3 lg:scroll-p-3;
+    @apply flex overflow-x-auto gap-5 lg:gap-0 lg:*:m-3;
   }
   .business-card-list-row {
-    @apply flex overflow-x-auto gap-5 lg:gap-0 lg:snap-x lg:*:m-3 lg:scroll-p-3;
+    @apply flex overflow-x-auto gap-5 lg:gap-0 lg:*:m-3;
   }
   .job-card-list-row {
-    @apply flex overflow-x-auto gap-5 lg:gap-0 lg:snap-x lg:*:m-3 lg:scroll-p-3;
+    @apply flex overflow-x-auto gap-5 lg:gap-0 lg:*:m-3;
   }
   /* .job-card-list-row {
     @apply flex items-stretch overflow-x-auto lg:overflow-visible lg:grid lg:grid-cols-3 gap-5 lg:gap-7;
   } */
   .re-card-link,
   .job-card-link {
-    @apply rounded-2xl;
+    @apply rounded-2xl will-change-transform;
   }
   .re-card-link:hover,
   .job-card-link:hover {
@@ -299,7 +299,7 @@ header {
     @apply flex gap-5 overflow-x-auto;
   }
   .search-cat-sec .mini-card {
-    @apply border rounded-lg aspect-square grid place-items-center text-center p-0 md:p-2 min-w-[120px] max-w-[120px] md:min-w-[130px] md:max-w-[130px] hover:bg-color2d/10;
+    @apply border border-neutral-300 rounded-lg aspect-square grid place-items-center text-center p-0 md:p-2 min-w-[120px] max-w-[120px] md:min-w-[130px] md:max-w-[130px] hover:bg-color2d/10 hover:border-neutral-400;
   }
   .mini-card .text {
     @apply text-xs md:text-sm text-gray-600 font-medium w-24 lg:w-auto;

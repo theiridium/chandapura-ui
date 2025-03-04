@@ -13,7 +13,7 @@ const ClassifiedList = async () => {
           <ClassifiedCard key={i} list={item} id={item.id} />
         ))}
       </div>
-      <ListArrow size={293} row="classified-card" infinite={true} displayArrowLg={classifiedList.data.length > 4} />
+      <ListArrow size={317} row="classified-card" infinite={true} displayArrowLg={classifiedList.data.length > 4} />
     </>
   )
 }

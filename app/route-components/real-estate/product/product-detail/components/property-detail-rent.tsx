@@ -47,7 +47,7 @@ const PropertyDetailRent = ({ data, onOpen, property_details }: any) => {
                             <h2 className="font-semibold text-xl lg:text-3xl mb-2 lg:mb-0">{data.name}</h2>
                         </div>
                         {data.listing_type !== "PG" &&
-                            <div className='text-2xl font-semibold text-gray-600 flex items-center bg-color2d/70 px-5 py-1 mt-0 lg:mt-5 lg:mt-0 w-fit float-right lg:float-none'><IndianRupee strokeWidth={3} size={20} />{ConvertCurrencyToWords(property_details.PropertyDetailal_amount)}</div>
+                            <div className='text-2xl font-semibold text-gray-600 flex items-center bg-color2d/70 px-5 py-1 mt-0 lg:mt-5 lg:mt-0 w-fit float-right lg:float-none'><IndianRupee strokeWidth={3} size={20} />{ConvertCurrencyToWords(property_details.rental_amount)}</div>
                         }
                     </div>
                     <div className='mb-12 pt-5'>

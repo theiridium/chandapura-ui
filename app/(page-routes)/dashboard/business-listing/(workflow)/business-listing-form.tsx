@@ -61,7 +61,7 @@ const BusinessListingForm = ({ children, resCat, resArea }: { children: React.Re
                     <>{children}</>
                 </div>
             </div>
-            {!!formButton && <div className="footer-sticky h-14 z-10 bottom-0 mt-5">
+            {!!formButton && <div className="footer-sticky">
                 <div className="max-w-screen-xl mx-auto">
                     <div className='grid grid-cols-10 gap-5'>
                         <div className="col-start-0 col-span-full lg:col-start-3 lg:col-span-6">{formButton}</div>

@@ -6,12 +6,12 @@ import { useEffect, useState } from "react";
 import { useDropzone } from 'react-dropzone';
 import { toast } from "react-toastify";
 
-const SingleImage = ({ imageParams, uploadSuccess, setEditMode }: any) => {
-
+const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: any) => {
     const [files, setFiles] = useState<any>([]);
     const [loading, setLoading] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [blobUrls, setBlobUrls] = useState<any[]>([]);
+    const [imgId, setImgId] = useState<any>(!!imageParams.imgData ? imageParams.imgData.id : null)
     const { getRootProps, getInputProps } = useDropzone({
         accept: {
             'image/*': []
@@ -27,6 +27,8 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode }: any) => {
 
     const uploadImageWithContent = async (file: any) => {
         setLoading(true);
+        setIsLoading(true);
+        if (!!imgId) await deleteImage(imgId);
         let formData = new FormData();
         for (let key in imageParams) {
             if (imageParams.hasOwnProperty(key)) {
@@ -45,12 +47,21 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode }: any) => {
             uploadSuccess();
             setIsEditing(false);
         }
+        setIsLoading(false);
     }
 
     useEffect(() => {
         isEditing ? setEditMode(true) : setEditMode(false);
     }, [isEditing])
 
+    const deleteImage = async (id: any) => {
+        try {
+            const response = await deleteMediaFiles(id);
+            console.log(response)
+        } catch (error) {
+            toast.error('Failed to delete image');
+        }
+    }
 
     // const deleteImage = async (id: any) => {
     //     const isConfirmed = confirm('Are you sure you want to delete this image?');
@@ -133,7 +144,8 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode }: any) => {
                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
                                 </svg>
                                 <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                <p className="text-xs text-gray-500 dark:text-gray-400">PNG, JPG OR JPEG (MAX. 800x400px)</p>
+                                <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">PNG, JPG OR JPEG</p>
+                                <p className="text-xs text-gray-500 dark:text-gray-400">(Ratio 4:3 or 16:9) Landscape image only</p>
                             </div>
                             <input id="dropzone-file" type="file" className="hidden" {...getInputProps()} />
                         </div>

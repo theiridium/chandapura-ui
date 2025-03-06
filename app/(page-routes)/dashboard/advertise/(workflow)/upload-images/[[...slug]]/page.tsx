@@ -6,14 +6,16 @@ import { Products } from '@/public/shared/app.config';
 import { getPublicApiResponse, putRequestApi } from '@/lib/apiLibrary';
 import { ImageParams } from '@/lib/typings/dto';
 import ImgSingleUploadLoading from '@/app/loading-components/img-single-upload-loading';
-import { Button } from '@nextui-org/react';
+import { Button, useDisclosure } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 import FormLoading from '@/app/loading-components/form-loading';
 import { ListingWorkflow } from '@/lib/typings/enums';
 import { useSetAtom } from 'jotai';
 import { listingFormBtnEl } from '@/lib/atom';
+import BannerGuidlineModal from '@/app/components/modals/banner-guidline-modal';
 
 const Page = ({ params }: { params: { slug: string } }) => {
+    const [isloading, setIsLoading] = useState(false);
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -46,10 +48,10 @@ const Page = ({ params }: { params: { slug: string } }) => {
 
     const setFormBtnEl = () => (
         <div key={1} className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg p-2 *:py-2 *:px-5 *:block font-semibold'>
-            <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading} onPress={() => router.push(`/dashboard/advertise/add-details?type=edit_back&source=${source}`)}>
+            <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading || isloading} onPress={() => router.push(`/dashboard/advertise/add-details?type=edit_back&source=${source}`)}>
                 Back
             </Button>
-            <Button className='btn-primary text-base' color='primary' isDisabled={!imageParamsAd.imgData || editMode} isLoading={isSubmitLoading} onPress={onClickSave}>
+            <Button className='btn-primary text-base' color='primary' isDisabled={!imageParamsAd.imgData || editMode || isloading} isLoading={isSubmitLoading} onPress={onClickSave}>
                 {!isSubmitLoading && ((type === "edit") ? "Save" : "Next")}
             </Button>
         </div>
@@ -57,7 +59,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
 
     useEffect(() => {
         setListingFormBtnEl([setFormBtnEl()]);
-    }, [isSubmitLoading, imageParamsAd])
+    }, [isSubmitLoading, imageParamsAd, isloading])
 
     useEffect(() => {
         populateAdImage();
@@ -85,6 +87,10 @@ const Page = ({ params }: { params: { slug: string } }) => {
             setIsSubmitLoading(false);
         }
     }
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const handleOpen = () => {
+        onOpen();
+    };
 
     return (
         <>
@@ -95,8 +101,11 @@ const Page = ({ params }: { params: { slug: string } }) => {
                 </div>
                 <div className='grid grid-cols-1 gap-10 mx-2'>
                     <div className='listing-card border rounded-lg px-7 py-6 scroll-mt-36'>
-                        <div className='card-header text-xl font-semibold mb-5'>Featured Image</div>
-                        {isAdImageLoaded ? <SingleImage key={keyAd} imageParams={imageParamsAd} uploadSuccess={reloadAdComp} setEditMode={setEditMode} /> :
+                        <div className='card-header text-xl font-semibold mb-5'>Banner Image</div>
+                        <div className='mb-5 text-sm md:text-base'><span>Please follow the </span>
+                            <span><Button onPress={() => handleOpen()} variant='flat' size='sm' color='primary' className='md:!text-sm'>Banner Image Guidline</Button></span>
+                            <span> to upload the right size image for a better visibility of your content in both web and mobile view.</span></div>
+                        {isAdImageLoaded ? <SingleImage key={keyAd} imageParams={imageParamsAd} uploadSuccess={reloadAdComp} setEditMode={setEditMode} setIsLoading={setIsLoading} /> :
                             <ImgSingleUploadLoading />}
                     </div>
                 </div>
@@ -106,6 +115,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
 
                 </div>
             </div>
+            <BannerGuidlineModal isOpen={isOpen} onClose={onClose} />
         </>
     )
 }

@@ -295,6 +295,12 @@ header {
     color: #333;
     @apply bg-color2d/70 font-medium;
   }
+  .text-highlight-primary {
+    padding: 0.125rem 0.1875rem;
+    margin: 0 -0.1875rem;
+    color: rgb(241, 239, 230);
+    @apply bg-color1d/60 font-medium;
+  }
   .search-cat-sec {
     @apply flex gap-5 overflow-x-auto;
   }

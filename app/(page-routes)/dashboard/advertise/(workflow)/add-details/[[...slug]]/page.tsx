@@ -84,7 +84,6 @@ const Page = () => {
     });
 
     const handleContactDetails = (data: any) => setContact(data);
-    
     const onSubmit: SubmitHandler<any> = (data) => {
         setIsSubmitLoading(true);
         let formdata = { ...adList, ...data }
@@ -93,7 +92,7 @@ const Page = () => {
             contact: contact,
             user: userData.strapiUserId,
             website: !!formdata.website ? "https://" + formdata.website : "",
-            step_number: ListingWorkflow.AddDetails
+            step_number: (!source || !apiRes.ad_image) ? ListingWorkflow.AddDetails : apiRes.step_number
         }
         postAdListing(payload);
     }
@@ -147,7 +146,7 @@ const Page = () => {
 
     const setFormBtnEl = () => (
         <div key={1} className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg p-2 *:py-2 *:px-5 *:block font-semibold'>
-            <Button className='btn-primary text-base' color='primary' type='submit' isLoading={isSubmitLoading}
+            <Button className='btn-primary text-base' color='primary' type='submit' isLoading={isSubmitLoading} isDisabled={disabled}
                 onPress={() => submitForm()}>
                 {!isSubmitLoading && ((type === "edit") ? "Save" : "Save and Continue")}
             </Button>
@@ -155,7 +154,7 @@ const Page = () => {
     );
     useEffect(() => {
         setListingFormBtnEl([setFormBtnEl()]);
-    }, [isSubmitLoading])
+    }, [isSubmitLoading, disabled])
 
     return (
         <>

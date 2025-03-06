@@ -14,6 +14,7 @@ import { useSetAtom } from 'jotai';
 import { listingFormBtnEl } from '@/lib/atom';
 
 const Page = ({ params }: { params: { slug: string } }) => {
+    const [isloading, setIsLoading] = useState(false);
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -94,14 +95,14 @@ const Page = ({ params }: { params: { slug: string } }) => {
 
     const setFormBtnEl = () => (
         <div key={1} className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg p-2 *:py-2 *:px-5 *:block font-semibold'>
-            <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading} onPress={() => router.push(`/dashboard/job-listing/add-details?type=edit_back&source=${source}`)}>
+            <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading || isloading} onPress={() => router.push(`/dashboard/job-listing/add-details?type=edit_back&source=${source}`)}>
                 Back
             </Button>
             {(!imageParams.imgData || editMode) ?
                 <Button className='btn-primary text-base' color='primary' isLoading={isSubmitLoading} onPress={onSkip}>
                     {!isSubmitLoading && ("Skip and Continue")}
                 </Button> :
-                <Button className='btn-primary text-base' color='primary' isDisabled={!imageParams.imgData || editMode} isLoading={isSubmitLoading} onPress={onClickSave}>
+                <Button className='btn-primary text-base' color='primary' isDisabled={!imageParams.imgData || editMode || isloading} isLoading={isSubmitLoading} onPress={onClickSave}>
                     {!isSubmitLoading && ((type === "edit") ? "Save" : "Save and Continue")}
                 </Button>
             }
@@ -110,7 +111,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
 
     useEffect(() => {
         setListingFormBtnEl([setFormBtnEl()]);
-    }, [isSubmitLoading, imageParams])
+    }, [isSubmitLoading, imageParams, isloading])
 
     return (
         <>
@@ -122,7 +123,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
                 <div className='grid grid-cols-1 gap-10 mx-2'>
                     <div className='listing-card border rounded-lg px-7 py-6 scroll-mt-36'>
                         <div className='card-header text-xl font-semibold mb-5'>Company Logo Image <span className='text-sm font-medium'>(Optional)</span></div>
-                        {isImageLoaded ? <SingleImage key={keyJl} imageParams={imageParams} uploadSuccess={reloadAdComp} setEditMode={setEditMode} /> :
+                        {isImageLoaded ? <SingleImage key={keyJl} imageParams={imageParams} uploadSuccess={reloadAdComp} setEditMode={setEditMode} setIsLoading={setIsLoading} /> :
                             <ImgSingleUploadLoading />}
                     </div>
                 </div>

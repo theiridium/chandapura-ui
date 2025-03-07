@@ -2,8 +2,8 @@ export enum ListingWorkflow {
     Initial,
     AddDetails,
     UploadImages,
+    Review,
     Payment,
-    Publish
 }
 export enum JobCategory {
     Personal = "Personal",

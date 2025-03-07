@@ -22,19 +22,19 @@ const steps = [
     number: 2,
     title: "Upload Images",
     currentPath: "upload-images",
-    nextPath: "payment"
+    nextPath: "review"
   },
   {
     number: 3,
-    title: "Payment",
-    currentPath: "payment",
-    nextPath: "publish"
+    title: "Review",
+    currentPath: "review",
+    nextPath: "payment"
   },
   {
     number: 4,
-    title: "Review & Publish",
-    currentPath: "publish",
-    nextPath: "completed"
+    title: "Payment",
+    currentPath: "payment",
+    nextPath: "publish"
   }
 ]
 const Page = () => {
@@ -98,7 +98,7 @@ const Page = () => {
                           }
                         </> :
                         <>
-                          {(x.step_number === ListingWorkflow.Publish && !x.publish_status) ? <div className='pill-pendingApproval'>Pending Approval</div> :
+                          {(x.step_number === ListingWorkflow.Payment && !x.publish_status) ? <div className='pill-pendingApproval'>Pending Approval</div> :
                             <div className='pill-draft'>Draft</div>
                           }
                         </>}

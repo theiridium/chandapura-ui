@@ -54,7 +54,7 @@ const Page = () => {
                 const response = await getPublicApiResponse(apiUrl).then(res => res.data);
                 const data = response[0];
                 if (data) {
-                    if (data.step_number !== ListingWorkflow.UploadImages && type !== "renew") router.push(`/dashboard/property-listing/view-all`);
+                    if (data.step_number < ListingWorkflow.Review && type !== "renew") router.push(`/dashboard/property-listing/view-all`);
                     const pricingPlanRes = await getPublicApiResponse(`${Products.realEstatePricingPlan.api.base}?populate=${data.listing_type}`);
                     // let amount = 0;
                     // let planLabel = "";
@@ -120,7 +120,8 @@ const Page = () => {
                 router.push(`/dashboard/property-listing/view-all`)
             }
             else if (type === "new" || type === "renew") {
-                router.push(`/dashboard/property-listing/publish?type=${type}&source=${source}`)
+                toast.success("Your advertisement is sent for approval!");
+                router.push(`/dashboard/advertise/view-all`)
             }
         } catch (error) {
             console.error("An error occurred during the process:", error);
@@ -136,9 +137,9 @@ const Page = () => {
                     <div className='text-xl lg:text-4xl font-semibold text-gray-700 px-7'>Payment</div>
                 </div>
                 <div className='grid grid-cols-1 gap-10 mx-2'>
-                    <div className='listing-card border rounded-lg px-7 py-6 scroll-mt-36'>
-                        <div className='card-header text-xl font-semibold mb-5'>Property Details</div>
-                        <div className='bg-color1d text-white rounded-lg p-8'>
+                    <div className='listing-card border rounded-lg px-0 md:px-7 py-6 pb-0 md:pb-7 scroll-mt-36'>
+                        <div className='card-header text-xl font-semibold mb-5 px-7 md:px-0'>Property Details</div>
+                        <div className='bg-color1d text-white rounded-lg p-5 md:p-8'>
                             <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Property Name</div>
                                 {isLoading ? <TextLoading /> : <div className='text-lg text-color2d'>{apiRes.name}</div>}
@@ -177,7 +178,7 @@ const Page = () => {
                     </div>
                 </div>
             </div>
-            <div className='col-span-full lg:col-span-3 mt-3 lg:my-8 mx-2 lg:mx-0 relative'>
+            <div className='col-span-full lg:col-span-3 mt-3 lg:my-8 mx-2 relative'>
                 <div className='flex flex-row lg:flex-col gap-5 mb-7'>
                     <Button className='btn-primary text-base' isDisabled={isLoading} radius='sm' variant='flat' href={Resource.PropertyListing.addDetailsLink + '?type=edit_back&source=' + apiRes?.id} color='primary' as={Link}>Edit Details</Button>
                     <Button className='btn-primary text-base' isDisabled={isLoading} radius='sm' variant='ghost' href={Resource.PropertyListing.uploadImagesLink + '?type=edit_back&source=' + apiRes?.id} color='primary' as={Link}>Edit Images</Button>

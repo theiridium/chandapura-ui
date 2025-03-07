@@ -18,21 +18,21 @@ const steps = [
     },
     {
         number: 2,
-        title: "Upload Images",
+        title: "Upload Image",
         currentPath: "upload-images",
+        nextPath: "review"
+    },
+    {
+        number: 3,
+        title: "Review",
+        currentPath: "review",
         nextPath: "payment"
     },
-    // {
-    //     number: 3,
-    //     title: "Payment",
-    //     currentPath: "payment",
-    //     nextPath: "publish"
-    // },
     {
         number: 4,
-        title: "Review & Publish",
-        currentPath: "publish",
-        nextPath: "completed"
+        title: "Payment",
+        currentPath: "payment",
+        nextPath: "publish"
     }
 ]
 

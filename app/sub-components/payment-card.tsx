@@ -12,6 +12,8 @@ import { toast } from "react-toastify";
 import FormLoading from "../loading-components/form-loading";
 import { ListingWorkflow } from "@/lib/typings/enums";
 import { RazOrderPayload } from "@/lib/typings/dto";
+import { useSetAtom } from "jotai";
+import { listingFormBtnEl } from "@/lib/atom";
 
 const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setHasSubscribed, isOfferApplicable, onClickSave }: any) => {
     const { data }: any = useSession();
@@ -21,6 +23,7 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
     const searchParams = useSearchParams();
     const type = searchParams.get('type');
     const source = searchParams.get('source');
+    const setListingFormBtnEl = useSetAtom(listingFormBtnEl);
     const pageUrl = searchParams ? `${pathname}?${searchParams}` : `${pathname}`;
     const [isLoading, setIsLoading] = useState(false);
     const options: any = { day: '2-digit', month: 'short', year: 'numeric' };
@@ -121,19 +124,19 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
                 });
                 paymentObject.open();
             }
-            else {
-                const data = {
-                    orderCreationId: null,
-                    razorpayPaymentId: null,
-                    razorpayOrderId: null,
-                    razorpaySignature: null
-                };
-                isPaymentSuccess = await savePaymentDetails(data);
-                if (isPaymentSuccess) {
-                    setHasSubscribed(true);
-                    toast.success(`You have unlocked free listing untill ${ConvertToReadableDate(new Date(expiryDate))}. Please continue to Preview.`);
-                }
-            }
+            // else {
+            //     const data = {
+            //         orderCreationId: null,
+            //         razorpayPaymentId: null,
+            //         razorpayOrderId: null,
+            //         razorpaySignature: null
+            //     };
+            //     isPaymentSuccess = await savePaymentDetails(data);
+            //     if (isPaymentSuccess) {
+            //         setHasSubscribed(true);
+            //         toast.success(`You have unlocked free listing untill ${ConvertToReadableDate(new Date(expiryDate))}. Please continue to Preview.`);
+            //     }
+            // }
         } catch (error) {
             console.log(error);
         } finally {
@@ -180,6 +183,17 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
             setIsLoading(false);
         }
     }
+
+    const setFormBtnEl = () => (
+        <div key={1} className='flex gap-x-5 justify-end *:w-auto p-2 *:py-2 *:px-5 *:block'>
+            {!!planDetails.amount && <p className="text-sm md:text-base">Proceed with payment</p>}
+            <Button isLoading={isLoading} radius="none" isDisabled={hasSubscribed || !planDetails.type || isLoading} size="md" color={hasSubscribed ? 'success' : 'primary'} variant='solid' onPress={(e: any) => processPayment(e)}>{hasSubscribed ? 'Paid' : 'Checkout'}</Button>
+        </div>
+    );
+
+    useEffect(() => {
+        setListingFormBtnEl([setFormBtnEl()]);
+    }, [isLoading, planDetails, hasSubscribed, listingAmount])
 
     return (
         <>
@@ -244,11 +258,11 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
                         <div className="text-xl flex items-center"><IndianRupee size={18} />{totalAmount}</div>
                     </div>
                 </div>
-                <div className="flex justify-end mt-5">
+                {/* <div className="flex justify-end mt-5">
                     <Button isLoading={isLoading} radius="none" isDisabled={hasSubscribed || !planDetails.type || isLoading} size="md" color={hasSubscribed ? 'success' : 'primary'} variant='solid' onPress={(e: any) => processPayment(e)}>{hasSubscribed ? 'Paid' : 'Checkout'}</Button>
-                    {/* <Button as={Link} href="https://rzp.io/l/8IapPlGi" radius="none" size="md" color="primary" variant="ghost">Checkout</Button> */}
-                    {/* <RazorpayButton /> */}
-                </div>
+                </div> */}
+                {/* <Button as={Link} href="https://rzp.io/l/8IapPlGi" radius="none" size="md" color="primary" variant="ghost">Checkout</Button> */}
+                {/* <RazorpayButton /> */}
             </div>
         </>
     )

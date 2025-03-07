@@ -94,7 +94,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
             }
             else if (type === "new" || type === "edit_back") {
                 toast.success("Images saved successfully!");
-                router.push(`/dashboard/property-listing/payment?type=${type}&source=${source}`)
+                router.push(`/dashboard/property-listing/review?type=${type}&source=${source}`)
             }
         } catch (error) {
             console.error("An error occurred during the process:", error);

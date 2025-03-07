@@ -1,10 +1,10 @@
 "use client"
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Button, Input } from '@nextui-org/react';
+import { Button, Input, Link } from '@nextui-org/react';
 import { useCallback, useEffect, useState } from 'react';
 import FormLoading from '@/app/loading-components/form-loading';
 import { useSession } from 'next-auth/react';
-import { Products } from '@/public/shared/app.config';
+import { Products, Resource } from '@/public/shared/app.config';
 import { getPublicApiResponse, putRequestApi } from '@/lib/apiLibrary';
 import { toast } from 'react-toastify';
 import { ListingWorkflow } from '@/lib/typings/enums';
@@ -32,7 +32,7 @@ const Page = () => {
                 const response = await getPublicApiResponse(apiUrl).then(res => res.data);
                 const data = response[0];
                 if (data) {
-                    if (data.step_number !== ListingWorkflow.Payment) router.push(`/dashboard/business-listing/view-all`);
+                    if (data.step_number < ListingWorkflow.UploadImages) router.push(`/dashboard/business-listing/view-all`);
                     setApiRes(data);
                     setIsLoading(false);
                     return data;
@@ -57,15 +57,15 @@ const Page = () => {
                 await new Promise(resolve => setTimeout(resolve, 3000));
                 router.push(`/dashboard/business-listing/view-all`)
             }
-            else if (type === "new" || type === "renew") {
+            else if (type === "new" || type === "renew" || type === 'edit_back') {
                 let payload = {
-                    step_number: ListingWorkflow.Publish
+                    step_number: ListingWorkflow.Review
                 }
                 const endpoint = Products.business.api.base;
                 const response = await putRequestApi(endpoint, payload, source);
                 if (response.data) {
-                    toast.success("Your business listing has been uploaded sucessfully!");
-                    router.push(`/dashboard/business-listing/view-all`)
+                    toast.success("Let's proceed with Payment");
+                    router.push(`/dashboard/business-listing/payment?type=${type}&source=${source}`)
                 }
             }
         } catch (error) {
@@ -79,7 +79,7 @@ const Page = () => {
     const setFormBtnEl = () => (
         <div key={1} className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg p-2 *:py-2 *:px-5 *:block font-semibold'>
             <Button className='btn-primary text-base' color='primary' isDisabled={isLoading} isLoading={isSubmitLoading} onPress={onClickSave}>
-                {!isSubmitLoading && "Submit"}
+                {!isSubmitLoading && "Next"}
             </Button>
         </div>
     );
@@ -90,10 +90,10 @@ const Page = () => {
 
     return (
         <>
-            {isSubmitLoading && <FormLoading text={"Publishing your business..."} />}
+            {isSubmitLoading && <FormLoading text={"Taking you to payment page..."} />}
             <div className='col-span-full lg:col-span-6 mt-3 lg:my-8'>
                 <div className='listing-header mb-8'>
-                    <div className='text-xl lg:text-4xl font-semibold text-gray-700 px-7'>Review & Publish</div>
+                    <div className='text-xl lg:text-4xl font-semibold text-gray-700 px-7'>Review</div>
                 </div>
                 {isLoading ? "Loading..." :
                     <div className='grid grid-cols-1 gap-10 mx-2'>
@@ -223,9 +223,10 @@ const Page = () => {
                     </div>
                 }
             </div>
-            <div className='col-span-2 mt-3 lg:my-8'>
-                <div className='form-nav'>
-
+            <div className='col-span-full lg:col-span-2 mt-3 lg:my-8 mx-5 lg:mx-2'>
+                <div className='flex flex-row lg:flex-col gap-5 mb-7'>
+                    <Button className='btn-primary text-base' isDisabled={isLoading} radius='sm' variant='flat' href={Resource.Advertisement.addDetailsLink + '?type=edit_back&source=' + apiRes?.id} color='primary' as={Link}>Edit Details</Button>
+                    <Button className='btn-primary text-base' isDisabled={isLoading} radius='sm' variant='ghost' href={Resource.Advertisement.uploadImagesLink + '?type=edit_back&source=' + apiRes?.id} color='primary' as={Link}>Edit Images</Button>
                 </div>
             </div>
         </>

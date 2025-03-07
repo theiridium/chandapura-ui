@@ -62,7 +62,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
             }
             else if (type === "new" || type === "edit_back") {
                 toast.success("Image saved successfully!");
-                router.push(`/dashboard/job-listing/publish?type=${type}&source=${source}`)
+                router.push(`/dashboard/job-listing/review?type=${type}&source=${source}`)
             }
         } catch (error) {
             console.error("An error occurred during the process:", error);
@@ -76,7 +76,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
             setIsSubmitLoading(true);
             if (type === "new" || type === "edit_back") {
                 let payload = {
-                    step_number: imageParams.step_number === ListingWorkflow.Publish ? ListingWorkflow.Publish : ListingWorkflow.UploadImages,
+                    step_number: imageParams.step_number === ListingWorkflow.Review ? ListingWorkflow.Review : ListingWorkflow.UploadImages,
                     publish_status: imageParams.publish_status
                 }
                 const response = await putRequestApi(imageParams.endpoint, payload, imageParams.refId);

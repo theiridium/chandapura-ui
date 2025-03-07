@@ -59,9 +59,9 @@ const Page = () => {
                 await new Promise(resolve => setTimeout(resolve, 3000));
                 router.push(`/dashboard/job-listing/view-all`)
             }
-            else if (type === "new" || type === "renew") {
+            else if (type === "new" || type === "renew" || type === 'edit_back') {
                 let payload = {
-                    step_number: ListingWorkflow.Publish
+                    step_number: ListingWorkflow.Payment
                 }
                 const endpoint = Products.job.api.base;
                 const response = await putRequestApi(endpoint, payload, source);

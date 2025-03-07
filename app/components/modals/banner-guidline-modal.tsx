@@ -3,7 +3,7 @@ import React from 'react'
 
 const BannerGuidlineModal = (props: any) => {
     return (
-        <Modal isOpen={props.isOpen} size='5xl' onClose={props.onClose}>
+        <Modal isOpen={props.isOpen} size='5xl' onClose={props.onClose} hideCloseButton={true} isDismissable={false}>
             <ModalContent>
                 {(onClose) => (
                     <>
@@ -18,11 +18,8 @@ const BannerGuidlineModal = (props: any) => {
                             </ul>
                         </ModalBody>
                         <ModalFooter>
-                            <Button color="danger" variant="light" onPress={onClose}>
-                                Close
-                            </Button>
                             <Button color="primary" onPress={onClose}>
-                                Undestood
+                                I Undestood
                             </Button>
                         </ModalFooter>
                     </>

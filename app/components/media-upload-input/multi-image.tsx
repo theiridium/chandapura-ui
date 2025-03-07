@@ -63,7 +63,7 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditM
                     formData.append("files", file);
                     const response = await uploadMediaFiles(formData);
                     let payload = {
-                        step_number: imageParams.step_number === ListingWorkflow.Publish ? ListingWorkflow.Publish : ListingWorkflow.UploadImages,
+                        step_number: imageParams.step_number === ListingWorkflow.Payment ? ListingWorkflow.Payment : ListingWorkflow.UploadImages,
                         publish_status: imageParams.publish_status
                     }
                     if (response) updateStep = await putRequestApi(imageParams.endpoint, payload, imageParams.refId);

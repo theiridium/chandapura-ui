@@ -1,6 +1,6 @@
 "use client"
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Accordion, AccordionItem, Button, Input, Link, Tab, Tabs } from '@nextui-org/react';
+import { Accordion, AccordionItem, Button, Input, Link, RadioGroup, Tab, Tabs } from '@nextui-org/react';
 import { useCallback, useEffect, useState } from 'react';
 import FormLoading from '@/app/loading-components/form-loading';
 import { Products, Resource } from '@/public/shared/app.config';
@@ -14,6 +14,7 @@ import { CalculateDiscountPercentage, CheckSubscriptionValidity } from '@/lib/he
 import { ListingWorkflow } from '@/lib/typings/enums';
 import { useSetAtom } from 'jotai';
 import { listingFormBtnEl } from '@/lib/atom';
+import PricingRadio from '@/app/sub-components/pricing-radio';
 
 const Page = () => {
     const currentDate = new Date();
@@ -94,29 +95,11 @@ const Page = () => {
         }
     }
 
-    const onPlanSelect = useCallback((type: string, amount: number) => {
-        setPlanDetails({ ...planDetails, type: type, amount: amount });
+    const onPlanSelect = useCallback((type: string) => {
+        setPlanDetails({ ...planDetails, type: type, amount: pricingPlan[type.toLowerCase()] });
         if (type === "Monthly") setExpiryDate(monthSpan);
         else setExpiryDate(yearSpan);
     }, [planDetails])
-
-    const PlanSelectBtn = ({ planType, pricingPlan_type }: any) => {
-        return (
-            <>
-                <div className='flex justify-center'>
-                    <Button radius="none" size="lg"
-                        color={planDetails.type === planType ? 'success' : 'primary'}
-                        variant={planDetails.type === planType ? 'solid' : 'ghost'}
-                        disabled={planDetails.type === planType}
-                        onPress={() => onPlanSelect(planType, pricingPlan_type)}
-                        className={`${planDetails.type === planType? 'cursor-not-allowed': 'cursor-pointer'}`}>
-                        {planDetails.type === planType ? 'Selected' : `Choose ${planType} Plan`}
-                    </Button>
-                </div>
-                {planDetails.type === planType && <p className='text-color1d text-sm mt-5 px-0 md:px-5 text-center'>Please review the order summary and proceed with checkout to complete the payment.</p>}
-            </>
-        )
-    }
 
     return (
         <>
@@ -130,37 +113,28 @@ const Page = () => {
                         <div className='card-header text-xl font-semibold mb-5'>Pricing Plan</div>
                         <div className='bg-color1d/10 rounded-lg p-8'>
                             <div className='w-full'>
-                                <Tabs fullWidth color='secondary' radius='full' size='lg' aria-label="Pricing Tabs"
+                                {!hasSubscribed && <RadioGroup label="Choose your Subscription" onValueChange={(value: any) => onPlanSelect(value)}
                                     classNames={{
-                                        tabList: "bg-color2d/40 p-0",
-                                        tabContent: "text-black",
-                                        tab: "z-10"
+                                        wrapper: "gap-5",
+                                        label: "text-primary"
                                     }}>
-                                    <Tab key="monthly" title="Monthly">
-                                        <div className='my-5'>
-                                            {isLoading ? <TextLoading /> :
-                                                <>
-                                                    <div className='flex items-end justify-center mb-10'><div className='text-5xl font-semibold flex items-center'><IndianRupee strokeWidth={3} size={30} />{pricingPlan.monthly}</div><span className='font-semibold'>/month</span></div>
-                                                    {!hasSubscribed && <PlanSelectBtn planType="Monthly" pricingPlan_type={pricingPlan.monthly} />}
-                                                </>
-                                            }
-                                        </div>
-                                    </Tab>
-                                    <Tab key="yearly" title="Yearly">
-                                        <div className='my-5'>
-                                            {isLoading ? <TextLoading /> :
-                                                <>
-                                                    <div className='flex items-end justify-center text-md mb-5'>
-                                                        <div className='flex items-center line-through decoration-slate-500/60'><IndianRupee size={15} />{pricingPlan.monthly * 12}</div><span className='text-xs'>/year</span>
-                                                        <div className='ml-2 bg-color1d/10 rounded-full px-5'>Save {CalculateDiscountPercentage(pricingPlan.monthly * 12, pricingPlan.yearly)}%</div>
-                                                    </div>
-                                                    <div className='flex items-end justify-center mb-10'><div className='text-5xl font-semibold flex items-center'><IndianRupee strokeWidth={3} size={30} />{pricingPlan.yearly}</div><span className='font-semibold'>/year</span></div>
-                                                    {!hasSubscribed && <PlanSelectBtn planType="Yearly" pricingPlan_type={pricingPlan.yearly} />}
-                                                </>
-                                            }
-                                        </div>
-                                    </Tab>
-                                </Tabs>
+                                    {isLoading ? <TextLoading /> :
+                                        <PricingRadio value="Monthly">
+                                            <div>Monthly Subscription</div>
+                                            <div className='flex items-end mt-3'><div className='text-2xl font-medium flex items-center'><IndianRupee strokeWidth={2} size={20} />{pricingPlan.monthly}</div><span className='font-medium'>/month</span></div>
+                                        </PricingRadio>
+                                    }
+                                    {isLoading ? <TextLoading /> :
+                                        <PricingRadio value="Yearly">
+                                            <div>Yearly Subscription</div>
+                                            <div className='flex items-end text-md mt-3 mb-2'>
+                                                <div className='flex items-center line-through decoration-slate-500/60'><IndianRupee size={15} />{pricingPlan.monthly * 12}</div><span className='text-xs'>/year</span>
+                                                <div className='ml-2 bg-color1d/10 rounded-full px-5'>Save {CalculateDiscountPercentage(pricingPlan.monthly * 12, pricingPlan.yearly)}%</div>
+                                            </div>
+                                            <div className='flex items-end'><div className='text-2xl font-medium flex items-center'><IndianRupee strokeWidth={2} size={20} />{pricingPlan.yearly}</div><span className='font-medium'>/year</span></div>
+                                        </PricingRadio>
+                                    }
+                                </RadioGroup>}
                             </div>
                         </div>
                     </div>

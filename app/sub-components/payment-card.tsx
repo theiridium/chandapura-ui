@@ -156,7 +156,9 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
             }
             let payload = {
                 payment_details: payment_details,
-                payment_history: [...paymentData.payment_history, payment_details],
+                payment_history: Array.isArray(paymentData.payment_history)
+                    ? [...paymentData.payment_history, payment_details]
+                    : [payment_details],
                 step_number: ListingWorkflow.Payment,
                 publish_status: false
             }
@@ -186,7 +188,7 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
                 src="https://checkout.razorpay.com/v1/checkout.js"
             />
             {isLoading && <FormLoading text="Processing your payment..." />}
-            <div className="border rounded-lg bg-white px-7 py-6 lg:sticky lg:top-[6.5rem]">
+            <div className="border rounded-lg bg-white px-7 py-6 lg:sticky lg:top-[6.5rem] mb-10 lg:mb-0">
                 <div className='card-header text-xl font-semibold mb-5'>Order Summary</div>
                 <div className='mb-8 flex justify-between'>
                     <div>
@@ -212,7 +214,7 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
                     <div className='flex justify-between items-center'>
                         <div>
                             <div className='text-sm mb-1 font-semibold'>{ }</div>
-                            {!isOfferApplied ? <div>{planDetails.type || "Plan Details"}</div> : <div>Promotional</div>}
+                            {!isOfferApplied ? <div>{planDetails.type + " Subscription" || "Plan Details"}</div> : <div>Promotional</div>}
                             {listingAmount > 0 && <div className="text-xs font-semi-bold">Expires on {ConvertToReadableDate(new Date(expiryDate))}</div>}
                         </div>
                         <div className="flex">

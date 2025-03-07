@@ -47,7 +47,7 @@ const Footer = () => {
               </div>
             </div>
             <div className="flex justify-center mt-5 gap-5 lg:mt-0 flex-col lg:flex-row md:mr-[64px]">
-              <div className="text-xs text-center">Developed by <a href="https://www.priyankadas.com/">Priyanka Das</a></div>
+              {/* <div className="text-xs text-center">Developed by <a href="https://www.priyankadas.com/">Priyanka Das</a></div> */}
               <div className="flex justify-center">
                 <a href="#" className="">
                   <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 8 19">

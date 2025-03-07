@@ -193,7 +193,7 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
 
     useEffect(() => {
         setListingFormBtnEl([setFormBtnEl()]);
-    }, [isLoading, planDetails, hasSubscribed, listingAmount])
+    }, [isLoading, planDetails, hasSubscribed, listingAmount, totalAmount])
 
     return (
         <>

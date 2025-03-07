@@ -119,16 +119,8 @@ const Page = () => {
     }
     const onClickSave = useCallback(async () => {
         try {
-            if (type === "edit") {
-                if (paymentData.isFreeListing) await updateFreeListingPaymentData();
-                toast.info("Redirecting to listing menu...")
-                await new Promise(resolve => setTimeout(resolve, 3000));
-                router.push(`/dashboard/business-listing/view-all`)
-            }
-            else if (type === "new" || type === "renew") {
-                if (paymentData.isFreeListing) await updateFreeListingPaymentData();
-                router.push(`/dashboard/business-listing/publish?type=${type}&source=${source}`)
-            }
+            if (paymentData.isFreeListing) await updateFreeListingPaymentData();
+            router.push(`/dashboard/business-listing/view-all`);
         } catch (error) {
             console.error("An error occurred during the process:", error);
             toast.error("An error occurred during the process. Please contact the support.");

@@ -62,8 +62,9 @@ const Page = () => {
     useEffect(() => {
         isRegistered && toast.success("Your account registered successfully! Please continue login with Email ID and Password.", { autoClose: false, theme: "colored" });
     }, [])
+
     useEffect(() => {
-        error && toast.error("This email is already registered. Please try login using credentials.", { autoClose: false, theme: "colored" });
+        (error === "CredentialsSignin") && toast.error("Invalid Credentials!", { autoClose: false, theme: "colored" });
     }, [error])
 
     return (
@@ -88,7 +89,7 @@ const Page = () => {
                     </div>
                     <form className='login-form' onSubmit={ValidateLogin}>
                         <Input className='text-login-form mb-5' radius='sm' type="email" variant="flat" label="Enter your Email ID" onChange={(e) => { setEmail(e.target.value) }} value={email} />
-                        {isRegisteredUser &&
+                        {(isRegisteredUser || !!error) &&
                             <div className='mb-5'>
                                 <Input className='text-login-form' radius='sm' type="password" variant="flat" label="Enter your Password" onChange={(e) => { setPassword(e.target.value) }} value={password} />
                                 <div className='text-forgot-pass mt-2'><button className='hover:underline' onClick={(e: any) => forgotPassword(e)}>I&apos;ve forgotton my password</button></div>

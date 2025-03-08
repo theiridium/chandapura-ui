@@ -4,7 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import TextLoading from "../loading-components/text-loading";
 import { useEffect, useState } from "react";
 import { Button, Link } from "@nextui-org/react";
-import { CircleCheckBig, CircleX, IndianRupee } from "lucide-react";
+import { CircleCheckBig, CircleX, IndianRupee, MoveRight } from "lucide-react";
 import { ConvertToReadableDate, HashCode } from "@/lib/helpers";
 import Script from "next/script";
 import { createOrderId, putRequestApi } from "@/lib/apiLibrary";
@@ -14,6 +14,7 @@ import { ListingWorkflow } from "@/lib/typings/enums";
 import { RazOrderPayload } from "@/lib/typings/dto";
 import { useSetAtom } from "jotai";
 import { listingFormBtnEl } from "@/lib/atom";
+import CouponCard from "./coupon-card";
 
 const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setHasSubscribed, isOfferApplicable, onClickSave }: any) => {
     const { data }: any = useSession();
@@ -39,7 +40,8 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
     };
     useEffect(() => {
         setListingAmount(planDetails.amount);
-        setIsOfferApplied(false);
+        if (planDetails.type === "Monthly") setIsOfferApplied(true);
+        else setIsOfferApplied(false)
     }, [planDetails])
 
     useEffect(() => {
@@ -185,8 +187,12 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
     }
 
     const setFormBtnEl = () => (
-        <div key={1} className='flex gap-x-5 justify-end *:w-auto p-2 *:py-2 *:px-5 *:block'>
-            {!!planDetails.amount && <p className="text-sm md:text-base">Proceed with payment</p>}
+        <div key={1} className='flex gap-x-5 items-center justify-end *:w-auto p-2 *:py-2 *:px-5 *:block'>
+            {!!planDetails.amount &&
+                <div className="!flex items-center gap-2 !p-0">
+                    <p className="text-sm md:text-base">Proceed with payment</p>
+                    <MoveRight className="hidden md:block" />
+                </div>}
             <Button isLoading={isLoading} radius="none" isDisabled={hasSubscribed || !planDetails.type || isLoading} size="md" color={hasSubscribed ? 'success' : 'primary'} variant='solid' onPress={(e: any) => processPayment(e)}>{hasSubscribed ? 'Paid' : 'Checkout'}</Button>
         </div>
     );
@@ -224,15 +230,17 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
                         <Button className="pointer-cursor" radius="sm" size="sm" color={!isOfferApplied ? "primary" : "success"} variant="flat" onPress={() => onClickApplyPromo()}>{!isOfferApplied ? "Apply" : "Applied"}</Button>
                     </div>
                 </div>}
+                {isOfferApplied && <CouponCard />}
                 <div className='divide-y *:py-4'>
                     <div className='flex justify-between items-center'>
                         <div>
                             <div className='text-sm mb-1 font-semibold'>{ }</div>
                             {!isOfferApplied ? <div>{planDetails.type + " Subscription" || "Plan Details"}</div> : <div>Promotional</div>}
                             {listingAmount > 0 && <div className="text-xs font-semi-bold">Expires on {ConvertToReadableDate(new Date(expiryDate))}</div>}
+                            {isOfferApplied && <p className="text-xs mt-2 bg-green-600 text-white w-fit px-1 font-regular">Offer Applied</p>}
                         </div>
                         <div className="flex">
-                            {isOfferApplied && <div className="text-xl flex items-center mr-2"><IndianRupee size={18} /><span className="line-through decoration-slate-500/60">{planDetails.amount}</span></div>}
+                            {(planDetails.amount < listingAmount) && <div className="text-xl flex items-center mr-2"><IndianRupee size={18} /><span className="line-through decoration-slate-500/60">{planDetails.amount}</span></div>}
                             <div className="text-xl flex items-center"><IndianRupee size={18} />{listingAmount}</div>
                         </div>
                     </div>

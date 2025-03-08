@@ -22,6 +22,11 @@ export function isEmptyObject(obj: Object) {
   return Object.keys(obj).length === 0;
 }
 
+export const GetOfferPeriodDateRange = () => {
+  const currentDate: any = new Date();
+  return new Date(currentDate.getTime() + 60 * 24 * 60 * 60 * 1000).toISOString()
+}
+
 export const GetDaysToExpire = (futureDate: any) => {
   const currentDate: any = new Date();
   const targetDate: any = new Date(futureDate);

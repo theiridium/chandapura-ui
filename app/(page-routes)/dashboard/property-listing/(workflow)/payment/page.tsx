@@ -10,14 +10,14 @@ import TextLoading from '@/app/loading-components/text-loading';
 import { IndianRupee } from 'lucide-react';
 import { toast } from 'react-toastify';
 import PaymentCard from '@/app/sub-components/payment-card';
-import { CalculateDiscountPercentage, CheckSubscriptionValidity } from '@/lib/helpers';
+import { CalculateDiscountPercentage, CheckSubscriptionValidity, GetOfferPeriodDateRange } from '@/lib/helpers';
 import { ListingWorkflow } from '@/lib/typings/enums';
 import { useSetAtom } from 'jotai';
 import { listingFormBtnEl } from '@/lib/atom';
 
 const Page = () => {
     const currentDate = new Date();
-    const monthSpan = new Date(currentDate.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString();
+    const monthSpan = GetOfferPeriodDateRange();
     const [expiryDate, setExpiryDate] = useState(monthSpan);
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(true);

@@ -100,7 +100,7 @@ const Page = () => {
         setPlanDetails({ ...planDetails, type: type, amount: pricingPlan[type.toLowerCase()] });
         if (type === "Monthly") setExpiryDate(monthSpan);
         else setExpiryDate(yearSpan);
-    }, [planDetails])
+    }, [planDetails, pricingPlan])
 
     return (
         <>
@@ -114,7 +114,7 @@ const Page = () => {
                         <div className='card-header text-xl font-semibold mb-5 px-7 md:px-0'>Pricing Plan</div>
                         <div className='bg-color1d/10 rounded-lg p-5 md:p-8'>
                             <div className='w-full'>
-                                {!hasSubscribed && <RadioGroup label="Choose your Subscription" onValueChange={(value: any) => onPlanSelect(value)}
+                                {!hasSubscribed && Object.keys(pricingPlan).length > 0 && <RadioGroup label="Choose your Subscription" onValueChange={(value: any) => onPlanSelect(value)}
                                     classNames={{
                                         wrapper: "gap-5",
                                         label: "text-primary"

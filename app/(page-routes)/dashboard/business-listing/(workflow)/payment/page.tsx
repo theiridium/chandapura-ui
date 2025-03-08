@@ -93,7 +93,7 @@ const Page = () => {
         setPlanDetails({ ...planDetails, type: type, amount: pricingPlan[type.toLowerCase()] });
         if (type === "Monthly") setExpiryDate(monthSpan);
         else setExpiryDate(yearSpan);
-    }, [planDetails])
+    }, [planDetails, pricingPlan])
 
     const updateFreeListingPaymentData = async () => {
         setIsSubmitLoading(true);
@@ -167,7 +167,7 @@ const Page = () => {
                                         </div>
                                     ) :
                                     <>
-                                        {!hasSubscribed && <RadioGroup label="Choose your Subscription" onValueChange={(value: any) => onPlanSelect(value)}
+                                        {!hasSubscribed && Object.keys(pricingPlan).length > 0 && <RadioGroup label="Choose your Subscription" onValueChange={(value: any) => onPlanSelect(value)}
                                             classNames={{
                                                 wrapper: "gap-5",
                                                 label: "text-primary"

@@ -95,7 +95,7 @@ const Page = () => {
         </Button>
       </div>
       <Breadcrumb blockSecondLast={false} />
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-10'>
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-0 md:gap-10'>
         {isLoading || isRedirecting ?
           (isLoading ? <FormLoading text={"Loading your Job Vacancy List..."} /> :
             <FormLoading text={"Taking you to the Job Vacancy Form page..."} />

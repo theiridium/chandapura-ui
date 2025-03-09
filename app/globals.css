@@ -110,13 +110,13 @@ header {
   }
   button:hover:not(.embla *, .google-map *, .sidemenubar *),
   a:hover:not(.embla *, .google-map *, .sidemenubar *),
-  .re-card-link:hover {
+  .re-card-link:hover, .pricing-card:hover {
     @apply transition duration-300 ease-in-out;
   }
 
   button:not(.embla *, .google-map *, .sidemenubar *),
   a:not(.embla *, .google-map *, .sidemenubar *),
-  .re-card-link {
+  .re-card-link, .pricing-card {
     @apply transition duration-300 ease-in-out will-change-transform;
   }
   .link-pill {

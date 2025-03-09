@@ -66,6 +66,10 @@ module.exports = {
       label: "Logout",
       link: "/",
     },
+    Pricing: {
+      label: "Pricing",
+      link: "/pricing",
+    },
   },
   ProductSelect: [
     {
@@ -352,7 +356,7 @@ module.exports = {
         base: "business-listings",
         sortByName: "name:asc",
         sortByDate: "updatedAt:desc",
-        populate: "populate=featured_image,payment_details,area,category,sub_category",
+        populate: "populate=featured_image,payment_details,area,category,sub_category,advertisement",
         filter: "filters[author][email][$eq]",
       },
     },

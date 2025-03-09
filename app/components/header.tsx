@@ -44,6 +44,9 @@ const Header = () => {
           <div className="flex items-center">
             <ul className="hidden md:flex font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:flex-row md:mt-0 md:border-0 gap-x-8 mr-0 md:mr-5">
               <li>
+                <a href={Resource.Pricing.link} className="hover-underline">{Resource.Pricing.label}</a>
+              </li>
+              <li>
                 <a href={Resource.BusinessListing.dashboardLink} className="hover-underline">{Resource.BusinessListing.label}</a>
               </li>
               <li>

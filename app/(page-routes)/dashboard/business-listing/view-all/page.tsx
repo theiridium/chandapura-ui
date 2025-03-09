@@ -49,12 +49,17 @@ const Page = () => {
   const getBusinessList = async () => {
     let apiUrl = `${attr.base}?sort=${attr.sortByDate}&${attr.filter}=${user?.email}&${attr.populate}`
     const response = await getPublicApiResponse(apiUrl);
+    console.log(response.data)
     setList(response.data);
     setIsLoading(false);
   }
   useEffect(() => {
     getBusinessList();
   }, [])
+
+  const createAdvertisement = (id: any) => {
+    router.push("/dashboard/advertise/add-details?type=new&bizlink=" + id);
+  }
 
   return (
     <div className='max-w-screen-xl min-h-screen mx-auto px-3 my-8 md:mt-8 md:mb-10'>
@@ -70,7 +75,7 @@ const Page = () => {
         </Button>
       </div>
       <Breadcrumb blockSecondLast={false} />
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-10'>
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-0 md:gap-10'>
         {isLoading || isRedirecting ?
           (isLoading ? <FormLoading text={"Loading your Business List..."} /> :
             <FormLoading text={"Taking you to the Business Form page..."} />
@@ -123,8 +128,8 @@ const Page = () => {
                             </div>
                           }
                         </div>
-                        {!x.advertise && <div className='flex'>
-                          <Button className='w-full md:w-auto h-6' color='primary' variant='flat' size='sm'>Advertise Now</Button>
+                        {!x.advertisement && <div className='flex'>
+                          <Button className='w-full md:w-auto h-6' color='primary' variant='flat' size='sm' onPress={() => createAdvertisement(x.id)}>Advertise Now</Button>
                         </div>}
                         <>
                           <div className='flex text-[0.6rem] xs:text-sm border-y-1 divide-x *:px-2 *:py-1 *:flex *:items-center *:grow *:justify-center *:gap-x-1 text-color1d'>

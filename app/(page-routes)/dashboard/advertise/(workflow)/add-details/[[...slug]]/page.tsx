@@ -22,6 +22,7 @@ const Page = () => {
     const searchParams = useSearchParams();
     const type = searchParams.get('type');
     const source = searchParams.get('source');
+    const bizlink = searchParams.get('bizlink');
     const formRef = useRef<HTMLFormElement>(null);
     const setListingFormBtnEl = useSetAtom(listingFormBtnEl);
     const [disabled, setDisabled] = useState(true);
@@ -92,6 +93,7 @@ const Page = () => {
             contact: contact,
             user: userData.strapiUserId,
             website: !!formdata.website ? "https://" + formdata.website : "",
+            business_listing: bizlink || null,
             step_number: (!source || !apiRes.ad_image) ? ListingWorkflow.AddDetails : apiRes.step_number
         }
         postAdListing(payload);

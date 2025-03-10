@@ -118,7 +118,7 @@ const Page = () => {
                           <div className='pill-active'>Active</div>
                         </div> :
                         <>
-                          {!x.isUnlisted && ((x.step_number === ListingWorkflow.Review && !x.publish_status) ? <div className='pill-pendingApproval'>Pending Approval</div> :
+                          {!x.isUnlisted && ((x.step_number === ListingWorkflow.Payment && !x.publish_status) ? <div className='pill-pendingApproval'>Pending Approval</div> :
                             <div className='pill-draft'>Draft</div>
                           )}
                         </>

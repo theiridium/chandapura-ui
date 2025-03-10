@@ -1,27 +1,22 @@
 "use client"
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Accordion, AccordionItem, Button, Input, Link, RadioGroup, Tab, Tabs } from '@nextui-org/react';
+import { Button, Link, RadioGroup } from '@nextui-org/react';
 import { useCallback, useEffect, useState } from 'react';
-import FormLoading from '@/app/loading-components/form-loading';
 import { Products, Resource } from '@/public/shared/app.config';
 import { useSession } from 'next-auth/react';
-import { getPublicApiResponse, putRequestApi } from '@/lib/apiLibrary';
+import { getPublicApiResponse } from '@/lib/apiLibrary';
 import TextLoading from '@/app/loading-components/text-loading';
 import { IndianRupee } from 'lucide-react';
-import { toast } from 'react-toastify';
 import PaymentCard from '@/app/sub-components/payment-card';
-import { CalculateDiscountPercentage, CheckSubscriptionValidity, GetOfferPeriodDateRange } from '@/lib/helpers';
+import { CalculateDiscountPercentage, CheckSubscriptionValidity, GetOfferPeriodDateRangeMonthly, GetOfferPeriodDateRangeYearly } from '@/lib/helpers';
 import { ListingWorkflow } from '@/lib/typings/enums';
-import { useSetAtom } from 'jotai';
-import { listingFormBtnEl } from '@/lib/atom';
 import PricingRadio from '@/app/sub-components/pricing-radio';
 
 const Page = () => {
     const currentDate = new Date();
-    const monthSpan = GetOfferPeriodDateRange();
-    const yearSpan = new Date(currentDate.setFullYear(currentDate.getFullYear() + 1)).toISOString();
+    const monthSpan = GetOfferPeriodDateRangeMonthly();
+    const yearSpan = GetOfferPeriodDateRangeYearly();
     const [expiryDate, setExpiryDate] = useState(monthSpan);
-    const [isSubmitLoading, setIsSubmitLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const { data }: any = useSession();
     const userData = data?.user;
@@ -29,7 +24,6 @@ const Page = () => {
     const searchParams = useSearchParams();
     const type = searchParams.get('type');
     const source = searchParams.get('source');
-    const setListingFormBtnEl = useSetAtom(listingFormBtnEl);
     const [apiRes, setApiRes] = useState<any>();
     const [paymentData, setPaymentData] = useState<any>({});
     const [hasSubscribed, setHasSubscribed] = useState(false);
@@ -39,12 +33,9 @@ const Page = () => {
         label: "Advertisement Plan",
         amount: 0,
         endpoint: Products.advertisement.api.base,
+        dashUrl: Resource.Advertisement.dashboardLink,
         productName: ""
     });
-
-    useEffect(() => {
-        setListingFormBtnEl(null);
-    }, [isSubmitLoading])
 
     const fetchData = useCallback(async () => {
         try {
@@ -79,23 +70,6 @@ const Page = () => {
         fetchData();
     }, [fetchData]);
 
-    const onClickSave = async () => {
-        try {
-            if (type === "edit") {
-                toast.info("Redirecting to listing menu...")
-                await new Promise(resolve => setTimeout(resolve, 3000));
-                router.push(`/dashboard/advertise/view-all`)
-            }
-            else if (type === "new" || type === "renew") {
-                toast.success("Your advertisement is sent for approval!");
-                router.push(`/dashboard/advertise/view-all`)
-            }
-        } catch (error) {
-            console.error("An error occurred during the process:", error);
-            toast.error("Failed to upload images.");
-        }
-    }
-
     const onPlanSelect = useCallback((type: string) => {
         setPlanDetails({ ...planDetails, type: type, amount: pricingPlan[type.toLowerCase()] });
         if (type === "Monthly") setExpiryDate(monthSpan);
@@ -104,7 +78,6 @@ const Page = () => {
 
     return (
         <>
-            {isSubmitLoading && <FormLoading text={"Saving your payment details..."} />}
             <div className='col-span-full lg:col-span-5 mt-3 lg:my-8'>
                 <div className='listing-header mb-8'>
                     <div className='text-xl lg:text-4xl font-semibold text-gray-700 px-7'>Payment</div>
@@ -166,7 +139,6 @@ const Page = () => {
                     paymentData={paymentData}
                     hasSubscribed={hasSubscribed}
                     setHasSubscribed={setHasSubscribed}
-                    onClickSave={onClickSave}
                     isOfferApplicable={false} />
             </div>
         </>

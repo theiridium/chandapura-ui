@@ -1,11 +1,10 @@
 "use client"
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import TextLoading from "../loading-components/text-loading";
 import { useEffect, useState } from "react";
-import { Button, Link } from "@nextui-org/react";
-import { CircleCheckBig, CircleX, IndianRupee, MoveRight } from "lucide-react";
-import { ConvertToReadableDate, HashCode } from "@/lib/helpers";
+import { Button } from "@nextui-org/react";
+import { IndianRupee, MoveRight } from "lucide-react";
+import { ConvertToReadableDate, GetFreeListingDaysRange, HashCode } from "@/lib/helpers";
 import Script from "next/script";
 import { createOrderId, putRequestApi } from "@/lib/apiLibrary";
 import { toast } from "react-toastify";
@@ -15,10 +14,12 @@ import { RazOrderPayload } from "@/lib/typings/dto";
 import { useSetAtom } from "jotai";
 import { listingFormBtnEl } from "@/lib/atom";
 import CouponCard from "./coupon-card";
+import PaymentSuccessModal from "../components/modals/payment-success-modal";
 
-const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setHasSubscribed, isOfferApplicable, onClickSave }: any) => {
+const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setHasSubscribed, isOfferApplicable }: any) => {
     const { data }: any = useSession();
     const userData = data?.user;
+    const feeListingDaysRange = GetFreeListingDaysRange();
     const router = useRouter();
     const pathname = usePathname()
     const searchParams = useSearchParams();
@@ -31,7 +32,8 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
     const currentDate = new Date();
     const [listingAmount, setListingAmount] = useState<number>(planDetails.amount);
     const [taxAmount, setTaxAmount] = useState<any>(0);
-    const [isOfferApplied, setIsOfferApplied] = useState<boolean>(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [isOfferApplied, setIsOfferApplied] = useState<boolean>(false); //turn (ON/OFF) offer
     const [expiryTimestamp, setExpiryTimestamp] = useState(new Date(expiryDate).getTime());
     // const [noPaymentRequired, setNoPaymentRequired] = useState(false);
     const [totalAmount, setTotalAmount] = useState<any>(0);
@@ -40,8 +42,7 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
     };
     useEffect(() => {
         setListingAmount(planDetails.amount);
-        if (planDetails.type === "Monthly") setIsOfferApplied(true);
-        else setIsOfferApplied(false)
+        if (!paymentData.isFreeListing) setIsOfferApplied(true);
     }, [planDetails])
 
     useEffect(() => {
@@ -126,38 +127,26 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
                 });
                 paymentObject.open();
             }
-            // else {
-            //     const data = {
-            //         orderCreationId: null,
-            //         razorpayPaymentId: null,
-            //         razorpayOrderId: null,
-            //         razorpaySignature: null
-            //     };
-            //     isPaymentSuccess = await savePaymentDetails(data);
-            //     if (isPaymentSuccess) {
-            //         setHasSubscribed(true);
-            //         toast.success(`You have unlocked free listing untill ${ConvertToReadableDate(new Date(expiryDate))}. Please continue to Preview.`);
-            //     }
-            // }
+            else await savePaymentDetails(null);
         } catch (error) {
             console.log(error);
         } finally {
             setIsLoading(false);
         }
     };
-    const savePaymentDetails: any = async (data: any) => {
+    const savePaymentDetails: any = async (raz_data: any) => {
         try {
             setIsLoading(true);
             let payment_details = {
                 purchase_date: currentDate.toISOString(),
                 amount: totalAmount,
-                expiry_date: expiryDate,
-                expiry_date_timestamp: expiryTimestamp,
-                raz_order_id: data.razorpayOrderId,
-                raz_payment_id: data.razorpayPaymentId,
+                expiry_date: paymentData.isFreeListing ? feeListingDaysRange : expiryDate,
+                expiry_date_timestamp: paymentData.isFreeListing ? new Date(feeListingDaysRange).getTime() : expiryTimestamp,
+                raz_order_id: raz_data?.razorpayOrderId || null,
+                raz_payment_id: raz_data?.razorpayPaymentId || null,
                 isPaymentSuccess: true,
                 isOfferApplied: isOfferApplied,
-                subscription_type: planDetails.type
+                subscription_type: paymentData.isFreeListing ? "Free" : planDetails.type
             }
             let payload = {
                 payment_details: payment_details,
@@ -170,8 +159,8 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
             const response = await putRequestApi(planDetails.endpoint, payload, source);
             if (response.data) {
                 console.log(response.data)
-                toast.success("Payment details saved successfully!");
-                onClickSave();
+                // toast.success("Payment details saved successfully!");
+                setShowSuccessModal(true);
                 return true;
             }
             else {
@@ -181,8 +170,6 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
         } catch (error) {
             console.error("An error occurred during the process:", error);
             toast.error("Failed to upload payment details.");
-        } finally {
-            setIsLoading(false);
         }
     }
 
@@ -203,11 +190,12 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
 
     return (
         <>
+            {showSuccessModal && <PaymentSuccessModal url={planDetails.dashUrl} />}
             <Script
                 id="razorpay-checkout-js"
                 src="https://checkout.razorpay.com/v1/checkout.js"
             />
-            {isLoading && <FormLoading text="Processing your payment..." />}
+            {isLoading && <FormLoading text="Processing your payment... Please do not hit back or close this window." />}
             <div className="border rounded-lg bg-white px-7 py-6 lg:sticky lg:top-[6.5rem] mb-10 lg:mb-0">
                 <div className='card-header text-xl font-semibold mb-5'>Order Summary</div>
                 <div className='mb-8 flex justify-between'>
@@ -221,7 +209,7 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
                     </div>
                 </div>
                 {/* <div className="mb-8 border-2 border-transparent hover:border-color1d bg-color1d/10 p-3"> */}
-                {isOfferApplicable && !hasSubscribed && <div className={`mb-8 border-2 border-dashed ${!isOfferApplied ? 'border-transparent' : 'border-color1d'} hover:border-color1d bg-color1d/10 p-3`}>
+                {isOfferApplicable && !hasSubscribed && !paymentData.isFreeListing && <div className={`mb-8 border-2 border-dashed ${!isOfferApplied ? 'border-transparent' : 'border-color1d'} hover:border-color1d bg-color1d/10 p-3`}>
                     <div className="flex justify-between items-center">
                         <div>
                             <div className="text-sm">Promotional Offer</div>
@@ -230,7 +218,11 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
                         <Button className="pointer-cursor" radius="sm" size="sm" color={!isOfferApplied ? "primary" : "success"} variant="flat" onPress={() => onClickApplyPromo()}>{!isOfferApplied ? "Apply" : "Applied"}</Button>
                     </div>
                 </div>}
-                {isOfferApplied && <CouponCard />}
+                {isOfferApplied &&
+                    (planDetails.type === "Monthly" ?
+                        <CouponCard couponCode="EXTRA30" couponDescription="Get 30 extra days FREE on your monthly plan! - Offer Limited" /> :
+                        <CouponCard couponCode="EXTRA90" couponDescription="Get 3 additional months FREE on your yearly plan! - Offer Limited" />)
+                }
                 <div className='divide-y *:py-4'>
                     <div className='flex justify-between items-center'>
                         <div>
@@ -244,16 +236,6 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
                             <div className="text-xl flex items-center"><IndianRupee size={18} />{listingAmount}</div>
                         </div>
                     </div>
-                    {/* <div className='flex justify-between items-center'>
-                        <div>
-                            <div className='text-sm mb-1 font-semibold'>Advertisement Plan</div>
-                            <div>{adPrice.type}</div>
-                        </div>
-                        <div className="text-xl flex items-center relative"><IndianRupee size={18} />
-                            {adPrice.amount}
-                            {adPrice.amount > 0 && <button className="absolute -right-5" onClick={() => removeAdAmount()}><CircleX size={16} color="#650081" /></button>}
-                        </div>
-                    </div> */}
                     <div className='flex justify-between items-center'>
                         <div>
                             <div className='text-sm mb-1 font-semibold'>GST</div>
@@ -263,7 +245,7 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
                     </div>
                     <div className='flex justify-between items-center'>
                         <div className='text-xl mb-1 font-semibold'>Total</div>
-                        <div className="text-xl flex items-center"><IndianRupee size={18} />{totalAmount}</div>
+                        <div className="text-xl flex items-center">{paymentData.isFreeListing ? "Free" : <><IndianRupee size={18} />{totalAmount}</>}</div>
                     </div>
                 </div>
                 {/* <div className="flex justify-end mt-5">

@@ -1,28 +1,22 @@
 "use client"
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Accordion, AccordionItem, Button, Input, Link, RadioGroup, Tab, Tabs } from '@nextui-org/react';
+import { Button, Link, RadioGroup} from '@nextui-org/react';
 import { useCallback, useEffect, useState } from 'react';
-import FormLoading from '@/app/loading-components/form-loading';
 import { Products, Resource } from '@/public/shared/app.config';
 import { useSession } from 'next-auth/react';
-import { getPublicApiResponse, putRequestApi } from '@/lib/apiLibrary';
+import { getPublicApiResponse } from '@/lib/apiLibrary';
 import TextLoading from '@/app/loading-components/text-loading';
 import { IndianRupee } from 'lucide-react';
-import { toast } from 'react-toastify';
 import PaymentCard from '@/app/sub-components/payment-card';
-import { CalculateDiscountPercentage, CheckSubscriptionValidity, GetOfferPeriodDateRange } from '@/lib/helpers';
+import { CalculateDiscountPercentage, CheckSubscriptionValidity, GetOfferPeriodDateRangeMonthly, GetOfferPeriodDateRangeYearly } from '@/lib/helpers';
 import { ListingWorkflow } from '@/lib/typings/enums';
-import { useSetAtom } from 'jotai';
-import { listingFormBtnEl } from '@/lib/atom';
 import PricingRadio from '@/app/sub-components/pricing-radio';
 
 const Page = () => {
     const currentDate = new Date();
-    const monthSpan = GetOfferPeriodDateRange();
-    const yearSpan = new Date(currentDate.setFullYear(currentDate.getFullYear() + 1)).toISOString();
-    const yearSpan_2040 = new Date(currentDate.setFullYear(currentDate.getFullYear() + 15)).toISOString();
+    const monthSpan = GetOfferPeriodDateRangeMonthly();
+    const yearSpan = GetOfferPeriodDateRangeYearly();
     const [expiryDate, setExpiryDate] = useState(monthSpan);
-    const [isSubmitLoading, setIsSubmitLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const { data }: any = useSession();
     const userData = data?.user;
@@ -30,7 +24,6 @@ const Page = () => {
     const searchParams = useSearchParams();
     const type = searchParams.get('type');
     const source = searchParams.get('source');
-    const setListingFormBtnEl = useSetAtom(listingFormBtnEl);
     const [apiRes, setApiRes] = useState<any>();
     const [paymentData, setPaymentData] = useState<any>({});
     const [hasSubscribed, setHasSubscribed] = useState(false);
@@ -40,12 +33,9 @@ const Page = () => {
         label: "Business Listing Plan",
         amount: 0,
         endpoint: Products.business.api.base,
+        dashUrl: Resource.BusinessListing.dashboardLink,
         productName: ""
     });
-
-    useEffect(() => {
-        setListingFormBtnEl(null);
-    }, [isSubmitLoading])
 
     const fetchData = useCallback(async () => {
         try {
@@ -72,6 +62,7 @@ const Page = () => {
                         return data;
                     }
                     else {
+                        setPlanDetails({ ...planDetails, type: "Free" });
                         setPaymentData({ ...paymentData, isFreeListing: true });
                         setIsLoading(false);
                         return data;
@@ -95,42 +86,8 @@ const Page = () => {
         else setExpiryDate(yearSpan);
     }, [planDetails, pricingPlan])
 
-    const updateFreeListingPaymentData = async () => {
-        setIsSubmitLoading(true);
-        let payment_details = {
-            purchase_date: new Date().toISOString(),
-            amount: 0,
-            expiry_date: yearSpan_2040,
-            expiry_date_timestamp: new Date(yearSpan_2040).getTime(),
-            isPaymentSuccess: true,
-            subscription_type: "Free"
-        }
-        let payload = {
-            payment_details: payment_details,
-            payment_history: Array.isArray(paymentData.payment_history)
-                ? [...paymentData.payment_history, payment_details]
-                : [payment_details],
-            step_number: ListingWorkflow.Payment,
-            publish_status: false
-        }
-        const endpoint = Products.business.api.base;
-        const response = await putRequestApi(endpoint, payload, source);
-        return response;
-    }
-    const onClickSave = useCallback(async () => {
-        try {
-            if (paymentData.isFreeListing) await updateFreeListingPaymentData();
-            router.push(`/dashboard/business-listing/view-all`);
-        } catch (error) {
-            console.error("An error occurred during the process:", error);
-            toast.error("An error occurred during the process. Please contact the support.");
-            setIsSubmitLoading(false);
-        }
-    }, [paymentData]);
-
     return (
         <>
-            {isSubmitLoading && <FormLoading text={"Saving your payment details..."} />}
             <div className='col-span-full lg:col-span-5 mt-3 lg:my-8'>
                 <div className='listing-header mb-8'>
                     <div className='text-xl lg:text-4xl font-semibold text-gray-700 px-7'>Payment</div>
@@ -163,7 +120,7 @@ const Page = () => {
                                     (isLoading ? <TextLoading /> :
                                         <div className='text-center'>
                                             <p className='mb-5'>Yay! Your business category is eligible for free listing. 🎉</p>
-                                            <Button onPress={onClickSave} variant='solid' size='md' color='primary' radius='sm'>Proceed with Next Step</Button>
+                                            <p>Please proceed with checkout</p>
                                         </div>
                                     ) :
                                     <>
@@ -208,39 +165,6 @@ const Page = () => {
                             </div>
                         </div>
                     </div>
-                    {/* <Accordion className='listing-card border rounded-lg px-7 py-6'
-                        itemClasses={{
-                            title: "card-header text-xl font-semibold px-0"
-                        }}>
-                        <AccordionItem key="1" aria-label="Advertise Business" title="Would you like to advertise your business?">
-                            <div>
-                                <div className='mb-5'>Choose a Pricing Plan</div>
-                                <Tabs fullWidth color='secondary' radius='full' size='lg' aria-label="Pricing Tabs"
-                                    classNames={{
-                                        tabList: "bg-color2d/40 p-0",
-                                        tabContent: "text-black",
-                                        tab: "z-10"
-                                    }}>
-                                    <Tab key="monthly" title="Monthly">
-                                        <div className='my-5'>
-                                            <div className='flex items-end justify-center mb-10'><div className='text-5xl font-semibold flex items-center'><IndianRupee strokeWidth={3} size={30} />299</div><span className='font-semibold'>/month</span></div>
-                                            <div className='flex justify-center'><Button radius="none" size="lg" color="primary" variant="bordered" onClick={() => onPlanSelect("Monthly", 299)}>Choose Monthly Plan</Button></div>
-                                        </div>
-                                    </Tab>
-                                    <Tab key="yearly" title="Yearly">
-                                        <div className='my-5'>
-                                            <div className='flex items-end justify-center text-md mb-5'>
-                                                <div className='flex items-center line-through decoration-slate-500/60'><IndianRupee size={15} />3588</div><span className='text-xs'>/year</span>
-                                                <div className='ml-2 bg-color1d/10 rounded-full px-5'>Save 20%</div>
-                                            </div>
-                                            <div className='flex items-end justify-center mb-10'><div className='text-5xl font-semibold flex items-center'><IndianRupee strokeWidth={3} size={30} />2870</div><span className='font-semibold'>/year</span></div>
-                                            <div className='flex justify-center'><Button radius="none" size="lg" color="primary" variant="bordered" onClick={() => onPlanSelect("Yearly", 2870)}>Choose Yearly Plan</Button></div>
-                                        </div>
-                                    </Tab>
-                                </Tabs>
-                            </div>
-                        </AccordionItem>
-                    </Accordion> */}
                 </div>
             </div>
             <div className='col-span-full lg:col-span-3 mt-3 lg:my-8 mx-2 relative'>
@@ -254,7 +178,6 @@ const Page = () => {
                     paymentData={paymentData}
                     hasSubscribed={hasSubscribed}
                     setHasSubscribed={setHasSubscribed}
-                    onClickSave={onClickSave}
                     isOfferApplicable={false} />
             </div>
         </>

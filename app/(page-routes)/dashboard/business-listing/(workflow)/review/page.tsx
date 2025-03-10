@@ -205,7 +205,7 @@ const Page = () => {
                                     "No gallery image uploaded"}
                             </div>
                         </div>
-                        <div className='listing-card border rounded-lg p-5 md:px-7 md:py-6'>
+                        {/* <div className='listing-card border rounded-lg p-5 md:px-7 md:py-6'>
                             <div className='card-header text-xl font-semibold mb-5'>Advertisement</div>
                             <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Is this business opted for advertisement?</div>
@@ -215,11 +215,11 @@ const Page = () => {
                                 <div className='text-sm mb-1 font-semibold'>Ad Banner Image</div>
                                 <img src={apiRes.advertisement.ad_image.url} />
                             </div>}
-                            {/* <div className='mb-5'>
+                            <div className='mb-5'>
                                 <div className='text-sm mb-1 font-semibold'>Ad Banner Image</div>
                                 <img src={apiRes.advertisement.ad_image.url} />
-                            </div> */}
-                        </div>
+                            </div>
+                        </div> */}
                     </div>
                 }
             </div>

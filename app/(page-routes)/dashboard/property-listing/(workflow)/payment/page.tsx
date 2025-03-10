@@ -10,16 +10,15 @@ import TextLoading from '@/app/loading-components/text-loading';
 import { IndianRupee } from 'lucide-react';
 import { toast } from 'react-toastify';
 import PaymentCard from '@/app/sub-components/payment-card';
-import { CalculateDiscountPercentage, CheckSubscriptionValidity, GetOfferPeriodDateRange } from '@/lib/helpers';
+import { CalculateDiscountPercentage, CheckSubscriptionValidity, GetOfferPeriodDateRangeMonthly } from '@/lib/helpers';
 import { ListingWorkflow } from '@/lib/typings/enums';
 import { useSetAtom } from 'jotai';
 import { listingFormBtnEl } from '@/lib/atom';
 
 const Page = () => {
     const currentDate = new Date();
-    const monthSpan = GetOfferPeriodDateRange();
+    const monthSpan = GetOfferPeriodDateRangeMonthly();
     const [expiryDate, setExpiryDate] = useState(monthSpan);
-    const [isSubmitLoading, setIsSubmitLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const { data }: any = useSession();
     const userData = data?.user;
@@ -38,12 +37,9 @@ const Page = () => {
         amount: 0,
         endpoint: Products.realEstate.api.base,
         propertyData: "",
+        dashUrl: Resource.PropertyListing.dashboardLink,
         productName: ""
     });
-
-    useEffect(() => {
-        setListingFormBtnEl(null);
-    }, [isSubmitLoading])
 
     const fetchData = useCallback(async () => {
         try {
@@ -131,7 +127,6 @@ const Page = () => {
 
     return (
         <>
-            {isSubmitLoading && <FormLoading text={"Saving your payment details..."} />}
             <div className='col-span-full lg:col-span-5 mt-3 lg:my-8'>
                 <div className='listing-header mb-8'>
                     <div className='text-xl lg:text-4xl font-semibold text-gray-700 px-7'>Payment</div>

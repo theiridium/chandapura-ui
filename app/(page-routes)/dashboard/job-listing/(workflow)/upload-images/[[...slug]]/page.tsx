@@ -82,7 +82,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
                 const response = await putRequestApi(imageParams.endpoint, payload, imageParams.refId);
                 if (response.data) {
                     toast.success("Taking you to review page!");
-                    router.push(`/dashboard/job-listing/publish?type=${type}&source=${source}`)
+                    router.push(`/dashboard/job-listing/review?type=${type}&source=${source}`)
                 }
             }
         } catch (error) {

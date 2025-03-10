@@ -22,9 +22,21 @@ export function isEmptyObject(obj: Object) {
   return Object.keys(obj).length === 0;
 }
 
-export const GetOfferPeriodDateRange = () => {
+export const GetFreeListingDaysRange = () => {
   const currentDate: any = new Date();
-  return new Date(currentDate.getTime() + 60 * 24 * 60 * 60 * 1000).toISOString()
+  //15 years from now 
+  return new Date(currentDate.setFullYear(currentDate.getFullYear() + 15)).toISOString();
+}
+export const GetOfferPeriodDateRangeMonthly = () => {
+  const currentDate: any = new Date();
+  return new Date(currentDate.getTime() + 60 * 24 * 60 * 60 * 1000).toISOString();
+}
+export const GetOfferPeriodDateRangeYearly = () => {
+  const currentDate: any = new Date();
+  const newDate = new Date(currentDate);
+  newDate.setFullYear(newDate.getFullYear() + 1);
+  newDate.setMonth(newDate.getMonth() + 3);
+  return newDate.toISOString();
 }
 
 export const GetDaysToExpire = (futureDate: any) => {

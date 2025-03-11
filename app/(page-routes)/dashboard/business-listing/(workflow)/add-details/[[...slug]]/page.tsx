@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import ContactForm from '@/app/components/forms/contact-form';
 import { BusinessListing, ContactComponent } from '@/lib/typings/dto';
 import { useAtomValue } from 'jotai';
-import { areas, categories } from '@/lib/atom';
+import { areas, subCategories } from '@/lib/atom';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { getPublicApiResponse, postRequestApi, putRequestApi } from '@/lib/apiLibrary';
@@ -30,9 +30,9 @@ const Page = () => {
     const formRef = useRef<HTMLFormElement>(null);
     const setListingFormBtnEl = useSetAtom(listingFormBtnEl);
     const [disabled, setDisabled] = useState(true);
-    const categoryList = useAtomValue<any>(categories).data;
+    const subCategoryList = useAtomValue<any>(subCategories);
     const areaList = useAtomValue<any>(areas).data;
-    const [subCategoryList, setSubCategoryList] = useState([]);
+    const [categoryName, setCategoryName] = useState<any>([]);
     const [contact, setContact] = useState<ContactComponent>({
         contact_name: userData.name,
         contact_number: userData.phone,
@@ -77,13 +77,11 @@ const Page = () => {
         location: location
     });
     const [apiRes, setApiRes] = useState<any>();
-    const onCategoryChange = (id: any) => {
-        setBusinessList({ ...businessList, category: id });
-        let subCat = id ? categoryList.filter((x: any) => x.id == id)[0].sub_categories : [];
-        setSubCategoryList(subCat);
+    const onSubCategoryChange = (id: any) => {
+        let category = id ? subCategoryList.filter((x: any) => x.id == id)[0].category : null;
+        setCategoryName(category.name);
+        setBusinessList({ ...businessList, category: category.id, sub_category: id });
     }
-
-    const onSubCategoryChange = (id: any) => setBusinessList({ ...businessList, sub_category: id });
     const onAreaChange = (id: any) => setBusinessList({ ...businessList, area: id });
 
     //Service
@@ -134,10 +132,10 @@ const Page = () => {
 
     useEffect(() => {
         if (apiRes) {
-            onCategoryChange(apiRes?.category.id);
-            setContact(apiRes.contact)
-            setLocation(apiRes.location);
-            setIsExistingLoc(true);
+            // setCategoryName(apiRes?.category.name)
+            // setContact(apiRes.contact)
+            // setLocation(apiRes.location);
+            // setIsExistingLoc(true);
             setBusinessList(prevBusinessList => ({
                 ...prevBusinessList,
                 category: apiRes.category.id.toString(),
@@ -149,7 +147,12 @@ const Page = () => {
                 location: apiRes.location
             }));
         }
-    }, [apiRes, businessHours, categoryList, subCategoryList])
+    }, [apiRes, businessHours, subCategoryList])
+
+    useEffect(() => {
+        console.log(businessList)
+    }, [businessList])
+
 
     const populateBusinessDetails = useCallback(async () => {
         if (source) {
@@ -158,9 +161,23 @@ const Page = () => {
             const response = await getPublicApiResponse(apiUrl).then(res => res.data);
             const data = response[0];
             if (data) {
-                setApiRes(data);
+                // setApiRes(data);
+                setBusinessList(prevBusinessList => ({
+                    ...prevBusinessList,
+                    category: data.category.id.toString(),
+                    sub_category: data.sub_category.id.toString(),
+                    area: data.area.id.toString(),
+                    contact: data.contact,
+                    services: data.services,
+                    bus_hours: businessHours,
+                    location: data.location
+                }));
                 setBusinessHours(data.bus_hours);
                 setDisabled(false);
+                setCategoryName(data?.category.name)
+                setContact(data.contact)
+                setLocation(data.location);
+                setIsExistingLoc(true);
                 return data;
             }
             else window.location.replace('/');
@@ -284,20 +301,8 @@ const Page = () => {
                             <div className="flex w-full flex-wrap md:flex-nowrap mb-8 gap-8">
                                 <Autocomplete
                                     variant="flat"
-                                    defaultItems={categoryList || []}
-                                    label="Select a Category"
-                                    onSelectionChange={onCategoryChange}
-                                    selectedKey={businessList.category}
-                                    isDisabled={!!source || disabled}
-                                    classNames={{ listboxWrapper: "nextui-listbox" }}
-                                    isRequired
-                                >
-                                    {(item: any) => <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>}
-                                </Autocomplete>
-                                <Autocomplete
-                                    variant="flat"
                                     defaultItems={subCategoryList}
-                                    label="Select a Sub-Category"
+                                    label="Select your Business Type"
                                     onSelectionChange={onSubCategoryChange}
                                     selectedKey={businessList.sub_category}
                                     isDisabled={!!source || disabled}
@@ -306,6 +311,11 @@ const Page = () => {
                                 >
                                     {(item: any) => <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>}
                                 </Autocomplete>
+                                <Input isDisabled={true}
+                                    value={categoryName}
+                                    type="text"
+                                    variant="flat"
+                                    label="Listing Category" />
                             </div>
                         </div>
                         <div className='mb-8'>

@@ -49,6 +49,12 @@ export const GetDaysToExpire = (futureDate: any) => {
   return Math.max(daysLeft, 0);
 };
 
+export const GenerateItemNameForInvoice = (planLabel: string, subscriptionType: string, propertyData: string) => {
+  let itemName = planLabel + " - " + subscriptionType + " Subscription";
+  if (!!propertyData) itemName = itemName + " - " + propertyData;
+  return itemName;
+}
+
 export function ConvertCurrencyToWords(x: number) {
   if (x) {
     const num = x.toString();

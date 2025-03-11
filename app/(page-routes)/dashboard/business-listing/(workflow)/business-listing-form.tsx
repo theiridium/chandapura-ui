@@ -3,7 +3,7 @@
 import FormStep from "@/app/components/stepper/form-step";
 import UserItemList from "@/app/route-components/user-specific/user-item-list";
 import MainMenuBtn from "@/app/sub-components/main-menu-btn";
-import { areas, categories, listingFormBtnEl } from "@/lib/atom";
+import { areas, categories, listingFormBtnEl, subCategories } from "@/lib/atom";
 import { DropdownList } from "@/public/shared/app.config";
 import { useAtomValue, useSetAtom } from "jotai";
 import { useSearchParams } from "next/navigation";
@@ -36,16 +36,16 @@ const steps = [
     }
 ]
 
-const BusinessListingForm = ({ children, resCat, resArea }: { children: React.ReactNode, resCat: any, resArea: any }) => {
-    const setCategories = useSetAtom(categories);
+const BusinessListingForm = ({ children, subCatList, resArea }: { children: React.ReactNode, subCatList: any, resArea: any }) => {
+    const setSubCategories = useSetAtom(subCategories);
     const setLocations = useSetAtom(areas);
     const searchParams = useSearchParams();
     const type = searchParams.get('type');
     const formButton = useAtomValue<React.ReactNode>(listingFormBtnEl);
     useEffect(() => {
-        setCategories(resCat);
+        setSubCategories(subCatList);
         setLocations(resArea);
-    }, [resCat, resArea]);
+    }, [subCatList, resArea]);
 
     return (
         <>

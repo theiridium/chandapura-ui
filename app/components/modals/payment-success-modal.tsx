@@ -1,9 +1,11 @@
-import { Button, Link, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react'
+"use client"
+import { Button, Modal, ModalBody, ModalContent } from '@nextui-org/react'
 import React, { useState } from 'react'
-import Image from 'next/image'
+import { useRouter } from 'next/navigation';
 
 const PaymentSuccessModal = (props: any) => {
   const [isDisabled, setIsDisabled] = useState(false);
+  const router = useRouter();
   return (
     <Modal size='lg' hideCloseButton={true} isDismissable={false} defaultOpen={true}>
       <ModalContent>
@@ -12,7 +14,10 @@ const PaymentSuccessModal = (props: any) => {
             <ModalBody className='mx-auto pt-5 pb-8'>
               <img src='/images/icons/green-tick.png' />
               <div className='mb-3'>Payment Successful</div>
-              <Button isDisabled={isDisabled} color="primary" as={Link} href={props.url} onPress={() => setIsDisabled(true)}>
+              <Button isDisabled={isDisabled} color="primary" onPress={() => {
+                setIsDisabled(true);
+                router.push(props.url)
+              }}>
                 Go to Dashboard
               </Button>
             </ModalBody>

@@ -203,4 +203,5 @@ export interface RazOrderPayload {
     customerName: string
     customerEmail: string
     customerPhone: string
+    itemName: string
 }

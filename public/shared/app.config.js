@@ -313,6 +313,14 @@ module.exports = {
         populate: "sub_categories",
       },
     },
+    SubCategory: {
+      label: "sub-category",
+      api: {
+        base: "sub-categories",
+        sort: "name:asc",
+        populate: "category",
+      },
+    },
     ClassifiedCategory: {
       label: "classifiedCategory",
       api: {

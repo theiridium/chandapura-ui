@@ -4,7 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@nextui-org/react";
 import { IndianRupee, MoveRight } from "lucide-react";
-import { ConvertToReadableDate, GetFreeListingDaysRange, HashCode } from "@/lib/helpers";
+import { ConvertToReadableDate, GenerateItemNameForInvoice, GetFreeListingDaysRange, HashCode } from "@/lib/helpers";
 import Script from "next/script";
 import { createOrderId, putRequestApi } from "@/lib/apiLibrary";
 import { toast } from "react-toastify";
@@ -80,7 +80,8 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
                     gst: taxAmount,
                     customerName: userData.name,
                     customerEmail: userData.email,
-                    customerPhone: userData.phone
+                    customerPhone: userData.phone,
+                    itemName: GenerateItemNameForInvoice(planDetails.label, planDetails.type, planDetails.propertyData)
                 }
                 const orderId: string = await createOrderId(razOrderPayload);
                 const options = {
@@ -218,7 +219,7 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
                         <Button className="pointer-cursor" radius="sm" size="sm" color={!isOfferApplied ? "primary" : "success"} variant="flat" onPress={() => onClickApplyPromo()}>{!isOfferApplied ? "Apply" : "Applied"}</Button>
                     </div>
                 </div>}
-                {isOfferApplied &&
+                {isOfferApplied && !!planDetails?.amount &&
                     (planDetails.type === "Monthly" ?
                         <CouponCard couponCode="EXTRA30" couponDescription="Get 30 extra days FREE on your monthly plan! - Offer Limited" /> :
                         <CouponCard couponCode="EXTRA90" couponDescription="Get 3 additional months FREE on your yearly plan! - Offer Limited" />)
@@ -229,7 +230,7 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
                             <div className='text-sm mb-1 font-semibold'>{ }</div>
                             {!isOfferApplied ? <div>{planDetails.type + " Subscription" || "Plan Details"}</div> : <div>Promotional</div>}
                             {listingAmount > 0 && <div className="text-xs font-semi-bold">Expires on {ConvertToReadableDate(new Date(expiryDate))}</div>}
-                            {isOfferApplied && <p className="text-xs mt-2 bg-green-600 text-white w-fit px-1 font-regular">Offer Applied</p>}
+                            {isOfferApplied && !!planDetails?.amount && <p className="text-xs mt-2 bg-green-600 text-white w-fit px-1 font-regular">Offer Applied</p>}
                         </div>
                         <div className="flex">
                             {(planDetails.amount < listingAmount) && <div className="text-xl flex items-center mr-2"><IndianRupee size={18} /><span className="line-through decoration-slate-500/60">{planDetails.amount}</span></div>}

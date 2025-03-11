@@ -79,8 +79,8 @@ const Page = () => {
     const [apiRes, setApiRes] = useState<any>();
     const onSubCategoryChange = (id: any) => {
         let category = id ? subCategoryList.filter((x: any) => x.id == id)[0].category : null;
-        setCategoryName(category.name);
-        setBusinessList({ ...businessList, category: category.id, sub_category: id });
+        setCategoryName(category?.name || "");
+        setBusinessList({ ...businessList, category: category?.id, sub_category: id });
     }
     const onAreaChange = (id: any) => setBusinessList({ ...businessList, area: id });
 
@@ -148,11 +148,6 @@ const Page = () => {
             }));
         }
     }, [apiRes, businessHours, subCategoryList])
-
-    useEffect(() => {
-        console.log(businessList)
-    }, [businessList])
-
 
     const populateBusinessDetails = useCallback(async () => {
         if (source) {

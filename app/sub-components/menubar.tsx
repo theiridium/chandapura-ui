@@ -8,6 +8,7 @@ const Menubar = (props: any) => {
         <Drawer
             isOpen={props.isOpen}
             onClose={props.onClose}
+            // classNames={{ base: "bg-gradient-to-b from-color1d via-color1d/90 to-color1d/30 text-white w-64", closeButton: "text-color1d lg:text-color2d hover:text-color1d text-lg font-bold hover:bg-white/50 bg-white/50 lg:bg-transparent !rounded-sm" }}
             classNames={{ base: "bg-color1d text-white w-64", closeButton: "text-color1d lg:text-color2d hover:text-color1d text-lg font-bold hover:bg-white/50 bg-white/50 lg:bg-transparent !rounded-sm" }}
             size='sm'
             radius='none'>
@@ -19,7 +20,7 @@ const Menubar = (props: any) => {
                             <div className='text-xl font-normal'>{status === "authenticated" ? data?.user?.firstname : "Guest"} !</div>
                         </DrawerHeader>
                         <DrawerBody>
-                            <ul className="text-xl mt-8 gap-10 *:mb-8">
+                            <ul className="text-xl mt-8 gap-10 *:mb-5">
                                 {status === "unauthenticated" &&
                                     <li className=''>
                                         <a className='hover-underline' href={Resource.Login.link}>{Resource.Login.label}</a>
@@ -52,13 +53,18 @@ const Menubar = (props: any) => {
                                 </li>
 
                             </ul>
-                            <hr className='mb-8 text-white/10' />
-                            <div className='*:mb-8 text-xl'>
-                                <a className='hover-underline' href={Resource.Pricing.link}>{Resource.Pricing.label}</a>
-                            </div>
+                            <hr className='my-5 text-white/10' />
+                            <ul className='mt-5 *:mb-5 text-sm *:bg-white/20 *:border *:border-white/20 *:px-2 *:py-1 *:text-center'>
+                                <li className='hover:bg-white/10'>
+                                    <a className='block w-full' href={Resource.Pricing.link}>{Resource.Pricing.label}</a>
+                                </li>
+                                <li className='hover:bg-white/10'>
+                                    <a className='block w-full' href={Resource.CategoryRefBook.link}>{Resource.CategoryRefBook.label}</a>
+                                </li>
+                            </ul>
                             {status === "authenticated" &&
-                                <div className='mt-16'>
-                                    <button className='bg-red-600 hover:bg-red-700 hover text-white py-2 px-4' onClick={() => signOut({ callbackUrl: '/' })}>{Resource.Logout.label}</button>
+                                <div className='mt-8'>
+                                    <button className='bg-red-600 hover:bg-red-700 hover text-white py-2 px-4 w-full' onClick={() => signOut({ callbackUrl: '/' })}>{Resource.Logout.label}</button>
                                 </div>
                             }
                         </DrawerBody>

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  /* --color1d: #ff5349;
+  /* --color1d: #ff5349 650081;
   --color2d: #ffc436;528FF0 */
   --color1d: #650081;
   --color2d: #ffc901;
@@ -201,7 +201,7 @@ header {
   }
   #section-1 {
     /* @apply bg-color2d/80 pt-10 pb-14 mb-20; */
-    @apply bg-color1d/10 pt-10 pb-14 mb-20;
+    @apply bg-gradient-to-r from-color1d/10 to-white pt-10 pb-14 mb-20;
   }
   #section-4 {
     /* @apply bg-color2d/80 pt-10 pb-14 mb-20; */

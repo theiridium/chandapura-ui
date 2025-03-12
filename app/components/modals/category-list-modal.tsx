@@ -20,9 +20,9 @@ const CategoryListModal = (props: any) => {
         setTableData(data.results[0].hits);
     }
     useEffect(() => {
-        setTableData(props.list || []); 
+        setTableData(props.list || []);
     }, [props.list]);
-    
+
     const renderCell = useCallback((item: any, columnKey: React.Key) => {
         switch (columnKey) {
             case "category":
@@ -52,7 +52,7 @@ const CategoryListModal = (props: any) => {
                 {(onClose) => (
                     <>
                         <ModalHeader className="flex flex-col md:flex-row gap-2 gap-x-5 items-center">{props.title}
-                        <Input
+                            <Input
                                 isClearable
                                 className="w-full sm:max-w-[44%]"
                                 placeholder="Type to search..."
@@ -62,30 +62,33 @@ const CategoryListModal = (props: any) => {
                             />
                         </ModalHeader>
                         <ModalBody className='nextui-modal'>
-                            
-                            <Table
-                                removeWrapper
-                                isHeaderSticky
-                                aria-label="Example table with client side sorting"
-                            >
-                                <TableHeader>
-                                    <TableColumn key="category" width={300}>
-                                        Category
-                                    </TableColumn>
-                                    <TableColumn key="sub_category">
-                                        Sub Category
-                                    </TableColumn>
-                                </TableHeader>
-                                <TableBody
-                                    items={tabledata}
+                            <div className='min-h-[500px]'>
+                                <Table
+                                    removeWrapper
+                                    isHeaderSticky
+                                    isStriped
+                                    aria-label="Category Reference Book"
                                 >
-                                    {(item: any) => (
-                                        <TableRow key={item.name}>
-                                            {(columnKey) => <TableCell className='py-3'>{renderCell(item, columnKey)}</TableCell>}
-                                        </TableRow>
-                                    )}
-                                </TableBody>
-                            </Table>
+                                    <TableHeader>
+                                        <TableColumn key="category" width={300}>
+                                            Category
+                                        </TableColumn>
+                                        <TableColumn key="sub_category">
+                                            Sub Category
+                                        </TableColumn>
+                                    </TableHeader>
+                                    <TableBody
+                                        emptyContent={"No category found from search"}
+                                        items={tabledata}
+                                    >
+                                        {(item: any) => (
+                                            <TableRow key={item.name}>
+                                                {(columnKey) => <TableCell className='py-3'>{renderCell(item, columnKey)}</TableCell>}
+                                            </TableRow>
+                                        )}
+                                    </TableBody>
+                                </Table>
+                            </div>
                         </ModalBody>
                         <ModalFooter className='border-t'>
                             <Button color="danger" variant="light" onPress={onClose}>

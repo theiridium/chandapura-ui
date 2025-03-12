@@ -70,6 +70,10 @@ module.exports = {
       label: "Pricing",
       link: "/pricing",
     },
+    CategoryRefBook: {
+      label: "Category Reference Book",
+      link: "/category-reference-book",
+    },
   },
   ProductSelect: [
     {

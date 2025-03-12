@@ -35,7 +35,7 @@ const Header = () => {
 
   return (
     <header className={`main-header relative z-20 -translate-y-full sticky ${isVisible ? 'sticky translate-y-0' : 'static'} top-0`}>
-      <nav className="max-w-screen-2xl mx-auto px-3">
+      <nav className="max-w-screen-2xl mx-auto px-5">
         <div className="flex flex-wrap items-center justify-between mx-auto py-3">
           <a href="/" className="mx-0 flex items-center space-x-3 h-[50px] md:h-[60px]">
             {/* <span className="self-center text-2xl font-semibold whitespace-nowrap">LOGO</span> */}

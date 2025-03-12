@@ -32,8 +32,8 @@ const SearchCategorySection = ({ productType }: any) => {
                         </div>
                         <ListArrow size={400} row="search-cat-sec" infinite={false} minirow={"top-1/3"} displayInMobile={true} displayArrowLg={true} />
                     </div>
-                    <div className="flex items-center justify-center lg:justify-end mt-5">
-                        <Button color="secondary" radius="sm" size="sm" onPress={() => { setModalList(bizCategoryList); setModalTitle("Category Reference List"); onOpen() }}>View All Categories</Button>
+                    <div className="flex items-center justify-center lg:justify-end mt-0 lg:mt-5">
+                        <Button className="underline underline-offset-4" color="primary" variant="light" radius="sm" size="sm" onPress={() => { setModalList(bizCategoryList); setModalTitle("Category Reference List"); onOpen() }}>View All Categories</Button>
                     </div>
                 </>
             }

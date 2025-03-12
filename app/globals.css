@@ -91,15 +91,21 @@ header {
   scroll-padding-top: 1.5rem;
   scroll-padding-bottom: 1.5rem;
 }
+
 .search-list::-webkit-scrollbar {
   width: 6px;
 }
-.search-list::-webkit-scrollbar-thumb {
+.nextui-modal::-webkit-scrollbar {
+  width: 10px;
+}
+.search-list::-webkit-scrollbar-thumb,
+.nextui-modal::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.2);
   cursor: pointer;
   border-radius: 12px;
 }
-.search-list::-webkit-scrollbar-track {
+.search-list::-webkit-scrollbar-track,
+.nextui-modal::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.09);
   border-radius: 12px;
 }
@@ -110,13 +116,15 @@ header {
   }
   button:hover:not(.embla *, .google-map *, .sidemenubar *),
   a:hover:not(.embla *, .google-map *, .sidemenubar *),
-  .re-card-link:hover, .pricing-card:hover {
+  .re-card-link:hover,
+  .pricing-card:hover {
     @apply transition duration-300 ease-in-out;
   }
 
   button:not(.embla *, .google-map *, .sidemenubar *),
   a:not(.embla *, .google-map *, .sidemenubar *),
-  .re-card-link, .pricing-card {
+  .re-card-link,
+  .pricing-card {
     @apply transition duration-300 ease-in-out will-change-transform;
   }
   .link-pill {

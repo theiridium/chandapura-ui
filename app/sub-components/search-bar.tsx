@@ -71,7 +71,7 @@ const SearchBar = ({ productType }: any) => {
 
 
   return (
-    <form className={`search-container ${isFocused && 'border-color1d/50'}`} onSubmit={onSearch}>
+    <form className={`search-container ${isFocused && 'border-color1d'}`} onSubmit={onSearch}>
       <div className={`search-input`} role="combobox" aria-haspopup="listbox" >
         <input className="w-full" aria-controls="suggest-box" placeholder="Start searching..." onChange={inputHandler} value={text} onFocus={() => setIsFocused(true)} onBlur={() => setTimeout(() => setIsFocused(false), 200)} />
         {isFocused && suggest.length > 0 && <div id="suggest-box" role="listbox" className="search-list">

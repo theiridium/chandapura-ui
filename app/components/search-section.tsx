@@ -20,7 +20,7 @@ const SearchSection = () => {
   }, [])
   const getAllCategoriesList = async () => {
     const [bizCategoriesResponse, classifiedCategoriesResponse] = await Promise.all([
-      getPublicApiResponse(`categories?populate=image&sort=name&pagination[limit]=100`),
+      getPublicApiResponse(`categories?populate=image,sub_categories&sort=name&pagination[limit]=100`),
       getPublicApiResponse(`classified-categories?populate=image&sort=name&pagination[limit]=100`)
     ]);
     setBizCategories(bizCategoriesResponse.data);

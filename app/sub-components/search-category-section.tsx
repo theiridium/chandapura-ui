@@ -1,28 +1,41 @@
+"use client"
 import { Products } from "@/public/shared/app.config";
 import Image from "next/image"
 import ListArrow from "./list-arrow";
 import { useAtomValue } from "jotai";
 import { categories, classifiedCategories } from "@/lib/atom";
+import { Button, useDisclosure } from "@nextui-org/react";
+import { useState } from "react";
+import CategoryListModal from "../components/modals/category-list-modal";
 
 const SearchCategorySection = ({ productType }: any) => {
     const bizCategoryList = useAtomValue<any>(categories);
     const classifiedCategoryList = useAtomValue<any>(classifiedCategories);
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [modalList, setModalList] = useState<any>([]);
+    const [modalTitle, setModalTitle] = useState<any>("");
     return (
         <>
+            <CategoryListModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} list={modalList} title={modalTitle} />
             {(productType === Products.business.productType && bizCategoryList?.length > 0) &&
-                <div className="relative">
-                    <div className="search-cat-sec">
-                        {bizCategoryList?.map((item: any, i: any) =>
-                            <a href={`${Products.business.url}/${item.slug}`} className='mini-card' key={i}>
-                                <div className="relative w-16 h-16 md:w-20 md:h-20">
-                                    <Image src={item.image.url} alt={item.name} fill />
-                                </div>
-                                <div className='text'>{item.name}</div>
-                            </a>
-                        )}
+                <>
+                    <div className="relative">
+                        <div className="search-cat-sec">
+                            {bizCategoryList?.map((item: any, i: any) =>
+                                <a href={`${Products.business.url}/${item.slug}`} className='mini-card' key={i}>
+                                    <div className="relative w-16 h-16 md:w-20 md:h-20">
+                                        <Image src={item.image.url} alt={item.name} fill />
+                                    </div>
+                                    <div className='text'>{item.name}</div>
+                                </a>
+                            )}
+                        </div>
+                        <ListArrow size={400} row="search-cat-sec" infinite={false} minirow={"top-1/3"} displayInMobile={true} displayArrowLg={true} />
                     </div>
-                    <ListArrow size={400} row="search-cat-sec" infinite={false} minirow={"top-1/3"} displayInMobile={true} displayArrowLg={true} />
-                </div>
+                    <div className="flex items-center justify-center lg:justify-end mt-5">
+                        <Button color="secondary" radius="sm" size="sm" onPress={() => { setModalList(bizCategoryList); setModalTitle("Category Reference List"); onOpen() }}>View All Categories</Button>
+                    </div>
+                </>
             }
             {(productType === Products.realEstate.productType) &&
                 <div className="search-cat-sec md:justify-center">

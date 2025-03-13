@@ -9,7 +9,7 @@ const Menubar = (props: any) => {
             isOpen={props.isOpen}
             onClose={props.onClose}
             // classNames={{ base: "bg-gradient-to-b from-color1d via-color1d/90 to-color1d/30 text-white w-64", closeButton: "text-color1d lg:text-color2d hover:text-color1d text-lg font-bold hover:bg-white/50 bg-white/50 lg:bg-transparent !rounded-sm" }}
-            classNames={{ base: "bg-color1d text-white w-64", closeButton: "text-color1d lg:text-color2d hover:text-color1d text-lg font-bold hover:bg-white/50 bg-white/50 lg:bg-transparent !rounded-sm" }}
+            classNames={{ base: "bg-color1d text-white w-64", closeButton: "text-color1d lg:text-color2d hover:text-color1d text-lg font-bold hover:bg-white/30 bg-white/30 lg:bg-transparent !rounded-sm" }}
             size='sm'
             radius='none'>
             <DrawerContent>
@@ -54,11 +54,11 @@ const Menubar = (props: any) => {
 
                             </ul>
                             <hr className='my-5 text-white/10' />
-                            <ul className='mt-5 *:mb-5 text-sm *:bg-white/20 *:border *:border-white/20 *:px-2 *:py-1 *:text-center'>
-                                <li className='hover:bg-white/10'>
+                            <ul className='mt-5 *:mb-5 text-sm *:border *:border-white/50 *:px-2 *:py-1 *:text-center'>
+                                <li className='hover:bg-white/20'>
                                     <a className='block w-full' href={Resource.Pricing.link}>{Resource.Pricing.label}</a>
                                 </li>
-                                <li className='hover:bg-white/10'>
+                                <li className='hover:bg-white/20'>
                                     <a className='block w-full' href={Resource.CategoryRefBook.link}>{Resource.CategoryRefBook.label}</a>
                                 </li>
                             </ul>

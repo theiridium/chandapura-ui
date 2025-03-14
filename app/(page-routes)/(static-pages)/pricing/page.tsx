@@ -236,6 +236,7 @@ const Page = () => {
                     </div>
 
                     <div className='grid grid-cols-1 md:grid-cols-6 bg-color1d/10 rounded-xl gap-8 p-8 pb-14 content-center mb-20'>
+                        {/* Classified Listing Pricing */}
                         <div className='col-span-full md:col-start-2 md:col-span-2 *:border *:border-transparent * *:rounded-xl'>
                             <div className='p-5 text-2xl font-medium place-self-center'>Classified Listing</div>
                             <div className='flex flex-col pricing-card bg-white p-5 hover:border-color1d'>
@@ -251,6 +252,7 @@ const Page = () => {
                                 </div>
                             </div>
                         </div>
+                        {/* Job Listing Pricing */}
                         <div className='col-span-full md:col-span-2 *:border *:border-transparent * *:rounded-xl'>
                             <div className='p-5 text-2xl font-medium place-self-center'>Job Listing</div>
                             <div className='flex flex-col pricing-card bg-white p-5 hover:border-color1d'>

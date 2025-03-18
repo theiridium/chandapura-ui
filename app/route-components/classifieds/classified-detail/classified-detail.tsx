@@ -6,9 +6,11 @@ import ViewLocationMap from '@/app/components/maps/view-location-map';
 import Breadcrumb from '@/app/sub-components/breadcrumb';
 import ContactButton from '@/app/sub-components/contact-btn';
 import ContactCard from '@/app/sub-components/contact-card';
-import { ConvertCurrencyToWords } from '@/lib/helpers';
+import { ConvertCurrencyToWords, GetOrdinal } from '@/lib/helpers';
+import { Products } from '@/public/shared/app.config';
 
 const ClassifiedDetail = ({ data }: any) => {
+  const vehicle_details = data.details_by_category.find((x: any) => x.__component == Products.classifieds.api.componentVehicle)
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
     <div>
@@ -67,6 +69,49 @@ const ClassifiedDetail = ({ data }: any) => {
                       <p className='text-sm md:text-lg font-medium'>{data.description}</p>
                     </div>
                   </>}
+                <hr />
+                <div className='py-12'>
+                  {/* <div className='text-sm text-gray-500 font-semibold'>Product Details</div> */}
+                  <div className='flex lg:flex-none flex-wrap lg:grid lg:grid-flow-col lg:justify-stretch gap-x-10 lg:gap-x-5'>
+                    <div className='mb-5 lg:mb-0'>
+                      <div className='text-sm text-gray-500 font-semibold'>Ownership History</div>
+                      <div className='text-sm md:text-lg font-medium'>{GetOrdinal(data.ownership_history)} Owner</div>
+                    </div>
+                    <div className='mb-5 lg:mb-0'>
+                      <div className='text-sm text-gray-500 font-semibold'>Year of Purchase</div>
+                      <div className='text-sm md:text-lg font-medium'>{data.year_of_purchase}</div>
+                    </div>
+                  </div>
+                </div>
+                {!!vehicle_details &&
+                  <>
+                    <hr />
+                    <div className='py-12'>
+                      <div className='flex lg:flex-none flex-wrap lg:grid lg:grid-flow-col lg:justify-stretch gap-x-10 lg:gap-x-5'>
+                        <div className='mb-5 lg:mb-0'>
+                          <div className='text-sm text-gray-500 font-semibold'>Model</div>
+                          <div className='text-sm md:text-lg font-medium'>{vehicle_details.model_name}</div>
+                        </div>
+                        <div className='mb-5 lg:mb-0'>
+                          <div className='text-sm text-gray-500 font-semibold'>Fuel Type</div>
+                          <div className='text-sm md:text-lg font-medium'>{vehicle_details.fuel_type}</div>
+                        </div>
+                        <div className='mb-5 lg:mb-0'>
+                          <div className='text-sm text-gray-500 font-semibold'>Kilometers Driven</div>
+                          <div className='text-sm md:text-lg font-medium'>{vehicle_details.kms_driven}</div>
+                        </div>
+                        <div className='mb-5 lg:mb-0'>
+                          <div className='text-sm text-gray-500 font-semibold'>Transmission</div>
+                          <div className='text-sm md:text-lg font-medium'>{vehicle_details.transmission}</div>
+                        </div>
+                        <div className='mb-5 lg:mb-0'>
+                          <div className='text-sm text-gray-500 font-semibold'>Year of Manufacture</div>
+                          <div className='text-sm md:text-lg font-medium'>{vehicle_details.year_of_manufacture}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                }
               </div>
             </div>
           </div>

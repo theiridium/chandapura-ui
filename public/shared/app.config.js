@@ -224,6 +224,7 @@ module.exports = {
         userFilter: "filters[author][email][$eq]",
         isPublishedFilter: `filters[publish_status][$eq]=true`,
         limit: 4,
+        componentVehicle: "classified.vehicle-details",
       },
     },
     job: {

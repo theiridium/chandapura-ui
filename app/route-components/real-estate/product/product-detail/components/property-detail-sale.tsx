@@ -1,7 +1,7 @@
 import ViewLocationMap from '@/app/components/maps/view-location-map'
 import Breadcrumb from '@/app/sub-components/breadcrumb'
 import ContactButton from '@/app/sub-components/contact-btn'
-import { ConvertCurrencyToWords } from '@/lib/helpers'
+import { ConvertCurrencyToWords, GetOrdinal } from '@/lib/helpers'
 import { IndianRupee } from 'lucide-react'
 import React from 'react'
 
@@ -75,11 +75,11 @@ const PropertyDetailSale = ({ data, onOpen, property_details }: any) => {
                         </div>
                         <div className='mb-5 lg:mb-0'>
                             <div className='text-sm text-gray-500 font-semibold'>Rooms</div>
-                            <div className='text-sm md:text-lg font-medium'>{data.room_type}</div>
+                            <div className='text-sm md:text-lg font-medium'>{property_details.room_type.split("")[0]}</div>
                         </div>
                         <div className='mb-5 lg:mb-0'>
                             <div className='text-sm text-gray-500 font-semibold'>Direction</div>
-                            <div className='text-sm md:text-lg font-medium'>{property_details.facing} Facing</div>
+                            <div className='text-sm md:text-lg font-medium'>{property_details.direction} Facing</div>
                         </div>
                         <div className='mb-5 lg:mb-0'>
                             <div className='text-sm text-gray-500 font-semibold'>Furnishing</div>
@@ -99,7 +99,7 @@ const PropertyDetailSale = ({ data, onOpen, property_details }: any) => {
                         <div className='border rounded-lg aspect-square grid place-items-center text-center p-2'>
                             <img className='max-w-[64px]' src='/images/icons/floor.png' />
                             <div className='text-xs lg:text-sm text-gray-500 font-semibold w-24 lg:w-auto'>
-                                {property_details.floor_number} Floor
+                                {property_details.floor_number === 0 ? "Ground" : GetOrdinal(property_details.floor_number)} Floor
                             </div>
                         </div>
                         <div className='border rounded-lg aspect-square grid place-items-center text-center p-2'>
@@ -111,15 +111,19 @@ const PropertyDetailSale = ({ data, onOpen, property_details }: any) => {
                             <div className='text-xs lg:text-sm text-gray-500 font-semibold w-24 lg:w-auto'>{property_details.parking_type} Parking</div>
                         </div>
                     </div>
-                    <hr className='mb-12' />
-                    <div className='mb-12'>
-                        <h5 className='text-sm text-gray-500 font-semibold mb-5'>Amenities</h5>
-                        <div className="tags">
-                            {property_details.amenities.map((x: any, i: any) =>
-                                <div className="px-4 py-1 bg-color2d/70 font-semibold rounded-full text-sm text-nowrap text-gray-600" key={i}>{x.name}</div>
-                            )}
-                        </div>
-                    </div>
+                    {property_details.amenities.length > 0 &&
+                        <>
+                            <hr className='mb-12' />
+                            <div className='mb-12'>
+                                <h5 className='text-sm text-gray-500 font-semibold mb-5'>Amenities</h5>
+                                <div className="tags">
+                                    {property_details.amenities.map((x: any, i: any) =>
+                                        <div className="px-4 py-1 bg-color2d/70 font-semibold rounded-full text-sm text-nowrap text-gray-600" key={i}>{x.name}</div>
+                                    )}
+                                </div>
+                            </div>
+                        </>
+                    }
                     <hr className='mb-12' />
                     <div className='mb-12'>
                         <h5 className='text-sm text-gray-500 font-semibold mb-5'>Map Location</h5>

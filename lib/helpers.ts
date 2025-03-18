@@ -55,6 +55,17 @@ export const GenerateItemNameForInvoice = (planLabel: string, subscriptionType: 
   return itemName;
 }
 
+export const GetOrdinal = (num: number) => {
+  if (num % 100 >= 11 && num % 100 <= 13) {
+    return num + "th";
+  }
+
+  const suffixes = ["th", "st", "nd", "rd"];
+  const lastDigit = num % 10;
+
+  return num + (suffixes[lastDigit] || "th");
+}
+
 export function ConvertCurrencyToWords(x: number) {
   if (x) {
     const num = x.toString();

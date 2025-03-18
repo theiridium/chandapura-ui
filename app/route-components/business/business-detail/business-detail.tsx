@@ -8,9 +8,10 @@ import ContactButton from '@/app/sub-components/contact-btn';
 
 const BusinessDetail = ({ data }: any) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const all_images = [data.featured_image, ...(data.gallery_images ?? [])];
   return (
     <div>
-      <ImageGallery isOpen={isOpen} onOpenChange={onOpenChange} list={data.gallery_images} />
+      <ImageGallery isOpen={isOpen} onOpenChange={onOpenChange} list={all_images} />
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-5 lg:gap-10 text-gray-700">
         <div className="lg:col-span-3">
           <div className="lg:border border-gray-300 rounded-xl bg-white lg:p-7 gap-x-5 lg:gap-x-7">

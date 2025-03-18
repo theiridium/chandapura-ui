@@ -11,6 +11,7 @@ import PropertyDetailPG from './components/property-detail-pg';
 
 const ProductDetail = ({ data, product }: any) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const all_images = [data.featured_image, ...(data.gallery_images ?? [])];
     let property_details = data.details_by_listingtype.find((x: any) => x.__component == product.api.component);
     let detailsComp = <></>;
     const props = {
@@ -38,7 +39,7 @@ const ProductDetail = ({ data, product }: any) => {
     }
     return (
         <div>
-            <ImageGallery isOpen={isOpen} onOpenChange={onOpenChange} list={data.gallery_images} />
+            <ImageGallery isOpen={isOpen} onOpenChange={onOpenChange} list={all_images} />
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-5 lg:gap-10 text-gray-700">
                 {detailsComp}
                 <div className='lg:col-span-1 relative m-5 lg:m-0'>

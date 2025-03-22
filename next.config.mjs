@@ -13,6 +13,11 @@ const nextConfig = {
     return [
       // Basic redirect
       {
+        source: "/terms-and-conditions",
+        destination: "/terms-and-conditions.html",
+        permanent: true,
+      },
+      {
         source: "/dashboard/business-listing",
         destination: "/dashboard/business-listing/view-all",
         permanent: true,

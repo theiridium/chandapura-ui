@@ -68,6 +68,48 @@ const Page = () => {
                             </div>
                         </div>
                         <div className='flex flex-col pricing-card bg-white p-5 hover:border-color1d'>
+                            <h2 className='font-semibold mb-1'>Quaterly Subscription</h2>
+                            <div className='text-xs'>Pay quaterly to avail extra discount.</div>
+                            {!!adPricing ?
+                                <>
+                                    <div className='my-3 flex items-center'>
+                                        <div className='line-through text-base flex items-center'><IndianRupee strokeWidth={2} size={15} />{adPricing["monthly"] * 3}</div>
+                                        <div className='ml-2 bg-color1d/10 rounded-full px-5 w-fit text-sm'>Save {CalculateDiscountPercentage(adPricing["monthly"] * 3, adPricing["quaterly"])}%</div>
+                                    </div>
+                                    <div className='flex items-center tracking-tight'>
+                                        <IndianRupee strokeWidth={3} size={28} />
+                                        <span className='text-4xl font-semibold'>{adPricing["quaterly"]}</span>
+                                        <span className='self-end ml-1 text-xs'>per 3 months</span>
+                                    </div>
+                                </> :
+                                <div className='mt-10'><PriceLoading /></div>
+                            }
+                            <div className='h-full flex items-end mt-8'>
+                                <Button onPress={() => onClickGetStarted(Resource.Advertisement.addDetailsLink)} isDisabled={!adPricing} variant='solid' radius='sm' color='primary' className='w-full' size='sm'>Get Started</Button>
+                            </div>
+                        </div>
+                        <div className='flex flex-col pricing-card bg-white p-5 hover:border-color1d'>
+                            <h2 className='font-semibold mb-1'>Half Yearly Subscription</h2>
+                            <div className='text-xs'>Pay half yearly to avail extra discount.</div>
+                            {!!adPricing ?
+                                <>
+                                    <div className='my-3 flex items-center'>
+                                        <div className='line-through text-base flex items-center'><IndianRupee strokeWidth={2} size={15} />{adPricing["monthly"] * 6}</div>
+                                        <div className='ml-2 bg-color1d/10 rounded-full px-5 w-fit text-sm'>Save {CalculateDiscountPercentage(adPricing["monthly"] * 6, adPricing["halfyearly"])}%</div>
+                                    </div>
+                                    <div className='flex items-center tracking-tight'>
+                                        <IndianRupee strokeWidth={3} size={28} />
+                                        <span className='text-4xl font-semibold'>{adPricing["halfyearly"]}</span>
+                                        <span className='self-end ml-1 text-xs'>per 6 months</span>
+                                    </div>
+                                </> :
+                                <div className='mt-10'><PriceLoading /></div>
+                            }
+                            <div className='h-full flex items-end mt-8'>
+                                <Button onPress={() => onClickGetStarted(Resource.Advertisement.addDetailsLink)} isDisabled={!adPricing} variant='solid' radius='sm' color='primary' className='w-full' size='sm'>Get Started</Button>
+                            </div>
+                        </div>
+                        <div className='flex flex-col pricing-card bg-white p-5 hover:border-color1d'>
                             <h2 className='font-semibold mb-1'>Yearly Subscription</h2>
                             <div className='text-xs'>Pay yearly to avail extra discount.</div>
                             {!!adPricing ?
@@ -102,6 +144,48 @@ const Page = () => {
                                     <span className='text-4xl font-semibold'>{bizPricing["monthly"]}</span>
                                     <span className='self-end ml-1 text-xs'>per month</span>
                                 </div> :
+                                <div className='mt-10'><PriceLoading /></div>
+                            }
+                            <div className='h-full flex items-end mt-8'>
+                                <Button onPress={() => onClickGetStarted(Resource.BusinessListing.addDetailsLink)} isDisabled={!bizPricing} variant='solid' radius='sm' color='primary' className='w-full' size='sm'>Get Started</Button>
+                            </div>
+                        </div>
+                        <div className='flex flex-col pricing-card bg-white p-5 hover:border-color1d'>
+                            <h2 className='font-semibold mb-1'>Quaterly Subscription</h2>
+                            <div className='text-xs'>Pay quaterly to avail extra discount.</div>
+                            {!!bizPricing ?
+                                <>
+                                    <div className='my-3 flex items-center'>
+                                        <div className='line-through text-base flex items-center'><IndianRupee strokeWidth={2} size={15} />{bizPricing["monthly"] * 3}</div>
+                                        <div className='ml-2 bg-color1d/10 rounded-full px-5 w-fit text-sm'>Save {CalculateDiscountPercentage(bizPricing["monthly"] * 3, bizPricing["quaterly"])}%</div>
+                                    </div>
+                                    <div className='flex items-center tracking-tight'>
+                                        <IndianRupee strokeWidth={3} size={28} />
+                                        <span className='text-4xl font-semibold'>{bizPricing["quaterly"]}</span>
+                                        <span className='self-end ml-1 text-xs'>per 3 months</span>
+                                    </div>
+                                </> :
+                                <div className='mt-10'><PriceLoading /></div>
+                            }
+                            <div className='h-full flex items-end mt-8'>
+                                <Button onPress={() => onClickGetStarted(Resource.BusinessListing.addDetailsLink)} isDisabled={!bizPricing} variant='solid' radius='sm' color='primary' className='w-full' size='sm'>Get Started</Button>
+                            </div>
+                        </div>
+                        <div className='flex flex-col pricing-card bg-white p-5 hover:border-color1d'>
+                            <h2 className='font-semibold mb-1'>Half Yearly Subscription</h2>
+                            <div className='text-xs'>Pay half yearly to avail extra discount.</div>
+                            {!!bizPricing ?
+                                <>
+                                    <div className='my-3 flex items-center'>
+                                        <div className='line-through text-base flex items-center'><IndianRupee strokeWidth={2} size={15} />{bizPricing["monthly"] * 6}</div>
+                                        <div className='ml-2 bg-color1d/10 rounded-full px-5 w-fit text-sm'>Save {CalculateDiscountPercentage(bizPricing["monthly"] * 6, bizPricing["halfyearly"])}%</div>
+                                    </div>
+                                    <div className='flex items-center tracking-tight'>
+                                        <IndianRupee strokeWidth={3} size={28} />
+                                        <span className='text-4xl font-semibold'>{bizPricing["halfyearly"]}</span>
+                                        <span className='self-end ml-1 text-xs'>per 6 months</span>
+                                    </div>
+                                </> :
                                 <div className='mt-10'><PriceLoading /></div>
                             }
                             <div className='h-full flex items-end mt-8'>

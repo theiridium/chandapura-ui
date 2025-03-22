@@ -27,9 +27,25 @@ export const GetFreeListingDaysRange = () => {
   //15 years from now 
   return new Date(currentDate.setFullYear(currentDate.getFullYear() + 15)).toISOString();
 }
+export const GetDateRangeMonthly = () => {
+  const currentDate: any = new Date();
+  return new Date(currentDate.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString();
+}
 export const GetOfferPeriodDateRangeMonthly = () => {
   const currentDate: any = new Date();
   return new Date(currentDate.getTime() + 60 * 24 * 60 * 60 * 1000).toISOString();
+}
+export const GetOfferPeriodDateRangeQuaterly = () => {
+  const currentDate: any = new Date();
+  const newDate = new Date(currentDate);
+  newDate.setMonth(newDate.getMonth() + 4);
+  return newDate.toISOString();
+}
+export const GetOfferPeriodDateRangeHalfYearly = () => {
+  const currentDate: any = new Date();
+  const newDate = new Date(currentDate);
+  newDate.setMonth(newDate.getMonth() + 8);
+  return newDate.toISOString();
 }
 export const GetOfferPeriodDateRangeYearly = () => {
   const currentDate: any = new Date();

@@ -1,6 +1,6 @@
 "use client"
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Button, Link, RadioGroup} from '@nextui-org/react';
+import { Button, Link, RadioGroup } from '@nextui-org/react';
 import { useCallback, useEffect, useState } from 'react';
 import { Products, Resource } from '@/public/shared/app.config';
 import { useSession } from 'next-auth/react';
@@ -8,13 +8,15 @@ import { getPublicApiResponse } from '@/lib/apiLibrary';
 import TextLoading from '@/app/loading-components/text-loading';
 import { IndianRupee } from 'lucide-react';
 import PaymentCard from '@/app/sub-components/payment-card';
-import { CalculateDiscountPercentage, CheckSubscriptionValidity, GetOfferPeriodDateRangeMonthly, GetOfferPeriodDateRangeYearly } from '@/lib/helpers';
+import { CalculateDiscountPercentage, CheckSubscriptionValidity, GetDateRangeMonthly, GetOfferPeriodDateRangeHalfYearly, GetOfferPeriodDateRangeMonthly, GetOfferPeriodDateRangeQuaterly, GetOfferPeriodDateRangeYearly } from '@/lib/helpers';
 import { ListingWorkflow } from '@/lib/typings/enums';
 import PricingRadio from '@/app/sub-components/pricing-radio';
 
 const Page = () => {
     const currentDate = new Date();
-    const monthSpan = GetOfferPeriodDateRangeMonthly();
+    const monthSpan = GetDateRangeMonthly();
+    const quaterSpan = GetOfferPeriodDateRangeQuaterly();
+    const halfyearSpan = GetOfferPeriodDateRangeHalfYearly();
     const yearSpan = GetOfferPeriodDateRangeYearly();
     const [expiryDate, setExpiryDate] = useState(monthSpan);
     const [isLoading, setIsLoading] = useState(true);
@@ -82,8 +84,20 @@ const Page = () => {
 
     const onPlanSelect = useCallback((type: string) => {
         setPlanDetails({ ...planDetails, type: type, amount: pricingPlan[type.toLowerCase()] });
-        if (type === "Monthly") setExpiryDate(monthSpan);
-        else setExpiryDate(yearSpan);
+        switch (type) {
+            case "Monthly":
+                setExpiryDate(monthSpan);
+                break;
+            case "Quaterly":
+                setExpiryDate(quaterSpan);
+                break;
+            case "Halfyearly":
+                setExpiryDate(halfyearSpan);
+                break;
+            default:
+                setExpiryDate(yearSpan);
+                break;
+        }
     }, [planDetails, pricingPlan])
 
     return (
@@ -139,6 +153,40 @@ const Page = () => {
                                                             {pricingPlan.monthly}
                                                         </div>
                                                         <span className='text-sm font-medium'>/month</span>
+                                                    </div>
+                                                </PricingRadio>
+                                            }
+                                            {isLoading ? <TextLoading /> :
+                                                <PricingRadio value="Quaterly">
+                                                    <div className='text-sm md:text-base'>Quaterly Subscription</div>
+                                                    <div className='flex items-end text-xs md:text-base mt-3 mb-2'>
+                                                        <div className='flex items-center line-through decoration-slate-500/60'><IndianRupee size={15} />{pricingPlan.monthly * 3}</div><span className='text-xs md:text-xs'>/3 months</span>
+                                                        <div className='ml-2 bg-color1d/10 rounded-full px-5'>Save {CalculateDiscountPercentage(pricingPlan.monthly * 3, pricingPlan.quaterly)}%</div>
+                                                    </div>
+                                                    <div className='flex items-end'>
+                                                        <div className='text-lg md:text-2xl font-medium flex items-center'>
+                                                            <IndianRupee className='hidden md:block' strokeWidth={2} size={20} />
+                                                            <span className='md:hidden'>₹</span>
+                                                            {pricingPlan.quaterly}
+                                                        </div>
+                                                        <span className='text-sm font-medium'>/3 Months</span>
+                                                    </div>
+                                                </PricingRadio>
+                                            }
+                                            {isLoading ? <TextLoading /> :
+                                                <PricingRadio value="Halfyearly">
+                                                    <div className='text-sm md:text-base'>Half-Yearly Subscription</div>
+                                                    <div className='flex items-end text-xs md:text-base mt-3 mb-2'>
+                                                        <div className='flex items-center line-through decoration-slate-500/60'><IndianRupee size={15} />{pricingPlan.monthly * 6}</div><span className='text-xs md:text-xs'>/6 months</span>
+                                                        <div className='ml-2 bg-color1d/10 rounded-full px-5'>Save {CalculateDiscountPercentage(pricingPlan.monthly * 6, pricingPlan.halfyearly)}%</div>
+                                                    </div>
+                                                    <div className='flex items-end'>
+                                                        <div className='text-lg md:text-2xl font-medium flex items-center'>
+                                                            <IndianRupee className='hidden md:block' strokeWidth={2} size={20} />
+                                                            <span className='md:hidden'>₹</span>
+                                                            {pricingPlan.halfyearly}
+                                                        </div>
+                                                        <span className='text-sm font-medium'>/6 months</span>
                                                     </div>
                                                 </PricingRadio>
                                             }

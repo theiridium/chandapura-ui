@@ -32,6 +32,7 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
     const currentDate = new Date();
     const [listingAmount, setListingAmount] = useState<number>(planDetails.amount);
     const [taxAmount, setTaxAmount] = useState<any>(0);
+    const [couponCard, setCouponCard] = useState<any>({});
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [isOfferApplied, setIsOfferApplied] = useState<boolean>(false); //turn (ON/OFF) offer
     const [expiryTimestamp, setExpiryTimestamp] = useState(new Date(expiryDate).getTime());
@@ -43,6 +44,33 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
     useEffect(() => {
         setListingAmount(planDetails.amount);
         if (!paymentData.isFreeListing) setIsOfferApplied(true);
+        switch (planDetails.type) {
+            case "Monthly":
+                setCouponCard({
+                    couponCode: "",
+                    couponDescription: ""
+                })
+                break;
+            case "Quaterly":
+                setCouponCard({
+                    couponCode: "EXTRA30",
+                    couponDescription: "Get 30 extra days FREE on your quaterly plan! - Offer Limited"
+                })
+                break;
+            case "Halfyearly":
+                setCouponCard({
+                    couponCode: "EXTRA60",
+                    couponDescription: "Get 60 extra days FREE on your half-yearly plan! - Offer Limited"
+                })
+                break;
+
+            default:
+                setCouponCard({
+                    couponCode: "EXTRA90",
+                    couponDescription: "Get 3 additional months FREE on your yearly plan! - Offer Limited"
+                })
+                break;
+        }
     }, [planDetails])
 
     useEffect(() => {
@@ -220,9 +248,9 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
                     </div>
                 </div>}
                 {isOfferApplied && !!planDetails?.amount &&
-                    (planDetails.type === "Monthly" ?
-                        <CouponCard couponCode="EXTRA30" couponDescription="Get 30 extra days FREE on your monthly plan! - Offer Limited" /> :
-                        <CouponCard couponCode="EXTRA90" couponDescription="Get 3 additional months FREE on your yearly plan! - Offer Limited" />)
+                    (!!couponCard?.couponCode &&
+                        <CouponCard couponCode={couponCard.couponCode} couponDescription={couponCard.couponDescription} />
+                    )
                 }
                 <div className='divide-y *:py-4'>
                     <div className='flex justify-between items-center'>

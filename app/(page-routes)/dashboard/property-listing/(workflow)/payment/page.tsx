@@ -1,6 +1,6 @@
 "use client"
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Accordion, AccordionItem, Button, Input, Link, Tab, Tabs } from '@nextui-org/react';
+import { Accordion, AccordionItem, Button, Input, Link, Tab, Tabs } from "@heroui/react";
 import { useCallback, useEffect, useState } from 'react';
 import FormLoading from '@/app/loading-components/form-loading';
 import { Products, Resource } from '@/public/shared/app.config';

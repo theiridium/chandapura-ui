@@ -1,5 +1,5 @@
 "use client"
-import { Button, Input } from '@nextui-org/react'
+import { Button, Input } from "@heroui/react"
 import { useEffect, useMemo, useState } from 'react'
 import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -115,7 +115,7 @@ const Page = () => {
                 </div>
             </div>
         </>
-    )
+    );
 }
 
 export default Page

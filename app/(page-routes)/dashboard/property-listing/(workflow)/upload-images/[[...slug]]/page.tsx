@@ -8,7 +8,7 @@ import { getPublicApiResponse, putRequestApi } from '@/lib/apiLibrary';
 import { ImageParams } from '@/lib/typings/dto';
 import ImgSingleUploadLoading from '@/app/loading-components/img-single-upload-loading';
 import ImgMultiUploadLoading from '@/app/loading-components/img-multi-upload-loading';
-import { Button } from '@nextui-org/react';
+import { Button } from "@heroui/react";
 import { toast } from 'react-toastify';
 import FormLoading from '@/app/loading-components/form-loading';
 import { ListingWorkflow } from '@/lib/typings/enums';

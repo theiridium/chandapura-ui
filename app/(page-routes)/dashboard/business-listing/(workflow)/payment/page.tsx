@@ -1,6 +1,6 @@
 "use client"
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Button, Link, RadioGroup } from '@nextui-org/react';
+import { Button, Link, RadioGroup } from "@heroui/react";
 import { useCallback, useEffect, useState } from 'react';
 import { Products, Resource } from '@/public/shared/app.config';
 import { useSession } from 'next-auth/react';

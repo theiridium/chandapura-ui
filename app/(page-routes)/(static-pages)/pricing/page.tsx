@@ -5,7 +5,7 @@ import Breadcrumb from '@/app/sub-components/breadcrumb'
 import { getPublicApiResponse } from '@/lib/apiLibrary'
 import { CalculateDiscountPercentage } from '@/lib/helpers'
 import { Products, Resource } from '@/public/shared/app.config'
-import { Button } from '@nextui-org/react'
+import { Button } from "@heroui/react"
 import { IndianRupee } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'

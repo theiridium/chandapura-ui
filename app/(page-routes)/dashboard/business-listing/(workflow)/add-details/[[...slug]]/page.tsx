@@ -1,5 +1,5 @@
 "use client"
-import { Autocomplete, AutocompleteItem, Button, Input, Select, SelectItem, Switch, Textarea, TimeInput, useDisclosure } from '@nextui-org/react'
+import { Autocomplete, AutocompleteItem, Button, Input, Select, SelectItem, Switch, Textarea, TimeInput, useDisclosure } from "@heroui/react"
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { InView } from 'react-intersection-observer';
 import { useSession } from 'next-auth/react';

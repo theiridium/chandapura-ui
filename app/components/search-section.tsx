@@ -1,7 +1,7 @@
 "use client"
 
 import { ProductSelect, Products } from "@/public/shared/app.config"
-import { Tab, Tabs } from "@nextui-org/react"
+import { Tab, Tabs } from "@heroui/react"
 import SearchBar from "../sub-components/search-bar"
 import { useEffect, useState } from "react"
 import { useSetAtom } from "jotai"

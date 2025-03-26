@@ -3,7 +3,7 @@ import React from 'react'
 import { User, X } from 'lucide-react';
 import Menubar from './menubar';
 import { useSession } from 'next-auth/react';
-import { useDisclosure } from '@nextui-org/react';
+import { useDisclosure } from "@heroui/react";
 
 const UserProfileButton = () => {
     const { data }: any = useSession();

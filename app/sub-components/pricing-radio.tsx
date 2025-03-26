@@ -1,4 +1,4 @@
-import { cn, Radio, RadioProps, useRadio, VisuallyHidden } from '@nextui-org/react';
+import { cn, Radio, RadioProps, useRadio, VisuallyHidden } from "@heroui/react";
 import { IndianRupee } from 'lucide-react';
 import React from 'react'
 

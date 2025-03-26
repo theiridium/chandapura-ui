@@ -1,6 +1,6 @@
 import { deleteMediaFiles, postRequestApi, putRequestApi, uploadMediaFiles } from "@/lib/apiLibrary";
 import { ListingWorkflow } from "@/lib/typings/enums";
-import { Button, CircularProgress, Spinner } from "@nextui-org/react";
+import { Button, CircularProgress, Spinner } from "@heroui/react";
 import { Pencil } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDropzone } from 'react-dropzone';

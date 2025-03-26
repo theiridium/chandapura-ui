@@ -1,7 +1,7 @@
 import { getPublicSingleSearchResponse } from '@/lib/apiLibrary';
 import { categories } from '@/lib/atom';
 import { SearchPayload } from '@/lib/typings/dto';
-import { Chip, Input, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, User } from '@nextui-org/react';
+import { Chip, Input, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, User } from "@heroui/react";
 import { useAtomValue } from 'jotai';
 import { SearchIcon } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react'

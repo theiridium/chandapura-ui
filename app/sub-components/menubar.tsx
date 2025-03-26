@@ -1,5 +1,5 @@
 import { Resource } from '@/public/shared/app.config'
-import { Drawer, DrawerBody, DrawerContent, DrawerHeader } from '@nextui-org/react'
+import { Drawer, DrawerBody, DrawerContent, DrawerHeader } from "@heroui/react"
 import { signOut, useSession } from 'next-auth/react'
 
 const Menubar = (props: any) => {

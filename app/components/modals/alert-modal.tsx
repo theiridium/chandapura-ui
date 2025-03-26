@@ -1,5 +1,5 @@
 "use client"
-import { Button, Modal, ModalBody, ModalContent } from '@nextui-org/react'
+import { Button, Modal, ModalBody, ModalContent } from "@heroui/react"
 import React, { useState } from 'react'
 
 const AlertModal = (props: any) => {
@@ -19,7 +19,7 @@ const AlertModal = (props: any) => {
                                 </Button>
                                 <Button color="primary" size='sm' isLoading={isLoading} onPress={async () => {
                                     setIsLoading(true);
-                                    !!await props.updateItemStatus() && onClose()
+                                    !!(await props.updateItemStatus()) && onClose()
                                 }}>
                                     Yes
                                 </Button>
@@ -29,7 +29,7 @@ const AlertModal = (props: any) => {
                 )}
             </ModalContent>
         </Modal>
-    )
+    );
 }
 
 export default AlertModal

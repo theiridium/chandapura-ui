@@ -1,7 +1,7 @@
 "use client"
 import { getPublicSingleSearchResponse } from '@/lib/apiLibrary';
 import { SearchPayload } from '@/lib/typings/dto';
-import { Button, Chip, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, User } from '@nextui-org/react'
+import { Button, Chip, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, User } from "@heroui/react"
 import { SearchIcon } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react'
 

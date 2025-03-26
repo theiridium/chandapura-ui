@@ -1,6 +1,6 @@
 "use client"
 import { userForgotPassword } from '@/lib/apiLibrary';
-import { Button, Input } from '@nextui-org/react'
+import { Button, Input } from "@heroui/react"
 import React, { useState } from 'react'
 import { toast } from 'react-toastify';
 

@@ -1,6 +1,6 @@
 import { deleteMediaFiles, putRequestApi, uploadMediaFiles } from "@/lib/apiLibrary";
 import { ListingWorkflow } from "@/lib/typings/enums";
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 import { Plus, X } from "lucide-react";
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useDropzone } from 'react-dropzone';

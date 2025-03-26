@@ -2,7 +2,7 @@ import React, { Suspense, useRef } from 'react'
 import BuisnessList from './business-list'
 import { Products } from '@/public/shared/app.config'
 import BusinessListLoading from '@/app/loading-components/business-list-loading'
-import { Button, Link } from '@nextui-org/react'
+import { Button, Link } from "@heroui/react"
 import { MoveRight } from 'lucide-react'
 
 const Business = () => {

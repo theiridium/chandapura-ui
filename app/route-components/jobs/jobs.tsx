@@ -1,6 +1,6 @@
 import React, { Suspense, useRef } from 'react'
 import { Products } from '@/public/shared/app.config'
-import { Button, Link } from '@nextui-org/react'
+import { Button, Link } from "@heroui/react"
 import { MoveRight } from 'lucide-react'
 import JobList from './job-list'
 import ItemListLoading from '@/app/loading-components/item-list-loading'

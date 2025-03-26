@@ -1,6 +1,6 @@
 "use client"
 import { ContactList } from '@/lib/typings/dto';
-import { Input } from '@nextui-org/react'
+import { Input } from "@heroui/react"
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react'
 
@@ -29,7 +29,7 @@ const ContactForm = ({ contactDetails, txtContactDisabled, defaultContact }: any
                 <Input type="email" name="contact_email_id" variant="flat" label="Business Email ID" disabled={txtContactDisabled} value={defaultContact?.contact_email_id || ""} onChange={(e) => handleFormChange(e)} />
             </div>
         </>
-    )
+    );
 }
 
 export default ContactForm

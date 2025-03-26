@@ -2,7 +2,7 @@ import React, { Suspense } from 'react'
 import ItemListLoading from '../../../loading-components/item-list-loading'
 import { Products } from '@/public/shared/app.config'
 import SaleList from './sale-list'
-import { Button, Link } from '@nextui-org/react'
+import { Button, Link } from "@heroui/react"
 import { MoveRight } from 'lucide-react'
 
 const Sale = () => {

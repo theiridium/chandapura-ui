@@ -1,6 +1,6 @@
 "use client"
 import { getPublicApiResponse } from '@/lib/apiLibrary';
-import { Button, Input } from '@nextui-org/react';
+import { Button, Input } from "@heroui/react";
 import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'

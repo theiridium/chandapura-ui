@@ -1,5 +1,5 @@
 "use client"
-import { NextUIProvider } from "@nextui-org/react"
+import { HeroUIProvider } from "@heroui/react"
 import { Provider, useSetAtom } from "jotai";
 import useScreenSize from "./hooks/useScreenSize";
 // import { screenParameters } from "@/lib/atom";
@@ -18,7 +18,7 @@ const Wrapper = ({
   // setScreenParameters(useScreenSize());
   return (
     <SessionProvider session={session}>
-      <NextUIProvider validationBehavior="native">
+      <HeroUIProvider validationBehavior="native">
         <Provider store={myStore}>
           <ToastContainer
             position="top-center"
@@ -40,7 +40,7 @@ const Wrapper = ({
           </div>
           <Footer />
         </Provider>
-      </NextUIProvider>
+      </HeroUIProvider>
     </SessionProvider>
   )
 }

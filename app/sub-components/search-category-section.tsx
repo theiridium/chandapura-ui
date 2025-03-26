@@ -4,7 +4,7 @@ import Image from "next/image"
 import ListArrow from "./list-arrow";
 import { useAtomValue } from "jotai";
 import { categories, classifiedCategories } from "@/lib/atom";
-import { Button, useDisclosure } from "@nextui-org/react";
+import { Button, useDisclosure } from "@heroui/react";
 import { useState } from "react";
 import CategoryListModal from "../components/modals/category-list-modal";
 

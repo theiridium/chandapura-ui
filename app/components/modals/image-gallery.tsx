@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@heroui/react";
 import ImageSlider from '@/app/sub-components/image-slider';
 
 const ImageGallery = (props: any) => {

@@ -1,6 +1,6 @@
 "use client"
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Button, Input, Link } from '@nextui-org/react';
+import { Button, Input, Link } from "@heroui/react";
 import { useCallback, useEffect, useState } from 'react';
 import FormLoading from '@/app/loading-components/form-loading';
 import { useSession } from 'next-auth/react';

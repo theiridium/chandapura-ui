@@ -1,7 +1,7 @@
 "use client"
 import ProductListModal from '@/app/components/modals/product-list-modal';
 import { getPublicApiResponse } from '@/lib/apiLibrary';
-import { Button, useDisclosure } from '@nextui-org/react';
+import { Button, useDisclosure } from "@heroui/react";
 import { ChevronDown } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { usePathname, useSearchParams } from 'next/navigation';

@@ -2,7 +2,7 @@
 import ContactCard from '@/app/sub-components/contact-card'
 import React from 'react'
 import ImageGallery from '@/app/components/modals/image-gallery';
-import { useDisclosure } from '@nextui-org/react';
+import { useDisclosure } from "@heroui/react";
 import { Products } from '@/public/shared/app.config';
 import PropertyDetailSale from './components/property-detail-sale';
 import PropertyDetailRent from './components/property-detail-rent';

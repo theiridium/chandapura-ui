@@ -6,7 +6,7 @@ import { Products } from '@/public/shared/app.config';
 import { getPublicApiResponse, putRequestApi } from '@/lib/apiLibrary';
 import { ImageParams } from '@/lib/typings/dto';
 import ImgSingleUploadLoading from '@/app/loading-components/img-single-upload-loading';
-import { Button, useDisclosure } from '@nextui-org/react';
+import { Button, useDisclosure } from "@heroui/react";
 import { toast } from 'react-toastify';
 import FormLoading from '@/app/loading-components/form-loading';
 import { ListingWorkflow } from '@/lib/typings/enums';

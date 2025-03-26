@@ -1,4 +1,4 @@
-import { RadioGroup, Radio, cn } from "@nextui-org/react";
+import { RadioGroup, Radio, cn } from "@heroui/react";
 
 export const RadioBox = (props: any) => {
     const { children, ...otherProps } = props;

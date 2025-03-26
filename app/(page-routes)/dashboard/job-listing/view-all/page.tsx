@@ -6,7 +6,7 @@ import { getPublicApiResponse, putRequestApi } from '@/lib/apiLibrary';
 import { ConvertToReadableDate } from '@/lib/helpers';
 import { ListingWorkflow } from '@/lib/typings/enums';
 import { DropdownList, Products, Resource } from '@/public/shared/app.config';
-import { Button, Link, useDisclosure } from '@nextui-org/react';
+import { Button, Link, useDisclosure } from "@heroui/react";
 import { CalendarCheck, MapPin, MoveRight, Pencil, Plus } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';

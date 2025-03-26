@@ -1,6 +1,6 @@
 'use client'
 import ImageGallery from '@/app/components/modals/image-gallery';
-import { useDisclosure } from '@nextui-org/react';
+import { useDisclosure } from "@heroui/react";
 import { Phone } from 'lucide-react';
 import ViewLocationMap from '@/app/components/maps/view-location-map';
 import Breadcrumb from '@/app/sub-components/breadcrumb';

@@ -421,7 +421,7 @@ header {
     @apply border-t-1 last:border-b-1 lg:[&:nth-last-child(3)]:border-b-1 lg:[&:nth-last-child(2)]:border-b-1 text-slate-500 hover:text-color1d py-4 px-0 md:px-7 text-xl font-semibold text-center h-[88px] flex items-center justify-center;
   }
   .doc-section {
-    @apply text-slate-600;
+    @apply text-sm md:text-base text-slate-600;
   }
   .doc-section h1 {
     @apply text-2xl md:text-4xl font-semibold mb-2;

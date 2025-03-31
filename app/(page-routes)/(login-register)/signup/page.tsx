@@ -7,6 +7,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { userRegistration } from '@/lib/apiLibrary';
 import { toast } from 'react-toastify';
 import ReCAPTCHA from "react-google-recaptcha";
+import { PageLinks } from "@/public/shared/app.config";
 
 const Page = () => {
     const searchParams = useSearchParams();
@@ -106,7 +107,7 @@ const Page = () => {
                             <p className='my-5'>Already have an account? <a className='text-color1d hover:underline cursor-pointer' href='/login'>Sign In</a></p>
                         </form>
                         <div className='text-tnc'>
-                            <p>By creating an account or logging in, you agree with Chandapura.com&apos;s <a href='#' className='text-color1d hover:underline'>Terms and Conditions</a> and <a href='#' className='text-color1d hover:underline'>Privacy Policy</a>.</p>
+                            <p>By creating an account or logging in, you agree with Chandapura.com&apos;s <a href={PageLinks.termsAndConditions} target="_blank" className='text-color1d hover:underline'>Terms and Conditions</a> and <a href={PageLinks.privacyPolicy} target="_blank" className='text-color1d hover:underline'>Privacy Policy</a>.</p>
                         </div>
                     </div>
                 </div>

@@ -50,7 +50,8 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-input, textarea {
+input,
+textarea {
   font-size: 16px !important;
 }
 
@@ -418,6 +419,30 @@ header {
   }
   .category-list-link {
     @apply border-t-1 last:border-b-1 lg:[&:nth-last-child(3)]:border-b-1 lg:[&:nth-last-child(2)]:border-b-1 text-slate-500 hover:text-color1d py-4 px-0 md:px-7 text-xl font-semibold text-center h-[88px] flex items-center justify-center;
+  }
+  .doc-section {
+    @apply text-slate-600;
+  }
+  .doc-section h1 {
+    @apply text-2xl md:text-4xl font-semibold mb-2;
+  }
+  .doc-section h2 {
+    @apply text-xl font-semibold my-8;
+  }
+  .doc-section h3 {
+    @apply font-semibold;
+  }
+  .doc-section p {
+    @apply my-5;
+  }
+  .doc-section ul {
+    @apply my-5;
+  }
+  .doc-section li {
+    @apply list-disc list-inside mb-2;
+  }
+  .doc-section .alpha-list li {
+    @apply !list-none list-inside mb-2 ml-5;
   }
 }
 

@@ -1,5 +1,6 @@
 "use client"
 import { getPublicApiResponse } from '@/lib/apiLibrary';
+import { PageLinks } from '@/public/shared/app.config';
 import { Button, Input } from "@heroui/react";
 import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -99,7 +100,7 @@ const Page = () => {
                         <p className='my-5'>Don&apos;t have an account? <a className='text-color1d hover:underline cursor-pointer' href='/signup'>Sign Up</a></p>
                     </form>
                     <div className='text-tnc'>
-                        <p>By creating an account or logging in, you agree with Chandapura.com&apos;s <a href='#' className='text-color1d hover:underline'>Terms and Conditions</a> and <a href='#' className='text-color1d hover:underline'>Privacy Policy</a>.</p>
+                        <p>By creating an account or logging in, you agree with Chandapura.com&apos;s <a href={PageLinks.termsAndConditions} target="_blank" className='text-color1d hover:underline'>Terms and Conditions</a> and <a href={PageLinks.privacyPolicy} target="_blank" className='text-color1d hover:underline'>Privacy Policy</a>.</p>
                     </div>
                 </div>
             </div>

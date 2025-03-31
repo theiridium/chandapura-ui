@@ -1,4 +1,4 @@
-import { Products } from "@/public/shared/app.config"
+import { Products, PageLinks } from "@/public/shared/app.config"
 
 const Footer = () => {
   return (
@@ -39,16 +39,16 @@ const Footer = () => {
           <hr className="my-6 border-gray-200 sm:mx-auto lg:my-8" />
           <div className="sm:flex sm:items-center sm:justify-between">
             <div className="flex flex-col lg:flex-row gap-y-2 text-xs xs:text-sm">
-              <span className="flex-none text-center md:flex-auto sm:text-center !pl-0 px-3">© {new Date().getFullYear()} <a href="https://flowbite.com/" className="hover:underline">Chandapura.com</a>. All Rights Reserved.</span>
+              <span className="flex-none text-center md:flex-auto sm:text-center !pl-0 px-3">© {new Date().getFullYear()} <a href="/" className="hover:underline">Chandapura.com</a>. All Rights Reserved.</span>
               <div className="*:px-3 text-center flex flex-col sm:flex-row">
-                <a href="/privacy-policy" target="_blank" className="sm:text-center hover:underline md:border md:border-y-0 md:border-r-0">Privacy Policy</a>
-                <a href="/terms-and-conditions" target="_blank" className="sm:text-center hover:underline md:border md:border-y-0 md:border-r-0">Terms &amp; Conditions</a>
-                <a href="/sitemap.xml" className="sm:text-center hover:underline md:border md:border-y-0 md:border-r-0">Sitemap</a>
+                <a href={PageLinks.privacyPolicy} target="_blank" className="sm:text-center hover:underline md:border md:border-y-0 md:border-r-0">Privacy Policy</a>
+                <a href={PageLinks.termsAndConditions} target="_blank" className="sm:text-center hover:underline md:border md:border-y-0 md:border-r-0">Terms &amp; Conditions</a>
+                {/* <a href="/sitemap.xml" className="sm:text-center hover:underline md:border md:border-y-0 md:border-r-0">Sitemap</a> */}
               </div>
             </div>
             <div className="flex justify-center mt-5 gap-5 lg:mt-0 flex-col lg:flex-row md:mr-[64px]">
               {/* <div className="text-xs text-center">Developed by <a href="https://www.priyankadas.com/">Priyanka Das</a></div> */}
-              {/* <div className="text-xs text-center">Developed by Priyanka Das</div> */}
+              <div className="text-xs text-center">Developed by Priyanka Das</div>
               <div className="flex justify-center">
                 <a href="#" className="">
                   <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 8 19">

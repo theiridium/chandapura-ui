@@ -267,6 +267,16 @@ module.exports = {
         isPublishedFilter: `filters[publish_status][$eq]=true&filters[payment_details][expiry_date_timestamp][$gt]=${currentDate}`,
       },
     },
+    termsConditions: {
+      api: {
+        base: "legal-document?fields=terms_conditions",
+      },
+    },
+    privacyPolicy: {
+      api: {
+        base: "legal-document?fields=privacy_policy",
+      },
+    },
     pricingPlan: {
       api: {
         base: "pricing-plans?filters[name][$eq]",
@@ -369,7 +379,8 @@ module.exports = {
         base: "business-listings",
         sortByName: "name:asc",
         sortByDate: "updatedAt:desc",
-        populate: "populate=featured_image,payment_details,area,category,sub_category,advertisement",
+        populate:
+          "populate=featured_image,payment_details,area,category,sub_category,advertisement",
         filter: "filters[author][email][$eq]",
       },
     },
@@ -485,5 +496,9 @@ module.exports = {
       { number: "4", label: "Fourth" },
       { number: "5", label: "Fifth" },
     ],
+  },
+  PageLinks: {
+    termsAndConditions: "/terms-and-conditions",
+    privacyPolicy: "/privacy-policy",
   },
 };

@@ -294,7 +294,7 @@ header {
     @apply text-sm text-gray-500;
   }
   .tags {
-    @apply flex flex-wrap lg:flex-nowrap gap-2 lg:gap-x-2 mb-5 overflow-x-auto;
+    @apply flex flex-wrap gap-2 lg:gap-x-2 mb-5;
   }
   .job-card-tags {
     @apply flex flex-nowrap gap-x-2 overflow-x-auto *:bg-white *:py-1 *:px-2 *:text-nowrap text-xs font-medium;
@@ -321,7 +321,7 @@ header {
     @apply border border-neutral-300 rounded-lg aspect-square grid place-items-center text-center p-0 md:p-2 min-w-[120px] max-w-[120px] md:min-w-[130px] md:max-w-[130px] hover:bg-color2d/10 hover:border-neutral-400;
   }
   .mini-card .text {
-    @apply text-xs md:text-sm text-gray-600 font-medium w-24 lg:w-auto;
+    @apply text-xs lg:text-sm text-gray-600 font-medium w-24 lg:w-auto;
   }
   .form-nav {
     @apply border-l-3 border-color2d/30 *:-ml-[0.22rem] *:border-l-4 *:border-transparent text-lg *:my-5 *:py-2 *:px-5 mx-5 *:block sticky top-36 hover:*:bg-color2d/30 hover:*:rounded-r-lg;

@@ -29,11 +29,11 @@ export const metadata: Metadata = {
       siteName: "Chandapura.com",
       images: [
         {
-          url: "/images/logo.png",
+          url: "/images/og-logo.jpeg",
         },
       ],
     },
-    assets: "/images/logo.png",
+    assets: "/images/og-logo.jpeg",
 };
 
 export default async function RootLayout({

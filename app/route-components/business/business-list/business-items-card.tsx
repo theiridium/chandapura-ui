@@ -10,7 +10,7 @@ const BusinessItemsCard = ({ data, id, product }: any) => {
                             <img src="/images/placeholder.png" className="w-full h-full rounded-xl" /> :
                             <img src={data.featured_image.url} className="w-full h-full rounded-xl" />}
                     </div>
-                    <div className="w-full flex flex-col justify-between">
+                    <div className="w-full flex flex-col justify-between lg:overflow-auto">
                         <div>
                             <h2 className="md:text-lg font-medium mb-2">{data.sub_category.name} in {data.area.name}</h2>
                             <h3 className="font-semibold mb-3 text-gray-500">{data.name}</h3>

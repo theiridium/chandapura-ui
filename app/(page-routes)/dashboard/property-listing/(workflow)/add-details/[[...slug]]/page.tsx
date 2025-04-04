@@ -192,7 +192,7 @@ const Page = () => {
         const payload: PropertyListing = {
             ...formdata,
             contact: contact,
-            step_number: ListingWorkflow.AddDetails,
+            step_number: (!source) ? ListingWorkflow.AddDetails : apiRes.step_number,
             location: location,
             details_by_listingtype: [propertyDetails]
         }

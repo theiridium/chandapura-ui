@@ -211,7 +211,7 @@ const Page = () => {
             ...formdata,
             contact: contact,
             bus_hours: stringifyBusHours(businessList.bus_hours),
-            step_number: ListingWorkflow.AddDetails,
+            step_number: (!source) ? ListingWorkflow.AddDetails : apiRes.step_number,
             location: location
         }
         postBusinessListing(payload);

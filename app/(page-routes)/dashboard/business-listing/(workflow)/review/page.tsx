@@ -59,7 +59,7 @@ const Page = () => {
             }
             else if (type === "new" || type === "renew" || type === 'edit_back') {
                 let payload = {
-                    step_number: ListingWorkflow.Review
+                    step_number: type === "new" ? ListingWorkflow.Review : apiRes.step_number,
                 }
                 const endpoint = Products.business.api.base;
                 const response = await putRequestApi(endpoint, payload, source);

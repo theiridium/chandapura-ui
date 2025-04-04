@@ -267,7 +267,7 @@ header {
     @apply border border-gray-300 border-t-0 rounded-b-2xl px-4 lg:px-6 h-40 md:h-40 grid content-center;
   }
   .business-card-body {
-    @apply border border-gray-300 border-t-0 rounded-b-2xl px-4 lg:px-6 h-40 md:h-48 grid content-center;
+    @apply border border-gray-300 border-t-0 rounded-b-2xl px-4 lg:px-6 h-44 md:h-48 grid content-center;
   }
   .text-login-form {
     @apply !w-full md:!w-3/4 !font-semibold !text-gray-500 !mx-auto;

@@ -167,6 +167,15 @@ header {
     color: #333;
     @apply bg-color2d/80 hover:bg-color2d py-2 px-3 text-sm rounded-md font-medium;
   }
+  .btn-secondary {
+    color: #333;
+    @apply bg-color2d/80 hover:bg-color2d py-2 px-3 text-sm rounded-md font-medium;
+  }
+  .btn-secondary-banner {
+    color: #333;
+    @apply bg-color2d/90 hover:bg-color2d text-xs py-1 px-5 sm:py-2 sm:text-sm rounded-full font-medium absolute left-1/2 -translate-x-1/2
+    bottom-1 sm:bottom-5 md:bottom-8 lg:bottom-10 xl:bottom-16;
+  }
   .btn-contact {
     /* color: #fff;
     background-color: rgb(0 175 64); */
@@ -206,11 +215,11 @@ header {
   }
   #section-1 {
     /* @apply bg-color2d/80 pt-10 pb-14 mb-20; */
-    @apply bg-gradient-to-r from-color1d/10 to-white pt-10 pb-14 mb-20;
+    @apply bg-color1d/10 pt-10 pb-14 mb-20;
   }
   #section-4 {
     /* @apply bg-color2d/80 pt-10 pb-14 mb-20; */
-    @apply bg-color2d/10 py-5 mb-20;
+    @apply bg-color2d/20 py-5 mb-20;
   }
   .card-list-row {
     @apply flex overflow-x-auto gap-5 lg:gap-0 lg:*:m-3;

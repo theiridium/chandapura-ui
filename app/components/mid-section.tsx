@@ -19,9 +19,9 @@ const MidSection = () => {
         <div className="max-w-screen-xl mx-auto px-3">
           <div className="flex items-center">
             <div>
-              <h3 className="text-md sm:text-lg md:text-xl md:text-3xl lg:text-4xl font-medium leading-relaxed md:!leading-[3.5rem]">
+              <h3 className="text-md sm:text-lg md:text-xl md:text-3xl lg:text-4xl font-medium leading-relaxed lg:!leading-[3.5rem]">
                 Why Store It? When you can Sell It for
-                <span className="before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-color1d/60 relative inline-block ml-3">
+                <span className="before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-color1d/60 relative inline-block ml-2 mr-1 md:ml-3">
                   <span className="relative text-white">Free</span>
                 </span> on <span className="text-highlight">Chandapura.com</span>!
               </h3>
@@ -34,6 +34,12 @@ const MidSection = () => {
         </div>
       </div>
       <Classifieds />
+      <div id="section-6" className="mb-20">
+        <div className="w-full 2xl:max-w-screen-xl mx-auto relative">
+          <img src="https://res.cloudinary.com/dxyjyq5ca/image/upload/v1743890843/Chandapura.com/Banner_Ad_offer_93d57ab8fe.png" />
+          <a href="/dashboard/advertise/add-details?type=new" className="btn-secondary-banner">Get Started</a>
+        </div>
+      </div>
       <Jobs />
     </div>
   )

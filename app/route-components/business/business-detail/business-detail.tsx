@@ -1,7 +1,7 @@
 'use client'
 import ImageGallery from '@/app/components/modals/image-gallery';
-import { useDisclosure } from "@heroui/react";
-import { Phone } from 'lucide-react';
+import { Button, Link, useDisclosure } from "@heroui/react";
+import { Phone, SquareArrowOutUpRight } from 'lucide-react';
 import ViewLocationMap from '@/app/components/maps/view-location-map';
 import Breadcrumb from '@/app/sub-components/breadcrumb';
 import ContactButton from '@/app/sub-components/contact-btn';
@@ -52,6 +52,12 @@ const BusinessDetail = ({ data }: any) => {
                   <div>
                     <h1 className="md:text-xl font-medium text-gray-500 mb-5"><span className='text-highlight'>{data.sub_category.name}</span> in {data.area.name}</h1>
                     <h2 className="font-semibold text-xl lg:text-3xl">{data.name}</h2>
+                    {!!data.website &&
+                      <div className='mt-2' >
+                        <Button size='sm' color="primary" variant="flat" as={Link} href={data.website} target='blank'
+                          endContent={<SquareArrowOutUpRight className='text-color1d' size={16} />}>Visit Website</Button>
+                      </div>
+                    }
                   </div>
                 </div>
                 <div className='mb-12'>

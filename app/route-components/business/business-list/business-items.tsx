@@ -1,12 +1,13 @@
-import { getPublicApiResponse } from "@/lib/apiLibrary";
+import { getSearchResult } from "@/app/actions";
 import BusinessItemsList from "./business-items-list";
 
 const BusinessItems = async (props: any) => {
-  const attr = props.product.api;
-  let apiUrl = `${attr.base}?sort=updatedAt%3A${attr.sort}&${attr.populate}`
-  apiUrl = props.sub_category? `${apiUrl}&filters[sub_category][slug][$eq]=${props.sub_category}`: apiUrl
-  const res = await getPublicApiResponse(apiUrl);
-  return <BusinessItemsList result={res} product={props.product} />
+  let res = null;
+  if (props.searchParams && props.searchParams.q) {
+    let search = {searchParams: props.searchParams, page: 1};
+    res = await getSearchResult(search);
+  }
+  return <BusinessItemsList result={res} product={props.product} searchParams={props.searchParams} />
 }
 
 export default BusinessItems

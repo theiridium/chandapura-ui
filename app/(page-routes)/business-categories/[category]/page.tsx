@@ -7,20 +7,18 @@ import { Suspense } from "react"
 const Page = ({ params }: any) => {
   return (
     <>
-      <div className="max-w-screen-xl mx-auto px-3">
-        <div className="grid mt-3 mb-10 lg:my-10 relative gap-5 lg:gap-14">
-          <div className="order-first mb-8 lg:mb-0">
+        <div className="grid relative">
+          <div className="max-w-screen-2xl mx-auto order-first mb-10">
             <Suspense fallback={<AdLoading />}>
-              <AdBanner placement="grid grid-cols-1 gap-x-10 mb-5" />
+              <AdBanner placement="grid grid-cols-1 gap-x-10" />
             </Suspense>
           </div>
-          <div className="">
+          <div className="max-w-screen-xl mb-10 mx-auto px-3 w-full">
             <Suspense fallback={<GlobalSearchListLoading />}>
               <Categories slug={params.category} />
             </Suspense>
           </div>
         </div>
-      </div>
     </>
   )
 }

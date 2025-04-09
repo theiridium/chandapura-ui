@@ -1,24 +1,35 @@
-import { Button, Modal, ModalBody, ModalContent, useDisclosure } from '@nextui-org/react'
-import React from 'react'
+"use client"
+import { Button, Modal, ModalBody, ModalContent } from "@heroui/react"
+import React, { useState } from 'react'
 
 const AlertModal = (props: any) => {
+    const [isLoading, setIsLoading] = useState(false);
     return (
-        <Modal isOpen={props.isOpen} onClose={props.onClose} size='2xl'>
+        <Modal isOpen={props.isOpen} onOpenChange={props.onOpenChange} hideCloseButton={true} isDismissable={false}>
             <ModalContent>
                 {(onClose) => (
                     <>
-                        <ModalBody className='p-8 divide-y'>
-                            <p>{props.text}</p>
-                            <Button className='m-auto w-fit-content my-4' color='primary' onPress={onClose}>
-                                OK
-                            </Button>
-                            <p className='text-sm text-red-500'>* Please check your spam box in case you do not find the email in your inbox.</p>
+                        <ModalBody className='p-5'>
+                            <p className='text-center text-sm'>
+                                {props.bodyContent}
+                            </p>
+                            <div className='flex items-center justify-center gap-5'>
+                                <Button color="danger" size='sm' variant="flat" onPress={onClose} isDisabled={isLoading}>
+                                    Cancel
+                                </Button>
+                                <Button color="primary" size='sm' isLoading={isLoading} onPress={async () => {
+                                    setIsLoading(true);
+                                    !!(await props.updateItemStatus()) && onClose()
+                                }}>
+                                    Yes
+                                </Button>
+                            </div>
                         </ModalBody>
                     </>
                 )}
             </ModalContent>
         </Modal>
-    )
+    );
 }
 
 export default AlertModal

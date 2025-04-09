@@ -1,11 +1,12 @@
-import { deleteMediaFiles, uploadMediaFiles } from "@/lib/apiLibrary";
-import { Button } from "@nextui-org/react";
+import { deleteMediaFiles, putRequestApi, uploadMediaFiles } from "@/lib/apiLibrary";
+import { ListingWorkflow } from "@/lib/typings/enums";
+import { Button } from "@heroui/react";
 import { Plus, X } from "lucide-react";
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useDropzone } from 'react-dropzone';
 import { toast } from "react-toastify";
 
-const MultiImage = ({ imageParams, uploadSuccess }: any) => {
+const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditMode }: any) => {
     const [files, setFiles] = useState<any[]>([]);
     const [existingFiles, setExistingFiles] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
@@ -53,15 +54,21 @@ const MultiImage = ({ imageParams, uploadSuccess }: any) => {
 
             // Upload files in parallel
             if (files.length > 0) {
-                const uploadPromises = files.map(file => {
+                let updateStep: any = null;
+                const uploadPromises = files.map(async file => {
                     const formData = new FormData();
                     Object.keys(imageParams).forEach(key => {
                         formData.append(key, imageParams[key]);
                     });
                     formData.append("files", file);
-                    return uploadMediaFiles(formData);
+                    const response = await uploadMediaFiles(formData);
+                    let payload = {
+                        step_number: imageParams.step_number === ListingWorkflow.Payment ? ListingWorkflow.Payment : ListingWorkflow.UploadImages,
+                        publish_status: imageParams.publish_status
+                    }
+                    if (response) updateStep = await putRequestApi(imageParams.endpoint, payload, imageParams.refId);
+                    return updateStep;
                 });
-
                 await Promise.all(uploadPromises);
             }
         } catch (error) {
@@ -74,7 +81,7 @@ const MultiImage = ({ imageParams, uploadSuccess }: any) => {
     }, [delFilesList, files, imageParams, uploadSuccess]);
 
     const newImgPreview = useMemo(() => (
-        files.map((file: any) => (
+        files.length > 0 && files.map((file: any) => (
             <div className="relative transition-all duration-300 hover:brightness-90" key={file.name}>
                 <img className="border object-cover w-80 aspect-square rounded-md" src={file.preview}
                     onLoad={() => { URL.revokeObjectURL(file.preview) }}
@@ -87,7 +94,7 @@ const MultiImage = ({ imageParams, uploadSuccess }: any) => {
     ), [files, removeFile]);
 
     const existingImageBlock = useMemo(() => (
-        existingFiles.map((file: any) => (
+        existingFiles && existingFiles.map((file: any) => (
             <div className="relative transition-all duration-300 hover:brightness-90" key={file.name}>
                 <img className="border object-cover w-80 aspect-square rounded-md" src={file.url} />
                 <button disabled={loading} className="absolute top-3 right-3 cursor-pointer bg-slate-900/90 hover:bg-red-700 rounded-full p-1" onClick={() => removeExtFile(file.id, file)}>
@@ -105,6 +112,12 @@ const MultiImage = ({ imageParams, uploadSuccess }: any) => {
         setExistingFiles(imageParams.imgData);
     }, [imageParams]);
 
+    const isImagesInGallery = files.length > 0 || delFilesList.length > 0;
+
+    useEffect(() => {
+        setIsImagesInGallery(isImagesInGallery);
+    }, [isImagesInGallery, setIsImagesInGallery]);
+
     return (
         <>
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
@@ -119,9 +132,9 @@ const MultiImage = ({ imageParams, uploadSuccess }: any) => {
                     </div>
                 </div>
             </div>
-            {((files.length > 0) || (delFilesList.length > 0)) &&
+            {isImagesInGallery &&
                 <div className="flex justify-center mb-4">
-                    <Button color="success" className="w-auto rounded-lg py-2" isLoading={loading} onClick={uploadImageWithContent}>
+                    <Button color="success" className="w-auto rounded-lg py-2" isLoading={loading} onPress={uploadImageWithContent}>
                         Save Images to Gallery
                     </Button>
                 </div>

@@ -14,7 +14,7 @@ axiosInstance.interceptors.request.use(async (config: any) => {
     // console.log(session.strapiToken)
     config.headers.Authorization = `Bearer ${session.strapiToken}`;
   } else {
-    config.headers.Authorization = `Bearer ${process.env.NEXT_PUBLIC_STRAPI_API_TOKEN}`;
+    config.headers.Authorization = `Bearer ${process.env.STRAPI_API_TOKEN}`;
   }
   // console.log(config)
   return config;

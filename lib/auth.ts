@@ -25,7 +25,7 @@ const authOptions = {
                     // return res.user
                     return {
                         firstname: res.user.firstname,
-                        name: res.user.firstname + res.user.lastname,
+                        name: `${res.user.firstname} ${res.user.lastname}`,
                         email: res.user.email,
                         phone: res.user.phone,
                         id: res.user.id.toString(),
@@ -39,9 +39,19 @@ const authOptions = {
         }),
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID as string,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+            authorization: {
+                params: {
+                    prompt: "login",
+                    access_type: "online",
+                    response_type: "code"
+                }
+            }
         })
     ],
+    session: {
+        maxAge: 15 * 24 * 60 * 60
+    },
     callbacks: {
         async jwt({ user, token, account, trigger, session }: any) {
             if (user) {  // Note that this if condition is needed

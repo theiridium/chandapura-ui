@@ -1,11 +1,16 @@
-import { getPublicApiResponse } from "@/lib/apiLibrary";
 import ProductItemsList from "./product-items-list";
+import { getSearchResult } from "@/app/actions";
 
 const ProductItems = async (props: any) => {
-  const attr = props.product.api;
-  const res = await getPublicApiResponse(`${attr.base}?sort=updatedAt%3A${attr.sort}&populate=property_images,user,real_estate_amenities`);
+  let searchFilter = props.product.productType !== "real-estate" ? `listing_type = ${props.product.label}` : ""
+  let res = null;
+  if (props.searchParams && props.searchParams.q) {
+    props.searchParams.filter = searchFilter;
+    let search = { searchParams: props.searchParams, page: 1 };
+    res = await getSearchResult(search);
+  }
 
-  return <ProductItemsList result={res} product={props.product} />
+  return <ProductItemsList result={res} product={props.product} searchParams={props.searchParams} />
 }
 
 export default ProductItems

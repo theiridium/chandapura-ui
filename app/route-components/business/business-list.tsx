@@ -1,11 +1,11 @@
 import { Products } from "@/public/shared/app.config";
 import BusinessCard from "./business-card";
-import ListArrow from "./list-arrow";
 import { getPublicApiResponse } from "@/lib/apiLibrary";
+import ListArrow from "@/app/sub-components/list-arrow";
 
 const BusinessList = async () => {
   const attr = Products.business.api;
-  const businessList = await getPublicApiResponse(`${attr.base}?${attr.isPublishedFilter}&${attr.populate}`);
+  const businessList = await getPublicApiResponse(`${attr.base}?sort=publishedAt%3A${attr.sort}&${attr.isPublishedFilter}&${attr.populate}&pagination%5Blimit%5D=15`);
   return (
     <>
       <div className="business-card-list-row">
@@ -13,7 +13,7 @@ const BusinessList = async () => {
           <BusinessCard key={i} list={bus} id={bus.id} />
         ))}
       </div>
-      <ListArrow size={400} row="business-card-list-row" infinite={true} />
+      <ListArrow size={424} row="business-card-list-row" infinite={true} displayArrowLg={businessList.data.length > 3} />
     </>
   )
 }

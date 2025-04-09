@@ -1,17 +1,19 @@
-import ListArrow from "../../business/list-arrow";
+import { Products } from "@/public/shared/app.config";
 import RentCard from "./rent-card"
 import { getPublicApiResponse } from "@/lib/apiLibrary";
+import ListArrow from "@/app/sub-components/list-arrow";
 
 const RentList = async () => {
-  const propertyList = await getPublicApiResponse("real-estates?sort=updatedAt%3Adesc&pagination%5Blimit%5D=4&filters[listing_type][$eq]=Rent&populate=property_images%2C%20user");
+  const attr = Products.rent.api;
+  const res = await getPublicApiResponse(`${attr.base}?sort=updatedAt%3Adesc&pagination%5Blimit%5D=10&populate=${attr.populateList}&${attr.listingTypeFilter}&${attr.isPublishedFilter}`);
   return (
     <>
-      <div className="card-list-row">
-        {propertyList.data.map((property: any, i: any) => (
-          <RentCard key={i} list={property} id={property.id} />
+      <div className="card-list-row rent-card">
+        {res.data.map((property: any, i: any) => (
+          <RentCard key={i} list={property} id={property.id} apiComponent={attr.component} />
         ))}
       </div>
-      <ListArrow size={293} row="card-list-row" />
+      <ListArrow size={317} row="rent-card" infinite={true} displayArrowLg={res.data.length > 4} />
     </>
   )
 }

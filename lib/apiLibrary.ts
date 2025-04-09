@@ -1,9 +1,12 @@
 "use server"
 import axios from "axios";
-import { SearchPayload } from "./typings/dto";
+import { RazOrderPayload, SearchPayload } from "./typings/dto";
 import axiosInstance from "./axiosInstance";
 
+const currentDate = new Date().getTime();
+
 export const getPublicApiResponse = async (endpoint: any) => {
+    // await new Promise(resolve => setTimeout(resolve, 5000))
     try {
         const response = await axiosInstance.get(endpoint, {
             headers: {
@@ -116,17 +119,14 @@ export const userRegistration = async (payload: User.Register) => {
         });
         return response.data;
     } catch (err: any) {
-        console.log(err)
-        return err.response?.data || { error: 'An error occurred' };
+        return { error: err.response?.data?.error?.message };
     }
 }
 
 export const userEmailConfirmation = async (email: string) => {
     const endpoint = "auth/send-email-confirmation";
     let bodyContent = JSON.stringify({
-        "data": {
-            "email": email
-        }
+        "email": email
     });
     try {
         const response = await axiosInstance.post(endpoint, bodyContent, {
@@ -137,8 +137,41 @@ export const userEmailConfirmation = async (email: string) => {
         });
         return response.data;
     } catch (err: any) {
-        console.log(err)
-        return err.response?.data || { error: 'An error occurred' };
+        return { error: err.response?.data?.error?.message };
+    }
+}
+
+export const userForgotPassword = async (email: string) => {
+    const endpoint = "auth/forgot-password";
+    let bodyContent = JSON.stringify({
+        "email": email
+    });
+    try {
+        const response = await axiosInstance.post(endpoint, bodyContent, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+        });
+        return response.data;
+    } catch (err: any) {
+        return { error: err.response?.data?.error?.message };
+    }
+}
+
+export const userResetPassword = async (payload: User.PasswordReset) => {
+    const endpoint = "auth/reset-password";
+    let bodyContent = JSON.stringify(payload);
+    try {
+        const response = await axiosInstance.post(endpoint, bodyContent, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+        });
+        return response.data;
+    } catch (err: any) {
+        return { error: err.response?.data?.error?.message };
     }
 }
 
@@ -148,14 +181,21 @@ export const getPublicSingleSearchResponse = async (payload: SearchPayload | und
     let headersList = {
         Accept: "application/json",
         'Access-Control-Allow-Origin': '*',
-        Authorization: "Bearer " + process.env.NEXT_PUBLIC_MEILISEARCH_TOKEN,
+        Authorization: "Bearer " + process.env.MEILISEARCH_TOKEN,
         "Content-Type": "application/json"
     }
+    let filters = payload?.filter;
+    (!!filters) && !payload?.noExpFilter && (filters = [...filters, "publish_status = true", `payment_details.expiry_date_timestamp > ${currentDate}`, 'payment_details.isPaymentSuccess = true']);
     let bodyContent = JSON.stringify({
         "queries": [
             {
                 "indexUid": payload?.indexUid,
-                "q": payload?.q
+                "q": payload?.q,
+                "filter": filters,
+                "facets": payload?.searchFacets,
+                "sort": payload?.sort,
+                "page": payload?.page,
+                "hitsPerPage": payload?.hitsPerPage
             }
         ]
     });
@@ -168,6 +208,34 @@ export const getPublicSingleSearchResponse = async (payload: SearchPayload | und
     let response = await axios.request(reqOptions).catch(err => err.response);
     return response.data;
 }
+
+// const paymentHost: any = process.env.NEXT_PUBLIC_MEILISEARCH_URL
+export const createOrderId = async (razOrderPayload: RazOrderPayload) => {
+    try {
+        const response = await fetch(`${process.env.NEXTAUTH_URL}api/order`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                amount: Math.round(parseFloat(razOrderPayload.totalAmount) * 100),
+                currency: "INR",
+                receipt: razOrderPayload.receiptId,
+                notes: { ...razOrderPayload }
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        return data.orderId;
+
+    } catch (error) {
+        console.error('There was a problem with your fetch operation:', error);
+    }
+};
 
 export const getScreenSize = async () => {
     await new Promise(resolve => setTimeout(resolve, 3000))

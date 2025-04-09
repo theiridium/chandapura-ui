@@ -1,6 +1,7 @@
 import { getPublicApiResponse } from "@/lib/apiLibrary";
 import BusinessDetail from "./business-detail";
 import { Products } from "@/public/shared/app.config";
+import Breadcrumb from "@/app/sub-components/breadcrumb";
 
 const BusinessDetailLayout = async ({ id }: any) => {
     const attr = Products.business.api;
@@ -8,6 +9,7 @@ const BusinessDetailLayout = async ({ id }: any) => {
     const item = data[0];
     return (
         <>
+            <div className="hidden lg:block"><Breadcrumb blockSecondLast={true} /></div>
             <BusinessDetail data={item} />
         </>
     )

@@ -1,36 +1,56 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import BusinessItemsCard from './business-items-card'
-import { useAtomValue } from 'jotai';
-import { searchResult } from '@/lib/atom';
-import { isEmptyObject } from '@/lib/helpers';
+import Breadcrumb from '@/app/sub-components/breadcrumb';
+import { useInView } from 'react-intersection-observer';
+import GlobalSearchListLoading from '@/app/loading-components/global-search-list-loading';
+import { getSearchResult } from '@/app/actions';
 
 const BusinessItemsList = (props: any) => {
-    const [isSearchHit, setIsSearchHit] = useState<boolean>(false);
-    const search = useAtomValue<any>(searchResult);
-    const [businessData, setBusinessData] = useState<any>(props.result.data);
-    const [searchedData, setSearchedData] = useState<any>();
+    const searchedData = props.result.results[0];
+    const [list, setList] = useState(props.result.results[0].hits);
+    const [totalPages, setTotalPages] = useState(props.result.results[0].totalPages);
+    const [page, setPage] = useState(1);
+    const [displayLoader, setDisplayLoader] = useState(true);
+    const { ref, inView, entry } = useInView({
+        threshold: 0,
+    });
+    const loadMore = async () => {
+        const next = page + 1;
+        let search = { searchParams: props.searchParams, page: next };
+        const res = await getSearchResult(search);
+        setPage(next);
+        setList((prev: any) => [
+            ...prev,
+            ...res.results[0].hits
+        ])
+    }
+
     useEffect(() => {
-        if (!isEmptyObject(search)) {
-            setIsSearchHit(true);
-            setSearchedData(search.results[0]);
-            setBusinessData(search.results[0].hits);
+        setList(props.result.results[0].hits);
+    }, [props.result.results]);
+
+    useEffect(() => {
+        if (totalPages === page || totalPages === 0) {
+            setDisplayLoader(false)
         }
-    }, [search])
+        else inView && loadMore();
+    }, [inView]);
+
     return (
         <>
-            {!isSearchHit && <h2 className="text-lg mb-4 mx-2 lg:mx-auto lg:mb-4">{props.result.meta.pagination.total} {props.result.meta.pagination.total === 1 ? 'result' : 'results'} from your search</h2>}
-            {isSearchHit && <h2 className="text-lg mb-4 mx-2 lg:mx-auto lg:mb-4">{searchedData.estimatedTotalHits} {searchedData.estimatedTotalHits === 1 ? 'result' : 'results'} from your search</h2>}
+            <h2 className="text-lg mb-4 mx-2 lg:mx-auto lg:mb-4">{searchedData.estimatedTotalHits || searchedData.totalHits} {searchedData.estimatedTotalHits === 1 || searchedData.totalHits === 1 ? 'result' : 'results'} from your search</h2>
+            <Breadcrumb blockSecondLast={true} />
             <div className="grid lg:grid-cols-4 lg:gap-10">
                 <div className="col-span-3">
                     <div className="grid grid-cols-1 gap-4 lg:gap-8 mb-4 lg:mb-10">
-                        {businessData.map((data: any, i: any) => (
+                        {list && list.map((data: any, i: any) => (
                             <BusinessItemsCard key={i} data={data} id={data.id} product={props.product} />
                         ))}
                     </div>
                 </div>
-                <div></div>
             </div>
+            {displayLoader && <div ref={ref}><GlobalSearchListLoading /></div>}
         </>
     )
 }

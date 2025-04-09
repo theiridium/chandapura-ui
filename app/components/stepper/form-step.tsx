@@ -1,41 +1,14 @@
 import { usePathname, useSearchParams } from 'next/navigation'
 import React from 'react'
 
-const steps = [
-    {
-        number: 1,
-        title: "Business Details",
-        currentPath: "add-details",
-        nextPath: "upload-images"
-    },
-    {
-        number: 2,
-        title: "Upload Images",
-        currentPath: "upload-images",
-        nextPath: "payment"
-    },
-    {
-        number: 3,
-        title: "Payment",
-        currentPath: "payment",
-        nextPath: "publish"
-    },
-    {
-        number: 4,
-        title: "Preview & Publish",
-        currentPath: "publish",
-        nextPath: "completed"
-    }
-]
-
-const FormStep = () => {
+const FormStep = ({ steps }: any) => {
     const pathname = usePathname();
-    const segments = pathname.split("/");
+    const segments: any = pathname.split("/");
     let flag = false;
     return (
-        <ol className="relative grid grid-cols-4 lg:flex lg:justify-normal lg:flex-col gap-x-5 lg:gap-y-16 text-gray-500 border-t lg:border-t-0 lg:border-s border-gray-200 dark:border-gray-700 dark:text-gray-400">
-            {steps.map((x, i) => {
-                let matchedRoute: any = Object.values(steps).find(x => segments.includes(x.currentPath))?.number;
+        <ol className={`relative grid grid-cols-${steps.length} lg:flex lg:justify-normal lg:flex-col gap-x-5 lg:gap-y-16 text-gray-500 border-t lg:border-t-0 lg:border-s border-gray-200 dark:border-gray-700 dark:text-gray-400`}>
+            {steps.map((x: any, i: any) => {
+                let matchedRoute: any = (Object.values(steps).find((x: any) => segments.includes(x.currentPath)) as any)?.number;
                 if (x.number === 1 && segments.includes(x.currentPath)) flag = false;
                 else {
                     if (i < matchedRoute - 1) flag = true;

@@ -1,5 +1,11 @@
+<<<<<<< Updated upstream
 import { deleteMediaFiles, putRequestApi, uploadMediaFiles } from "@/lib/apiLibrary";
 import { ListingWorkflow } from "@/lib/typings/enums";
+=======
+import { deleteMediaFiles, putRequestApi } from "@/lib/apiLibrary";
+import { ListingWorkflow } from "@/lib/typings/enums";
+import { uploadMediaFiles } from "@/lib/uploadMediaClient";
+>>>>>>> Stashed changes
 import { Button } from "@heroui/react";
 import { Plus, X } from "lucide-react";
 import { useEffect, useState, useCallback, useMemo } from "react";

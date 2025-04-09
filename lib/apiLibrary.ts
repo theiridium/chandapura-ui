@@ -1,7 +1,13 @@
 "use server"
 import axios from "axios";
 import { RazOrderPayload, SearchPayload } from "./typings/dto";
+<<<<<<< Updated upstream
 import axiosInstance from "./axiosInstance";
+=======
+import axiosInstance from "./axiosInstance.server";
+
+const currentDate = new Date().getTime();
+>>>>>>> Stashed changes
 
 const currentDate = new Date().getTime();
 
@@ -58,22 +64,23 @@ export const putRequestApi = async (endpoint: string, payload: any, id: any) => 
     }
 }
 
-export const uploadMediaFiles = async (data: any) => {
-    // await new Promise(resolve => setTimeout(resolve, 3000))
-    const endpoint = '/upload';
-    try {
-        const response = await axiosInstance.post(endpoint, data, {
-            headers: {
-                Accept: "*/*",
-                "Content-Type": "multipart/form-data",
-            },
-        });
-        return response.data;
-    } catch (err: any) {
-        console.log(err)
-        return err.response?.data || { error: 'An error occurred' };
-    }
-}
+// export const uploadMediaFiles = async (data: any, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void) => {
+//     // await new Promise(resolve => setTimeout(resolve, 3000))
+//     const endpoint = '/upload';
+//     try {
+//         const response = await axiosInstance.post(endpoint, data, {
+//             headers: {
+//                 Accept: "*/*",
+//                 "Content-Type": "multipart/form-data",
+//             },
+//             onUploadProgress
+//         });
+//         return response.data;
+//     } catch (err: any) {
+//         console.log(err)
+//         return err.response?.data || { error: 'An error occurred' };
+//     }
+// }
 
 export const deleteMediaFiles = async (id: any) => {
     // await new Promise(resolve => setTimeout(resolve, 3000))

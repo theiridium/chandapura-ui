@@ -2,6 +2,7 @@ import { Products } from "@/public/shared/app.config";
 import { postRequestApi, putRequestApi } from "./apiLibrary";
 import sub_cat from "@/lib/data/sub-category.json";
 import slugify from 'react-slugify';
+import imageCompression from 'browser-image-compression';
 
 export function IsProductUrl(val: string) {
   return Object.values(Products).some((product: any) => product.slug === val);
@@ -82,6 +83,17 @@ export const GetOrdinal = (num: number) => {
   return num + (suffixes[lastDigit] || "th");
 }
 
+<<<<<<< Updated upstream
+=======
+export const CompressAndConvertToWebP = async (file: any) => {
+  const options = {
+    fileType: 'image/webp',
+    useWebWorker: true,
+  };
+  return await imageCompression(file, options);
+};
+
+>>>>>>> Stashed changes
 export function ConvertCurrencyToWords(x: number) {
   if (x) {
     const num = x.toString();

@@ -1,16 +1,34 @@
+<<<<<<< Updated upstream
 import { deleteMediaFiles, postRequestApi, putRequestApi, uploadMediaFiles } from "@/lib/apiLibrary";
 import { ListingWorkflow } from "@/lib/typings/enums";
 import { Button, CircularProgress, Spinner } from "@heroui/react";
 import { Pencil } from "lucide-react";
+=======
+import { deleteMediaFiles, postRequestApi, putRequestApi } from "@/lib/apiLibrary";
+import { CompressAndConvertToWebP } from "@/lib/helpers";
+import { ListingWorkflow } from "@/lib/typings/enums";
+import { uploadMediaFiles } from "@/lib/uploadMediaClient";
+import { Button, CircularProgress, Progress, Spinner } from "@heroui/react";
+import { Pencil } from "lucide-react";
+import { useSession } from "next-auth/react";
+>>>>>>> Stashed changes
 import { useEffect, useState } from "react";
 import { useDropzone } from 'react-dropzone';
 import { toast } from "react-toastify";
 
 const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: any) => {
+<<<<<<< Updated upstream
+=======
+    const { data }: any = useSession();
+>>>>>>> Stashed changes
     const [files, setFiles] = useState<any>([]);
     const [loading, setLoading] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [blobUrls, setBlobUrls] = useState<any[]>([]);
+<<<<<<< Updated upstream
+=======
+    const [uploadProgress, setUploadProgress] = useState(0);
+>>>>>>> Stashed changes
     const [imgId, setImgId] = useState<any>(!!imageParams.imgData ? imageParams.imgData.id : null)
     const { getRootProps, getInputProps } = useDropzone({
         accept: {
@@ -26,6 +44,7 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: 
     });
 
     const uploadImageWithContent = async (file: any) => {
+<<<<<<< Updated upstream
         setLoading(true);
         setIsLoading(true);
         if (!!imgId) await deleteImage(imgId);
@@ -33,8 +52,44 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: 
         for (let key in imageParams) {
             if (imageParams.hasOwnProperty(key)) {
                 formData.append(key, imageParams[key]);
+=======
+        try {
+            setLoading(true);
+            setIsLoading(true);
+            if (!!imgId) await deleteImage(imgId);
+            const compressed = await CompressAndConvertToWebP(file);
+            let formData = new FormData();
+            for (let key in imageParams) {
+                if (imageParams.hasOwnProperty(key)) {
+                    formData.append(key, imageParams[key]);
+                }
+>>>>>>> Stashed changes
             }
+            let updateStep = null;
+            const fileName = `${imageParams.ref.split(".")[1]}_FI_${imageParams.refId}_${file.name}`;
+            formData.append("files", compressed, fileName.replace(' ','-').replace(/\.\w+$/, '.webp'));
+            // const response = await uploadMediaFiles(formData);
+            const response = await uploadMediaFiles(formData, data?.strapiToken, (progressEvent) => {
+                const percent = Math.round((progressEvent.loaded ?? 0) * 100 / (progressEvent.total ?? 1));
+                console.log(progressEvent)
+                console.log(percent)
+                setUploadProgress(percent);
+            });
+            let payload = {
+                step_number: imageParams.step_number === ListingWorkflow.Payment ? ListingWorkflow.Payment : ListingWorkflow.UploadImages,
+                publish_status: imageParams.publish_status
+            }
+            if (response) updateStep = await putRequestApi(imageParams.endpoint, payload, imageParams.refId);
+            if (updateStep) {
+                uploadSuccess();
+                setIsEditing(false);
+            }
+            setIsLoading(false);
         }
+        catch (error) {
+            console.error('Image upload error:', error);
+        }
+<<<<<<< Updated upstream
         let updateStep = null;
         formData.append("files", file);
         const response = await uploadMediaFiles(formData);
@@ -48,6 +103,8 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: 
             setIsEditing(false);
         }
         setIsLoading(false);
+=======
+>>>>>>> Stashed changes
     }
 
     useEffect(() => {
@@ -132,6 +189,17 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: 
 
     return (
         <>
+<<<<<<< Updated upstream
+=======
+            <Progress
+                aria-label="Uploading..."
+                className="max-w-md"
+                color="success"
+                showValueLabel={true}
+                size="md"
+                value={uploadProgress}
+            />
+>>>>>>> Stashed changes
             {loading ? <LoadingPlaceholder /> :
                 (((files.length > 0) || (imageParams.imgData)) && !isEditing) ?
                     <>

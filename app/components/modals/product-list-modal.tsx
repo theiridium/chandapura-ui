@@ -24,11 +24,7 @@ const ProductListModal = (props: any) => {
                             </Button>
                         </ModalHeader>
                         <ModalBody className='px-8 gap-0 p-0 pb-5 divide-y'>
-<<<<<<< Updated upstream
-                            {props.list.length > 0 ? props.list.map((x: any, i: any) =>
-=======
                             {data.length > 0 ? data.map((x: any, i: any) =>
->>>>>>> Stashed changes
                                 <a className='py-5 px-8 hover:bg-slate-100' href={`${pathname}?type=edit&source=${x.id}`} key={i}>{x?.name ?? x?.job_title}</a>
                             ) :
                                 <p className='py-5 px-8'>No items in list</p>}

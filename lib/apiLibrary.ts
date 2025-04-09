@@ -1,13 +1,7 @@
 "use server"
 import axios from "axios";
 import { RazOrderPayload, SearchPayload } from "./typings/dto";
-<<<<<<< Updated upstream
-import axiosInstance from "./axiosInstance";
-=======
 import axiosInstance from "./axiosInstance.server";
-
-const currentDate = new Date().getTime();
->>>>>>> Stashed changes
 
 const currentDate = new Date().getTime();
 

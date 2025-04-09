@@ -9,12 +9,4 @@ const axiosInstance = axios.create({
   baseURL: apiHost + '/',
 });
 
-// axiosInstance.interceptors.request.use((config) => {
-//   const { data }: any = useSession();
-//   if(!!data?.strapiToken)
-//     config.headers.Authorization = `Bearer ${data.strapiToken}`;
-//   else config.headers.Authorization = `Bearer ${process.env.STRAPI_API_TOKEN}`;
-//   return config;
-// });
-
 export default axiosInstance;

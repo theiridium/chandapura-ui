@@ -83,8 +83,6 @@ export const GetOrdinal = (num: number) => {
   return num + (suffixes[lastDigit] || "th");
 }
 
-<<<<<<< Updated upstream
-=======
 export const CompressAndConvertToWebP = async (file: any) => {
   const options = {
     fileType: 'image/webp',
@@ -93,7 +91,6 @@ export const CompressAndConvertToWebP = async (file: any) => {
   return await imageCompression(file, options);
 };
 
->>>>>>> Stashed changes
 export function ConvertCurrencyToWords(x: number) {
   if (x) {
     const num = x.toString();

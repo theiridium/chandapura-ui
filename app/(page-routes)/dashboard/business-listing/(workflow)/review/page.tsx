@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import { ListingWorkflow } from '@/lib/typings/enums';
 import { useSetAtom } from 'jotai';
 import { listingFormBtnEl } from '@/lib/atom';
+import ViewLocationMap from '@/app/components/maps/view-location-map';
 
 const Page = () => {
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
@@ -59,13 +60,16 @@ const Page = () => {
             }
             else if (type === "new" || type === "renew" || type === 'edit_back') {
                 let payload = {
-                    step_number: type === "new" ? ListingWorkflow.Review : apiRes.step_number,
+                    // step_number: type === "new" ? ListingWorkflow.Review : apiRes.step_number,
+                    step_number: ListingWorkflow.Payment,
                 }
                 const endpoint = Products.business.api.base;
                 const response = await putRequestApi(endpoint, payload, source);
                 if (response.data) {
-                    toast.success("Let's proceed with Payment");
-                    router.push(`/dashboard/business-listing/payment?type=${type}&source=${source}`)
+                    // toast.success("Let's proceed with Payment");
+                    // router.push(`/dashboard/business-listing/payment?type=${type}&source=${source}`)
+                    toast.success("Your Business has been uploaded sucessfully!");
+                    router.push(`/dashboard/business-listing/view-all`)
                 }
             }
         } catch (error) {
@@ -79,7 +83,7 @@ const Page = () => {
     const setFormBtnEl = () => (
         <div key={1} className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg p-2 *:py-2 *:px-5 *:block font-semibold'>
             <Button className='btn-primary text-base' color='primary' isDisabled={isLoading} isLoading={isSubmitLoading} onPress={onClickSave}>
-                {!isSubmitLoading && "Next"}
+                {!isSubmitLoading && "Submit"}
             </Button>
         </div>
     );
@@ -90,7 +94,7 @@ const Page = () => {
 
     return (
         <>
-            {isSubmitLoading && <FormLoading text={"Taking you to payment page..."} />}
+            {isSubmitLoading && <FormLoading text={"Submitting your business listing..."} />}
             <div className='col-span-full lg:col-span-6 mt-3 lg:my-8'>
                 <div className='listing-header mb-8'>
                     <div className='text-xl lg:text-4xl font-semibold text-gray-700 px-7'>Review</div>
@@ -133,8 +137,8 @@ const Page = () => {
                                 <div>{apiRes.full_address}</div>
                             </div>
                             <div className='mb-5'>
-                                <div className='text-sm mb-1 font-semibold'>Map Location</div>
-                                <div>{apiRes.area.name}</div>
+                                <div className='text-sm mb-3 font-semibold'>Map Location</div>
+                                <ViewLocationMap coordinates={apiRes.location.coordinates} />
                             </div>
                         </div>
                         <div className='listing-card border rounded-lg p-5 md:px-7 md:py-6'>

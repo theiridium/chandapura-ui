@@ -44,7 +44,7 @@ module.exports = {
       uploadImagesLink: "/dashboard/job-listing/upload-images",
     },
     Advertisement: {
-      label: "Banner Ads",
+      label: "Advertise",
       dashboardLink: "/dashboard/advertise/view-all",
       userLabel: "My Advertisements",
       baseLink: "/dashboard/advertise",

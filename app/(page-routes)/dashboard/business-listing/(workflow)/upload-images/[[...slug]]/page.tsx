@@ -117,7 +117,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
 
     useEffect(() => {
         setListingFormBtnEl([setFormBtnEl()]);
-    }, [isSubmitLoading, imageParamsFeatured, imageParamsGallery, isloading])
+    }, [isSubmitLoading, imageParamsFeatured, imageParamsGallery, isloading, editMode])
 
     return (
         <>
@@ -133,8 +133,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
                             <ImgSingleUploadLoading />}
                     </div>
                     <div className='listing-card border rounded-lg px-7 py-6 scroll-mt-36'>
-                        <div className='card-header text-xl font-semibold mb-5'>Gallery Images</div>
-                        {isGalleryImagesLoaded ? <MultiImage key={keyGa} imageParams={imageParamsGallery} setIsImagesInGallery={setIsImagesInGallery} uploadSuccess={reloadGalleryComp} setEditMode={setEditMode} /> :
+                        {isGalleryImagesLoaded ? <MultiImage key={keyGa} imageParams={imageParamsGallery} setIsImagesInGallery={setIsImagesInGallery} uploadSuccess={reloadGalleryComp} setEditMode={setEditMode} setIsLoading={setIsLoading} /> :
                             <ImgMultiUploadLoading />}
                     </div>
                 </div>

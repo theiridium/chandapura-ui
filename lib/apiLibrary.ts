@@ -1,7 +1,7 @@
 "use server"
 import axios from "axios";
 import { RazOrderPayload, SearchPayload } from "./typings/dto";
-import axiosInstance from "./axiosInstance";
+import axiosInstance from "./axiosInstance.server";
 
 const currentDate = new Date().getTime();
 
@@ -66,7 +66,7 @@ export const uploadMediaFiles = async (data: any) => {
             headers: {
                 Accept: "*/*",
                 "Content-Type": "multipart/form-data",
-            },
+            }
         });
         return response.data;
     } catch (err: any) {

@@ -1,16 +1,22 @@
-import { deleteMediaFiles, postRequestApi, putRequestApi, uploadMediaFiles } from "@/lib/apiLibrary";
+import { deleteMediaFiles, postRequestApi, putRequestApi } from "@/lib/apiLibrary";
+import { CompressAndConvertToWebP } from "@/lib/helpers";
 import { ListingWorkflow } from "@/lib/typings/enums";
-import { Button, CircularProgress, Spinner } from "@heroui/react";
+import { uploadMediaFiles } from "@/lib/uploadMediaClient";
+import { Button, CircularProgress, Progress, Spinner } from "@heroui/react";
 import { Pencil } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useDropzone } from 'react-dropzone';
 import { toast } from "react-toastify";
 
 const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: any) => {
+    const { data }: any = useSession();
     const [files, setFiles] = useState<any>([]);
     const [loading, setLoading] = useState(false);
+    const [loadingText, setLoadingText] = useState("Uploading Image...");
     const [isEditing, setIsEditing] = useState(false);
     const [blobUrls, setBlobUrls] = useState<any[]>([]);
+    const [uploadProgress, setUploadProgress] = useState(0);
     const [imgId, setImgId] = useState<any>(!!imageParams.imgData ? imageParams.imgData.id : null)
     const { getRootProps, getInputProps } = useDropzone({
         accept: {
@@ -26,28 +32,41 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: 
     });
 
     const uploadImageWithContent = async (file: any) => {
-        setLoading(true);
-        setIsLoading(true);
-        if (!!imgId) await deleteImage(imgId);
-        let formData = new FormData();
-        for (let key in imageParams) {
-            if (imageParams.hasOwnProperty(key)) {
-                formData.append(key, imageParams[key]);
+        try {
+            setLoading(true);
+            setIsLoading(true);
+            if (!!imgId) await deleteImage(imgId);
+            const compressed = await CompressAndConvertToWebP(file);
+            let formData = new FormData();
+            for (let key in imageParams) {
+                if (imageParams.hasOwnProperty(key)) {
+                    formData.append(key, imageParams[key]);
+                }
             }
+            let updateStep = null;
+            const fileName = `${imageParams.ref.split(".")[1]}_FI_${imageParams.refId}_${file.name}`;
+            formData.append("files", compressed, fileName.replace(' ', '-').replace(/\.\w+$/, '.webp'));
+            const response = await uploadMediaFiles(formData, data?.strapiToken, (progressEvent) => {
+                const percent = Math.round((progressEvent.loaded ?? 0) * 100 / (progressEvent.total ?? 1));
+                setUploadProgress(percent);
+            });
+            let payload = {
+                step_number: imageParams.step_number === ListingWorkflow.Payment ? ListingWorkflow.Payment : ListingWorkflow.UploadImages,
+                publish_status: imageParams.publish_status
+            }
+            if (!!response) {
+                setLoadingText("Hang on....");
+                updateStep = await putRequestApi(imageParams.endpoint, payload, imageParams.refId);
+            }
+            if (!!updateStep) {
+                uploadSuccess();
+                setIsEditing(false);
+            }
+            setIsLoading(false);
         }
-        let updateStep = null;
-        formData.append("files", file);
-        const response = await uploadMediaFiles(formData);
-        let payload = {
-            step_number: imageParams.step_number === ListingWorkflow.Payment ? ListingWorkflow.Payment : ListingWorkflow.UploadImages,
-            publish_status: imageParams.publish_status
+        catch (error) {
+            console.error('Image upload error:', error);
         }
-        if (response) updateStep = await putRequestApi(imageParams.endpoint, payload, imageParams.refId);
-        if (updateStep) {
-            uploadSuccess();
-            setIsEditing(false);
-        }
-        setIsLoading(false);
     }
 
     useEffect(() => {
@@ -57,7 +76,7 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: 
     const deleteImage = async (id: any) => {
         try {
             const response = await deleteMediaFiles(id);
-            console.log(response)
+            // console.log(response)
         } catch (error) {
             toast.error('Failed to delete image');
         }
@@ -107,13 +126,23 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: 
     )
 
     const LoadingPlaceholder = () => (
-        <div className="flex items-center justify-center w-full mb-5">
-            <div className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-wait bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <CircularProgress aria-label="Loading..." color="default" />
-                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">Uploading Image...</p>
+        <div>
+            <Progress
+                aria-label="Uploading..."
+                className="w-full"
+                color="success"
+                showValueLabel={true}
+                size="md"
+                value={uploadProgress}
+            />
+            <div className="flex items-center justify-center w-full mb-5">
+                <div className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-wait bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                        <CircularProgress aria-label="Loading..." color="default" />
+                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">{loadingText}</p>
+                    </div>
+                    <input id="dropzone-file" type="file" className="hidden" {...getInputProps()} />
                 </div>
-                <input id="dropzone-file" type="file" className="hidden" {...getInputProps()} />
             </div>
         </div>
     )
@@ -150,7 +179,6 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: 
                             <input id="dropzone-file" type="file" className="hidden" {...getInputProps()} />
                         </div>
                     </div>
-
             }
             <div className="flex mb-4 gap-x-5">
                 {isEditing && !loading &&

@@ -11,7 +11,6 @@ import { useSession } from "next-auth/react";
 
 const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditMode }: any) => {
     const { data }: any = useSession();
-    const [uploadProgress, setUploadProgress] = useState(0);
     const [files, setFiles] = useState<any[]>([]);
     const [existingFiles, setExistingFiles] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
@@ -28,7 +27,8 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditM
             return [
                 ...prevFiles,
                 ...newFiles.map(file => Object.assign(file, {
-                    preview: URL.createObjectURL(file)
+                    preview: URL.createObjectURL(file),
+                    progress: 0,
                 }))
             ];
         });
@@ -61,7 +61,7 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditM
             // Upload files in parallel
             if (files.length > 0) {
                 let updateStep: any = null;
-                const uploadPromises = files.map(async file => {
+                const uploadPromises = files.map(async (file, index) => {
                     const compressed = await CompressAndConvertToWebP(file);
                     const formData = new FormData();
                     Object.keys(imageParams).forEach(key => {
@@ -70,9 +70,12 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditM
                     const fileName = `${imageParams.ref.split(".")[1]}_GI_${imageParams.refId}_${file.name}`;
                     formData.append("files", compressed, fileName.replace(' ', '-').replace(/\.\w+$/, '.webp'));
                     const response = await uploadMediaFiles(formData, data?.strapiToken, (progressEvent) => {
-                        console.log(progressEvent)
                         const percent = Math.round((progressEvent.loaded ?? 0) * 100 / (progressEvent.total ?? 1));
-                        setUploadProgress(percent);
+                        setFiles(prevFiles => {
+                            const updated = [...prevFiles];
+                            updated[index].progress = percent;
+                            return [...updated];
+                        });
                     });
                     let payload = {
                         step_number: imageParams.step_number === ListingWorkflow.Payment ? ListingWorkflow.Payment : ListingWorkflow.UploadImages,
@@ -115,23 +118,27 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditM
 
     const newImgPreview = useMemo(() => (
         files.length > 0 && files.map((file: any) => (
-            <div key={file.name}>
+            <div key={file.name} className="relative">
                 {loading &&
-                    <Progress
-                        aria-label="Uploading..."
-                        className="w-full"
-                        color="success"
-                        size="sm"
-                        value={uploadProgress}
-                    />
+                    <div className="absolute inset-0 flex items-center justify-center z-10 px-5">
+                        <Progress
+                            aria-label="Uploading..."
+                            className="w-full"
+                            color="success"
+                            size="md"
+                            value={file.progress}
+                        />
+                    </div>
                 }
-                <div className="relative transition-all duration-300 hover:brightness-90">
+                <div className={`relative transition-all duration-300 hover:brightness-90 ${loading && 'brightness-90'}`}>
                     <img className="border object-cover w-80 aspect-square rounded-md" src={file.preview}
                         onLoad={() => { URL.revokeObjectURL(file.preview) }}
                     />
-                    <button className="absolute top-3 right-3 cursor-pointer bg-slate-900/90 hover:bg-red-700 rounded-full p-1" onClick={() => removeFile(file)}>
-                        <X size={16} className="text-white/90" />
-                    </button>
+                    {!loading &&
+                        <button className="absolute top-3 right-3 cursor-pointer bg-slate-900/90 hover:bg-red-700 rounded-full p-1" onClick={() => removeFile(file)}>
+                            <X size={16} className="text-white/90" />
+                        </button>
+                    }
                 </div>
             </div>
         ))
@@ -165,11 +172,11 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditM
 
     return (
         <>
-            <div className="flex flex-col md:flex-row justify-between">
-                <div className='card-header text-base md:text-xl font-semibold mb-5'>Gallery Images</div>
+            <div className="flex flex-col sm:flex-row justify-between">
+                <div className='card-header text-xl font-semibold mb-5'>Gallery Images</div>
                 {isImagesInGallery &&
                     <div className="flex justify-center mb-4">
-                        <Button color="success" size="sm" className="w-full md:w-auto rounded-lg py-2" isLoading={loading} onPress={uploadImageWithContent}>
+                        <Button color="secondary" size="sm" className="w-full md:w-auto rounded-lg py-2" isLoading={loading} onPress={uploadImageWithContent}>
                             Save Images to Gallery
                         </Button>
                     </div>
@@ -188,6 +195,13 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditM
                     </div>
                 </div>
             </div>
+            {isImagesInGallery &&
+                <div className="flex justify-center mb-4">
+                    <Button color="secondary" size="sm" className="w-auto rounded-lg py-2" isLoading={loading} onPress={uploadImageWithContent}>
+                        Save Images to Gallery
+                    </Button>
+                </div>
+            }
         </>
     )
 }

@@ -76,7 +76,7 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: 
     const deleteImage = async (id: any) => {
         try {
             const response = await deleteMediaFiles(id);
-            console.log(response)
+            // console.log(response)
         } catch (error) {
             toast.error('Failed to delete image');
         }

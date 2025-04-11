@@ -13,6 +13,7 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: 
     const { data }: any = useSession();
     const [files, setFiles] = useState<any>([]);
     const [loading, setLoading] = useState(false);
+    const [loadingText, setLoadingText] = useState("Uploading Image...");
     const [isEditing, setIsEditing] = useState(false);
     const [blobUrls, setBlobUrls] = useState<any[]>([]);
     const [uploadProgress, setUploadProgress] = useState(0);
@@ -45,19 +46,19 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: 
             let updateStep = null;
             const fileName = `${imageParams.ref.split(".")[1]}_FI_${imageParams.refId}_${file.name}`;
             formData.append("files", compressed, fileName.replace(' ', '-').replace(/\.\w+$/, '.webp'));
-            // const response = await uploadMediaFiles(formData);
             const response = await uploadMediaFiles(formData, data?.strapiToken, (progressEvent) => {
                 const percent = Math.round((progressEvent.loaded ?? 0) * 100 / (progressEvent.total ?? 1));
-                console.log(progressEvent)
-                console.log(percent)
                 setUploadProgress(percent);
             });
             let payload = {
                 step_number: imageParams.step_number === ListingWorkflow.Payment ? ListingWorkflow.Payment : ListingWorkflow.UploadImages,
                 publish_status: imageParams.publish_status
             }
-            if (response) updateStep = await putRequestApi(imageParams.endpoint, payload, imageParams.refId);
-            if (updateStep) {
+            if (!!response) {
+                setLoadingText("Hang on....");
+                updateStep = await putRequestApi(imageParams.endpoint, payload, imageParams.refId);
+            }
+            if (!!updateStep) {
                 uploadSuccess();
                 setIsEditing(false);
             }
@@ -125,13 +126,23 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: 
     )
 
     const LoadingPlaceholder = () => (
-        <div className="flex items-center justify-center w-full mb-5">
-            <div className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-wait bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <CircularProgress aria-label="Loading..." color="default" />
-                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">Uploading Image...</p>
+        <div>
+            <Progress
+                aria-label="Uploading..."
+                className="w-full"
+                color="success"
+                showValueLabel={true}
+                size="md"
+                value={uploadProgress}
+            />
+            <div className="flex items-center justify-center w-full mb-5">
+                <div className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-wait bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                        <CircularProgress aria-label="Loading..." color="default" />
+                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">{loadingText}</p>
+                    </div>
+                    <input id="dropzone-file" type="file" className="hidden" {...getInputProps()} />
                 </div>
-                <input id="dropzone-file" type="file" className="hidden" {...getInputProps()} />
             </div>
         </div>
     )
@@ -150,14 +161,6 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: 
 
     return (
         <>
-            <Progress
-                aria-label="Uploading..."
-                className="max-w-md"
-                color="success"
-                showValueLabel={true}
-                size="md"
-                value={uploadProgress}
-            />
             {loading ? <LoadingPlaceholder /> :
                 (((files.length > 0) || (imageParams.imgData)) && !isEditing) ?
                     <>
@@ -176,7 +179,6 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: 
                             <input id="dropzone-file" type="file" className="hidden" {...getInputProps()} />
                         </div>
                     </div>
-
             }
             <div className="flex mb-4 gap-x-5">
                 {isEditing && !loading &&

@@ -1,12 +1,17 @@
-import { deleteMediaFiles, putRequestApi, uploadMediaFiles } from "@/lib/apiLibrary";
+import { deleteMediaFiles, putRequestApi } from "@/lib/apiLibrary";
+import { uploadMediaFiles } from "@/lib/uploadMediaClient";
+import { CompressAndConvertToWebP } from "@/lib/helpers";
 import { ListingWorkflow } from "@/lib/typings/enums";
-import { Button } from "@heroui/react";
+import { Button, Progress } from "@heroui/react";
 import { Plus, X } from "lucide-react";
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useDropzone } from 'react-dropzone';
 import { toast } from "react-toastify";
+import { useSession } from "next-auth/react";
 
 const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditMode }: any) => {
+    const { data }: any = useSession();
+    const [uploadProgress, setUploadProgress] = useState(0);
     const [files, setFiles] = useState<any[]>([]);
     const [existingFiles, setExistingFiles] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
@@ -44,6 +49,7 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditM
     }, []);
 
     const uploadImageWithContent = useCallback(async () => {
+        let allSuccessful = false;
         try {
             setLoading(true);
 
@@ -56,12 +62,18 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditM
             if (files.length > 0) {
                 let updateStep: any = null;
                 const uploadPromises = files.map(async file => {
+                    const compressed = await CompressAndConvertToWebP(file);
                     const formData = new FormData();
                     Object.keys(imageParams).forEach(key => {
                         formData.append(key, imageParams[key]);
                     });
-                    formData.append("files", file);
-                    const response = await uploadMediaFiles(formData);
+                    const fileName = `${imageParams.ref.split(".")[1]}_GI_${imageParams.refId}_${file.name}`;
+                    formData.append("files", compressed, fileName.replace(' ', '-').replace(/\.\w+$/, '.webp'));
+                    const response = await uploadMediaFiles(formData, data?.strapiToken, (progressEvent) => {
+                        console.log(progressEvent)
+                        const percent = Math.round((progressEvent.loaded ?? 0) * 100 / (progressEvent.total ?? 1));
+                        setUploadProgress(percent);
+                    });
                     let payload = {
                         step_number: imageParams.step_number === ListingWorkflow.Payment ? ListingWorkflow.Payment : ListingWorkflow.UploadImages,
                         publish_status: imageParams.publish_status
@@ -69,12 +81,33 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditM
                     if (response) updateStep = await putRequestApi(imageParams.endpoint, payload, imageParams.refId);
                     return updateStep;
                 });
+                const results = await Promise.allSettled(uploadPromises);
+                allSuccessful = results.every(result => result.status === "fulfilled");
+
+                results.forEach((result, index) => {
+                    if (result.status === "rejected") {
+                        console.error(`File ${index + 1} upload failed:`, result?.reason);
+                    }
+                });
                 await Promise.all(uploadPromises);
             }
         } catch (error) {
             console.error("An error occurred during the upload process:", error);
             toast.error("Failed to upload images.");
         } finally {
+            if (allSuccessful) {
+                const payload = {
+                    step_number: imageParams.step_number === ListingWorkflow.Payment
+                        ? ListingWorkflow.Payment
+                        : ListingWorkflow.UploadImages,
+                    publish_status: imageParams.publish_status
+                };
+                try {
+                    await putRequestApi(imageParams.endpoint, payload, imageParams.refId);
+                } catch (updateError) {
+                    console.error("Error Occured:", updateError);
+                }
+            }
             setLoading(false);
             uploadSuccess();
         }
@@ -82,16 +115,27 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditM
 
     const newImgPreview = useMemo(() => (
         files.length > 0 && files.map((file: any) => (
-            <div className="relative transition-all duration-300 hover:brightness-90" key={file.name}>
-                <img className="border object-cover w-80 aspect-square rounded-md" src={file.preview}
-                    onLoad={() => { URL.revokeObjectURL(file.preview) }}
-                />
-                <button className="absolute top-3 right-3 cursor-pointer bg-slate-900/90 hover:bg-red-700 rounded-full p-1" onClick={() => removeFile(file)}>
-                    <X size={16} className="text-white/90" />
-                </button>
+            <div key={file.name}>
+                {loading &&
+                    <Progress
+                        aria-label="Uploading..."
+                        className="w-full"
+                        color="success"
+                        size="sm"
+                        value={uploadProgress}
+                    />
+                }
+                <div className="relative transition-all duration-300 hover:brightness-90">
+                    <img className="border object-cover w-80 aspect-square rounded-md" src={file.preview}
+                        onLoad={() => { URL.revokeObjectURL(file.preview) }}
+                    />
+                    <button className="absolute top-3 right-3 cursor-pointer bg-slate-900/90 hover:bg-red-700 rounded-full p-1" onClick={() => removeFile(file)}>
+                        <X size={16} className="text-white/90" />
+                    </button>
+                </div>
             </div>
         ))
-    ), [files, removeFile]);
+    ), [files, removeFile, loading]);
 
     const existingImageBlock = useMemo(() => (
         existingFiles && existingFiles.map((file: any) => (
@@ -116,10 +160,22 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditM
 
     useEffect(() => {
         setIsImagesInGallery(isImagesInGallery);
+        isImagesInGallery ? setEditMode(true) : setEditMode(false);
     }, [isImagesInGallery, setIsImagesInGallery]);
 
     return (
         <>
+            <div className="flex flex-col md:flex-row justify-between">
+                <div className='card-header text-base md:text-xl font-semibold mb-5'>Gallery Images</div>
+                {isImagesInGallery &&
+                    <div className="flex justify-center mb-4">
+                        <Button color="success" size="sm" className="w-full md:w-auto rounded-lg py-2" isLoading={loading} onPress={uploadImageWithContent}>
+                            Save Images to Gallery
+                        </Button>
+                    </div>
+                }
+            </div>
+
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                 {existingImageBlock}
                 {newImgPreview}
@@ -132,13 +188,6 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditM
                     </div>
                 </div>
             </div>
-            {isImagesInGallery &&
-                <div className="flex justify-center mb-4">
-                    <Button color="success" className="w-auto rounded-lg py-2" isLoading={loading} onPress={uploadImageWithContent}>
-                        Save Images to Gallery
-                    </Button>
-                </div>
-            }
         </>
     )
 }

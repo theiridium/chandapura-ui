@@ -37,19 +37,19 @@ const Menubar = (props: any) => {
                                     </>
                                 }
                                 <li className=''>
-                                    <a className='hover-underline' href={Resource.Advertisement.dashboardLink}>{Resource.Advertisement.label}</a>
-                                </li>
-                                <li className=''>
                                     <a className='hover-underline' href={Resource.BusinessListing.dashboardLink}>{Resource.BusinessListing.label}</a>
-                                </li>
-                                <li className=''>
-                                    <a className='hover-underline' href={Resource.PropertyListing.dashboardLink}>{Resource.PropertyListing.label}</a>
                                 </li>
                                 <li className=''>
                                     <a className='hover-underline' href={Resource.ClassifiedListing.dashboardLink}>{Resource.ClassifiedListing.label}</a>
                                 </li>
                                 <li className=''>
                                     <a className='hover-underline' href={Resource.JobListing.dashboardLink}>{Resource.JobListing.label}</a>
+                                </li>
+                                <li className=''>
+                                    <a className='hover-underline' href={Resource.PropertyListing.dashboardLink}>{Resource.PropertyListing.label}</a>
+                                </li>
+                                <li className=''>
+                                    <a className='hover-underline' href={Resource.Advertisement.dashboardLink}>{Resource.Advertisement.label}</a>
                                 </li>
 
                             </ul>

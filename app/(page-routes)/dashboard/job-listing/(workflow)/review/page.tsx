@@ -92,7 +92,7 @@ const Page = () => {
 
     return (
         <>
-            {isSubmitLoading && <FormLoading text={"Publishing your Job Listing..."} />}
+            {isSubmitLoading && <FormLoading text={"Submitting your Job Listing..."} />}
             <div className='col-span-full lg:col-span-6 mt-3 lg:my-8 order-3 lg:order-2'>
                 <div className='listing-header mb-8'>
                     <div className='text-xl lg:text-4xl font-semibold text-gray-700 px-7'>Review & Publish</div>

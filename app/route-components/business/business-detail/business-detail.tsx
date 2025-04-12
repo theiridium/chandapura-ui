@@ -5,6 +5,7 @@ import { Phone, SquareArrowOutUpRight } from 'lucide-react';
 import ViewLocationMap from '@/app/components/maps/view-location-map';
 import Breadcrumb from '@/app/sub-components/breadcrumb';
 import ContactButton from '@/app/sub-components/contact-btn';
+import { CloudImages } from '@/public/shared/app.config';
 
 const BusinessDetail = ({ data }: any) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -132,6 +133,9 @@ const BusinessDetail = ({ data }: any) => {
         {/* <div className='lg:col-span-1 relative'>
           <ContactCard heading="Owner Contact Details" name={data.contact_name} contact={data.contact_number} />
         </div> */}
+        <div className='hidden lg:block lg:col-span-1'>
+          <img className='w-full rounded-xl' src={CloudImages.SideBannerBusiness} />
+        </div>
       </div>
     </div>
   )

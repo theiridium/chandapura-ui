@@ -1,6 +1,6 @@
 'use client'
 import ContactCard from '@/app/sub-components/contact-card';
-import { Products } from '@/public/shared/app.config';
+import { CloudImages, Products } from '@/public/shared/app.config';
 import JobDetailCorporate from './job-detail-corporate';
 import JobDetailPersonal from './job-detail-personal';
 
@@ -29,6 +29,9 @@ const JobDetail = ({ data }: any) => {
         {detailsComp}
         <div className='lg:col-span-1 relative m-5 lg:m-0'>
           <ContactCard heading="Contact Details" name={data.contact.contact_name} contact={data.contact.contact_number} />
+          <div className='hidden lg:block lg:col-span-1 mt-10'>
+            <img className='w-full rounded-xl' src={CloudImages.SideBannerBusiness} />
+          </div>
         </div>
       </div>
     </div>

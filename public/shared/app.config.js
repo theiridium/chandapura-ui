@@ -502,4 +502,7 @@ module.exports = {
     termsAndConditions: "/terms-and-conditions",
     privacyPolicy: "/privacy-policy",
   },
+  CloudImages: {
+    SideBannerBusiness: "https://res.cloudinary.com/dxyjyq5ca/image/upload/v1744495676/Chandapura.com/Side_Banner_cc856072ef.png"
+  }
 };

@@ -6,6 +6,7 @@ import { useInView } from 'react-intersection-observer';
 import { getSearchResult } from '@/app/actions';
 import GlobalSearchListLoading from '@/app/loading-components/global-search-list-loading';
 import JobItemsCardCorporate from './job-items-card-corporate';
+import { CloudImages } from '@/public/shared/app.config';
 
 const JobItemsList = (props: any) => {
     const searchedData = props.result.results[0];
@@ -53,6 +54,9 @@ const JobItemsList = (props: any) => {
                             <JobItemsCardPersonal key={i} data={data} id={data.id} product={props.product} />
                         ))}
                     </div>
+                </div>
+                <div className='hidden lg:block lg:col-span-1'>
+                    <img className='w-full rounded-xl' src={CloudImages.SideBannerBusiness} />
                 </div>
             </div>
             {displayLoader && <div ref={ref}><GlobalSearchListLoading /></div>}

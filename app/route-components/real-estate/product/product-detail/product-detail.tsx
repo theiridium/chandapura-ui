@@ -3,7 +3,7 @@ import ContactCard from '@/app/sub-components/contact-card'
 import React from 'react'
 import ImageGallery from '@/app/components/modals/image-gallery';
 import { useDisclosure } from "@heroui/react";
-import { Products } from '@/public/shared/app.config';
+import { CloudImages, Products } from '@/public/shared/app.config';
 import PropertyDetailSale from './components/property-detail-sale';
 import PropertyDetailRent from './components/property-detail-rent';
 import PropertyDetailPlot from './components/property-detail-plot';
@@ -44,6 +44,9 @@ const ProductDetail = ({ data, product }: any) => {
                 {detailsComp}
                 <div className='lg:col-span-1 relative m-5 lg:m-0'>
                     <ContactCard heading="Owner Contact Details" name={data.contact.contact_name} contact={data.contact.contact_number} />
+                    <div className='hidden lg:block lg:col-span-1 mt-10'>
+                        <img className='w-full rounded-xl' src={CloudImages.SideBannerBusiness} />
+                    </div>
                 </div>
             </div>
         </div>

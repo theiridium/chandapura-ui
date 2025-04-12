@@ -6,7 +6,7 @@ import PgItemsCard from './pg-items-card'
 import { useInView } from 'react-intersection-observer'
 import { getSearchResult } from '@/app/actions'
 import GlobalSearchListLoading from '@/app/loading-components/global-search-list-loading'
-import { Products } from '@/public/shared/app.config'
+import { CloudImages, Products } from '@/public/shared/app.config'
 
 const ProductItemsList = (props: any) => {
     const searchedData = props.result.results[0];
@@ -51,7 +51,9 @@ const ProductItemsList = (props: any) => {
                         ))}
                     </div>
                 </div>
-                <div></div>
+                <div className='hidden lg:block lg:col-span-1'>
+                    <img className='w-full rounded-xl' src={CloudImages.SideBannerBusiness} />
+                </div>
             </div>
             {displayLoader && <div ref={ref}><GlobalSearchListLoading /></div>}
         </>

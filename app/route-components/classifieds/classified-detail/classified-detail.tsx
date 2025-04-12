@@ -7,7 +7,7 @@ import Breadcrumb from '@/app/sub-components/breadcrumb';
 import ContactButton from '@/app/sub-components/contact-btn';
 import ContactCard from '@/app/sub-components/contact-card';
 import { ConvertCurrencyToWords, GetOrdinal } from '@/lib/helpers';
-import { Products } from '@/public/shared/app.config';
+import { CloudImages, Products } from '@/public/shared/app.config';
 
 const ClassifiedDetail = ({ data }: any) => {
   const vehicle_details = data.details_by_category.find((x: any) => x.__component == Products.classifieds.api.componentVehicle)
@@ -119,6 +119,9 @@ const ClassifiedDetail = ({ data }: any) => {
         </div>
         <div className='lg:col-span-1 relative m-5 lg:m-0'>
           <ContactCard heading="Seller Contact Details" name={data.contact.contact_name} contact={data.contact.contact_number} />
+          <div className='hidden lg:block mt-10'>
+            <img className='w-full rounded-xl' src={CloudImages.SideBannerBusiness} />
+          </div>
         </div>
       </div>
     </div>

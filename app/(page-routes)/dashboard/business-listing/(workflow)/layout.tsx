@@ -14,7 +14,7 @@ export default async function BusinessListingLayout({
     const attrSubCat = DropdownList.SubCategory.api;
     const attrArea = DropdownList.Area.api;
     // let apiUrlCat = `${attrCat.base}?sort=${attrCat.sort}&populate=${attrCat.populate}&pagination[pageSize]=100`
-    let apiUrlArea = `${attrArea.base}?sort=${attrArea.sort}&pagination[pageSize]=100`
+    let apiUrlArea = `${attrArea.base}?sort=${attrArea.sort}&pagination[pageSize]=100`;
     // const resCat = await getPublicApiResponse(apiUrlCat);
     const resArea = await getPublicApiResponse(apiUrlArea);
     const fetchSubCatData: any = async (pageNum: number, collectedData: any[] = []) => {

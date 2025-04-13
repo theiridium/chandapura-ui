@@ -33,7 +33,7 @@ const SearchSection = () => {
   return (
     <>
       <div className="max-w-screen-xl mx-auto xs:px-3">
-        <div className="grid grid-cols-1 lg:grid-cols-12 lg:mt-10 relative gap-5 lg:gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 mt-5 lg:mt-10 relative gap-5 lg:gap-10">
           <div className="col-span-1 lg:col-start-3 lg:col-span-8">
             <Tabs color="secondary" aria-label="Tabs colors" radius="full"
               classNames={{

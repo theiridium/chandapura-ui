@@ -13,7 +13,7 @@ const Hero = async () => {
     <div className="grid grid-cols-1 lg:grid-cols-12 relative gap-5 lg:gap-10">
       <div className="col-span-1 lg:col-span-full">
         <Suspense fallback={<AdLoading />}>
-          <AdBanner placement="grid grid-cols-1 gap-x-10 mb-5" />
+          <AdBanner placement="grid grid-cols-1 gap-x-10" />
         </Suspense>
       </div>
       {/* <div className="col-span-1 lg:col-span-3">

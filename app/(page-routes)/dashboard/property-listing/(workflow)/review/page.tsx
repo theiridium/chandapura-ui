@@ -235,7 +235,7 @@ const Page = () => {
                                     <div>{apiRes.contact.contact_name}</div>
                                 </div>
                                 <div className='mb-5'>
-                                    <div className='text-sm mb-1 font-semibold'>Conatct Number</div>
+                                    <div className='text-sm mb-1 font-semibold'>Contact Number</div>
                                     <div>{apiRes.contact.contact_number}</div>
                                 </div>
                             </div>

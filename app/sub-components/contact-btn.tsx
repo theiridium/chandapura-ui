@@ -8,7 +8,7 @@ const ContactButton = (props: any) => {
     const searchParams = useSearchParams();
     const pageUrl = searchParams?`${pathname}?${searchParams}`: `${pathname}`;
     const [url, setUrl] = useState(Resource.Login.link + "?redirect=" + pageUrl);
-    const [text, setText] = useState(`Conatct ${props.maskedText}`);
+    const [text, setText] = useState(`Contact ${props.maskedText}`);
     const session = useSession();
     useEffect(() => {
         if (session.status === "authenticated" || props.openContact) {
@@ -17,7 +17,7 @@ const ContactButton = (props: any) => {
         }
         else {
             setUrl(Resource.Login.link + "?redirect=" + pageUrl);
-            setText(`Conatct ${props.maskedText}`);
+            setText(`Contact ${props.maskedText}`);
         }
     }, [])
 

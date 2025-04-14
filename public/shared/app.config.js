@@ -198,10 +198,17 @@ module.exports = {
       api: {
         base: "business-listings",
         sort: "desc",
-        populate:
-          "populate[0]=sub_category&populate[1]=category&populate[2]=user&populate[3]=featured_image&populate[4]=area&populate[5]=gallery_images&populate[6]=contact",
+        // populate:
+        //   "populate[0]=sub_category&populate[1]=category&populate[2]=user&populate[3]=featured_image&populate[4]=area&populate[5]=gallery_images&populate[6]=contact",
+        populateList:
+          "sub_category,category,user,featured_image,area,contact",
+        populateDetails:
+          "*",
+        populateForPayment:
+          "payment_history,payment_details",
         userFilter: "filters[author][email][$eq]",
-        isPublishedFilter: `filters[publish_status][$eq]=true&filters[payment_details][expiry_date_timestamp][$gt]=${currentDate}`,
+        // isPublishedFilter: `filters[publish_status][$eq]=true&filters[payment_details][expiry_date_timestamp][$gt]=${currentDate}`,
+        isPublishedFilter: `filters[publish_status][$eq]=true`,
         limit: 4,
       },
     },

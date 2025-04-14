@@ -119,7 +119,7 @@ const Page = () => {
         const payload: ClassifiedListing = {
             ...formdata,
             contact: contact,
-            step_number: (!source) ? ListingWorkflow.AddDetails : apiRes.step_number,
+            step_number: (!source) ? ListingWorkflow.AddDetails : data.step_number,
             details_by_category: !!classifiedDetails && !!classifiedDetails.__component ? [classifiedDetails] : []
         }
         postClassifiedListing(payload);

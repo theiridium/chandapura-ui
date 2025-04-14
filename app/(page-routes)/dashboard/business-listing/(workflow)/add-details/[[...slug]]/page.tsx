@@ -212,7 +212,7 @@ const Page = () => {
             contact: contact,
             website: !!formdata.website ? "https://" + formdata.website : "",
             bus_hours: stringifyBusHours(businessList.bus_hours),
-            step_number: (!source) ? ListingWorkflow.AddDetails : apiRes.step_number,
+            step_number: (!source) ? ListingWorkflow.AddDetails : data.step_number,
             location: location
         }
         postBusinessListing(payload);

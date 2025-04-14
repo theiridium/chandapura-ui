@@ -94,7 +94,7 @@ const Page = () => {
             user: userData.strapiUserId,
             website: !!formdata.website ? "https://" + formdata.website : "",
             business_listing: bizlink || null,
-            step_number: (!source || !apiRes.ad_image) ? ListingWorkflow.AddDetails : apiRes.step_number
+            step_number: (!source || !apiRes.ad_image) ? ListingWorkflow.AddDetails : data.step_number
         }
         postAdListing(payload);
     }

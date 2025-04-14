@@ -170,7 +170,7 @@ const Page = () => {
         const payload: JobListing = {
             ...formdata,
             contact: contact,
-            step_number: (!source) ? ListingWorkflow.AddDetails : apiRes.step_number,
+            step_number: (!source) ? ListingWorkflow.AddDetails : data.step_number,
             details_by_jobCategory: [jobDetailsFormatted]
         }
         postJobListing(payload);

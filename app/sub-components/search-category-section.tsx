@@ -7,6 +7,7 @@ import { categories, classifiedCategories } from "@/lib/atom";
 import { Button, useDisclosure } from "@heroui/react";
 import { useState } from "react";
 import CategoryListModal from "../components/modals/category-list-modal";
+import CategoryBoxLoading from "../loading-components/category-box-loading";
 
 const SearchCategorySection = ({ productType }: any) => {
     const bizCategoryList = useAtomValue<any>(categories);
@@ -17,7 +18,7 @@ const SearchCategorySection = ({ productType }: any) => {
     return (
         <>
             <CategoryListModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} list={modalList} title={modalTitle} />
-            {(productType === Products.business.productType && bizCategoryList?.length > 0) &&
+            {(productType === Products.business.productType && bizCategoryList?.length > 0) ?
                 <>
                     <div className="relative">
                         <div className="search-cat-sec">
@@ -35,7 +36,8 @@ const SearchCategorySection = ({ productType }: any) => {
                     <div className="flex items-center justify-center lg:justify-end mt-0 lg:mt-5">
                         <Button color="secondary" variant="solid" radius="sm" size="sm" onPress={() => { setModalList(bizCategoryList); setModalTitle("Category Reference List"); onOpen() }}>View All Categories</Button>
                     </div>
-                </>
+                </>:
+                <CategoryBoxLoading />
             }
             {(productType === Products.realEstate.productType) &&
                 <div className="search-cat-sec md:justify-center">

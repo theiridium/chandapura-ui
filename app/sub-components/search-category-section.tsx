@@ -18,7 +18,7 @@ const SearchCategorySection = ({ productType }: any) => {
     return (
         <>
             <CategoryListModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} list={modalList} title={modalTitle} />
-            {(productType === Products.business.productType && bizCategoryList?.length > 0) ?
+            {(productType === Products.business.productType) && (bizCategoryList?.length > 0 ?
                 <>
                     <div className="relative">
                         <div className="search-cat-sec">
@@ -38,7 +38,7 @@ const SearchCategorySection = ({ productType }: any) => {
                     </div>
                 </>:
                 <CategoryBoxLoading />
-            }
+            )}
             {(productType === Products.realEstate.productType) &&
                 <div className="search-cat-sec md:justify-center">
                     <a href={Products.sale.url} className='mini-card'>

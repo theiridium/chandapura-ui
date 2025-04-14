@@ -89,7 +89,8 @@ const Page = () => {
     const handleServiceChange = (e: any) => setTxtService(e.target.value);
     const onAddServices = () => {
         if (txtService) {
-            const list = [...businessList.services, ...txtService.split(",").map(item => item.trim())];
+            const list = [...businessList.services,
+            ...txtService.split(",").map(item => item.trim()).filter(item => item && /^[a-zA-Z0-9 ]+$/.test(item))];
             setBusinessList({ ...businessList, services: list })
             setTxtService("");
             handleDivClick();
@@ -205,6 +206,15 @@ const Page = () => {
     const handleLocation = (data: any) => setLocation(data);
 
     const onSubmit: SubmitHandler<any> = (data) => {
+        const isBizTimingUpdated = businessList.bus_hours.some((x: any) => x.isOpen);
+        if (!isBizTimingUpdated) {
+            toast.warn("Update your business timings!");
+            return;
+        }
+        // if (businessList.services.length === 0) {
+        //     toast.warn("Add atleast one service");
+        //     return;
+        // }
         setIsSubmitLoading(true);
         let formdata = { ...businessList, ...data }
         const payload: BusinessListing = {
@@ -405,7 +415,7 @@ const Page = () => {
                         <div className='w-full flex flex-col gap-4'>
                             <div className='flex gap-4 mb-6'>
                                 <div onClick={handleDivClick} className='relative w-full inline-flex shadow-sm px-3 bg-default-100 group-data-[focus=true]:bg-default-100 min-h-10 rounded-medium flex-col items-start justify-center gap-0 transition-background motion-reduce:transition-none !duration-150 outline-none group-data-[focus-visible=true]:z-10 group-data-[focus-visible=true]:ring-2 group-data-[focus-visible=true]:ring-focus group-data-[focus-visible=true]:ring-offset-2 group-data-[focus-visible=true]:ring-offset-background py-2 is-filled'>
-                                    <div className='flex flex-wrap gap-3'>
+                                    <div className='flex flex-wrap gap-3 w-full'>
                                         {businessList.services.map((service, i) =>
                                             <div className='default-pill-btn flex gap-2 items-center' key={i}>{service}
                                                 <button>
@@ -414,7 +424,8 @@ const Page = () => {
                                                 </button>
                                             </div>
                                         )}
-                                        <input ref={inputServiceRef} className='w-full font-normal bg-transparent !outline-none placeholder:text-foreground-500 focus-visible:outline-none data-[has-start-content=true]:ps-1.5 data-[has-end-content=true]:pe-1.5 text-small group-data-[has-value=true]:text-default-foreground is-filled' disabled={disabled} onChange={(e) => handleServiceChange(e)} value={txtService} />
+                                        <input ref={inputServiceRef} placeholder="Haicut, Spa, Manicure, Facial"
+                                            className='w-full font-normal bg-transparent !outline-none placeholder:text-foreground-500 focus-visible:outline-none data-[has-start-content=true]:ps-1.5 data-[has-end-content=true]:pe-1.5 text-small group-data-[has-value=true]:text-default-foreground is-filled' disabled={disabled} onChange={(e) => handleServiceChange(e)} value={txtService} />
                                     </div>
                                 </div>
                                 <button disabled={disabled} className='btn-primary w-auto rounded-lg py-2 h-[44px]' type='button' onClick={() => onAddServices()}>Add</button>

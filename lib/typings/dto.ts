@@ -165,9 +165,9 @@ export interface JobListing {
     gender: string
     contact: ContactComponent
     step_number: number
-    details_by_jobCategory: [CompanyJobDetailsComponent | PersonalJobDetailsComponent | any]
+    details_by_jobCategory: [CorporateJobDetailsComponent | PersonalJobDetailsComponent | any]
 }
-export interface CompanyJobDetailsComponent {
+export interface CorporateJobDetailsComponent {
     __component: string
     company_name: string | undefined
     designation: string | undefined
@@ -176,6 +176,7 @@ export interface CompanyJobDetailsComponent {
     job_experience: string
     experience_in_years: string
     work_mode: string
+    salary_type: string | undefined
     salary_range_min: string | undefined
     salary_range_max: string | undefined
     open_positions: number

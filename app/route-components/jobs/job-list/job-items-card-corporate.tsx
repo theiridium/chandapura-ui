@@ -19,7 +19,7 @@ const JobItemsCardCorporate = ({ data, id, product }: any) => {
                         </div>
                     </div>
                     <div className="text-xs font-bold mt-5 mb-2 flex items-center"><MapPin size={12} className='mr-1' /><span className='text-highlight'>{data.area.name}</span></div>
-                    <div className="text-sm text-slate-600 mb-5 flex items-center"><Banknote size={15} className='mr-2' /><IndianRupee size={15} /> {ConvertCurrencyToWords(job_details?.salary_range_min)} - <IndianRupee size={15} /> {ConvertCurrencyToWords(job_details?.salary_range_max)} yearly</div>
+                    <div className="text-sm text-slate-600 mb-5 flex items-center"><Banknote size={15} className='mr-2' /><IndianRupee size={15} /> {ConvertCurrencyToWords(job_details?.salary_range_min)} - <IndianRupee size={15} /> {ConvertCurrencyToWords(job_details?.salary_range_max)} {job_details?.salary_type}</div>
                     <div className='flex overflow-auto'>
                         <div className='job-card-tags'>
                             <div>{job_details?.job_type}</div>

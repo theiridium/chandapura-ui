@@ -113,7 +113,8 @@ const Page = () => {
             case "Corporate":
                 setJobDetails((prev: any) => ({
                     ...prev,
-                    __component: Products.job.api.component_corporateJob
+                    __component: Products.job.api.component_corporateJob,
+                    salary_type: "Per Month",
                 }));
                 setJobTitlesListByCat(jobTitleList?.filter((x: any) => x.corporate === true))
                 break;
@@ -235,9 +236,9 @@ const Page = () => {
     // useEffect(() => {
     //     console.log(jobListing)
     // }, [jobListing])
-    // useEffect(() => {
-    //     console.log(jobDetails)
-    // }, [jobDetails])
+    useEffect(() => {
+        console.log(jobDetails)
+    }, [jobDetails])
 
     return (
         <>
@@ -609,7 +610,32 @@ const Page = () => {
                                 )}
                             </RadioGroup>
                         </div>
-                        <div className={`relative text-foreground-500 after:content-['*'] after:text-danger after:ml-0.5`}>Salary per annum</div>
+                        <div className={`relative text-foreground-500 after:content-['*'] after:text-danger after:ml-0.5`}>Salary Range</div>
+                        <div className="mt-3 w-full md:w-80">
+                            <div className="flex items-center bg-default-200 border border-default-300 divide-x divide-default-300 text-sm text-center rounded-lg">
+                                {['Per Month', 'Per Annum'].map((type) => (
+                                    <label
+                                        key={type}
+                                        className={`w-1/2 cursor-pointer p-2 rounded-lg transition-all ${jobDetails?.salary_type === type && 'bg-color1d border-color1d text-white'}`}
+                                    >
+                                        <input
+                                            className="custom-radio"
+                                            type="radio"
+                                            name="salary_type"
+                                            value={type}
+                                            checked={jobDetails?.salary_type === type}
+                                            onChange={(e) =>
+                                                setJobDetails((prev: any) => ({
+                                                    ...prev,
+                                                    salary_type: e.target.value,
+                                                }))
+                                            }
+                                        />
+                                        {type}
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
                         <div className='flex w-full mt-3 mb-8 flex-nowrap'>
                             <Input isDisabled={disabled}
                                 value={jobDetails?.salary_range_min?.toString() || ""}

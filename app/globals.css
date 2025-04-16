@@ -132,6 +132,11 @@ header {
   .pricing-card {
     @apply transition duration-300 ease-in-out will-change-transform;
   }
+  input.custom-radio[type="radio"] {
+    visibility: hidden;
+    height: 0;
+    width: 0;
+  }
   .link-pill {
     /* @apply px-4 py-2 rounded-full hover:bg-color2d/50; */
     @apply px-4 py-2;

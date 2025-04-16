@@ -150,7 +150,7 @@ const Page = () => {
                                         </div>
                                     </div>
                                     <div className='mb-5'>
-                                        <div className='text-sm mb-1 font-semibold'>Salary per annum</div>
+                                        <div className='text-sm mb-1 font-semibold'>Salary <b>{jobDetails.salary_type}</b></div>
                                         <div>₹ {jobDetails.salary_range_min} - ₹ {jobDetails.salary_range_max}</div>
                                     </div>
                                 </>}

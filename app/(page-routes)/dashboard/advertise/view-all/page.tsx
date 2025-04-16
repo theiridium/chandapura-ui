@@ -58,23 +58,21 @@ const Page = () => {
 
   return (
     <div className='max-w-screen-xl min-h-screen mx-auto px-3 my-8 md:mt-8 md:mb-10'>
-      <div className='flex gap-8 justify-between md:justify-normal'>
-        <h1 className="dash-heading">My Advertisements</h1>
-        <Button color="primary" variant="ghost" size='sm' radius="sm" className='hover:color-white'
-          onPress={() => {
-            setIsRedirecting(true);
-            router.push(addNewUrl)
-          }}
-          startContent={<Plus size={20} />}>
-          <span className='hidden md:block'>Add New</span>
-        </Button>
-        {/* <button className='btn-addNew'
-          onClick={() => {
-            setIsRedirecting(true);
-            router.push(addNewUrl)
-          }}>
-            <Plus size={20} /> <span></span>Add New
-        </button> */}
+      <div className='flex flex-col md:flex-row md:justify-between md:items-center mb-8 md:mb-12 gap-2'>
+        <div className='flex gap-8 justify-between md:justify-normal items-center'>
+          <h1 className="dash-heading">My Advertisements</h1>
+          <Button color="primary" variant="ghost" size='sm' radius="sm" className='hover:color-white'
+            onPress={() => {
+              setIsRedirecting(true);
+              router.push(addNewUrl)
+            }}
+            startContent={<Plus size={20} />}>
+            <span className='hidden md:block'>Add New</span>
+          </Button>
+        </div>
+        <div className=''>
+          <a className='link-text text-sm md:text-base' href={Resource.BannerAdGuidelines.link}>View Ad-Banner Image Guidlines</a>
+        </div>
       </div>
       <Breadcrumb blockSecondLast={false} />
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-0 md:gap-10'>

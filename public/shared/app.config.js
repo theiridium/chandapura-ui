@@ -44,7 +44,7 @@ module.exports = {
       uploadImagesLink: "/dashboard/job-listing/upload-images",
     },
     Advertisement: {
-      label: "Advertise",
+      label: "Banner Ad",
       dashboardLink: "/dashboard/advertise/view-all",
       userLabel: "My Advertisements",
       baseLink: "/dashboard/advertise",
@@ -74,6 +74,10 @@ module.exports = {
     CategoryRefBook: {
       label: "Category Reference Book",
       link: "/category-reference-book",
+    },
+    BannerAdGuidelines: {
+      label: "Banner-Ad Guidelines",
+      link: "/banner-ad-guidelines",
     },
   },
   ProductSelect: [

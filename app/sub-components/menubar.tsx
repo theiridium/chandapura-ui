@@ -61,6 +61,9 @@ const Menubar = (props: any) => {
                                 <li className='hover:bg-white/20'>
                                     <a className='block w-full' href={Resource.CategoryRefBook.link}>{Resource.CategoryRefBook.label}</a>
                                 </li>
+                                <li className='hover:bg-white/20'>
+                                    <a className='block w-full' href={Resource.BannerAdGuidelines.link}>{Resource.BannerAdGuidelines.label}</a>
+                                </li>
                             </ul>
                             {status === "authenticated" &&
                                 <div className='mt-8'>

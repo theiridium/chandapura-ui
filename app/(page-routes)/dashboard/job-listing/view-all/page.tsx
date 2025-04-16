@@ -83,7 +83,7 @@ const Page = () => {
 
   return (
     <div className='max-w-screen-xl min-h-screen mx-auto px-3 my-8 md:mt-8 md:mb-10'>
-      <div className='flex gap-8 justify-between md:justify-normal'>
+      <div className='flex gap-8 justify-between md:justify-normal items-center mb-8 md:mb-12'>
         <h1 className="dash-heading">My Job Listings</h1>
         <Button color="primary" variant="ghost" size='sm' radius="sm" className='hover:color-white'
           onPress={() => {

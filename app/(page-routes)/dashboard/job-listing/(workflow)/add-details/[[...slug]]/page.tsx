@@ -178,11 +178,11 @@ const Page = () => {
     }
 
     const postJobListing = async (payload: any) => {
-        console.log(payload)
+        // console.log(payload)
         const endpoint = Products.job.api.base;
         if (type === "edit" || type === "edit_back") {
             const response = await putRequestApi(endpoint, payload, source);
-            console.log(response);
+            // console.log(response);
             if (response.data) {
                 toast.success("Job details saved successfully!");
                 if (type === "edit_back") router.push(`/dashboard/job-listing/upload-images?type=new&source=${response.data.id}`);
@@ -199,7 +199,7 @@ const Page = () => {
         }
         else {
             const response = await postRequestApi(endpoint, payload);
-            console.log(response);
+            // console.log(response);
             if (response.data) {
                 toast.success("Job details saved successfully!");
                 router.push(`/dashboard/job-listing/upload-images?type=${type}&source=${response.data.id}`);
@@ -236,9 +236,9 @@ const Page = () => {
     // useEffect(() => {
     //     console.log(jobListing)
     // }, [jobListing])
-    useEffect(() => {
-        console.log(jobDetails)
-    }, [jobDetails])
+    // useEffect(() => {
+    //     console.log(jobDetails)
+    // }, [jobDetails])
 
     return (
         <>

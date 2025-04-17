@@ -200,11 +200,11 @@ const Page = () => {
     }
 
     const postPropertyListing = async (payload: any) => {
-        console.log(payload)
+        // console.log(payload)
         const endpoint = Products.realEstate.api.base;
         if (type === "edit" || type === "edit_back") {
             const response = await putRequestApi(endpoint, payload, source);
-            console.log(response);
+            // console.log(response);
             if (response.data) {
                 toast.success("Property details saved successfully!");
                 if (type === "edit_back") router.push(`/dashboard/property-listing/upload-images?type=new&source=${response.data.id}`);
@@ -221,7 +221,7 @@ const Page = () => {
         }
         else {
             const response = await postRequestApi(endpoint, payload);
-            console.log(response);
+            // console.log(response);
             if (response.data) {
                 toast.success("Property details saved successfully!");
                 router.push(`/dashboard/property-listing/upload-images?type=${type}&source=${response.data.id}`);

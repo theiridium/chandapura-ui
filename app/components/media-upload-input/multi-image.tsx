@@ -9,7 +9,7 @@ import { useDropzone } from 'react-dropzone';
 import { toast } from "react-toastify";
 import { useSession } from "next-auth/react";
 
-const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditMode }: any) => {
+const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditMode, numberOfImgs }: any) => {
     const { data }: any = useSession();
     const [files, setFiles] = useState<any[]>([]);
     const [existingFiles, setExistingFiles] = useState<any[]>([]);
@@ -17,6 +17,12 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditM
     const [delFilesList, setDelFilesList] = useState<any[]>([]);
     const onDrop = useCallback((acceptedFiles: any[]) => {
         setFiles(prevFiles => {
+            const totalFiles = prevFiles.length + acceptedFiles.length;
+            if (totalFiles > numberOfImgs) {
+                toast.warning("You can only upload upto " + numberOfImgs + " images.");
+                return prevFiles;
+            }
+
             const newFiles = acceptedFiles.filter(file => {
                 const isDuplicate = prevFiles.some(existingFile => existingFile.name === file.name);
                 if (isDuplicate) {
@@ -35,8 +41,17 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditM
     }, []);
 
     const { getRootProps, getInputProps } = useDropzone({
-        accept: { 'image/*': [] },
-        onDrop
+        accept: {
+            'image/jpeg': [],
+            'image/jpg': [],
+            'image/png': [],
+            'image/webp': [],
+            'image/heic': []
+        },
+        onDrop,
+        onDropRejected: () => {
+            toast.error("Only JPG, JPEG, PNG, WEBP, and HEIC formats are allowed.");
+        }
     });
 
     const removeFile = useCallback((fileToRemove: any) => {
@@ -191,7 +206,7 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditM
                         <div className="flex flex-col items-center justify-center pt-5 pb-6">
                             <Plus className="text-gray-500" stroke="currentColor" strokeWidth={2} size={40} strokeLinecap="round" strokeLinejoin="round" />
                         </div>
-                        <input disabled={loading} id="dropzone-file" type="file" multiple className="hidden" {...getInputProps()} />
+                        <input disabled={loading || files.length >= numberOfImgs} id="dropzone-file" type="file" multiple className="hidden" {...getInputProps()} />
                     </div>
                 </div>
             </div>

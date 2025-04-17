@@ -126,11 +126,11 @@ const Page = () => {
     }
 
     const postClassifiedListing = async (payload: any) => {
-        console.log(payload)
+        // console.log(payload)
         const endpoint = Products.classifieds.api.base;
         if (type === "edit" || type === "edit_back") {
             const response = await putRequestApi(endpoint, payload, source);
-            console.log(response);
+            // console.log(response);
             if (response.data) {
                 toast.success("Classified details saved successfully!");
                 if (type === "edit_back") router.push(`/dashboard/classified-listing/upload-images?type=new&source=${response.data.id}`);
@@ -147,7 +147,7 @@ const Page = () => {
         }
         else {
             const response = await postRequestApi(endpoint, payload);
-            console.log(response);
+            // console.log(response);
             if (response.data) {
                 toast.success("Classified details saved successfully!");
                 router.push(`/dashboard/classified-listing/upload-images?type=${type}&source=${response.data.id}`);

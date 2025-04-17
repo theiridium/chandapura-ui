@@ -20,7 +20,14 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: 
     const [imgId, setImgId] = useState<any>(!!imageParams.imgData ? imageParams.imgData.id : null)
     const { getRootProps, getInputProps } = useDropzone({
         accept: {
-            'image/*': []
+            'image/jpeg': [],
+            'image/jpg': [],
+            'image/png': [],
+            'image/webp': [],
+            'image/heic': []
+        },
+        onDropRejected: () => {
+            toast.error("Only JPG, JPEG, PNG, WEBP, and HEIC formats are allowed.");
         },
         onDrop: acceptedFiles => {
             const newBlobUrls = acceptedFiles.map(file => URL.createObjectURL(file));

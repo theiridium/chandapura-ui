@@ -187,7 +187,7 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
             }
             const response = await putRequestApi(planDetails.endpoint, payload, source);
             if (response.data) {
-                console.log(response.data)
+                // console.log(response.data)
                 // toast.success("Payment details saved successfully!");
                 setShowSuccessModal(true);
                 return true;

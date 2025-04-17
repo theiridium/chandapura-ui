@@ -49,7 +49,6 @@ const Page = () => {
   const getBusinessList = async () => {
     let apiUrl = `${attr.base}?sort=${attr.sortByDate}&${attr.filter}=${user?.email}&${attr.populate}`
     const response = await getPublicApiResponse(apiUrl);
-    console.log(response.data)
     setList(response.data);
     setIsLoading(false);
   }

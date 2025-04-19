@@ -43,11 +43,17 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: 
             setLoading(true);
             setIsLoading(true);
             if (!!imgId) await deleteImage(imgId);
-            const compressed = await CompressAndConvertToWebP(file);
+            let compressed = null;
             let formData = new FormData();
-            for (let key in imageParams) {
-                if (imageParams.hasOwnProperty(key)) {
-                    formData.append(key, imageParams[key]);
+            if (file.type === "image/heic" && file.type === "image/webp") {
+                compressed = file;
+            }
+            else {
+                compressed = await CompressAndConvertToWebP(file);
+                for (let key in imageParams) {
+                    if (imageParams.hasOwnProperty(key)) {
+                        formData.append(key, imageParams[key]);
+                    }
                 }
             }
             let updateStep = null;

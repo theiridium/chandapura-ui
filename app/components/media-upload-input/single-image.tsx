@@ -20,11 +20,7 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: 
     const [imgId, setImgId] = useState<any>(!!imageParams.imgData ? imageParams.imgData.id : null)
     const { getRootProps, getInputProps } = useDropzone({
         accept: {
-            'image/jpeg': [],
-            'image/jpg': [],
-            'image/png': [],
-            'image/webp': [],
-            'image/heic': []
+            'image/*': [],
         },
         onDropRejected: () => {
             toast.error("Only JPG, JPEG, PNG, WEBP, and HEIC formats are allowed.");
@@ -45,12 +41,10 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: 
             if (!!imgId) await deleteImage(imgId);
             let compressed = null;
             let formData = new FormData();
-            if (file.type === "image/heic" && file.type === "image/webp") {
-                compressed = file;
-            }
-            else {
-                compressed = await CompressAndConvertToWebP(file);
-            }
+            // if (file.type === "image/webp") compressed = file;
+            // else compressed = await CompressAndConvertToWebP(file);
+            //  compressed = await CompressAndConvertToWebP(file);
+
             for (let key in imageParams) {
                 if (imageParams.hasOwnProperty(key)) {
                     formData.append(key, imageParams[key]);
@@ -58,7 +52,8 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: 
             }
             let updateStep = null;
             const fileName = `${imageParams.ref.split(".")[1]}_FI_${imageParams.refId}_${file.name}`;
-            formData.append("files", compressed, fileName.replace(' ', '-').replace(/\.\w+$/, '.webp'));
+            // formData.append("files", file, fileName.replace(' ', '-').replace(/\.\w+$/, '.webp'));
+            formData.append("files", file, fileName.replace(' ', '-'));
             const response = await uploadMediaFiles(formData, data?.strapiToken, (progressEvent) => {
                 const percent = Math.round((progressEvent.loaded ?? 0) * 100 / (progressEvent.total ?? 1));
                 setUploadProgress(percent);

@@ -77,13 +77,14 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditM
             if (files.length > 0) {
                 let updateStep: any = null;
                 const uploadPromises = files.map(async (file, index) => {
-                    const compressed = await CompressAndConvertToWebP(file);
+                    // const compressed = await CompressAndConvertToWebP(file);
                     const formData = new FormData();
                     Object.keys(imageParams).forEach(key => {
                         formData.append(key, imageParams[key]);
                     });
                     const fileName = `${imageParams.ref.split(".")[1]}_GI_${imageParams.refId}_${file.name}`;
-                    formData.append("files", compressed, fileName.replace(' ', '-').replace(/\.\w+$/, '.webp'));
+                    // formData.append("files", compressed, fileName.replace(' ', '-').replace(/\.\w+$/, '.webp'));
+                    formData.append("files", file, fileName.replace(' ', '-'));
                     const response = await uploadMediaFiles(formData, data?.strapiToken, (progressEvent) => {
                         const percent = Math.round((progressEvent.loaded ?? 0) * 100 / (progressEvent.total ?? 1));
                         setFiles(prevFiles => {

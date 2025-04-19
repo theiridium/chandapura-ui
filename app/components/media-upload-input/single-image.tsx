@@ -50,10 +50,10 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: 
             }
             else {
                 compressed = await CompressAndConvertToWebP(file);
-                for (let key in imageParams) {
-                    if (imageParams.hasOwnProperty(key)) {
-                        formData.append(key, imageParams[key]);
-                    }
+            }
+            for (let key in imageParams) {
+                if (imageParams.hasOwnProperty(key)) {
+                    formData.append(key, imageParams[key]);
                 }
             }
             let updateStep = null;

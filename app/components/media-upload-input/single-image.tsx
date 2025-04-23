@@ -1,5 +1,4 @@
 import { deleteMediaFiles, postRequestApi, putRequestApi } from "@/lib/apiLibrary";
-import { CompressAndConvertToWebP } from "@/lib/helpers";
 import { ListingWorkflow } from "@/lib/typings/enums";
 import { uploadMediaFiles } from "@/lib/uploadMediaClient";
 import { Button, CircularProgress, Progress, Spinner } from "@heroui/react";
@@ -39,20 +38,16 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: 
             setLoading(true);
             setIsLoading(true);
             if (!!imgId) await deleteImage(imgId);
-            let compressed = null;
             let formData = new FormData();
-            // if (file.type === "image/webp") compressed = file;
-            // else compressed = await CompressAndConvertToWebP(file);
-            //  compressed = await CompressAndConvertToWebP(file);
-
             for (let key in imageParams) {
                 if (imageParams.hasOwnProperty(key)) {
                     formData.append(key, imageParams[key]);
                 }
             }
             let updateStep = null;
+            // const compressed = await ConvertToWebP(file);
             const fileName = `${imageParams.ref.split(".")[1]}_FI_${imageParams.refId}_${file.name}`;
-            // formData.append("files", file, fileName.replace(' ', '-').replace(/\.\w+$/, '.webp'));
+            // formData.append("files", compressed, fileName.replace(/\.\w+$/, '.webp').replace(/ /g, '-'));
             formData.append("files", file, fileName.replace(' ', '-'));
             const response = await uploadMediaFiles(formData, data?.strapiToken, (progressEvent) => {
                 const percent = Math.round((progressEvent.loaded ?? 0) * 100 / (progressEvent.total ?? 1));

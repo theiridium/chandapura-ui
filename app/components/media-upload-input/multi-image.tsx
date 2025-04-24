@@ -17,7 +17,7 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditM
     const [totalFiles, setTotalFiles] = useState(0);
     const onDrop = useCallback((acceptedFiles: any[]) => {
         setFiles(prevFiles => {
-            const fileNos = existingFiles.length + prevFiles.length + acceptedFiles.length;
+            const fileNos = (existingFiles?.length || 0) + prevFiles.length + acceptedFiles.length;
             if (fileNos > allowedNumber) {
                 toast.warning("You can only upload up to " + allowedNumber + " images.");
                 return prevFiles;

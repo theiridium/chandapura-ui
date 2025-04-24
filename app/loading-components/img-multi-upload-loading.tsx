@@ -16,6 +16,9 @@ const ImgMultiUploadLoading = () => {
             <Skeleton className="rounded-lg">
                 <div className="flex flex-col items-center justify-center w-full aspect-square border-2 border-gray-300 rounded-lg"></div>
             </Skeleton>
+            <Skeleton className="rounded-lg">
+                <div className="flex flex-col items-center justify-center w-full aspect-square border-2 border-gray-300 rounded-lg"></div>
+            </Skeleton>
         </div>
     )
 }

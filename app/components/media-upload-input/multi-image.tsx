@@ -1,6 +1,5 @@
 import { deleteMediaFiles, putRequestApi } from "@/lib/apiLibrary";
 import { uploadMediaFiles } from "@/lib/uploadMediaClient";
-import { CompressAndConvertToWebP } from "@/lib/helpers";
 import { ListingWorkflow } from "@/lib/typings/enums";
 import { Button, Progress } from "@heroui/react";
 import { Plus, X } from "lucide-react";
@@ -9,44 +8,35 @@ import { useDropzone } from 'react-dropzone';
 import { toast } from "react-toastify";
 import { useSession } from "next-auth/react";
 
-const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditMode, numberOfImgs }: any) => {
+const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditMode, allowedNumber }: any) => {
     const { data }: any = useSession();
     const [files, setFiles] = useState<any[]>([]);
     const [existingFiles, setExistingFiles] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
     const [delFilesList, setDelFilesList] = useState<any[]>([]);
+    const [totalFiles, setTotalFiles] = useState(0);
     const onDrop = useCallback((acceptedFiles: any[]) => {
         setFiles(prevFiles => {
-            const totalFiles = prevFiles.length + acceptedFiles.length;
-            if (totalFiles > numberOfImgs) {
-                toast.warning("You can only upload upto " + numberOfImgs + " images.");
+            const fileNos = existingFiles.length + prevFiles.length + acceptedFiles.length;
+            if (fileNos > allowedNumber) {
+                toast.warning("You can only upload up to " + allowedNumber + " images.");
                 return prevFiles;
+            } else {
+                setTotalFiles(fileNos);
+                return [
+                    ...prevFiles,
+                    ...acceptedFiles.map(file => Object.assign(file, {
+                        preview: URL.createObjectURL(file),
+                        progress: 0,
+                    }))
+                ];
             }
-
-            const newFiles = acceptedFiles.filter(file => {
-                const isDuplicate = prevFiles.some(existingFile => existingFile.name === file.name);
-                if (isDuplicate) {
-                    alert(`File with the name "${file.name}" already exists.`);
-                }
-                return !isDuplicate;
-            });
-            return [
-                ...prevFiles,
-                ...newFiles.map(file => Object.assign(file, {
-                    preview: URL.createObjectURL(file),
-                    progress: 0,
-                }))
-            ];
         });
-    }, []);
+    }, [existingFiles, files]);
 
     const { getRootProps, getInputProps } = useDropzone({
         accept: {
-            'image/jpeg': [],
-            'image/jpg': [],
-            'image/png': [],
-            'image/webp': [],
-            'image/heic': []
+            'image/*': []
         },
         onDrop,
         onDropRejected: () => {
@@ -177,7 +167,11 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditM
 
     useEffect(() => {
         setExistingFiles(imageParams.imgData);
-    }, [imageParams]);
+    }, [imageParams.imgData]);
+
+    useEffect(() => {
+       setTotalFiles((existingFiles.length || 0) + files.length)
+    }, [imageParams.imgData, files, existingFiles]);
 
     const isImagesInGallery = files.length > 0 || delFilesList.length > 0;
 
@@ -202,14 +196,18 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditM
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                 {existingImageBlock}
                 {newImgPreview}
-                <div {...getRootProps({ className: 'w-full' })}>
-                    <div className="flex flex-col items-center justify-center w-full aspect-square border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                            <Plus className="text-gray-500" stroke="currentColor" strokeWidth={2} size={40} strokeLinecap="round" strokeLinejoin="round" />
+                {(totalFiles < allowedNumber) &&
+                    Array.from({ length: allowedNumber - totalFiles }).map((_, index) =>
+                        <div key={index} {...getRootProps({ className: 'w-full' })}>
+                            <div className="flex flex-col items-center justify-center w-full aspect-square border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                    <Plus className="text-gray-500" stroke="currentColor" strokeWidth={2} size={40} strokeLinecap="round" strokeLinejoin="round" />
+                                </div>
+                                <input disabled={loading || files.length >= allowedNumber} id="dropzone-file" type="file" multiple className="hidden" {...getInputProps()} />
+                            </div>
                         </div>
-                        <input disabled={loading || files.length >= numberOfImgs} id="dropzone-file" type="file" multiple className="hidden" {...getInputProps()} />
-                    </div>
-                </div>
+                    )
+                }
             </div>
             {isImagesInGallery &&
                 <div className="flex justify-center mb-4">

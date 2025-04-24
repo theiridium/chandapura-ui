@@ -13,7 +13,8 @@ const inter = Poppins({ subsets: ['latin'], weight: ["200", "300", "400", "500",
 export const metadata: Metadata = {
   title: "Explore Chandapura | Your Local Search Engine for Businesses, Real Estate, Jobs, and Classifieds",
   description: "Discover the best of Chandapura with Chandapura.com, your local search engine for businesses, real estate listings, job opportunities, and classifieds. Find everything you need in one place, tailored to your community. Start your search today!",
-  authors: [{name: "Priyadarsi Panigrahi"}, {name: "Priyanka das", url: "https://www.priyankadas.com/"}],
+  // authors: [{name: "Priyadarsi Panigrahi"}, {name: "Priyanka das", url: "https://www.priyankadas.com/"}],
+  authors: [{name: "Priyadarsi Panigrahi"}, {name: "Priyanka Das"}],
   robots: "index, follow",
     alternates: {
       canonical: `https://www.chandapura.com`,

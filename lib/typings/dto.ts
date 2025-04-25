@@ -52,6 +52,11 @@ export interface BusinessListing {
     featured_image?: {}
     step_number: number
     location: any
+    activity_log: ActivityLog[]
+}
+export interface ActivityLog {
+    event: string | undefined
+    processed: string | undefined
 }
 export interface AdListing {
     name: string | undefined
@@ -60,6 +65,7 @@ export interface AdListing {
     website: string | undefined
     ad_image?: {}
     step_number: number
+    activity_log: ActivityLog[]
 }
 export interface ImageParams {
     refId: string | any
@@ -89,6 +95,7 @@ export interface PropertyListing {
     featured_image?: {}
     gallery_images?: any[]
     details_by_listingtype: [RentComponent | SaleComponent | PGComponent | PlotComponent | any]
+    activity_log: ActivityLog[]
 }
 export interface RentComponent {
     __component: string
@@ -146,6 +153,7 @@ export interface ClassifiedListing {
     gallery_images?: any[]
     step_number: number
     details_by_category: [VehicleDetailsComponent] | any[]
+    activity_log: ActivityLog[]
 }
 export interface VehicleDetailsComponent {
     __component: string
@@ -166,6 +174,7 @@ export interface JobListing {
     contact: ContactComponent
     step_number: number
     details_by_jobCategory: [CorporateJobDetailsComponent | PersonalJobDetailsComponent | any]
+    activity_log: ActivityLog[]
 }
 export interface CorporateJobDetailsComponent {
     __component: string

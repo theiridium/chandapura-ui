@@ -7,10 +7,11 @@ import { useSession } from 'next-auth/react';
 import { Products, Resource } from '@/public/shared/app.config';
 import { getPublicApiResponse, putRequestApi } from '@/lib/apiLibrary';
 import { toast } from 'react-toastify';
-import { ListingWorkflow } from '@/lib/typings/enums';
+import { ActivityLog, ListingWorkflow } from '@/lib/typings/enums';
 import { useSetAtom } from 'jotai';
 import { listingFormBtnEl } from '@/lib/atom';
 import ViewLocationMap from '@/app/components/maps/view-location-map';
+import { CreateActivityLogPayload } from '@/lib/helpers';
 
 const Page = () => {
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
@@ -62,6 +63,7 @@ const Page = () => {
                 let payload = {
                     // step_number: type === "new" ? ListingWorkflow.Review : apiRes.step_number,
                     step_number: ListingWorkflow.Payment,
+                    activity_log: CreateActivityLogPayload(ActivityLog.ListingReviewed)
                 }
                 const endpoint = Products.business.api.base;
                 const response = await putRequestApi(endpoint, payload, source);

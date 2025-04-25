@@ -7,9 +7,10 @@ import { useSession } from 'next-auth/react';
 import { Products, Resource, SelectList } from '@/public/shared/app.config';
 import { getPublicApiResponse, putRequestApi } from '@/lib/apiLibrary';
 import { toast } from 'react-toastify';
-import { ListingWorkflow } from '@/lib/typings/enums';
+import { ActivityLog, ListingWorkflow } from '@/lib/typings/enums';
 import { useSetAtom } from 'jotai';
 import { listingFormBtnEl } from '@/lib/atom';
+import { CreateActivityLogPayload } from '@/lib/helpers';
 
 const Page = () => {
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
@@ -61,7 +62,8 @@ const Page = () => {
             }
             else if (type === "new" || type === "renew" || type === 'edit_back') {
                 let payload = {
-                    step_number: ListingWorkflow.Payment
+                    step_number: ListingWorkflow.Payment,
+                    activity_log: CreateActivityLogPayload(ActivityLog.ListingReviewed)
                 }
                 const endpoint = Products.realEstate.api.base;
                 const response = await putRequestApi(endpoint, payload, source);

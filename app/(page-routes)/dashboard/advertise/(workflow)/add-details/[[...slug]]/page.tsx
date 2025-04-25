@@ -11,9 +11,10 @@ import { getPublicApiResponse, postRequestApi, putRequestApi } from '@/lib/apiLi
 import { Products } from '@/public/shared/app.config';
 import FormLoading from '@/app/loading-components/form-loading';
 import { toast } from 'react-toastify';
-import { ListingWorkflow } from '@/lib/typings/enums';
+import { ActivityLog, ListingWorkflow } from '@/lib/typings/enums';
 import { useSetAtom } from 'jotai';
 import { listingFormBtnEl } from '@/lib/atom';
+import { CreateActivityLogPayload } from "@/lib/helpers";
 
 const Page = () => {
     const { data }: any = useSession();
@@ -38,7 +39,11 @@ const Page = () => {
         user: userData.strapiUserId,
         website: "",
         ad_image: {},
-        step_number: ListingWorkflow.Initial
+        step_number: ListingWorkflow.Initial,
+        activity_log: [{
+            event: "",
+            processed: ""
+        }]
     });
     const [apiRes, setApiRes] = useState<any>();
 
@@ -92,7 +97,7 @@ const Page = () => {
             ...formdata,
             contact: contact,
             user: userData.strapiUserId,
-            website: !!formdata.website ? "https://" + formdata.website : "",
+            website: !!formdata.website ? (!formdata.website.includes("https://") ? "https://" + formdata.website : formdata.websit) : "",
             business_listing: bizlink || null,
             step_number: (!source || !apiRes.ad_image) ? ListingWorkflow.AddDetails : data.step_number
         }
@@ -103,6 +108,7 @@ const Page = () => {
         // console.log(payload)
         const endpoint = Products.advertisement.api.base;
         if (type === "edit" || type === "edit_back") {
+            payload.activity_log = CreateActivityLogPayload(ActivityLog.ListingUpdated);
             const response = await putRequestApi(endpoint, payload, source);
             // console.log(response);
             if (response.data) {
@@ -120,6 +126,7 @@ const Page = () => {
             }
         }
         else {
+            payload.activity_log = CreateActivityLogPayload(ActivityLog.ListingCreated);
             const response = await postRequestApi(endpoint, payload);
             // console.log(response);
             if (response.data) {

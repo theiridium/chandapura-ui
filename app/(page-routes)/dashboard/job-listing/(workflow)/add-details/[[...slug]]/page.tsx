@@ -13,12 +13,13 @@ import { getPublicApiResponse, postRequestApi, putRequestApi } from '@/lib/apiLi
 import { Products, SelectList } from '@/public/shared/app.config';
 import FormLoading from '@/app/loading-components/form-loading';
 import { toast } from 'react-toastify';
-import { ListingWorkflow } from '@/lib/typings/enums';
+import { ActivityLog, ListingWorkflow } from '@/lib/typings/enums';
 import { RadioBox } from '@/app/sub-components/radio-box';
 import TimeList from "@/lib/data/time-list.json";
 import moment from 'moment';
 import { useSetAtom } from 'jotai';
 import { listingFormBtnEl } from '@/lib/atom';
+import { CreateActivityLogPayload } from "@/lib/helpers";
 
 const Page = () => {
     const { data }: any = useSession();
@@ -52,7 +53,11 @@ const Page = () => {
         full_address: "",
         contact: contact,
         step_number: ListingWorkflow.Initial,
-        details_by_jobCategory: jobDetails
+        details_by_jobCategory: jobDetails,
+        activity_log: [{
+            event: "",
+            processed: ""
+        }]
     });
     const [apiRes, setApiRes] = useState<any>();
     const onAreaChange = (id: any) => setJobListing({ ...jobListing, area: id });
@@ -181,6 +186,7 @@ const Page = () => {
         // console.log(payload)
         const endpoint = Products.job.api.base;
         if (type === "edit" || type === "edit_back") {
+            payload.activity_log = CreateActivityLogPayload(ActivityLog.ListingUpdated);
             const response = await putRequestApi(endpoint, payload, source);
             // console.log(response);
             if (response.data) {
@@ -198,6 +204,7 @@ const Page = () => {
             }
         }
         else {
+            payload.activity_log = CreateActivityLogPayload(ActivityLog.ListingCreated);
             const response = await postRequestApi(endpoint, payload);
             // console.log(response);
             if (response.data) {

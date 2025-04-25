@@ -9,9 +9,10 @@ import ImgSingleUploadLoading from '@/app/loading-components/img-single-upload-l
 import { Button } from "@heroui/react";
 import { toast } from 'react-toastify';
 import FormLoading from '@/app/loading-components/form-loading';
-import { ListingWorkflow } from '@/lib/typings/enums';
+import { ActivityLog, ListingWorkflow } from '@/lib/typings/enums';
 import { useSetAtom } from 'jotai';
 import { listingFormBtnEl } from '@/lib/atom';
+import { CreateActivityLogPayload } from '@/lib/helpers';
 
 const Page = ({ params }: { params: { slug: string } }) => {
     const [isloading, setIsLoading] = useState(false);
@@ -77,7 +78,8 @@ const Page = ({ params }: { params: { slug: string } }) => {
             if (type === "new" || type === "edit_back") {
                 let payload = {
                     step_number: imageParams.step_number === ListingWorkflow.Review ? ListingWorkflow.Review : ListingWorkflow.UploadImages,
-                    publish_status: imageParams.publish_status
+                    publish_status: imageParams.publish_status,
+                    activity_log: CreateActivityLogPayload(ActivityLog.FiImageSkipped),
                 }
                 const response = await putRequestApi(imageParams.endpoint, payload, imageParams.refId);
                 if (response.data) {

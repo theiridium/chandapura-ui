@@ -3,6 +3,7 @@ import { postRequestApi, putRequestApi } from "./apiLibrary";
 import sub_cat from "@/lib/data/sub-category.json";
 import slugify from 'react-slugify';
 import imageCompression from 'browser-image-compression';
+import { ActivityLog } from "./typings/enums";
 
 export function IsProductUrl(val: string) {
   return Object.values(Products).some((product: any) => product.slug === val);
@@ -83,12 +84,73 @@ export const GetOrdinal = (num: number) => {
   return num + (suffixes[lastDigit] || "th");
 }
 
+export const CreateActivityLogPayload = (logItem: ActivityLog) => {
+  const currentDate = new Date();
+  return [{
+    event: logItem,
+    processed: currentDate.toISOString()
+  }]
+}
+
 export const CompressAndConvertToWebP = async (file: any) => {
   const options = {
     fileType: 'image/webp',
     useWebWorker: true,
   };
   return await imageCompression(file, options);
+};
+
+export const ConvertToWebP = (file: File): Promise<File> => {
+  return new Promise((resolve, reject) => {
+    const fileType = file.type.toLowerCase();
+
+    // Skip converting if already WebP or HEIC
+    if (fileType === "image/webp" || fileType.includes("heic") || fileType.includes("heif")) {
+      return resolve(file);
+    }
+
+    const img = new Image();
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (typeof reader.result !== "string") return;
+      img.src = reader.result;
+    };
+
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return reject("Failed to get canvas context");
+
+      ctx.drawImage(img, 0, 0);
+
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) return reject("WebP conversion failed");
+
+          const webpFile = new File(
+            [blob],
+            file.name.replace(/\.\w+$/, ".webp"),
+            {
+              type: "image/webp",
+              lastModified: Date.now(),
+            }
+          );
+
+          resolve(webpFile);
+        },
+        "image/webp",
+        1
+      );
+    };
+
+    img.onerror = reject;
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
 };
 
 export function ConvertCurrencyToWords(x: number) {

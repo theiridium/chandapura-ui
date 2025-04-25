@@ -16,9 +16,10 @@ import { X } from 'lucide-react';
 import FormLoading from '@/app/loading-components/form-loading';
 import { toast } from 'react-toastify';
 import AddLocationMap from '@/app/components/maps/add-location-map';
-import { ListingWorkflow } from '@/lib/typings/enums';
+import { ActivityLog, ListingWorkflow } from '@/lib/typings/enums';
 import { useSetAtom } from 'jotai';
 import { listingFormBtnEl } from '@/lib/atom';
+import { CreateActivityLogPayload } from "@/lib/helpers";
 
 const Page = () => {
     const { data }: any = useSession();
@@ -74,7 +75,11 @@ const Page = () => {
         bus_hours: businessHours,
         featured_image: {},
         step_number: ListingWorkflow.Initial,
-        location: location
+        location: location,
+        activity_log: [{
+            event: "",
+            processed: ""
+        }]
     });
     const [apiRes, setApiRes] = useState<any>();
     const onSubCategoryChange = (id: any) => {
@@ -220,7 +225,7 @@ const Page = () => {
         const payload: BusinessListing = {
             ...formdata,
             contact: contact,
-            website: !!formdata.website ? "https://" + formdata.website : "",
+            website: !!formdata.website ? (!formdata.website.includes("https://") ? "https://" + formdata.website : formdata.websit) : "",
             bus_hours: stringifyBusHours(businessList.bus_hours),
             step_number: (!source) ? ListingWorkflow.AddDetails : data.step_number,
             location: location
@@ -232,6 +237,7 @@ const Page = () => {
         // console.log(payload)
         const endpoint = Products.business.api.base;
         if (type === "edit" || type === "edit_back") {
+            payload.activity_log = CreateActivityLogPayload(ActivityLog.ListingUpdated);
             const response = await putRequestApi(endpoint, payload, source);
             // console.log(response);
             if (response.data) {
@@ -249,6 +255,7 @@ const Page = () => {
             }
         }
         else {
+            payload.activity_log = CreateActivityLogPayload(ActivityLog.ListingCreated);
             const response = await postRequestApi(endpoint, payload);
             // console.log(response);
             if (response.data) {

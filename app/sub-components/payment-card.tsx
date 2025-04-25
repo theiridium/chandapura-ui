@@ -4,12 +4,12 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@heroui/react";
 import { IndianRupee, MoveRight } from "lucide-react";
-import { ConvertToReadableDate, GenerateItemNameForInvoice, GetFreeListingDaysRange, HashCode } from "@/lib/helpers";
+import { ConvertToReadableDate, CreateActivityLogPayload, GenerateItemNameForInvoice, GetFreeListingDaysRange, HashCode } from "@/lib/helpers";
 import Script from "next/script";
 import { createOrderId, putRequestApi } from "@/lib/apiLibrary";
 import { toast } from "react-toastify";
 import FormLoading from "../loading-components/form-loading";
-import { ListingWorkflow } from "@/lib/typings/enums";
+import { ActivityLog, ListingWorkflow } from "@/lib/typings/enums";
 import { RazOrderPayload } from "@/lib/typings/dto";
 import { useSetAtom } from "jotai";
 import { listingFormBtnEl } from "@/lib/atom";
@@ -183,6 +183,9 @@ const PaymentCard = ({ planDetails, expiryDate, paymentData, hasSubscribed, setH
                     ? [...paymentData.payment_history, payment_details]
                     : [payment_details],
                 step_number: ListingWorkflow.Payment,
+                activity_log: CreateActivityLogPayload(
+                    type === "new" ? ActivityLog.PaymentNew : ActivityLog.PaymentRenew
+                ),
                 publish_status: false
             }
             const response = await putRequestApi(planDetails.endpoint, payload, source);

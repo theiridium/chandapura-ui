@@ -1,15 +1,19 @@
 import { deleteMediaFiles, postRequestApi, putRequestApi } from "@/lib/apiLibrary";
-import { ListingWorkflow } from "@/lib/typings/enums";
+import { CreateActivityLogPayload } from "@/lib/helpers";
+import { ActivityLog, ListingWorkflow } from "@/lib/typings/enums";
 import { uploadMediaFiles } from "@/lib/uploadMediaClient";
 import { Button, CircularProgress, Progress, Spinner } from "@heroui/react";
 import { Pencil } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDropzone } from 'react-dropzone';
 import { toast } from "react-toastify";
 
 const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: any) => {
     const { data }: any = useSession();
+    const searchParams = useSearchParams();
+    const type = searchParams.get('type');
     const [files, setFiles] = useState<any>([]);
     const [loading, setLoading] = useState(false);
     const [loadingText, setLoadingText] = useState("Uploading Image...");
@@ -34,41 +38,65 @@ const SingleImage = ({ imageParams, uploadSuccess, setEditMode, setIsLoading }: 
     });
 
     const uploadImageWithContent = async (file: any) => {
+        setLoading(true);
+        setIsLoading(true);
         try {
-            setLoading(true);
-            setIsLoading(true);
-            if (!!imgId) await deleteImage(imgId);
+            // 1. Delete previous image if it exists
+            if (!!imgId) {
+                try {
+                    await deleteImage(imgId);
+                } catch (err) {
+                    console.warn('Failed to delete existing image:', err);
+                }
+            }
+            // 2. Prepare FormData
             let formData = new FormData();
             for (let key in imageParams) {
                 if (imageParams.hasOwnProperty(key)) {
                     formData.append(key, imageParams[key]);
                 }
             }
-            let updateStep = null;
-            // const compressed = await ConvertToWebP(file);
-            const fileName = `${imageParams.ref.split(".")[1]}_FI_${imageParams.refId}_${file.name}`;
-            // formData.append("files", compressed, fileName.replace(/\.\w+$/, '.webp').replace(/ /g, '-'));
-            formData.append("files", file, fileName.replace(' ', '-'));
-            const response = await uploadMediaFiles(formData, data?.strapiToken, (progressEvent) => {
-                const percent = Math.round((progressEvent.loaded ?? 0) * 100 / (progressEvent.total ?? 1));
-                setUploadProgress(percent);
-            });
-            let payload = {
-                step_number: imageParams.step_number === ListingWorkflow.Payment ? ListingWorkflow.Payment : ListingWorkflow.UploadImages,
-                publish_status: imageParams.publish_status
-            }
-            if (!!response) {
-                setLoadingText("Hang on....");
-                updateStep = await putRequestApi(imageParams.endpoint, payload, imageParams.refId);
-            }
-            if (!!updateStep) {
+            const sanitizedFileName = `${imageParams.ref.split(".")[1]}_FI_${imageParams.refId}_${file.name}`.replace(/\s+/g, '-');
+            formData.append("files", file, sanitizedFileName);
+
+            // 3. Upload the file
+            const response = await uploadMediaFiles(
+                formData,
+                data?.strapiToken,
+                (progressEvent) => {
+                    const percent = Math.round((progressEvent.loaded ?? 0) * 100 / (progressEvent.total ?? 1));
+                    setUploadProgress(percent);
+                }
+            );
+            if (!response) throw new Error("File upload failed");
+
+            // 4. Send update step info
+            setLoadingText("Hang on...");
+
+            const stepNumber =
+                imageParams.step_number === ListingWorkflow.Payment
+                    ? ListingWorkflow.Payment
+                    : ListingWorkflow.UploadImages;
+
+            const payload = {
+                step_number: stepNumber,
+                publish_status: imageParams.publish_status,
+                activity_log: CreateActivityLogPayload(
+                    type === "new" ? ActivityLog.FiImagesUploaded : ActivityLog.FiImagesEdited
+                ),
+            };
+
+            const updateStep = await putRequestApi(imageParams.endpoint, payload, imageParams.refId);
+
+            if (updateStep) {
                 uploadSuccess();
                 setIsEditing(false);
             }
-            setIsLoading(false);
         }
         catch (error) {
-            console.error('Image upload error:', error);
+            console.error("Image upload error:", error);
+        } finally {
+            setIsLoading(false);
         }
     }
 

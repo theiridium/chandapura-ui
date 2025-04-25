@@ -9,7 +9,10 @@ const Menubar = (props: any) => {
             isOpen={props.isOpen}
             onClose={props.onClose}
             // classNames={{ base: "bg-gradient-to-b from-color1d via-color1d/90 to-color1d/30 text-white w-64", closeButton: "text-color1d lg:text-color2d hover:text-color1d text-lg font-bold hover:bg-white/50 bg-white/50 lg:bg-transparent !rounded-sm" }}
-            classNames={{ base: "bg-color1d text-white w-64", closeButton: "text-color1d lg:text-color2d hover:text-color1d text-lg font-bold hover:bg-white/30 bg-white/30 lg:bg-transparent !rounded-sm" }}
+            classNames={{
+                base: "bg-color1d text-white w-64",
+                closeButton: "text-color1d lg:text-color2d hover:text-color1d text-lg font-bold hover:bg-white/30 bg-white/30 lg:bg-transparent !rounded-sm"
+            }}
             size='sm'
             radius='none'>
             <DrawerContent>

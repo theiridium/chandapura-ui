@@ -1,15 +1,19 @@
 import { deleteMediaFiles, putRequestApi } from "@/lib/apiLibrary";
 import { uploadMediaFiles } from "@/lib/uploadMediaClient";
-import { ListingWorkflow } from "@/lib/typings/enums";
+import { ActivityLog, ListingWorkflow } from "@/lib/typings/enums";
 import { Button, Progress } from "@heroui/react";
 import { Plus, X } from "lucide-react";
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useDropzone } from 'react-dropzone';
 import { toast } from "react-toastify";
 import { useSession } from "next-auth/react";
+import { CreateActivityLogPayload } from "@/lib/helpers";
+import { useSearchParams } from "next/navigation";
 
 const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditMode, allowedNumber }: any) => {
     const { data }: any = useSession();
+    const searchParams = useSearchParams();
+    const type = searchParams.get('type');
     const [files, setFiles] = useState<any[]>([]);
     const [existingFiles, setExistingFiles] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
@@ -65,7 +69,6 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditM
 
             // Upload files in parallel
             if (files.length > 0) {
-                let updateStep: any = null;
                 const uploadPromises = files.map(async (file, index) => {
                     // const compressed = await CompressAndConvertToWebP(file);
                     const formData = new FormData();
@@ -75,7 +78,7 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditM
                     const fileName = `${imageParams.ref.split(".")[1]}_GI_${imageParams.refId}_${file.name}`;
                     // formData.append("files", compressed, fileName.replace(' ', '-').replace(/\.\w+$/, '.webp'));
                     formData.append("files", file, fileName.replace(' ', '-'));
-                    const response = await uploadMediaFiles(formData, data?.strapiToken, (progressEvent) => {
+                    await uploadMediaFiles(formData, data?.strapiToken, (progressEvent) => {
                         const percent = Math.round((progressEvent.loaded ?? 0) * 100 / (progressEvent.total ?? 1));
                         setFiles(prevFiles => {
                             const updated = [...prevFiles];
@@ -83,12 +86,6 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditM
                             return [...updated];
                         });
                     });
-                    let payload = {
-                        step_number: imageParams.step_number === ListingWorkflow.Payment ? ListingWorkflow.Payment : ListingWorkflow.UploadImages,
-                        publish_status: imageParams.publish_status
-                    }
-                    if (response) updateStep = await putRequestApi(imageParams.endpoint, payload, imageParams.refId);
-                    return updateStep;
                 });
                 const results = await Promise.allSettled(uploadPromises);
                 allSuccessful = results.every(result => result.status === "fulfilled");
@@ -105,12 +102,10 @@ const MultiImage = ({ imageParams, uploadSuccess, setIsImagesInGallery, setEditM
             toast.error("Failed to upload images.");
         } finally {
             if (allSuccessful) {
-                const payload = {
-                    step_number: imageParams.step_number === ListingWorkflow.Payment
-                        ? ListingWorkflow.Payment
-                        : ListingWorkflow.UploadImages,
-                    publish_status: imageParams.publish_status
-                };
+                let payload = {
+                    publish_status: imageParams.publish_status,
+                    activity_log: CreateActivityLogPayload(type === "new" ? ActivityLog.GiImagesUploaded : ActivityLog.GiImagesEdited)
+                }
                 try {
                     await putRequestApi(imageParams.endpoint, payload, imageParams.refId);
                 } catch (updateError) {

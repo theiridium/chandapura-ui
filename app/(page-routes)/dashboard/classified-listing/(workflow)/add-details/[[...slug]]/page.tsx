@@ -13,9 +13,10 @@ import { getPublicApiResponse, postRequestApi, putRequestApi } from '@/lib/apiLi
 import { Products, SelectList } from '@/public/shared/app.config';
 import FormLoading from '@/app/loading-components/form-loading';
 import { toast } from 'react-toastify';
-import { ListingWorkflow } from '@/lib/typings/enums';
+import { ActivityLog, ListingWorkflow } from '@/lib/typings/enums';
 import { useSetAtom } from 'jotai';
 import { listingFormBtnEl } from '@/lib/atom';
+import { CreateActivityLogPayload } from "@/lib/helpers";
 
 const Page = () => {
     const { data }: any = useSession();
@@ -48,7 +49,11 @@ const Page = () => {
         ownership_history: "",
         year_of_purchase: "",
         step_number: ListingWorkflow.Initial,
-        details_by_category: classifiedDetails
+        details_by_category: classifiedDetails,
+        activity_log: [{
+            event: "",
+            processed: ""
+        }]
     });
     const [apiRes, setApiRes] = useState<any>();
     const [subCategory, setSubCategory] = useState<any>("");
@@ -129,6 +134,7 @@ const Page = () => {
         // console.log(payload)
         const endpoint = Products.classifieds.api.base;
         if (type === "edit" || type === "edit_back") {
+            payload.activity_log = CreateActivityLogPayload(ActivityLog.ListingUpdated);
             const response = await putRequestApi(endpoint, payload, source);
             // console.log(response);
             if (response.data) {
@@ -146,6 +152,7 @@ const Page = () => {
             }
         }
         else {
+            payload.activity_log = CreateActivityLogPayload(ActivityLog.ListingCreated);
             const response = await postRequestApi(endpoint, payload);
             // console.log(response);
             if (response.data) {

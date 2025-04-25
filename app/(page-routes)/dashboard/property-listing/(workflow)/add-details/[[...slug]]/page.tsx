@@ -15,9 +15,10 @@ import FormLoading from '@/app/loading-components/form-loading';
 import { toast } from 'react-toastify';
 import AddLocationMap from '@/app/components/maps/add-location-map';
 import { RadioBox } from '@/app/sub-components/radio-box';
-import { ListingWorkflow } from '@/lib/typings/enums';
+import { ActivityLog, ListingWorkflow } from '@/lib/typings/enums';
 import { useSetAtom } from 'jotai';
 import { listingFormBtnEl } from '@/lib/atom';
+import { CreateActivityLogPayload } from "@/lib/helpers";
 
 const Page = () => {
     const { data }: any = useSession();
@@ -62,7 +63,11 @@ const Page = () => {
         featured_image: {},
         step_number: ListingWorkflow.Initial,
         location: location,
-        details_by_listingtype: propertyDetails
+        details_by_listingtype: propertyDetails,
+        activity_log: [{
+            event: "",
+            processed: ""
+        }]
     });
     const [apiRes, setApiRes] = useState<any>();
     const onAreaChange = (id: any) => setPropertyListing({ ...propertyListing, area: id });
@@ -203,6 +208,7 @@ const Page = () => {
         // console.log(payload)
         const endpoint = Products.realEstate.api.base;
         if (type === "edit" || type === "edit_back") {
+            payload.activity_log = CreateActivityLogPayload(ActivityLog.ListingUpdated);
             const response = await putRequestApi(endpoint, payload, source);
             // console.log(response);
             if (response.data) {
@@ -220,6 +226,7 @@ const Page = () => {
             }
         }
         else {
+            payload.activity_log = CreateActivityLogPayload(ActivityLog.ListingCreated);
             const response = await postRequestApi(endpoint, payload);
             // console.log(response);
             if (response.data) {

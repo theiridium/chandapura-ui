@@ -41,9 +41,10 @@ const SearchBar = ({ productType }: any) => {
       indexUid: GetProductFromProductType(productType)?.searchIndex,
       q: name,
       page: 1,
+      filter: [`sub_category.name=\"${name}\"`],
       hitsPerPage: Number(GetProductFromProductType(productType)?.searchPageLimit),
     };
-    router.push(`/${GetProductFromProductType(productType)?.url}?index=${encodeURIComponent(suggestSearchPayload?.indexUid)}&q=${encodeURIComponent(suggestSearchPayload?.q)}` as string);
+    router.push(`/${GetProductFromProductType(productType)?.url}?index=${encodeURIComponent(suggestSearchPayload?.indexUid)}&q=${encodeURIComponent(suggestSearchPayload?.q)}&filter=${encodeURIComponent(suggestSearchPayload?.filter[0])}` as string);
   }
 
   useEffect(() => {

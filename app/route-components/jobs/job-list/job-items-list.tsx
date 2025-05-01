@@ -6,7 +6,8 @@ import { useInView } from 'react-intersection-observer';
 import { getSearchResult } from '@/app/actions';
 import GlobalSearchListLoading from '@/app/loading-components/global-search-list-loading';
 import JobItemsCardCorporate from './job-items-card-corporate';
-import { CloudImages } from '@/public/shared/app.config';
+import { CloudImages, Resource } from '@/public/shared/app.config';
+import ZeroListingCard from '@/app/components/cards/zero-listing-card';
 
 const JobItemsList = (props: any) => {
     const searchedData = props.result.results[0];
@@ -40,7 +41,7 @@ const JobItemsList = (props: any) => {
 
     return (
         <>
-            <h2 className="text-lg mb-4 mx-2 lg:mx-auto lg:mb-4">{searchedData?.estimatedTotalHits || searchedData?.totalHits} {searchedData.estimatedTotalHits === 1 || searchedData.totalHits === 1 ? 'result' : 'results'} from your search</h2>
+            <h2 className="search-result-count">{searchedData?.estimatedTotalHits || searchedData?.totalHits} {searchedData.estimatedTotalHits === 1 || searchedData.totalHits === 1 ? 'result' : 'results'} from your search</h2>
             <Breadcrumb blockSecondLast={false} />
             <div className="grid lg:grid-cols-7 lg:gap-10">
                 {/* <div className='col-span-2'>
@@ -48,11 +49,12 @@ const JobItemsList = (props: any) => {
                 </div> */}
                 <div className="col-span-3">
                     <div className="grid grid-cols-1 gap-4 lg:gap-8 mb-4 lg:mb-10">
-                        {list && list.map((data: any, i: any) => (
+                        {list?.length > 0 ? list.map((data: any, i: any) => (
                             data.category === "Corporate"?
                             <JobItemsCardCorporate key={i} data={data} id={data.id} product={props.product} />:
                             <JobItemsCardPersonal key={i} data={data} id={data.id} product={props.product} />
-                        ))}
+                        )) :
+                            <ZeroListingCard dashLink={Resource.JobListing.addDetailsLink} title={"job vacancy"} />}
                     </div>
                 </div>
                 <div className='hidden lg:block lg:col-span-1'>

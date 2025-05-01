@@ -6,7 +6,8 @@ import PgItemsCard from './pg-items-card'
 import { useInView } from 'react-intersection-observer'
 import { getSearchResult } from '@/app/actions'
 import GlobalSearchListLoading from '@/app/loading-components/global-search-list-loading'
-import { CloudImages, Products } from '@/public/shared/app.config'
+import { CloudImages, Products, Resource } from '@/public/shared/app.config'
+import ZeroListingCard from '@/app/components/cards/zero-listing-card'
 
 const ProductItemsList = (props: any) => {
     const searchedData = props.result.results[0];
@@ -40,15 +41,16 @@ const ProductItemsList = (props: any) => {
 
     return (
         <>
-            <h2 className="text-lg mb-4 mx-2 lg:mx-auto lg:mb-4">{searchedData?.estimatedTotalHits || searchedData?.totalHits} {searchedData.estimatedTotalHits === 1 || searchedData.totalHits === 1 ? 'result' : 'results'} from your search</h2>
+            <h2 className="search-result-count">{searchedData?.estimatedTotalHits || searchedData?.totalHits} {searchedData.estimatedTotalHits === 1 || searchedData.totalHits === 1 ? 'result' : 'results'} from your search</h2>
             <Breadcrumb blockSecondLast={false} />
             <div className="grid lg:grid-cols-4 lg:gap-10">
                 <div className="col-span-3">
                     <div className="grid grid-cols-1 gap-4 lg:gap-8 mb-4 lg:mb-10">
-                        {list && list.map((data: any, i: any) => (
+                        {list?.length > 0 ? list.map((data: any, i: any) => (
                             data.property_type === "PG" ? <PgItemsCard key={i} data={data} id={data.id} product={Products.pg} /> :
-                                <ProductItemsCard key={i} data={data} id={data.id} product={props.product} />
-                        ))}
+                            <ProductItemsCard key={i} data={data} id={data.id} product={props.product} />
+                        )) :
+                            <ZeroListingCard dashLink={Resource.PropertyListing.addDetailsLink} title={"property"} />}
                     </div>
                 </div>
                 <div className='hidden lg:block lg:col-span-1'>

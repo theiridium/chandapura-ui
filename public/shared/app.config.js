@@ -436,6 +436,14 @@ module.exports = {
       },
     },
   },
+  CatergorySection: {
+    BizCategory: {
+      searchIndex: "category",
+    },
+    ClassifiedCategory: {
+      searchIndex: "classified-category",
+    },
+  },
   SelectList: {
     PropertyType: ["Apartment", "Individual House", "Villa", "Plot", "PG"],
     // PropertyTypeSale: ["Apartment", "Individual House", "Villa", "Plot"],

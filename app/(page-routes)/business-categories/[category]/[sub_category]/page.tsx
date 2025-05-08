@@ -4,10 +4,11 @@ import SearchBar from '@/app/sub-components/search-bar'
 import { Products } from '@/public/shared/app.config'
 import React, { Suspense } from 'react'
 
-const Page = ({searchParams}: any) => {
+const Page = ({params, searchParams}: any) => {
   if (!searchParams?.q) {
     searchParams.index = Products.business.searchIndex;
     searchParams.q = "*";
+    searchParams.filter = `sub_category.slug=${params.sub_category}`
   }
   return (
     <div className="max-w-screen-xl mx-auto px-3 my-3 lg:my-6">

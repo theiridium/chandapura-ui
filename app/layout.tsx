@@ -15,6 +15,7 @@ export const metadata: Metadata = {
   description: "Discover the best of Chandapura with Chandapura.com, your local search engine for businesses, real estate listings, job opportunities, and classifieds. Find everything you need in one place, tailored to your community. Start your search today!",
   // authors: [{name: "Priyadarsi Panigrahi"}, {name: "Priyanka das", url: "https://www.priyankadas.com/"}],
   authors: [{name: "Priyadarsi Panigrahi"}, {name: "Priyanka Das"}],
+  keywords: ['Chandapura', 'Business in Chandapura', 'Real Estate in Chandapura', 'Jobs in Chandapura', 'Re-Sale in Chandapura'],
   robots: "index, follow",
     alternates: {
       canonical: `https://www.chandapura.com`,

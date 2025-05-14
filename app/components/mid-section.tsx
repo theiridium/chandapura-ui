@@ -36,7 +36,7 @@ const MidSection = () => {
       <Classifieds />
       <div id="section-6" className="mb-20">
         <div className="w-full 2xl:max-w-screen-xl mx-auto relative">
-          <img src="https://res.cloudinary.com/dxyjyq5ca/image/upload/v1743890843/Chandapura.com/Banner_Ad_offer_93d57ab8fe.png" />
+          <img src="https://assets.chandapura.com/Banner_Ad_offer_93d57ab8fe.png" />
           <a href="/dashboard/advertise/add-details?type=new" className="btn-secondary-banner">Get Started</a>
         </div>
       </div>

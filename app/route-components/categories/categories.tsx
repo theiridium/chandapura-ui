@@ -18,7 +18,7 @@ const Categories = async ({ slug }: any) => {
                         hitsPerPage: Products.business.searchPageLimit,
                     };
                     return <a key={i}
-                        href={`/${Products.business.slug}/${data[0].slug}/${x.slug}?index=${searchPayload.indexUid}&q=${searchPayload.q}&filter=${searchPayload.filter}`} className="category-list-link">{x.name}</a>
+                        href={`/${Products.business.slug}/${data[0].slug}/${x.slug}`} className="category-list-link">{x.name}</a>
                 })}
             </div>
         </>

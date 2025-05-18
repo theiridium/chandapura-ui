@@ -223,7 +223,7 @@ const Page = () => {
                                 render={({ field: { value } }) => (
                                     <Input isDisabled={disabled}
                                         {...register("name")}
-                                        value={value}
+                                        value={value?.toUpperCase().trim()}
                                         type="text"
                                         variant="flat"
                                         label="Product Name"

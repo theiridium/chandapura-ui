@@ -19,7 +19,7 @@ import TimeList from "@/lib/data/time-list.json";
 import moment from 'moment';
 import { useSetAtom } from 'jotai';
 import { listingFormBtnEl } from '@/lib/atom';
-import { CreateActivityLogPayload } from "@/lib/helpers";
+import { CreateActivityLogPayload, FormatNameField } from "@/lib/helpers";
 
 const Page = () => {
     const { data }: any = useSession();
@@ -479,7 +479,7 @@ const Page = () => {
                         <div className='card-header text-xl font-semibold mb-5'>Job Details</div>
                         <div className="mb-8">
                             <Input isDisabled={disabled}
-                                value={jobDetails?.company_name?.toString() || ""}
+                                value={FormatNameField(jobDetails?.company_name?.toString()) || ""}
                                 onChange={(e: any) =>
                                     setJobDetails((prev: any) => ({
                                         ...prev,

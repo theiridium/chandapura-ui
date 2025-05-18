@@ -353,9 +353,9 @@ header {
   .default-pill-btn {
     @apply pl-4 pr-1 py-1 bg-default font-medium rounded-full text-sm text-nowrap text-gray-800;
   }
-  .breadcrumb {
-    @apply ml-3
-  }
+  /* .breadcrumb {
+    @apply ml-0 lg:ml-3
+  } */
   .search-result-count {
     @apply text-lg mb-4 mx-2 lg:mx-3 lg:mb-4
   }

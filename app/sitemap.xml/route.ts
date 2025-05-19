@@ -28,7 +28,7 @@ export async function GET() {
         'forgot-password',
         'pricing',
         'banner-ad-guidelines',
-        'category-reference-book',
+        'business-category-list',
         'privacy-policy',
         'terms-and-conditions',
     ].map((path) => ({

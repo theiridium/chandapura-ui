@@ -1,6 +1,7 @@
 "use client"
 import { getPublicSingleSearchResponse } from '@/lib/apiLibrary';
 import { SearchPayload } from '@/lib/typings/dto';
+import { Products } from '@/public/shared/app.config';
 import { Button, Chip, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, User } from "@heroui/react"
 import { SearchIcon } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react'
@@ -27,18 +28,20 @@ const CategoryListModal = (props: any) => {
         switch (columnKey) {
             case "category":
                 return (
-                    <User
-                        avatarProps={{ radius: "full", src: item.image.url }}
-                        name={item.name}
-                    ></User>
+                    <a href={`/${Products.business.slug}/${item.slug}`}>
+                        <User avatarProps={{ radius: "full", src: item.image.url }} name={item.name}></User>
+                    </a>
                 );
             case "sub_category":
                 return (
                     <div className='flex flex-wrap gap-2'>
                         {item.sub_categories.map((x: any, i: any) =>
-                            <Chip key={i} className="capitalize" color='primary' size="sm" variant="flat">
-                                {x.name}
-                            </Chip>)}
+                            <a key={i} href={`/${Products.business.slug}/${item.slug}/${x.slug}`}>
+                                <Chip className="capitalize border border-transparent hover:border-primary" color='primary' size="sm" variant="flat">
+                                    {x.name}
+                                </Chip>
+                            </a>
+                        )}
                     </div>
                 );
             default:
@@ -67,7 +70,7 @@ const CategoryListModal = (props: any) => {
                                     removeWrapper
                                     isHeaderSticky
                                     isStriped
-                                    aria-label="Category Reference Book"
+                                    aria-label="Business Category List"
                                 >
                                     <TableHeader>
                                         <TableColumn key="category" width={300}>

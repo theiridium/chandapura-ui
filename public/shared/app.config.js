@@ -71,9 +71,9 @@ module.exports = {
       label: "Pricing",
       link: "/pricing",
     },
-    CategoryRefBook: {
-      label: "Category Reference Book",
-      link: "/category-reference-book",
+    BizCategoryList: {
+      label: "Business Category List",
+      link: "/business-category-list",
     },
     BannerAdGuidelines: {
       label: "Banner-Ad Guidelines",

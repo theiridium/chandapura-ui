@@ -1,6 +1,7 @@
 import { getPublicSingleSearchResponse } from '@/lib/apiLibrary';
 import { categories } from '@/lib/atom';
 import { SearchPayload } from '@/lib/typings/dto';
+import { Products } from '@/public/shared/app.config';
 import { Chip, Input, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, User } from "@heroui/react";
 import { useAtomValue } from 'jotai';
 import { SearchIcon } from 'lucide-react';
@@ -8,6 +9,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 
 const CategoryRefTable = () => {
     const [tabledata, setTableData] = useState<any>([]);
+    const [isLoading, setIsLoading] = useState<any>(true);
     const [searchTxt, setSearchText] = useState<string>("");
     const onSearchChange = async (text: any) => {
         setSearchText(text);
@@ -18,6 +20,7 @@ const CategoryRefTable = () => {
             sort: ["name:asc"]
         }
         const data = await getPublicSingleSearchResponse(payload);
+        setIsLoading(false);
         setTableData(data.results[0].hits);
     }
     useEffect(() => {
@@ -28,18 +31,20 @@ const CategoryRefTable = () => {
         switch (columnKey) {
             case "category":
                 return (
-                    <User
-                        avatarProps={{ radius: "full", src: item.image.url }}
-                        name={item.name}
-                    ></User>
+                    <a href={`/${Products.business.slug}/${item.slug}`}>
+                        <User avatarProps={{ radius: "full", src: item.image.url }} name={item.name}></User>
+                    </a>
                 );
             case "sub_category":
                 return (
                     <div className='flex flex-wrap gap-2'>
                         {item.sub_categories.map((x: any, i: any) =>
-                            <Chip key={i} className="capitalize" color='primary' size="sm" variant="flat">
-                                {x.name}
-                            </Chip>)}
+                            <a key={i} href={`/${Products.business.slug}/${item.slug}/${x.slug}`}>
+                                <Chip className="capitalize border border-transparent hover:border-primary" color='primary' size="sm" variant="flat">
+                                    {x.name}
+                                </Chip>
+                            </a>
+                        )}
                     </div>
                 );
             default:
@@ -63,7 +68,7 @@ const CategoryRefTable = () => {
                 topContentPlacement="outside"
                 isHeaderSticky
                 isStriped
-                aria-label="Category Reference Book"
+                aria-label="Business Category List"
                 classNames={{
                     wrapper: "h-[70vh]"
                 }}
@@ -77,6 +82,8 @@ const CategoryRefTable = () => {
                     </TableColumn>
                 </TableHeader>
                 <TableBody
+                    isLoading={isLoading}
+                    loadingContent={"Loading..."}
                     emptyContent={"No category found from search"}
                     items={tabledata}
                 >

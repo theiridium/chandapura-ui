@@ -62,7 +62,7 @@ const Menubar = (props: any) => {
                                     <a className='block w-full' href={Resource.Pricing.link}>{Resource.Pricing.label}</a>
                                 </li>
                                 <li className='hover:bg-white/20'>
-                                    <a className='block w-full' href={Resource.CategoryRefBook.link}>{Resource.CategoryRefBook.label}</a>
+                                    <a className='block w-full' href={Resource.BizCategoryList.link}>{Resource.BizCategoryList.label}</a>
                                 </li>
                                 <li className='hover:bg-white/20'>
                                     <a className='block w-full' href={Resource.BannerAdGuidelines.link}>{Resource.BannerAdGuidelines.label}</a>

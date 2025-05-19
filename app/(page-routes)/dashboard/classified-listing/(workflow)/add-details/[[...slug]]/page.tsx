@@ -16,7 +16,7 @@ import { toast } from 'react-toastify';
 import { ActivityLog, ListingWorkflow } from '@/lib/typings/enums';
 import { useSetAtom } from 'jotai';
 import { listingFormBtnEl } from '@/lib/atom';
-import { CreateActivityLogPayload, FormatNameField } from "@/lib/helpers";
+import { CreateActivityLogPayload } from "@/lib/helpers";
 
 const Page = () => {
     const { data }: any = useSession();
@@ -120,6 +120,7 @@ const Page = () => {
 
     const onSubmit: SubmitHandler<any> = (data) => {
         setIsSubmitLoading(true);
+        data.name = data.name.trim();
         let formdata = { ...classifiedList, ...data }
         const payload: ClassifiedListing = {
             ...formdata,
@@ -223,7 +224,7 @@ const Page = () => {
                                 render={({ field: { value } }) => (
                                     <Input isDisabled={disabled}
                                         {...register("name")}
-                                        value={FormatNameField(value) || ""}
+                                        value={value?.toUpperCase()}
                                         type="text"
                                         variant="flat"
                                         label="Product Name"

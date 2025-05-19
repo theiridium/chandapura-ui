@@ -19,7 +19,7 @@ import AddLocationMap from '@/app/components/maps/add-location-map';
 import { ActivityLog, ListingWorkflow } from '@/lib/typings/enums';
 import { useSetAtom } from 'jotai';
 import { listingFormBtnEl } from '@/lib/atom';
-import { CreateActivityLogPayload } from "@/lib/helpers";
+import { CreateActivityLogPayload, FormatNameField } from "@/lib/helpers";
 
 const Page = () => {
     const { data }: any = useSession();
@@ -338,7 +338,7 @@ const Page = () => {
                                 render={({ field: { value } }) => (
                                     <Input isDisabled={disabled}
                                         {...register("name")}
-                                        value={value?.toUpperCase().trim()}
+                                        value={FormatNameField(value) || ""}
                                         type="text"
                                         variant="flat"
                                         label="Business Name"

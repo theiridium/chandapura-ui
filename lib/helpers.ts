@@ -59,14 +59,13 @@ export const GetOfferPeriodDateRangeYearly = () => {
 
 export const FormatNameField = (value: any) => {
   return value
-    ?.trim()
-    .split(/\s+/)
+    ?.split(" ")
     .map((word: any) => {
       if (!word) return "";
       return word[0].toUpperCase() + word.slice(1);
     })
-    .join(" ") || "";
-};
+    .join(" ") || ""
+}
 
 export const GetDaysToExpire = (futureDate: any) => {
   const currentDate: any = new Date();

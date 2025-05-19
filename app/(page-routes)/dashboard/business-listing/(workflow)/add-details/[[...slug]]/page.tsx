@@ -19,7 +19,7 @@ import AddLocationMap from '@/app/components/maps/add-location-map';
 import { ActivityLog, ListingWorkflow } from '@/lib/typings/enums';
 import { useSetAtom } from 'jotai';
 import { listingFormBtnEl } from '@/lib/atom';
-import { CreateActivityLogPayload, FormatNameField } from "@/lib/helpers";
+import { CreateActivityLogPayload } from "@/lib/helpers";
 
 const Page = () => {
     const { data }: any = useSession();
@@ -221,6 +221,7 @@ const Page = () => {
         //     return;
         // }
         setIsSubmitLoading(true);
+        data.name = data.name.trim();
         let formdata = { ...businessList, ...data }
         const payload: BusinessListing = {
             ...formdata,
@@ -338,7 +339,7 @@ const Page = () => {
                                 render={({ field: { value } }) => (
                                     <Input isDisabled={disabled}
                                         {...register("name")}
-                                        value={FormatNameField(value) || ""}
+                                        value={value?.toUpperCase()}
                                         type="text"
                                         variant="flat"
                                         label="Business Name"

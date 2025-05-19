@@ -14,7 +14,7 @@ import { toast } from 'react-toastify';
 import { ActivityLog, ListingWorkflow } from '@/lib/typings/enums';
 import { useSetAtom } from 'jotai';
 import { listingFormBtnEl } from '@/lib/atom';
-import { CreateActivityLogPayload } from "@/lib/helpers";
+import { CreateActivityLogPayload, FormatNameField } from "@/lib/helpers";
 
 const Page = () => {
     const { data }: any = useSession();
@@ -92,6 +92,7 @@ const Page = () => {
     const handleContactDetails = (data: any) => setContact(data);
     const onSubmit: SubmitHandler<any> = (data) => {
         setIsSubmitLoading(true);
+        data.name = data.name.trim();
         let formdata = { ...adList, ...data }
         const payload: AdListing = {
             ...formdata,
@@ -182,7 +183,7 @@ const Page = () => {
                                 render={({ field: { value } }) => (
                                     <Input isDisabled={disabled}
                                         {...register("name")}
-                                        value={value}
+                                        value={FormatNameField(value) || ""}
                                         type="text"
                                         variant="flat"
                                         label="Business Name"

@@ -463,6 +463,7 @@ const Page = () => {
                                         onSelectionChange={(e: any) => handleBusOpenHrsChange(e, x.day)}
                                         name={x.day}
                                         isDisabled={!x.isOpen}
+                                        disallowEmptySelection={true}
                                     >
                                         {(time) => (
                                             <SelectItem key={time.key}>
@@ -480,6 +481,7 @@ const Page = () => {
                                         onSelectionChange={(e: any) => handleBusCloseHrsChange(e, x.day)}
                                         name={x.day}
                                         isDisabled={!x.isOpen}
+                                        disallowEmptySelection={true}
                                     >
                                         {(time) => (
                                             <SelectItem key={time.key}>

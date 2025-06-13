@@ -39,18 +39,18 @@ axiosInstance.interceptors.response.use(
     // }
     return response;
   },
-  async (error) => {
-    // ✅ Case 2: HTTP 401 at network level
-    const status =
-      error?.response?.data?.error?.status ||
-      error?.response?.status;
+  // async (error) => {
+  //   // ✅ Case 2: HTTP 401 at network level
+  //   const status =
+  //     error?.response?.data?.error?.status ||
+  //     error?.response?.status;
 
-    if (status === 401) {
-      console.warn('Session expired or unauthorized — network 401');
-      await signOut({ callbackUrl: '/' });
-    }
-    return Promise.reject(error);
-  }
+  //   if (status === 401) {
+  //     console.warn('Session expired or unauthorized — network 401');
+  //     await signOut({ callbackUrl: '/' });
+  //   }
+  //   return Promise.reject(error);
+  // }
 );
 
 export default axiosInstance;

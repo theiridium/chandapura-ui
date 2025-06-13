@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { auth } from './auth';
+import { signOut } from 'next-auth/react'
 
 const apiHost: any = process.env.NEXT_PUBLIC_STRAPI_API_URL;
 
@@ -21,5 +22,17 @@ axiosInstance.interceptors.request.use(async (config: any) => {
 }, (error) => {
   return Promise.reject(error.message);
 });
+
+// Response interceptor to check for 401 Unauthorized
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      console.warn(error.response?.message);
+      signOut({ callbackUrl: '/' });
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default axiosInstance;

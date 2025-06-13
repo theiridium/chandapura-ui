@@ -25,12 +25,25 @@ axiosInstance.interceptors.request.use(async (config: any) => {
 
 // Response interceptor to check for 401 Unauthorized
 axiosInstance.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    const status = error.response?.data?.error?.status || error.response?.status;
+  async (response) => {
+    // ✅ Case 1: HTTP 200, but Strapi embeds a 401 in the body
+    if (response?.data?.error?.status === 401) {
+      console.warn(response?.data?.error?.message + " - Logging out....");
+      await signOut({ callbackUrl: '/' });
+      return Promise.reject(response);
+    }
+
+    return response;
+  },
+  async (error) => {
+    // ✅ Case 2: HTTP 401 at network level
+    const status =
+      error?.response?.data?.error?.status ||
+      error?.response?.status;
+
     if (status === 401) {
-      console.warn(error.response?.message);
-      signOut({ callbackUrl: '/' });
+      console.warn('Session expired or unauthorized — network 401');
+      await signOut({ callbackUrl: '/' });
     }
     return Promise.reject(error);
   }

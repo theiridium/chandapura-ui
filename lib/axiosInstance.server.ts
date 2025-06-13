@@ -26,13 +26,17 @@ axiosInstance.interceptors.request.use(async (config: any) => {
 // Response interceptor to check for 401 Unauthorized
 axiosInstance.interceptors.response.use(
   async (response) => {
-    // ✅ Case 1: HTTP 200, but Strapi embeds a 401 in the body
+    console.log('✅ Inside response interceptor:', response); // add this log
     if (response?.data?.error?.status === 401) {
-      console.warn(response?.data?.error?.message + " - Logging out....");
+      console.warn('⚠️ Embedded 401 in response.body – signing out');
       await signOut({ callbackUrl: '/' });
-      return Promise.reject(response);
+      return Promise.reject({
+        response: {
+          data: response.data,
+          status: 401,
+        },
+      });
     }
-
     return response;
   },
   async (error) => {

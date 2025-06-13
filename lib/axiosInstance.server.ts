@@ -25,8 +25,8 @@ axiosInstance.interceptors.request.use(async (config: any) => {
 
 // Response interceptor to check for 401 Unauthorized
 axiosInstance.interceptors.response.use(
-  async (response) => {
-    if (response?.data?.error?.status === 401) {
+  async (response: any) => {
+    if (response?.error?.status === 401) {
       await signOut({ callbackUrl: '/' });
     }
     return response;

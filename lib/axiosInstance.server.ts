@@ -27,7 +27,8 @@ axiosInstance.interceptors.request.use(async (config: any) => {
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const status = error.response?.data?.error?.status || error.response?.status;
+    if (status === 401) {
       console.warn(error.response?.message);
       signOut({ callbackUrl: '/' });
     }

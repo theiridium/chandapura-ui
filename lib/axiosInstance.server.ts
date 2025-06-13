@@ -26,17 +26,9 @@ axiosInstance.interceptors.request.use(async (config: any) => {
 // Response interceptor to check for 401 Unauthorized
 axiosInstance.interceptors.response.use(
   async (response) => {
-    // console.log('✅ Inside response interceptor:', response); // add this log
-    // if (response?.data?.error?.status === 401) {
-    //   console.warn('⚠️ Embedded 401 in response.body – signing out');
-    //   await signOut({ callbackUrl: '/' });
-    //   return Promise.reject({
-    //     response: {
-    //       data: response.data,
-    //       status: 401,
-    //     },
-    //   });
-    // }
+    if (response?.data?.error?.status === 401) {
+      await signOut({ callbackUrl: '/' });
+    }
     return response;
   },
   // async (error) => {

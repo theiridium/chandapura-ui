@@ -41,7 +41,7 @@ axiosInstance.interceptors.response.use(
 
 async function serverLogoutAction() {
   cookies().set({
-    name: 'next-auth.session-token',
+    name: '__Secure-next-auth.session-token',
     value: '',
     path: '/',
     maxAge: 0,

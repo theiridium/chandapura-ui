@@ -24,8 +24,6 @@ const SearchSection = () => {
       getPublicApiResponse(`classified-categories?populate=image&sort=name&pagination[limit]=100`)
     ]);
     setBizCategories(bizCategoriesResponse.data);
-    console.log(classifiedCategoriesResponse)
-    console.log(classifiedCategoriesResponse?.data)
     setClassifiedCategories(classifiedCategoriesResponse.data);
   }
   useEffect(() => {

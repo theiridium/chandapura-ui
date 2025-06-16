@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { auth } from './auth';
-import { signOut } from 'next-auth/react'
+import { cookies } from 'next/headers';
 
 const apiHost: any = process.env.NEXT_PUBLIC_STRAPI_API_URL;
 
@@ -26,24 +26,26 @@ axiosInstance.interceptors.request.use(async (config: any) => {
 // Response interceptor to check for 401 Unauthorized
 axiosInstance.interceptors.response.use(
   async (response: any) => {
-    console.log("yoi",response)
     if (response?.data?.error?.status === 401) {
-      await signOut({ callbackUrl: '/' });
+      await serverLogoutAction();
     }
     return response;
   },
-  // async (error) => {
-  //   // ✅ Case 2: HTTP 401 at network level
-  //   const status =
-  //     error?.response?.data?.error?.status ||
-  //     error?.response?.status;
-
-  //   if (status === 401) {
-  //     console.warn('Session expired or unauthorized — network 401');
-  //     await signOut({ callbackUrl: '/' });
-  //   }
-  //   return Promise.reject(error);
-  // }
+  async (error) => {
+    if (error.response.status === 401) {
+      await serverLogoutAction();
+    }
+    return Promise.reject(error);
+  }
 );
+
+async function serverLogoutAction() {
+  cookies().set({
+    name: 'next-auth.session-token',
+    value: '',
+    path: '/',
+    maxAge: 0,
+  });
+}
 
 export default axiosInstance;

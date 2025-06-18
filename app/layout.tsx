@@ -48,10 +48,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await getServerSession(authOptions);
-  const res = await getPublicApiResponse(`${Products.advertisement.api.base}`);
-  if (res?.error?.status === 401) {
-    redirect('/logout');
-  }
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased`}>

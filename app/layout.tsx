@@ -50,11 +50,7 @@ export default async function RootLayout({
   const session = await getServerSession(authOptions);
   const res = await getPublicApiResponse(`${Products.advertisement.api.base}`);
   if (res?.error?.status === 401) {
-    cookies().set('__Secure-next-auth.session-token', '', {
-      path: '/',
-      maxAge: 0,
-    });
-    redirect('/');
+    redirect('/logout');
   }
   return (
     <html lang="en">

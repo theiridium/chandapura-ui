@@ -2,6 +2,7 @@
 import axios from "axios";
 import { RazOrderPayload, SearchPayload } from "./typings/dto";
 import axiosInstance from "./axiosInstance.server";
+import { redirect } from "next/navigation";
 
 const currentDate = new Date().getTime();
 
@@ -16,7 +17,7 @@ export const getPublicApiResponse = async (endpoint: any) => {
         });
         return response.data;
     } catch (err: any) {
-        console.log(err)
+        if (err.response.status === 401) redirect('/logout')
         return err.response?.data || { error: 'An error occurred' };
     }
 }
@@ -34,7 +35,7 @@ export const postRequestApi = async (endpoint: string, data: any) => {
         });
         return response.data;
     } catch (err: any) {
-        console.log(err)
+        if (err.response.status === 401) redirect('/logout')
         return err.response?.data || { error: 'An error occurred' };
     }
 }
@@ -53,7 +54,7 @@ export const putRequestApi = async (endpoint: string, payload: any, id: any) => 
         });
         return response.data;
     } catch (err: any) {
-        console.log(err)
+        if (err.response.status === 401) redirect('/logout')
         return err.response?.data || { error: 'An error occurred' };
     }
 }
@@ -70,7 +71,7 @@ export const uploadMediaFiles = async (data: any) => {
         });
         return response.data;
     } catch (err: any) {
-        console.log(err)
+        if (err.response.status === 401) redirect('/logout')
         return err.response?.data || { error: 'An error occurred' };
     }
 }
@@ -87,8 +88,7 @@ export const deleteMediaFiles = async (id: any) => {
         });
         return response.data;
     } catch (err: any) {
-        console.log(err)
-
+        if (err.response.status === 401) redirect('/logout')
         return err.response?.data || { error: 'An error occurred' };
     }
 }
@@ -138,7 +138,7 @@ export const userEmailConfirmation = async (email: string) => {
         });
         return response.data;
     } catch (err: any) {
-
+        if (err.response.status === 401) redirect('/logout')
         return { error: err.response?.data?.error?.message };
     }
 }

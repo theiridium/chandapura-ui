@@ -6,10 +6,6 @@ import "./embla.css";
 import Wrapper from "./wrapper";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
-import { getPublicApiResponse } from "@/lib/apiLibrary";
-import { Products } from "@/public/shared/app.config";
-import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
 
 // const inter = Nunito({ subsets: ['latin'], weight: ["200", "300", "400", "500", "600", "700", "800", "900"] })
 const inter = Poppins({ subsets: ['latin'], weight: ["200", "300", "400", "500", "600", "700", "800", "900"] })

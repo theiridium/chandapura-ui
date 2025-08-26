@@ -6,7 +6,11 @@ import AdBanner from "@/app/sub-components/ad-banner";
 import { GetProductFromParam, IsProductUrl } from "@/lib/helpers";
 import { notFound } from "next/navigation";
 
-const Page = ({ params, searchParams }: { params: { product: string }, searchParams: any }) => {
+const Page = async (
+    props: { params: Promise<{ product: string }>, searchParams: Promise<any> }
+) => {
+    const searchParams = await props.searchParams;
+    const params = await props.params;
     const id = searchParams.source;
     if (!IsProductUrl(params.product)) notFound();
     const product: any = GetProductFromParam(params.product);

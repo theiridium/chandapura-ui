@@ -7,7 +7,8 @@ import { Products } from '@/public/shared/app.config'
 import React, { Suspense } from 'react'
 export const dynamic = 'force-dynamic'
 
-const Page = ({ searchParams }: any) => {
+const Page = async (props: any) => {
+  const searchParams = await props.searchParams;
   if (!searchParams?.q) {
     searchParams.index = Products.job.searchIndex;
     searchParams.q = "*";

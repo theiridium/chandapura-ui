@@ -20,12 +20,12 @@
     "jotai": "^2.7.1",
     "lucide-react": "^0.358.0",
     "moment": "^2.30.1",
-    "next": "14.1.3",
+    "next": "15.5.0",
     "next-auth": "^4.24.7",
     "ngeohash": "^0.6.3",
     "razorpay": "^2.9.4",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
     "react-dropzone": "^14.2.3",
     "react-fast-marquee": "^1.6.5",
     "react-google-recaptcha": "^3.1.0",
@@ -38,14 +38,18 @@
   "devDependencies": {
     "@types/ngeohash": "^0.6.8",
     "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "19.1.11",
+    "@types/react-dom": "19.1.8",
     "@types/react-google-recaptcha": "^2.1.9",
     "autoprefixer": "^10.4.19",
     "eslint": "^8",
-    "eslint-config-next": "14.1.3",
+    "eslint-config-next": "15.5.0",
     "postcss": "^8.4.39",
     "tailwindcss": "^3.4.6",
     "typescript": "^5"
+  },
+  "overrides": {
+    "@types/react": "19.1.11",
+    "@types/react-dom": "19.1.8"
   }
 }

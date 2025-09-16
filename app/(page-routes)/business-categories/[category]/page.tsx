@@ -4,7 +4,8 @@ import Categories from "@/app/route-components/categories/categories"
 import AdBanner from "@/app/sub-components/ad-banner"
 import { Suspense } from "react"
 
-const Page = ({ params }: any) => {
+const Page = async (props: any) => {
+  const params = await props.params;
   return (
     <>
         <div className="grid relative">

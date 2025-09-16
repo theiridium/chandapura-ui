@@ -15,7 +15,7 @@ import { ListingWorkflow } from '@/lib/typings/enums';
 import { useSetAtom } from 'jotai';
 import { listingFormBtnEl } from '@/lib/atom';
 
-const Page = ({ params }: { params: { slug: string } }) => {
+const Page = () => {
     const [isloading, setIsLoading] = useState(false);
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
     const router = useRouter();

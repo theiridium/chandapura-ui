@@ -378,7 +378,7 @@ const Page = () => {
                                 render={({ field: { value } }) => (
                                     <Input isDisabled={disabled}
                                         {...register("name")}
-                                        value={value.toUpperCase() || ""}
+                                        value={value?.toUpperCase() || ""}
                                         type="text"
                                         variant="flat"
                                         label="Property Name"

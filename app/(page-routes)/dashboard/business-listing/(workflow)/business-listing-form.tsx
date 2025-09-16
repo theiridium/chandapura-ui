@@ -26,14 +26,20 @@ const steps = [
         number: 3,
         title: "Review",
         currentPath: "review",
-        nextPath: "payment"
-    },
-    {
-        number: 4,
-        title: "Payment",
-        currentPath: "payment",
         nextPath: "publish"
-    }
+    },
+    // {
+    //     number: 3,
+    //     title: "Review",
+    //     currentPath: "review",
+    //     nextPath: "payment"
+    // },
+    // {
+    //     number: 4,
+    //     title: "Payment",
+    //     currentPath: "payment",
+    //     nextPath: "publish"
+    // }
 ]
 
 const BusinessListingForm = ({ children, subCatList, resArea }: { children: React.ReactNode, subCatList: any, resArea: any }) => {

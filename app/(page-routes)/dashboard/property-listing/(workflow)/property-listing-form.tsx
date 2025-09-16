@@ -26,14 +26,20 @@ const steps = [
         number: 3,
         title: "Review",
         currentPath: "review",
-        nextPath: "payment"
-    },
-    {
-        number: 4,
-        title: "Payment",
-        currentPath: "payment",
         nextPath: "publish"
-    }
+    },
+    // {
+    //     number: 3,
+    //     title: "Review",
+    //     currentPath: "review",
+    //     nextPath: "payment"
+    // },
+    // {
+    //     number: 4,
+    //     title: "Payment",
+    //     currentPath: "payment",
+    //     nextPath: "publish"
+    // }
 ]
 
 const PropertyListingForm = ({ children, resRealEstateAmenities, resPgAmenities, resPlotAmenities, resArea }: { children: React.ReactNode, resRealEstateAmenities: any, resPgAmenities: any, resPlotAmenities: any, resArea: any }) => {

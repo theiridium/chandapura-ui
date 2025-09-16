@@ -68,8 +68,10 @@ const Page = () => {
                 const endpoint = Products.realEstate.api.base;
                 const response = await putRequestApi(endpoint, payload, source);
                 if (response.data) {
-                    toast.success("Let's proceed with Payment");
-                    router.push(`/dashboard/property-listing/payment?type=${type}&source=${source}`)
+                    // toast.success("Let's proceed with Payment");
+                    // router.push(`/dashboard/property-listing/payment?type=${type}&source=${source}`)
+                    toast.success("Your Property Listing have been uploaded sucessfully!");
+                    router.push(`/dashboard/property-listing/view-all`)
                 }
             }
         } catch (error) {
@@ -94,7 +96,7 @@ const Page = () => {
 
     return (
         <>
-            {isSubmitLoading && <FormLoading text={"Taking you to payment page..."} />}
+            {isSubmitLoading && <FormLoading text={"Submitting your property listing..."} />}
             <div className='col-span-full lg:col-span-6 mt-3 lg:my-8'>
                 <div className='listing-header mb-8'>
                     <div className='text-xl lg:text-4xl font-semibold text-gray-700 px-7'>Review</div>

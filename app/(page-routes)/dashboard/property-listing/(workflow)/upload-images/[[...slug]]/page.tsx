@@ -133,7 +133,7 @@ const Page = () => {
                             <ImgSingleUploadLoading />}
                     </div>
                     <div className='listing-card border rounded-lg px-7 py-6 scroll-mt-36'>
-                        {isGalleryImagesLoaded ? <MultiImage key={keyGa} imageParams={imageParamsGallery} setIsImagesInGallery={setIsImagesInGallery} uploadSuccess={reloadGalleryComp} setEditMode={setEditMode} allowedNumber={10} /> :
+                        {isGalleryImagesLoaded ? <MultiImage key={keyGa} imageParams={imageParamsGallery} setIsImagesInGallery={setIsImagesInGallery} uploadSuccess={reloadGalleryComp} setEditMode={setEditMode} allowedNumber={6} /> :
                             <ImgMultiUploadLoading />}
                     </div>
                 </div>

@@ -6,7 +6,9 @@ import SearchBar from '@/app/sub-components/search-bar'
 import { Products } from '@/public/shared/app.config'
 import React, { Suspense } from 'react'
 
-const Page = ({ params, searchParams }: any) => {
+const Page = async (props: any) => {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   if (!searchParams?.q) {
     searchParams.index = Products.job.searchIndex;
     searchParams.q = "*";

@@ -14,7 +14,7 @@ import { useSetAtom } from 'jotai';
 import { listingFormBtnEl } from '@/lib/atom';
 import BannerGuidlineModal from '@/app/components/modals/banner-guidline-modal';
 
-const Page = ({ params }: { params: { slug: string } }) => {
+const Page = () => {
     const [isloading, setIsLoading] = useState(false);
     const [isSubmitLoading, setIsSubmitLoading] = useState(false);
     const router = useRouter();

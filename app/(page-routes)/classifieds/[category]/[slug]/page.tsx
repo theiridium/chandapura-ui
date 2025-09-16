@@ -5,7 +5,8 @@ import ClassifiedDetailLayout from "@/app/route-components/classifieds/classifie
 import AdBanner from "@/app/sub-components/ad-banner";
 import { Suspense } from "react";
 
-const Page = ({ searchParams }: any) => {
+const Page = async (props: any) => {
+    const searchParams = await props.searchParams;
     const id = searchParams.source;
     return (
         <div className="max-w-screen-xl mx-auto lg:px-3 lg:my-6">

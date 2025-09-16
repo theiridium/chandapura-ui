@@ -7,7 +7,11 @@ import ProductItems from "@/app/route-components/real-estate/product/product-lis
 import AdLoading from "@/app/loading-components/ad-loading";
 import AdBanner from "@/app/sub-components/ad-banner";
 
-const Page = ({ params, searchParams }: { params: { product: string }, searchParams: any }) => {
+const Page = async (
+    props: { params: Promise<{ product: string }>, searchParams: Promise<any> }
+) => {
+    const searchParams = await props.searchParams;
+    const params = await props.params;
     if (!IsProductUrl(params.product)) notFound();
     const product: any = GetProductFromParam(params.product);
     if (!searchParams?.q) {

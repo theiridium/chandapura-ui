@@ -3,12 +3,12 @@ import useEmblaCarousel from 'embla-carousel-react'
 import { EmblaOptionsType } from 'embla-carousel'
 import { NextButton, PrevButton, usePrevNextButtons } from './embla-carousel-arrow-buttons'
 import Autoplay from 'embla-carousel-autoplay'
-import { MutableRefObject, useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { DotButton, useDotButton } from './embla-carousel-dot-button'
 
 type PropType = {
     slides: any[]
-    options?: EmblaOptionsType
+    options?: any
     height: string
     radius?: string
     bg?: string
@@ -18,7 +18,7 @@ type PropType = {
 
 const EmblaCarousel = (props: PropType) => {
     const { slides, options, isAutoplay, urls } = props;
-    const [emblaRef, emblaApi] = useEmblaCarousel(options, [Autoplay({ stopOnInteraction: !isAutoplay, stopOnMouseEnter: true })])
+    const [emblaRef, emblaApi]: any = useEmblaCarousel(options, [Autoplay({ stopOnInteraction: !isAutoplay, stopOnMouseEnter: true })])
     useEffect(() => {
         if (emblaApi) {
             const autoplay: any = emblaApi.plugins().autoplay;

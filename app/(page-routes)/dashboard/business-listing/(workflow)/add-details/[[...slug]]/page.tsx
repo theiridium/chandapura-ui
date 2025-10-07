@@ -91,12 +91,26 @@ const Page = () => {
 
     //Service
     const [txtService, setTxtService] = useState("");
-    const handleServiceChange = (e: any) => setTxtService(e.target.value);
+    const handleServiceChange: any = (e: any) => setTxtService(e.target.value);
     const onAddServices = () => {
         if (txtService) {
-            const list = [...businessList.services,
-            ...txtService.split(",").map(item => item.trim()).filter(item => item && /^[a-zA-Z0-9 ]+$/.test(item))];
-            setBusinessList({ ...businessList, services: list })
+            const list = [
+                ...businessList.services,
+                ...txtService
+                    .split(",")
+                    .map(item => item.trim())
+                    .filter(item => {
+                        if (!item) return false;
+
+                        if (/^[a-zA-Z0-9 ]+$/.test(item)) {
+                            return true;
+                        } else {
+                            toast.error("Please do not use any special characters", { theme: "colored" });
+                            return false;
+                        }
+                    })
+            ];
+            setBusinessList({ ...businessList, services: list });
             setTxtService("");
             handleDivClick();
         }
@@ -229,7 +243,8 @@ const Page = () => {
             website: !!formdata.website ? (!formdata.website.includes("https://") ? "https://" + formdata.website : formdata.websit) : "",
             bus_hours: stringifyBusHours(businessList.bus_hours),
             step_number: (!source) ? ListingWorkflow.AddDetails : data.step_number,
-            location: location
+            location: location,
+            services: businessList.services
         }
         postBusinessListing(payload);
     }
@@ -433,7 +448,16 @@ const Page = () => {
                                             </div>
                                         )}
                                         <input ref={inputServiceRef} placeholder="Haicut, Spa, Manicure, Facial"
-                                            className='w-full font-normal bg-transparent !outline-none placeholder:text-foreground-500 focus-visible:outline-none data-[has-start-content=true]:ps-1.5 data-[has-end-content=true]:pe-1.5 text-small group-data-[has-value=true]:text-default-foreground is-filled' disabled={disabled} onChange={(e) => handleServiceChange(e)} value={txtService} />
+                                            className='w-full font-normal bg-transparent !outline-none placeholder:text-foreground-500 focus-visible:outline-none data-[has-start-content=true]:ps-1.5 data-[has-end-content=true]:pe-1.5 text-small group-data-[has-value=true]:text-default-foreground is-filled'
+                                            disabled={disabled}
+                                            onChange={(e) => handleServiceChange(e)}
+                                            onKeyDown={(e) => {
+                                                if (e.key === "Enter") {
+                                                    e.preventDefault();
+                                                    onAddServices();
+                                                }
+                                            }}
+                                            value={txtService} />
                                     </div>
                                 </div>
                                 <button disabled={disabled} className='btn-primary w-auto rounded-lg py-2 h-[44px]' type='button' onClick={() => onAddServices()}>Add</button>

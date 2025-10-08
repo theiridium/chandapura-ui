@@ -6,6 +6,7 @@ const ProductItems = async (props: any) => {
   let res = null;
   if (props.searchParams && props.searchParams.q) {
     props.searchParams.filter = searchFilter;
+    props.searchParams.noExpFilter = true; //free listing
     let search = { searchParams: props.searchParams, page: 1 };
     res = await getSearchResult(search);
   }

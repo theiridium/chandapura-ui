@@ -104,6 +104,9 @@ export interface RentComponent {
     floor_number: number
     total_floors: number
     carpet_area: number
+    superbuiltup_area: number
+    builtup_area: number
+    plot_area: number
     parking_type: string
     furnishing: string
     rental_amount: number
@@ -118,6 +121,9 @@ export interface SaleComponent {
     floor_number: number
     total_floors: number
     carpet_area: number
+    superbuiltup_area: number
+    builtup_area: number
+    plot_area: number
     parking_type: string
     furnishing: string
     selling_amount: number
@@ -131,8 +137,13 @@ export interface PGComponent {
 }
 export interface PlotComponent {
     __component: string
-    dimension: number
+    dimension_length: number
+    dimension_breadth: number
     direction: string
+    plot_area: number
+    area_unit: string
+    selling_amount: string
+    amenities: any[],
 }
 export interface OccupancyType {
     occupancy_type: string

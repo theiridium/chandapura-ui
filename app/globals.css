@@ -424,7 +424,7 @@ header {
   .pill-draft {
     @apply border rounded-full text-xs md:text-sm px-3 border-sky-500 text-sky-500 font-medium;
   }
-  .pill-pendingApproval {
+  .pill-underScreening {
     @apply border rounded-full text-xs md:text-sm px-3 border-amber-600 text-amber-600 font-medium;
   }
   .pill-expired {

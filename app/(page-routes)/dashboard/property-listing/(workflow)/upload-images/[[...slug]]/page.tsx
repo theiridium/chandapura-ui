@@ -3,7 +3,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import SingleImage from '@/app/components/media-upload-input/single-image';
 import MultiImage from '@/app/components/media-upload-input/multi-image';
 import { useCallback, useEffect, useState } from 'react';
-import { Products } from '@/public/shared/app.config';
+import { Products, Resource } from '@/public/shared/app.config';
 import { getPublicApiResponse, putRequestApi } from '@/lib/apiLibrary';
 import { ImageParams } from '@/lib/typings/dto';
 import ImgSingleUploadLoading from '@/app/loading-components/img-single-upload-loading';
@@ -106,7 +106,7 @@ const Page = () => {
 
     const setFormBtnEl = () => (
         <div key={1} className='flex gap-x-5 justify-end text-xl *:w-auto *:rounded-lg p-2 *:py-2 *:px-5 *:block font-semibold'>
-            <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading || isloading} onPress={() => router.push(`/dashboard/property-listing/add-details?type=edit_back&source=${source}`)}>
+            <Button className='btn-primary text-base' color='primary' isDisabled={isSubmitLoading || isloading} onPress={() => router.push(`${Resource.PropertyListing.addDetailsLink}?type=edit_back&source=${source}`)}>
                 Back
             </Button>
             <Button className='btn-primary text-base' color='primary' isDisabled={isImagesInGallery || !imageParamsFeatured.imgData || editMode || isloading} isLoading={isSubmitLoading} onPress={onClickSave}>

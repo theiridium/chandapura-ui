@@ -102,7 +102,7 @@ const Page = () => {
                           }
                         </> :
                         <>
-                          {(x.step_number === ListingWorkflow.Payment && !x.publish_status) ? <div className='pill-pendingApproval'>Pending Approval</div> :
+                          {(x.step_number === ListingWorkflow.Payment && !x.publish_status) ? <div className='pill-underScreening'>Under Screening</div> :
                             <div className='pill-draft'>Draft</div>
                           }
                         </>}
@@ -142,7 +142,7 @@ const Page = () => {
                               }
                             </> :
                               <>
-                                {!x.publish_status && x.step_number === 4 ? <div>Pending Approval from Admin</div> : <a className='hover:bg-color2d/20' href={continueUrl}>Continue to complete listing<MoveRight size={15} /></a>}
+                                {!x.publish_status && x.step_number === 4 ? <div>This listing is under screening</div> : <a className='hover:bg-color2d/20' href={continueUrl}>Continue to complete listing<MoveRight size={15} /></a>}
                               </>
                             }
                           </div>

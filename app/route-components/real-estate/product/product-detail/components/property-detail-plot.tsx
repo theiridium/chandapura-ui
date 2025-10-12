@@ -2,7 +2,7 @@ import ViewLocationMap from '@/app/components/maps/view-location-map'
 import Breadcrumb from '@/app/sub-components/breadcrumb'
 import ContactButton from '@/app/sub-components/contact-btn'
 import { ConvertCurrencyToWords } from '@/lib/helpers'
-import { IndianRupee } from 'lucide-react'
+import { IndianRupee, X } from 'lucide-react'
 import React from 'react'
 
 const PropertyDetailPlot = ({ data, onOpen, property_details }: any) => {
@@ -61,20 +61,31 @@ const PropertyDetailPlot = ({ data, onOpen, property_details }: any) => {
                     <div className='mb-12'>
                         <ContactButton name={data.contact.contact_name} phone={data.contact.contact_number} maskedText={"Owner"} />
                     </div>
+                    {!!data.description &&
+                        <>
+                            <hr className='mb-12' />
+                            <div className='mb-12'>
+                                <div className='text-sm text-gray-500 font-semibold'>Description</div>
+                                <p className='text-sm md:text-lg font-medium'>{data.description}</p>
+                            </div>
+                        </>
+                    }
                     <hr className='mb-12' />
                     <div className='flex lg:flex-none flex-wrap lg:grid lg:grid-flow-col lg:justify-stretch gap-x-10 lg:gap-x-5 mb-12'>
                         <div className='mb-5 lg:mb-0'>
                             <div className='text-sm text-gray-500 font-semibold'>Type</div>
                             <div className='text-sm md:text-lg font-medium'>{data.property_type}</div>
                         </div>
-                        {/* <div className='mb-5 lg:mb-0'>
-                            <div className='text-sm text-gray-500 font-semibold'>Availability</div>
-                            <div className='text-sm md:text-lg font-medium'>Immediate</div>
-                        </div> */}
-                        {/* <div className='mb-5 lg:mb-0'>
-                            <div className='text-sm text-gray-500 font-semibold'>Rooms</div>
-                            <div className='text-sm md:text-lg font-medium'>{data.room_type}</div>
-                        </div> */}
+                        <div className='mb-5 lg:mb-0'>
+                            <div className='text-sm text-gray-500 font-semibold'>Area</div>
+                            <div className='text-sm md:text-lg font-medium'>{property_details.plot_area} {property_details.area_unit}</div>
+                        </div>
+                        {(!!property_details.dimension_length && !!property_details.dimension_breadth) &&
+                            <div className='mb-5 lg:mb-0'>
+                                <div className='text-sm text-gray-500 font-semibold'>Dimension</div>
+                                <div className='text-sm md:text-lg font-medium flex items-center gap-1'>{property_details.dimension_length} <X size={18} /> {property_details.dimension_breadth}</div>
+                            </div>
+                        }
                         <div className='mb-5 lg:mb-0'>
                             <div className='text-sm text-gray-500 font-semibold'>Direction</div>
                             <div className='text-sm md:text-lg font-medium'>{property_details.direction} Facing</div>

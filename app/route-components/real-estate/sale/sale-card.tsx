@@ -20,7 +20,7 @@ const SaleCard = (p: any) => {
                     <div className="text-xs font-bold mb-2 flex items-center"><MapPin size={12} className='mr-1' /><span className='text-highlight'>{item.area.name}</span></div>
                     <div className="text-sm flex items-center justify-between mb-2 text-slate-600">
                         <div>{item.room_type} {propertyType}</div>
-                        <div className="justify-self-end mr-2">{propertyType === "Plot" ? property_details?.dimension : property_details?.carpet_area} sqft</div>
+                        <div className="justify-self-end mr-2">{propertyType === "Plot" ? property_details?.plot_area : property_details?.carpet_area} sqft</div>
                     </div>
                     <div className="text-base font-semibold mb-2 truncate text-slate-600">{item.name}</div>
                     <div className="flex items-center justify-between">

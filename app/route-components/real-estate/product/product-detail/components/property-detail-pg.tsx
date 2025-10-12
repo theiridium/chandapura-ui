@@ -61,6 +61,15 @@ const PropertyDetailPG = ({ data, onOpen, property_details }: any) => {
                     <div className='mb-12'>
                         <ContactButton name={data.contact.contact_name} phone={data.contact.contact_number} maskedText={"Owner"} />
                     </div>
+                    {!!data.description &&
+                        <>
+                            <hr className='mb-12' />
+                            <div className='mb-12'>
+                                <div className='text-sm text-gray-500 font-semibold'>Description</div>
+                                <p className='text-sm md:text-lg font-medium'>{data.description}</p>
+                            </div>
+                        </>
+                    }
                     <hr className='mb-12' />
                     <div className='mb-12'>
                         <h5 className='text-sm text-gray-500 font-semibold mb-5'>Amenities</h5>

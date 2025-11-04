@@ -1,5 +1,5 @@
 import { getPublicSingleSearchResponse } from "@/lib/apiLibrary";
-import { GetProductFromProductType } from "@/lib/helpers";
+import { GetProductFromLabel, GetProductFromProductType } from "@/lib/helpers";
 import { CatergorySection, Products } from "@/public/shared/app.config";
 
 export const dynamic = 'force-dynamic';
@@ -171,6 +171,7 @@ export async function GET() {
     });
 
     const realEstateUrls = realEstateData.results[0].hits.map((item: any) => {
+        console.log(item)
         const id = item.id;
         const slug = item.slug;
         const listing_type = item.listing_type;
@@ -178,7 +179,7 @@ export async function GET() {
 
         let path = `/${Products.realEstate.url}`;
         if (listing_type) {
-            category = GetProductFromProductType(listing_type).url;
+            category = GetProductFromLabel(listing_type).url;
             if (category) path += `/${category}`;
         }
         path += `/${slug}?source=${id}`;

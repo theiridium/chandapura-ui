@@ -171,7 +171,6 @@ export async function GET() {
     });
 
     const realEstateUrls = realEstateData.results[0].hits.map((item: any) => {
-        console.log(item)
         const id = item.id;
         const slug = item.slug;
         const listing_type = item.listing_type;

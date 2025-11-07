@@ -43,11 +43,11 @@ const JobItemsList = (props: any) => {
         <>
             <h2 className="search-result-count">{searchedData?.estimatedTotalHits || searchedData?.totalHits} {searchedData.estimatedTotalHits === 1 || searchedData.totalHits === 1 ? 'result' : 'results'} from your search</h2>
             <Breadcrumb blockSecondLast={false} />
-            <div className="grid lg:grid-cols-7 lg:gap-10">
+            <div className="grid lg:grid-cols-4 lg:gap-10">
                 {/* <div className='col-span-2'>
                     <JobFilters />
                 </div> */}
-                <div className="col-span-3">
+                <div className="col-span-2">
                     <div className="grid grid-cols-1 gap-4 lg:gap-8 mb-4 lg:mb-10">
                         {list?.length > 0 ? list.map((data: any, i: any) => (
                             data.category === "Corporate"?
@@ -57,7 +57,7 @@ const JobItemsList = (props: any) => {
                             <ZeroListingCard dashLink={Resource.JobListing.addDetailsLink} title={"job vacancy"} />}
                     </div>
                 </div>
-                <div className='hidden lg:block lg:col-span-1'>
+                <div className='hidden lg:block lg:col-span-1 lg:col-start-4'>
                     <img className='w-full rounded-xl' src={CloudImages.SideBannerBusiness} />
                 </div>
             </div>

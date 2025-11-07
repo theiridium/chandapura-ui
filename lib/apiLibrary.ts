@@ -179,7 +179,6 @@ export const userResetPassword = async (payload: User.PasswordReset) => {
 
 const searchHost: any = process.env.NEXT_PUBLIC_MEILISEARCH_URL
 export const getPublicSingleSearchResponse = async (payload: SearchPayload | undefined) => {
-    console.log(payload)
     // await new Promise(resolve => setTimeout(resolve, 3000))
     let headersList = {
         Accept: "application/json",
